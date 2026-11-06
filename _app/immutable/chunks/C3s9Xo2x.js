@@ -1,0 +1,1119 @@
+const s="sicp",a="c3-modularity-objects-and-state",n="الوحدانية والكائنات والحالة",c="3-3",e="3.3 النمذجة بالبيانات القابلة للتغيير",l=[{depth:3,id:"33-النمذجة-بالبيانات-القابلة-للتغيير",text:"3.3 النمذجة بالبيانات القابلة للتغيير"}],p=`<h3 id="33-النمذجة-بالبيانات-القابلة-للتغيير">3.3 النمذجة بالبيانات القابلة للتغيير</h3>
+<p>تناول <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a> البيانات المركّبة بوصفها وسيلةً لبناء كائناتٍ حسابيّةٍ لها عدّة أجزاء، بغية نمذجة كائنات العالم الواقعيّ التي لها عدّة جهات. وفي ذلك الفصل، قدّمنا انضباط تجريد البيانات، الذي بموجبه تُحدَّد بنى البيانات بدلالة البنّاءات (constructors)، التي تُنشئ كائنات البيانات، والمُحدِّدات (selectors)، التي تصل إلى أجزاء كائنات البيانات المركّبة. لكنّنا نعلم الآن أنّ هناك جانبًا آخر من البيانات لم يتناوله الفصل 2. فإنّ الرغبة في نمذجة أنظمةٍ مركّبةٍ من كائناتٍ لها حالة متغيّرة تدفعنا إلى الحاجة إلى تعديل كائنات البيانات المركّبة، إضافةً إلى بنائها والانتقاء منها. ولكي نمثّل الكائنات المركّبة ذات الحالة المتغيّرة، سنصمّم تجريدات بياناتٍ تتضمّن، إضافةً إلى المُحدِّدات والبنّاءات، عمليّاتٍ تُسمّى <em>مُبدِّلات (mutators)</em>، تُعدّل كائنات البيانات. فمثلًا، فإنّ نمذجة نظامٍ مصرفيّ تتطلّب منّا تغيير أرصدة الحسابات. وهكذا، فقد تقبل بنية بياناتٍ لتمثيل الحسابات المصرفيّة عمليّةً من شكل</p>
+<pre><code class="language-scheme">(<span class="hljs-name">set-balance!</span> ⟨account⟩ ⟨new-value⟩)
+</code></pre>
+<p>تُغيِّر رصيد الحساب المُعيّن إلى القيمة الجديدة المُعيّنة. وكائنات البيانات التي تُعرّف لها مُبدِّلات تُعرف بـ<em>كائنات البيانات القابلة للتغيير (mutable data objects)</em>.</p>
+<p>قدّم الفصل 2 الأزواج بوصفها «صمغًا» عامّ الغرض لتوليف البيانات المركّبة. ونبدأ هذا القسم بتعريف مُبدِّلات أساسيّة للأزواج، حتّى تستطيع الأزواج أن تخدم بوصفها كتل بناءٍ لإنشاء كائنات بياناتٍ قابلةٍ للتغيير. وهذه المُبدِّلات تعزّز القدرة التمثيليّة للأزواج تعزيزًا كبيرًا، ممّا يتيح لنا بناء بنى بياناتٍ غير السلاسل والأشجار التي عملنا معها في <a href="https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2">2.2</a>. ونُقدّم أيضًا بعض الأمثلة على المحاكاة التي تمثَّلت فيها الأنظمة المعقّدة بوصفها مجموعاتٍ من الكائنات ذات الحالة المحليّة.</p>
+<h4>3.3.1 بنية القائمة القابلة للتغيير</h4>
+<p>إنّ العمليّات الأساسيّة على الأزواج —<code>cons</code> و<code>car</code> و<code>cdr</code>— يمكن استخدامها لبناء بنية القائمة ولانتقاء أجزاءً من بنية القائمة، لكنّها عاجزةٌ عن تعديل بنية القائمة. والشيء نفسه صحيحٌ بشأن عمليّات القوائم التي استخدمناها حتّى الآن، مثل <code>append</code> و<code>list</code>، إذ يمكن تعريف هذه بدلالة <code>cons</code> و<code>car</code> و<code>cdr</code>. ولكي نُعدّل بنى القوائم، نحتاج إلى عمليّاتٍ جديدة.</p>
+<p>والمُبدِّلات الأوّليّة للأزواج هي <code>set-car!</code> و<code>set-cdr!</code>. و<code>set-car!</code> تأخذ معطيين، يجب أن يكون الأوّل منهما زوجًا. وهي تُعدّل هذا الزوج، بتحويل مؤشّر <code>car</code> إلى مؤشّرٍ إلى المعطى الثاني لـ<code>set-car!</code>.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>فمثلًا، لنفترض أنّ <code>x</code> مرتبطٌ بالقائمة <code>((a b) c d)</code> و<code>y</code> بالقائمة <code>(e f)</code> كما هو موضّح في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a>. فإنّ تقييم التعبير <code> (set-car! x y)</code> يُعدّل الزوج الذي <code>x</code> مرتبطٌ به، فيحلّ محلّ <code>car</code> فيه قيمة <code>y</code>. وتُعرَض نتيجة العمليّة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.13</a>. وقد عُدّلت البنية <code>x</code> وستُطبَع الآن بالشكل <code>((e f) c d)</code>. أمّا الأزواج التي تمثّل القائمة <code>(a b)</code>، والتي يُعرَف بها بالمؤشّر الذي استُبدل، فهي مفصولةٌ الآن عن البنية الأصليّة.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-0-Fig3.12b.std.webp" alt=""></p>
+<p><strong>الشكل 3.12:</strong> القائمتان <code>x</code>: <code>((a b) c d)</code> و<code>y</code>: <code>(e f)</code>.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-1-Fig3.13b.std.webp" alt=""></p>
+<p><strong>الشكل 3.13:</strong> أثر <code>(set-car! x y)</code> على القائمتين في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a>.</p>
+<p>قارِن <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.13</a> بـ<a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.14</a>، الذي يُوضّح نتيجة تنفيذ <code>(define z (cons y (cdr x)))</code> و<code>x</code> و<code>y</code> مرتبطتين بالقائمتين الأصليّتين الواردتين في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a>. والمتغيّر <code>z</code> مرتبطٌ الآن بزوجٍ جديد أنشأته عمليّة <code>cons</code>؛ والقائمة التي <code>x</code> مرتبطٌ بها لم تتغيّر.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-2-Fig3.14b.std.webp" alt=""></p>
+<p><strong>الشكل 3.14:</strong> أثر <code>(define z (cons y (cdr x)))</code> على القائمتين في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a>.</p>
+<p>إنّ عمليّة <code>set-cdr!</code> شبيهةٌ بـ<code>set-car!</code>. والفرق الوحيد هو أنّ مؤشّر <code>cdr</code> للزوج، لا مؤشّر <code>car</code>، هو الذي يُستبدل. ويُعرَض أثر تنفيذ <code>(set-cdr! x y)</code> على قائمتَي <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a> في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.15</a>. وهنا، استُبدل مؤشّر <code>cdr</code> الخاصّ بـ<code>x</code> بالمؤشّر إلى <code>(e f)</code>. وكذلك، فإنّ القائمة <code>(c d)</code>، التي كانت <code>cdr</code> الخاصّة بـ<code>x</code>، صارت مفصولةً عن البنية.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-3-Fig3.15b.std.webp" alt=""></p>
+<p><strong>الشكل 3.15:</strong> أثر <code>(set-cdr! x y)</code> على قائمتَي <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.12</a>.</p>
+<p>يُبنِي <code>cons</code> بنية قائمةٍ جديدةً بإنشاء أزواجٍ جديدة، بينما <code>set-car!</code> و<code>set-cdr!</code> تُعدّلان الأزواج القائمة. ففي الحقيقة، نستطيع تنفيذ <code>cons</code> بدلالة المُبدِّلتين، مع إجراء <code>get-new-pair</code> يُعيد زوجًا جديدًا ليس جزءًا من أيّ بنية قائمةٍ قائمة. فنحن نحصُل على الزوج الجديد، ونضبط مؤشّرَي <code>car</code> و<code>cdr</code> فيه ليشيرا إلى الكائنات المُعيّنة، ونُعيد الزوج الجديد نتيجةً لـ<code>cons</code>.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">new</span> (<span class="hljs-name">get-new-pair</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> new x)
+    (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> new y)
+    new))
+</code></pre>
+<p><strong>التمرين 3.12:</strong> عُرِّف الإجراء التالي لإلحاق القوائم في <a href="https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e1">2.2.1</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">append</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> x)
+      y
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> x) (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x) y))))
+</code></pre>
+<p>يُشكّل <code>append</code> قائمةً جديدةً بإجراء <code>cons</code> لعناصر <code>x</code> على <code>y</code> تباعًا. وإجراء <code>append!</code> شبيهٌ بـ<code>append</code>، لكنّه مُبدِّلٌ لا بانٍّ. وهو يُلحق القوائم بوصلها معًا، مُعدِّلًا الزوج الأخير من <code>x</code> بحيث يصير <code>cdr</code> فيه هو <code>y</code>. (واستدعاء <code>append!</code> بـ<code>x</code> فارغة خطأ.)</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">append!</span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> (<span class="hljs-name">last-pair</span> x) y)
+  x)
+</code></pre>
+<p>وهنا <code>last-pair</code> إجراءٌ يُعيد الزوج الأخير في معطاه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">last-pair</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x))
+      x
+      (<span class="hljs-name">last-pair</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x))))
+</code></pre>
+<p>تأمّل التفاعل</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> x (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> y (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;c</span> <span class="hljs-symbol">&#x27;d</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> z (<span class="hljs-name"><span class="hljs-built_in">append</span></span> x y))
+
+z
+(<span class="hljs-name">a</span> b c d)
+
+(<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x)
+⟨response⟩
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> w (<span class="hljs-name">append!</span> x y))
+
+w
+(<span class="hljs-name">a</span> b c d)
+
+(<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x)
+⟨response⟩
+</code></pre>
+<p>ما هما الـ<code>⟨</code>response<code>⟩</code>ان الناقصان؟ ارسم مخطّطات الصناديق والمؤشّرات لتوضيح إجابتك.</p>
+<p><strong>التمرين 3.13:</strong> انظر في الإجراء <code>make-cycle</code> الآتي، الذي يستخدم الإجراء <code>last-pair</code> المعرَّف في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.12</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-cycle</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> (<span class="hljs-name">last-pair</span> x) x)
+  x)
+</code></pre>
+<p>ارسم مخطّط صناديق ومؤشّراتٍ يُظهر البنية <code>z</code> المُنشَأة بالتعريف الآتي</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> z (<span class="hljs-name">make-cycle</span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span> <span class="hljs-symbol">&#x27;c</span>)))
+</code></pre>
+<p>ماذا يحدث إذا حاولنا احتساب <code>(last-pair z)</code>؟</p>
+<p><strong>التمرين 3.14:</strong> الإجراء الآتي مفيدٌ للغاية، وإن كان غامضًا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">mystery</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">loop</span> x y)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> x)
+        y
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">temp</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x)))
+          (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> x y)
+          (<span class="hljs-name">loop</span> temp x))))
+  (<span class="hljs-name">loop</span> x &#x27;()))
+</code></pre>
+<p>يستخدم <code>Loop</code> المتغيّر «المؤقّت» <code>temp</code> لحفظ القيمة القديمة للـ<code>cdr</code> الخاصّ بـ<code>x</code>، إذ إنّ <code>set-cdr!</code> في السطر التالي يُدمّر الـ<code>cdr</code>. اشرح ما يفعله <code>mystery</code> بصورةٍ عامّة. لنفترض أنّ <code>v</code> معرَّفٌ بـ<code>(define v (list 'a 'b 'c 'd))</code>. ارسم مخطّط الصناديق والمؤشّرات الذي يمثّل القائمة المربوطة بـ<code>v</code>. ولنفترض أنّنا قيّنّا الآن <code>(define w (mystery v))</code>. ارسم مخطّطات الصناديق والمؤشّرات التي تُظهر البنيتين <code>v</code> و<code>w</code> بعد تقييم هذا التعبير. فما الذي سيُطبَع كقيمتَي <code>v</code> و<code>w</code>؟</p>
+<h4>المشاركة والهويّة</h4>
+<p>ذكرنا في <a href="https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e3">3.1.3</a> المسائل النظريّة لـ«التماثل» و«التغيير» التي أثارها إدخال الإحلال. وهذه المسائل تنشأ عمليًّا حين تُشارَك أزواجٌ فرديّةٌ بين كائنات بياناتٍ مختلفة. فمثلًا، انظر في البنية المتشكّلة بـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> x (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> z1 (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x x))
+</code></pre>
+<p>كما هو موضّح في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.16</a>، فإنّ <code>z1</code> زوجٌ يشير كلٌّ من <code>car</code> و<code>cdr</code> فيه إلى الزوج ذاته <code>x</code>. وهذه المشاركة لـ<code>x</code> من قِبَل <code>car</code> و<code>cdr</code> الخاصّين بـ<code>z1</code> نتيجةٌ للطريقة المباشرة التي يُنفَّذ بها <code>cons</code>. وبصورةٍ عامّة، فإنّ استخدام <code>cons</code> لبناء القوائم سيُنتج بنيةً متشابكةً من الأزواج تتشارك فيها بنياتٌ كثيرةٌ مختلفةٌ في أزواجٍ فرديّةٍ كثيرة.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-4-Fig3.16b.std.webp" alt=""></p>
+<p><strong>الشكل 3.16:</strong> القائمة <code>z1</code> المتشكّلة بـ<code>(cons x x)</code>.</p>
+<p>وبخلاف <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.16</a>، يُظهر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.17</a> البنية المُنشَأة بالتعريف الآتي</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> z2 
+  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>) (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>)))
+</code></pre>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-5-Fig3.17b.std.webp" alt=""></p>
+<p><strong>الشكل 3.17:</strong> القائمة <code>z2</code> المتشكّلة بـ<code>(cons (list 'a 'b) (list 'a 'b))</code>.</p>
+<p>في هذه البنية، الأزواجُ في القائمتين <code>(a b)</code> متمايزةٌ، وإن كانت الرموزُ الفعليّةُ مُشارَكة.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>فكلا <code>z1</code> و<code>z2</code> يمثّل «القائمة ذاتها»، <code>((a b) a b)</code>، إذا فكّرنا فيهما بوصفهما قائمة. وبصورةٍ عامّة، فإنّ المشاركة غيرُ قابلةٍ للكشف إطلاقًا إذا عملنا على القوائم باستخدام <code>cons</code> و<code>car</code> و<code>cdr</code> وحدها. غير أنّها تصبح ذا أهمّيّةٍ إذا سمحنا بمغيّراتٍ على بنية القائمة. ومثالٌ على الفرق الذي يمكن أن تُحدِثه المشاركة، انظر في الإجراء الآتي، الذي يُعدّل <code>car</code> البنية التي تُطبَّق عليها:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-to-wow!</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> x) <span class="hljs-symbol">&#x27;wow</span>)
+  x)
+</code></pre>
+<p>حتّى وإن كانت <code>z1</code> و<code>z2</code> «البنية ذاتها»، فإنّ تطبيق <code>set-to-wow!</code> عليهما يُنتج نتائجَ مختلفة. فمع <code>z1</code>، يُغيّر تعديل <code>car</code> الـ<code>cdr</code> أيضًا، لأنّ <code>z1</code> يتّحد فيه <code>car</code> و<code>cdr</code> في الزوج ذاته. وأمّا مع <code>z2</code>، فإنّ <code>car</code> و<code>cdr</code> متمايزان، لذا يُعدّل <code>set-to-wow!</code> الـ<code>car</code> فقط:</p>
+<pre><code class="language-scheme">z<span class="hljs-number">1</span>
+((<span class="hljs-name">a</span> b) a b)
+
+(<span class="hljs-name">set-to-wow!</span> z1)
+((<span class="hljs-name">wow</span> b) wow b)
+
+z<span class="hljs-number">2</span>
+((<span class="hljs-name">a</span> b) a b)
+
+(<span class="hljs-name">set-to-wow!</span> z2)
+((<span class="hljs-name">wow</span> b) a b)
+</code></pre>
+<p>إحدى طرائق كشف المشاركة في بنى القوائم هي استخدام المُسَيِّم <code>eq?</code>، الذي عرّفناه في <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e1">2.3.1</a> بوصفه طريقةً لاختبار تساوي رمزين. وبأكثر عموميّةٍ، يختبر <code>(eq? x y)</code> ما إذا كان <code>x</code> و<code>y</code> هما الكائن ذاته (أي ما إذا كان <code>x</code> و<code>y</code> متساويين بوصفهما مؤشّرين). وهكذا، فبـ<code>z1</code> و<code>z2</code> المعرَّفين في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.16</a> و<a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.17</a>، فإنّ <code>(eq? (car z1) (cdr z1))</code> صحيحة و<code>(eq? (car z2) (cdr z2))</code> خاطئة.</p>
+<p>وكما سنرى في الأقسام التالية، يمكننا استغلال المشاركة لتوسيع ذخيرة بنيات البيانات التي يمكن تمثيلها بالأزواج توسيعًا كبيرًا. ومن جانبٍ آخر، فإنّ المشاركة يمكن أن تكون خطيرةً أيضًا، إذ إنّ التعديلات المُجرَاة على البنيات ستؤثّر في بنياتٍ أخرى تتشارك الأجزاء المُعدَّلة صدفةً. وينبغي استخدام عمليّات التغيير <code>set-car!</code> و<code>set-cdr!</code> بحذر؛ فما لم يكن لدينا فهمٌ جيّدٌ لكيفيّة مشاركة كائنات بياناتنا، فقد يؤدّي التغيير إلى نتائجَ غير متوقّعة.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<blockquote>
+<p><strong>التمرين 3.15:</strong> ارسم مخطّطات الصناديق والمؤشّرات لتوضيح أثر <code>set-to-wow!</code> على البنيتين <code>z1</code> و<code>z2</code> أعلاه.</p>
+</blockquote>
+<p><strong>التمرين 3.16:</strong> يقرّر بن بيتدِل كتابة إجراءٍ لعدّ عدد الأزواج في أيّ بنية قوائم. «إنّه يسير»، يعلّل. «عدد الأزواج في أيّ بنيةٍ هو العدد في <code>car</code> زائد العدد في <code>cdr</code> زائد واحدٌ آخرُ لعدّ الزوج الحاليّ.» فيكتب بن الإجراء الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">count-pairs</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">pair?</span></span> x))
+      <span class="hljs-number">0</span>
+      (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">count-pairs</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> x))
+         (<span class="hljs-name">count-pairs</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x))
+         <span class="hljs-number">1</span>)))
+</code></pre>
+<p>أظهِر أنّ هذا الإجراء غيرُ صحيح. وبالتحديد، ارسم مخطّطات صناديق ومؤشّراتٍ تمثّل بنى قوائمٍ متكوّنةً من ثلاثة أزواجٍ بالضبط، يعيد إجراء بن بالنسبة إليها 3؛ ويعيد 4؛ ويعيد 7؛ ولا يعيد إطلاقًا.</p>
+<blockquote>
+<p><strong>التمرين 3.17:</strong> ابتكر نسخةً صحيحةً من الإجراء <code>count-pairs</code> الوارد في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.16</a>، يعيد عدد الأزواج المتمايزة في أيّ بنية. (تلميح: اجتلِ البنية، محتفظًا ببنية بياناتٍ مساعِدةٍ تُستخدم لتتبّع الأزواج التي تمّ عدُّها سلفًا.)</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.18:</strong> اكتب إجراءً يفحص قائمةً ويحدّد ما إذا كانت تحتوي دورةً، أي ما إذا كان برنامجٌ يحاول إيجاد نهاية القائمة بأخذ <code>cdr</code>اتٍ متعاقبة سيدخل في حلقةٍ لا نهائيّة. وقد بنَت مثل هذه القوائم <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.13</a>.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.19:</strong> أعِد <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.18</a> باستخدام خوارزميّةٍ لا تتطلّب إلّا مقدارًا ثابتًا من المكان. (وهذا يستلزم فكرةً ذكيّةً للغاية.)</p>
+</blockquote>
+<h4>التغيير ليس سوى إحلال</h4>
+<p>حين عرّفنا البيانات المركّبة، لاحظنا في <a href="https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3">2.1.3</a> أنّ الأزواج يمكن تمثيلها بدلالة الإجراءات تمثيلًا محضًا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">dispatch</span> m)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;car</span>) x)
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;cdr</span>) y)
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Undefined 
+                 operation: CONS&quot;</span> m))))
+  dispatch)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> z) (<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;car</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> z) (<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;cdr</span>))
+</code></pre>
+<p>والملاحظة ذاتها صحيحةٌ بالنسبة للبيانات القابلة للتغيير. فيمكننا تنفيذ كائنات البيانات القابلة للتغيير بوصفها إجراءاتٍ باستخدام الإحلال والحالة المحليّة. فمثلًا، يمكننا توسيع تنفيذ الأزواج المعطى أعلاه لمعالجة <code>set-car!</code> و<code>set-cdr!</code> بأسلوبٍ نظيرٍ للأسلوب الذي نفّذنا به الحسابات المصرفيّة باستخدام <code>make-account</code> في <a href="https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1">3.1.1</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-x!</span> v) (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> x v))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-y!</span> v) (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> y v))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">dispatch</span> m)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;car</span>) x)
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;cdr</span>) y)
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;set-car!</span>) set-x!)
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;set-cdr!</span>) set-y!)
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Undefined 
+                 operation: CONS&quot;</span> m))))
+  dispatch)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> z) (<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;car</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> z) (<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;cdr</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> z new-value)
+  ((<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;set-car!</span>) new-value)
+  z)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> z new-value)
+  ((<span class="hljs-name">z</span> <span class="hljs-symbol">&#x27;set-cdr!</span>) new-value)
+  z)
+</code></pre>
+<p>إنّ الإحلال هو كلّ ما يلزم، نظريًّا، لتفسير سلوك البيانات القابلة للتغيير. فمجرّد أن نُدخل <code>set!</code> إلى لغتنا، نُثير جميع المسائل، لا مسائل الإحلال فحسب، بل مسائل البيانات القابلة للتغيير عمومًا.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p><strong>التمرين 3.20:</strong> ارسم مخطّطات البيئات لتوضيح تقييم تتالي التعابير</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> x (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> z (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x x))
+
+(<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> z) <span class="hljs-number">17</span>)
+
+(<span class="hljs-name"><span class="hljs-built_in">car</span></span> x)
+<span class="hljs-number">17</span>
+</code></pre>
+<p>باستخدام تنفيذ الأزواج الإجرائيّ المعطى أعلاه. (قارن <a href="https://sarabander.github.io/sicp/html/3_002e2.xhtml#Exercise-3_002e11">التمرين 3.11</a>.)</p>
+<h4>3.3.2 تمثيل الطوابير</h4>
+<p>إنّ المغيّرين <code>set-car!</code> و<code>set-cdr!</code> يمكّناننا من استخدام الأزواج لبناء بنيات بياناتٍ لا يمكن تشييدها بـ<code>cons</code> و<code>car</code> و<code>cdr</code> وحدها. ويُظهر هذا القسم كيف نستخدم الأزواج لتمثيل بنية بياناتٍ تُسمّى الطابور. وسيُظهر القسم <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.3</a> كيف نُمثّل بنيات بياناتٍ تُسمّى الجداول.</p>
+<p><em>الطابور (queue)</em> هو تسلسلٌ تُدرَج العناصر في أحد طرفيه (الذي يُسمّى <em>الخلفيّة</em> للطابور) وتُحذَف من الطرف الآخر (الذي يُسمّى <em>المقدّمة</em>). ويُظهر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.18</a> طابورًا خاليًا في بادئ الأمر تُدرَج فيه العنصران <code>a</code> و<code>b</code>. ثمّ يُحذَف <code>a</code>، ويُدرَج <code>c</code> و<code>d</code>، ويُحذَف <code>b</code>. ولأنّ العناصر تُحذَف دائمًا بالترتيب الذي أُدرِجت به، فإنّ الطابور يُسمّى أحيانًا <em>مِخزَن FIFO</em> (أي «الأوّل داخلًا هو الأوّل خارجًا»).</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-6-Fig3.18.std.webp" alt=""></p>
+<p><strong>الشكل 3.18:</strong> عمليّات الطابور.</p>
+<p>من حيث تجريد البيانات، يمكننا اعتبار الطابور معرَّفًا بمجموعة العمليّات الآتية:</p>
+<p>بانٍ: <code>(make-queue)</code> يعيد طابورًا خاليًا (طابورًا لا يحتوي أيّ عناصر). محدِّدان:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">empty-queue?</span> ⟨queue⟩)
+</code></pre>
+<p>يختبر ما إذا كان الطابور خاليًا.</p>
+<pre><code class="language-scheme">(<span class="hljs-name">front-queue</span> ⟨queue⟩)
+</code></pre>
+<p>يعيد الكائن الموجود في مقدّمة الطابور، مُعلنًا خطأً إذا كان خاليًا؛ ولا يُعدّل الطابور.</p>
+<p>مغيّران:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">insert-queue!</span> ⟨queue⟩ ⟨item⟩)
+</code></pre>
+<p>يُدرِج العنصر في خلفيّة الطابور ويعيد الطابور المُعدَّل قيمةً له.</p>
+<pre><code class="language-scheme">(<span class="hljs-name">delete-queue!</span> ⟨queue⟩)
+</code></pre>
+<p>يحذف العنصر الموجود في مقدّمة الطابور ويعيد الطابور المُعدَّل قيمةً له، مُعلنًا خطأً إذا كان الطابور خاليًا قبل الحذف.</p>
+<p>ولأنّ الطابور تسلسلٌ من العناصر، فيمكننا بكلّ تأكيدٍ تمثيله بقائمةٍ اعتياديّة؛ فمقدّمة الطابور هي <code>car</code> القائمة، وإدراج عنصرٍ في الطابور يعني إلحاق عنصرٍ جديدٍ في نهاية القائمة، وحذف عنصرٍ من الطابور ليس سوى أخذ <code>cdr</code> القائمة. غير أنّ هذا التمثيل غيرُ كفؤ، لأنّ إدراج عنصرٍ يتطلّب منّا مسح القائمة حتّى نبلغ نهايتها. وبما أنّ الطريقة الوحيدة المتاحة لمسح القائمة هي بعمليّات <code>cdr</code> متعاقبة، فإنّ هذا المسح يتطلّب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Θ ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> خطوةً لقائمةٍ من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> عنصرًا. ويغلُب تعديلٌ بسيطٌ لتمثيل القائمة على هذا العيب بالسماح بتنفيذ عمليّات الطابور بحيث تتطلّب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Θ ( 1 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> خطوة؛ أي بحيث يكون عدد الخطوات اللازم مستقلًّا عن طول الطابور.</p>
+<p>ينشأ الصّعب في تمثيل القائمة من الحاجة إلى المسح لإيجاد نهاية القائمة. وسبب حاجتنا إلى المسح هو أنّ الطريقة القياسيّة لتمثيل قائمةٍ بسلسلةٍ من الأزواج تُتيح لنا بسهولةٍ مؤشّرًا إلى بداية القائمة، لكنّها لا تُعطينا مؤشّرًا يسهل الوصولُ إليه إلى نهايتها. والتعديل الذي يتفادى هذا العيب هو تمثيل الطابور بقائمةٍ، مع مؤشّرٍ إضافيٍّ يُشير إلى الزوج الأخير في القائمة. وبذلك، حين نُدرِج عنصرًا، يمكننا الرجوع إلى مؤشّر الخلفيّة وتفادي مسح القائمة.</p>
+<p>يُمثَّل الطابور، إذن، بزوجٍ من المؤشّرات، <code>front-ptr</code> و<code>rear-ptr</code>، التي تُشير، على التوالي، إلى الزوج الأوّل والزوج الأخير في قائمةٍ اعتياديّة. وبما أنّنا نودّ أن يكون الطابور كائنًا قابلًا للتمييز، فيمكننا استخدام <code>cons</code> لدمج المؤشّرين. وهكذا، سيكون الطابور نفسُه هو <code>cons</code> المؤشّرين. ويُوضيّح <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.19</a> هذا التمثيل.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-7-Fig3.19b.std.webp" alt=""></p>
+<p><strong>الشكل 3.19:</strong> تنفيذ طابورٍ بوصفه قائمةً ذات مؤشّري مقدّمةٍ وخلفيّة.</p>
+<p>لتعريف عمليّات الطابور نستخدم الإجراءات الآتية، التي تُمكّننا من تحديد مؤشّري المقدّمة والخلفيّة للطابور وتعديلهما:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">front-ptr</span> queue) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> queue))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">rear-ptr</span> queue) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> queue))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-front-ptr!</span> queue item) 
+  (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> queue item))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-rear-ptr!</span> queue item) 
+  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> queue item))
+</code></pre>
+<p>يمكننا الآن تنفيذ عمليّات الطابور الفعليّة. وسنعتبر الطابور خاليًا إذا كان مؤشّر مقدّمتِه هو القائمة الخالية:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">empty-queue?</span> queue) 
+  (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name">front-ptr</span> queue)))
+</code></pre>
+<p>يُعيد الباني <code>make-queue</code>، بوصفه طابورًا خاليًا في بادئ الأمر، زوجًا كلٌّ من <code>car</code> و<code>cdr</code> فيه هو القائمة الخالية:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-queue</span>) (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> &#x27;() &#x27;()))
+</code></pre>
+<p>لاتّخاذ العنصر الموجود في مقدّمة الطابور، نُعيد <code>car</code> الزوج الذي يُشير إليه مؤشّر المقدّمة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">front-queue</span> queue)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">empty-queue?</span> queue)
+      (<span class="hljs-name">error</span> <span class="hljs-string">&quot;FRONT called with an 
+              empty queue&quot;</span> queue)
+      (<span class="hljs-name"><span class="hljs-built_in">car</span></span> (<span class="hljs-name">front-ptr</span> queue))))
+</code></pre>
+<p>لإدراج عنصرٍ في طابور، نتبع الطريقة التي تُشير نتيجتها في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.20</a>. فنبدأ بإنشاء زوجٍ جديد، <code>car</code> فيه هو العنصر المُراد إدراجه و<code>cdr</code> فيه هو القائمة الخالية. فإن كان الطابور خاليًا في بادئ الأمر، نُعيّن مؤشّري مقدّمة الطابور وخلفيّته إلى هذا الزوج الجديد. وإلّا، نُعدّل الزوج الأخير في الطابور ليشير إلى الزوج الجديد، ونُعيّن مؤشّر الخلفيّة أيضًا إلى الزوج الجديد.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-8-Fig3.20c.std.webp" alt=""></p>
+<p><strong>الشكل 3.20:</strong> نتيجة استخدام <code>(insert-queue! q 'd)</code> على الطابور في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.19</a>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">insert-queue!</span> queue item)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">new-pair</span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> item &#x27;())))
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">empty-queue?</span> queue)
+           (<span class="hljs-name">set-front-ptr!</span> queue new-pair)
+           (<span class="hljs-name">set-rear-ptr!</span> queue new-pair)
+           queue)
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> (<span class="hljs-name">rear-ptr</span> queue) 
+                          new-pair)
+                (<span class="hljs-name">set-rear-ptr!</span> queue new-pair)
+                queue))))
+</code></pre>
+<p>ولحذف العنصر الموجود في مقدّمة الطابور، نُعدّل مؤشّر المقدّمة فحسب بحيث يُشير الآن إلى العنصر الثاني في الطابور، والذي يمكن إيجاده باتباع مؤشّر <code>cdr</code> للعنصر الأوّل (انظر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.21</a>):<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">delete-queue!</span> queue)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">empty-queue?</span> queue)
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;DELETE! called with 
+                 an empty queue&quot;</span> queue))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">set-front-ptr!</span> 
+               queue 
+               (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> (<span class="hljs-name">front-ptr</span> queue)))
+              queue)))
+</code></pre>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-9-Fig3.21c.std.webp" alt=""></p>
+<p><strong>الشكل 3.21:</strong> نتيجة استخدام <code>(delete-queue! q)</code> على الطابور في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.20</a>.</p>
+<p><strong>التمرين 3.21:</strong> يقرّر بن بيتدِل اختبار تنفيذ الطابور الموصوف أعلاه. فيُدخل الإجراءات إلى مفسّر Lisp ويبدأ بتجربتها:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> q1 (<span class="hljs-name">make-queue</span>))
+
+(<span class="hljs-name">insert-queue!</span> q1 <span class="hljs-symbol">&#x27;a</span>)
+((<span class="hljs-name">a</span>) a)
+
+(<span class="hljs-name">insert-queue!</span> q1 <span class="hljs-symbol">&#x27;b</span>)
+((<span class="hljs-name">a</span> b) b)
+
+(<span class="hljs-name">delete-queue!</span> q1)
+((<span class="hljs-name">b</span>) b)
+
+(<span class="hljs-name">delete-queue!</span> q1)
+(() b)
+</code></pre>
+<p>«كلّه خاطئ!» يشكو. «يُظهر ردّ المفسّر أنّ العنصر الأخير يُدرَج في الطابور مرّتين. وحين أحذف العنصرين كلَيهما، يبقى <code>b</code> الثاني موجودًا، فالطابور ليس خاليًا، مع أنّه من المفترض أن يكون كذلك.» وتقترح إيفا لو آتر أنّ بن قد أساء فهم ما يجري. «ليس الأمر أنّ العناصر تدخل الطابور مرّتين،» تشرح. «إنّه فقط أنّ الطابعة القياسيّة في Lisp لا تعرف كيف تُفسّر تمثيل الطابور. فإن أردت رؤية الطابور مطبوعًا بصورةٍ صحيحة، فسيلزمك تعريف إجراء طباعةٍ خاصّ بك للطوابير.» اشرح عمّا تتكلّم إيفا لو. وبالتحديد، أظهِر لماذا تُنتج أمثلة بن النتائج المطبوعة التي تُنتجها. وعرّف إجراءً <code>print-queue</code> يأخذ طابورًا مُدخَلًا ويطبع تسلسل العناصر في الطابور.</p>
+<p><strong>التمرين 3.22:</strong> بدلًا من تمثيل الطابور بزوجٍ من المؤشّرات، يمكننا بناء طابورٍ بوصفه إجراءً ذا حالةٍ محلّيّة. وستتكوّن الحالة المحليّة من مؤشّرين إلى بداية قائمةٍ اعتياديّةٍ ونهايتها. وهكذا، سيكون الإجراء <code>make-queue</code> على الصورة</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-queue</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">front-ptr</span> … )
+        (<span class="hljs-name">rear-ptr</span> … ))
+    ⟨definitions of internal procedures⟩
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">dispatch</span> m) …)
+    dispatch))
+</code></pre>
+<p>أكمل تعريف <code>make-queue</code> وأعطِ تنفيذ عمليّات الطابور باستخدام هذا التمثيل.</p>
+<blockquote>
+<p><strong>التمرين 3.23:</strong> <em>الطابور ذو الطرفين (deque)</em> هو تسلسلٌ يمكن إدراج العناصر فيه وحذفها من المقدّمة أو من الخلفيّة. وعمليّات الطوابير ذوات الأطراف هي الباني <code>make-deque</code>، والمُسَيِّم <code>empty-deque?</code>، والمحدِّدات <code>front-deque</code> و<code>rear-deque</code>، والمغيّرات <code>front-insert-deque!</code> و<code>rear-insert-deque!</code> و<code>front-delete-deque!</code> و<code>rear-delete-deque!</code>. أظهِر كيف نُمثّل الطوابير ذوات الأطراف باستخدام الأزواج، وأعطِ تنفيذ العمليّات.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup> وينبغي أن تُنجَز جميع العمليّات في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Θ ( 1 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span> خطوة.</p>
+</blockquote>
+<h4>3.3.3 تمثيل الجداول</h4>
+<p>حين درسنا طرائق مختلفةً لتمثيل المجموعات في <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a>، ذكرنا في <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3">2.3.3</a> مهمّة صون جدولٍ من السجلّات مُفهرَسًا بمفاتيح تمييزٍ. وفي تنفيذ البرمجة الموجَّهة بالبيانات في <a href="https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3">2.4.3</a>، استخدمنا جداول ثنائيّة الأبعاد استخدامًا واسعًا، تُخزَّن المعلومات فيها وتُستخرَجُ باستخدام مفتاحين. وهنا نرى كيف نبني الجداول بوصفها بنى قوائمَ قابلةً للتغيير.</p>
+<p>نبدأ بالنظر في جدولٍ أحاديّ الأبعاد، تُخزَّن فيه كلّ قيمةٍ تحت مفتاحٍ واحدٍ. ونُنفّذ الجدول بوصفه قائمةً من السجلّات، يُنفَّذ كلٌّ منها بوصفه زوجٍ متكوّنٍ من مفتاحٍ ومن القيمة المرتبطة به. وتُلصَق السجلّات معًا لتشكيل قائمةٍ بأزواجٍ لاصقةٍ يشير <code>car</code> كلٍّ منها إلى السجلّ الذي يليه. وتُسمّى هذه الأزواج اللاصقة <em>العمود الفقريّ (backbone)</em> للجدول. ولكي يكون لدينا موضعٌ يمكننا تغييره حين نُضيف سجلًّا جديدًا إلى الجدول، نبني الجدول بوصفه <em>قائمةً مُترَأَسة (headed list)</em>. وللقائمة المُترَأَسة زوجٌ خاصٌّ في رأس عمودها الفقريّ يحمل «سجلًّا» وهميًّا - وهو في هذه الحالة الرمز <code>*table*</code> المُختار اعتباطيًّا. ويُظهر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.22</a> مخطّط الصناديق والمؤشّرات للجدول</p>
+<pre><code class="language-scheme">a:  <span class="hljs-number">1</span>
+b:  <span class="hljs-number">2</span>
+c:  <span class="hljs-number">3</span>
+</code></pre>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-10-Fig3.22c.std.webp" alt=""></p>
+<p><strong>الشكل 3.22:</strong> جدولٌ مُمثَّلٌ بقائمةٍ مُترَأَسة.</p>
+<p>لاستخراج المعلومات من جدولٍ نستخدم الإجراء <code>lookup</code>، الذي يأخذ مفتاحًا معطًى ويعيد القيمة المرتبطة به (أو القيمة false إن لم تُخزَّن أيّ قيمةٍ تحت ذلك المفتاح). ويُعرَّف <code>Lookup</code> بدلالة العمليّة <code>assoc</code>، التي تتوقّع مفتاحًا وقائمة سجلّاتٍ كمعطيّين. ولاحِظ أنّ <code>assoc</code> لا ترى السجلّ الوهميّ إطلاقًا. ويُعيد <code>Assoc</code> السجلّ الذي يكون المفتاح المعطى <code>car</code> فيه.<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup> ثمّ يتحقّق <code>Lookup</code> من أنّ السجلّ الناتج من <code>assoc</code> ليس false، ويعيد قيمة السجلّ (أي <code>cdr</code> فيه).</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lookup</span> key table)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record
+        (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> record)
+        false)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key records)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> records) false)
+        ((<span class="hljs-name"><span class="hljs-built_in">equal?</span></span> key (<span class="hljs-name"><span class="hljs-built_in">caar</span></span> records)) 
+         (<span class="hljs-name"><span class="hljs-built_in">car</span></span> records))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> records)))))
+</code></pre>
+<p>لإدراج قيمةٍ في جدول تحت مفتاحٍ محدَّد، نستخدم <code>assoc</code> أوّلًا لنرى ما إذا كان هناك سجلٌّ في الجدول بهذا المفتاح سلفًا. فإن لم يكن، نُشكّل سجلًّا جديدًا بِـ<code>cons</code> المفتاح مع القيمة، ونُدرِج هذا في رأس قائمة سجلّات الجدول، بعد السجلّ الوهميّ. فإن كان هناك سجلٌّ بهذا المفتاح سلفًا، نُعيّن <code>cdr</code> هذا السجلّ إلى القيمة الجديدة المعيَّنة. ويُتيح لنا ترويسة الجدول موضعًا ثابتًا نُعدّله لإدراج السجلّ الجديد.<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">insert!</span> key value table)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record
+        (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> record value)
+        (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> table
+                  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> key value) 
+                        (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table)))))
+  <span class="hljs-symbol">&#x27;ok</span>)
+</code></pre>
+<p>لبناء جدول جديد، نُنشئ ببساطةٍ قائمةً تحتوي الرمز <code>*table*</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-table</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;*table*</span>))
+</code></pre>
+<h4>الجداول ثنائيّة الأبعاد</h4>
+<p>في الجدول ثنائيّ الأبعاد، تُفهرَس كلّ قيمةٍ بمفتاحين. فيمكننا تشييد جدولٍ كهذا بوصفه جدولًا أحاديّ الأبعاد يُحدّد كلّ مفتاحٍ فيه جدولًا فرعيًّا. ويُظهر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.23</a> مخطّط الصناديق والمؤشّرات للجدول</p>
+<pre><code>math:  +: 43    letters:  a: 97
+       -: 45              b: 98
+       *: 42
+</code></pre>
+<p>الذي يحتوي على جدولين فرعيّين. (ولا تحتاج الجداول الفرعيّة إلى رمز ترويسةٍ خاصّ، إذ إنّ المفتاح الذي يُحدّد الجدول الفرعيّ يؤدّي هذا الغرض.)</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-11-Fig3.23b.std.webp" alt=""></p>
+<p><strong>الشكل 3.23:</strong> جدولٌ ثنائيّ الأبعاد.</p>
+<p>حين نبحث عن عنصر، نستخدم المفتاح الأوّل لتحديد الجدول الفرعيّ الصحيح. ثمّ نستخدم المفتاح الثاني لتحديد السجلّ داخل الجدول الفرعيّ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lookup</span> key-1 key-2 table)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">subtable</span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-1 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> subtable
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> 
+               (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-2 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable))))
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> record) false))
+        false)))
+</code></pre>
+<p>لإدراج عنصرٍ جديدٍ تحت زوجٍ من المفاتيح، نستخدم <code>assoc</code> لمعرفة ما إذا كان هناك جدولٌ فرعيٌّ مخزَّنٌ تحت المفتاح الأوّل. فإن لم يكن، نبني جدولًا فرعيًّا جديدًا يحتوي السجلّ الوحيد (<code>key-2</code>، <code>value</code>) ونُدرِجه في الجدول تحت المفتاح الأوّل. فإن كان هناك جدولٌ فرعيٌّ للمفتاح الأوّل سلفًا، نُدرِج السجلّ الجديد في هذا الجدول الفرعيّ، باستخدام طريقة الإدراج للجداول أحاديّة الأبعاد الموصوفة أعلاه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">insert!</span> key-1 key-2 value table)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">subtable</span> (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-1 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> subtable
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> 
+               (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-2 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable))))
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record
+              (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> record value)
+              (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> 
+               subtable
+               (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> key-2 value)
+                     (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable)))))
+        (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> 
+         table
+         (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> key-1 (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> key-2 value))
+               (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> table)))))
+  <span class="hljs-symbol">&#x27;ok</span>)
+</code></pre>
+<h4>إنشاء جداول محلّيّة</h4>
+<p>تأخذ العمليّتان <code>lookup</code> و<code>insert!</code> المعرَّفتان أعلاه الجدول معطًى. وهذا يمكّننا من استخدام برامج تصل إلى أكثر من جدول. وهناك طريقة أخرى للتعامل مع عدّة جداول، وهي تخصيص إجراءَي <code>lookup</code> و<code>insert!</code> منفصلين لكلّ جدول. ويمكننا فعل ذلك بتمثيل الجدول إجرائيًّا، بوصفه كائنًا يحافظ على جدول داخليّ كجزءٍ من حالته المحليّة. وحين يُرسَل إليه رسالةٌ مناسبة، يُتيح «كائن الجدول» هذا الإجراء الذي يُعمل به على الجدول الداخليّ. وفيما يلي مولِّدٌ للجداول ثنائيّة الأبعاد المُمثَّلة بهذه الطريقة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-table</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">local-table</span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;*table*</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lookup</span> key-1 key-2)
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">subtable</span> 
+             (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-1 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> local-table))))
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> subtable
+            (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> 
+                   (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-2 
+                          (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable))))
+              (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> record) false))
+            false)))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">insert!</span> key-1 key-2 value)
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">subtable</span> 
+             (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-1 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> local-table))))
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> subtable
+            (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">record</span> 
+                   (<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> key-2 
+                          (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable))))
+              (<span class="hljs-name"><span class="hljs-built_in">if</span></span> record
+                  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> record value)
+                  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> 
+                   subtable
+                   (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> key-2 value)
+                         (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> subtable)))))
+            (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> 
+             local-table
+             (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> key-1
+                         (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> key-2 value))
+                   (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> local-table)))))
+      <span class="hljs-symbol">&#x27;ok</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">dispatch</span> m)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;lookup-proc</span>) lookup)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;insert-proc!</span>) insert!)
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown operation: 
+                          TABLE&quot;</span> m))))
+    dispatch))
+</code></pre>
+<p>وباستخدام <code>make-table</code>، يمكننا تنفيذ عمليّتَي <code>get</code> و<code>put</code> المستخدمتين في <a href="https://sarabander.github.io/sicp/html/2_002e4.xhtml#g_t2_002e4_002e3">2.4.3</a> لأجل البرمجة الموجَّهة بالبيانات، كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> operation-table (<span class="hljs-name">make-table</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> get (<span class="hljs-name">operation-table</span> <span class="hljs-symbol">&#x27;lookup-proc</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> put (<span class="hljs-name">operation-table</span> <span class="hljs-symbol">&#x27;insert-proc!</span>))
+</code></pre>
+<p>يأخذ <code>Get</code> كمعطياتٍ مفتاحين، ويأخذ <code>put</code> كمعطياتٍ مفتاحين وقيمة. وتصل العمليّتان إلى الجدول المحلّيّ نفسه، المُحاط داخل الكائن المنشأ بنداء <code>make-table</code>.</p>
+<blockquote>
+<p><strong>التمرين 3.24:</strong> في تنفيذَي الجدول المذكورين أعلاه، تُختبر مفاتيح التساوي باستخدام <code>equal?</code> (التي يناديها <code>assoc</code>). وهذا ليس الاختبار الملائم دائمًا. فإنّه قد يكون لدينا جدولٌ ذو مفاتيح عدديّة لا نحتاج فيه إلى مطابقة تامّة للعدد الذي نبحث عنه، بل فقط عددٌ يقع ضمن نطاق تحمّلٍ معيّن منه. صمّم بانِي جداول <code>make-table</code> يأخذ كمعطىً إجراء <code>same-key?</code> سيُستخدم لاختبار «تساوي» المفاتيح. وينبغي أن يُعيد <code>Make-table</code> إجراء <code>dispatch</code> يمكن استخدامه للوصول إلى إجراءَي <code>lookup</code> و<code>insert!</code> الملائمين لجدولٍ محلّيّ.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.25:</strong> بتعميم الجداول أحاديّة وثنائيّة الأبعاد، أظهِر كيف يمكن تنفيذ جدولٍ تُخزَّن فيه القيم تحت عددٍ اعتباطيّ من المفاتيح، وقد تُخزَّن قيمٌ مختلفة تحت أعدادٍ مختلفة من المفاتيح. وينبغي أن يأخذ إجراءَا <code>lookup</code> و<code>insert!</code> كمدخلٍ قائمةً من المفاتيح تُستخدم للوصول إلى الجدول.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.26:</strong> للبحث في جدولٍ منفَّذٍ كما هو أعلاه، يلزم المرء أن يمسح قائمة السجلّات. وهذا أساسًا هو تمثيل القائمة غير المرتّبة الوارد في <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3">2.3.3</a>. فإنّ من الأنفع للجداول الكبيرة أن تُبنى بصيغةٍ مختلفة. صِف تنفيذًا لجدولٍ تُنظَّم فيه سجلّات (المفتاح، القيمة) باستخدام شجرةٍ ثنائيّة، بافتراض أنّ المفاتيح يمكن ترتيبها بطريقةٍ ما (عدديًّا أو أبجديًّا مثلًا). (قارن <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#Exercise-2_002e66">التمرين 2.66</a> من <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a>.)</p>
+</blockquote>
+<p><strong>التمرين 3.27:</strong> <em>حفظ النتائج</em> (والمسمّى أيضًا <em>الجدولة</em>) تقنيّةٌ تمكّن إجراءً من تسجيل قيمٍ حُسبت سلفًا في جدولٍ محلّيّ. وهذه التقنيّة قادرةٌ على إحداث فرقٍ هائل في أداء البرنامج. فالإجراء ذو النتائج المحفوظة يحتفظ بجدولٍ تُخزَّن فيه قيم النداءات السابقة، مستخدمًا المعطيات التي أنتجت تلك القيم كمفاتيح لها. وحين يُطلَب من الإجراء ذي النتائج المحفوظة أن يحسب قيمةً، فإنّه يتحقّق أوّلًا من الجدول ليرى ما إذا كانت القيمة موجودةً فيه سلفًا، فإن كانت كذلك أعاد تلك القيمة فحسب. وإلّا، فإنّه يحسب القيمة الجديدة بالطريقة المعتادة ويخزّنها في الجدول. ومن أمثلة حفظ النتائج، تذكّر - من <a href="https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2">1.2.2</a> - العمليّة الأسّيّة لاحتساب أعداد فيبوناتشي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">fib</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>) <span class="hljs-number">0</span>)
+        ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>) <span class="hljs-number">1</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))
+                 (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">2</span>))))))
+</code></pre>
+<p>والنسخة ذات النتائج المحفوظة من الإجراء نفسه هي</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> memo-fib
+  (<span class="hljs-name">memoize</span> 
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (n)
+     (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>) <span class="hljs-number">0</span>)
+           ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>) <span class="hljs-number">1</span>)
+           (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+            (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">memo-fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))
+               (<span class="hljs-name">memo-fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">2</span>))))))))
+</code></pre>
+<p>وحيث إنّ مُحفِظ النتائج معرَّفٌ كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">memoize</span> f)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">table</span> (<span class="hljs-name">make-table</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x)
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">previously-computed-result</span> 
+             (<span class="hljs-name">lookup</span> x table)))
+        (<span class="hljs-name"><span class="hljs-built_in">or</span></span> previously-computed-result
+            (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">result</span> (<span class="hljs-name">f</span> x)))
+              (<span class="hljs-name">insert!</span> x result table)
+              result))))))
+</code></pre>
+<p>ارسم مخطط البيئة لتحليل احتساب <code>(memo-fib 3)</code>. فسّر لماذا يحسب <code>memo-fib</code> العدد الفيبوناتشيّ الـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">n^{th}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">h</span></span></span></span></span></span></span></span></span></span></span></span> بعددٍ من الخطوات يتناسب مع <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . فهل كان هذا المخطّط لا يزال يعمل لو كنّا قد عرّفنا <code>memo-fib</code> ببساطةٍ على أنّه <code>(memoize fib)</code>؟</p>
+<h4>3.3.4 محاكي الدوائر الرقميّة</h4>
+<p>تصميم النظم الرقميّة المعقّدة، كالحواسيب مثلًا، نشاطٌ هندسيٌّ مهمّ. وتُبنى النظم الرقميّة بربط عناصر بسيطة بعضها ببعض. وعلى رغم أنّ سلوك هذه العناصر الفرديّة بسيط، فإنّ الشبكات المكوّنة منها قد يكون لها سلوكٌ معقّدٌ جدًّا. ومحاكاة تصاميم الدوائر المقترحة بالحاسوب أداةٌ مهمّةٌ يستخدمها مهندسو النظم الرقميّة. وفي هذا القسم نصمّم نظامًا لأداء محاكاة المنطق الرقميّ. وهذا النظام يمثّل نموذجًا لنوعٍ من البرامج يُسمّى <em>محاكاة موجَّهة بالأحداث (event-driven simulation)</em>، وفيه تُطلق الأفعال («الأحداث») أحداثًا أخرى تجري في وقتٍ لاحق، وهي التي تُطلق بدورها أحداثًا أكثر، وهكذا دواليك.</p>
+<p>سيتكوّن نموذجنا الحسابيّ للدائرة من كائناتٍ تقابل المكوّنات الأوّليّة التي تُبنى منها الدائرة. فهناك <em>الأسلاك (wires)</em>، التي تحمل <em>الإشارات الرقميّة (digital signals)</em>. وقد تحمل الإشارة الرقميّة في أيّ لحظةٍ إحدى قيمتين محتملتين فقط، هما 0 و1. وهناك أيضًا أنواعٌ متعدّدةٌ من <em>صناديق الدوالّ (function boxes)</em> الرقميّة، التي تربط الأسلاك الحاملة لإشارات الدخل بأسلاك أخرى حاملة لإشارات الخرج. وهذه الصناديق تُنتج إشارات خرجٍ محسوبةً من إشارات دخلها. وتتأخّر إشارة الخرج زمنًا يعتمد على نوع صندوق الدالّة. فإنّ <em>العاكس (inverter)</em> صندوقُ دالّةٍ أوّليّ يعكس مدخله. فإن تغيّرت إشارة دخل عاكسٍ إلى 0، فإنّه - بعد تأخير عاكسٍ واحد (inverter-delay) - سيغيّر العاكس إشارة خرجه إلى 1. وإن تغيّرت إشارة دخل عاكسٍ إلى 1، فإنّه - بعد تأخير عاكسٍ واحد - سيغيّر العاكس إشارة خرجه إلى 0. ونحن نرسم العاكس رمزيًّا كما في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.24</a>. أمّا <em>بوابة و (and-gate)</em>، الموضّحة أيضًا في الشكل 3.24، فهي صندوق دالّةٍ أوّليّ له مدخلان وخرجٌ واحد. فإنّها تضبط إشارة خرجها على قيمةٍ هي <em>الو المنطقيّ (logical and)</em> للمدخلين. أي أنّه إذا صارت إشارتا دخلها كلتاهما 1، فإنّها - بعد تأخير بوابة وٍ واحد (and-gate-delay) - ستُجبر إشارة خرجها على أن تصير 1؛ وإلّا فسيكون الخرج 0. و<em>بوابة أو (or-gate)</em> صندوق دالّةٍ أوّليّ مشابه ذو مدخلين يضبط إشارة خرجها على قيمةٍ هي <em>أو المنطقيّ</em> للمدخلين. أي أنّ الخرج سيصير 1 إذا كانت إحدى إشارتَي الدخل - على الأقلّ - تساوي 1؛ وإلّا فسيكون الخرج 0.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-12-Fig3.24a.std.webp" alt=""></p>
+<p><strong>الشكل 3.24:</strong> الدوالّ الأوّليّة في محاكي المنطق الرقميّ.</p>
+<p>يمكننا وصل الدوالّ الأوّليّة بعضها ببعضٍ لبناء دوالّ أكثر تعقيدًا. ولإنجاز ذلك، نوصِل مخارج بعض صناديق الدوالّ بمداخلات صناديق أخرى. فإنّ دائرة <em>جامع النصف (half-adder)</em> - مثلًا - الموضّحة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.25</a> تتكوّن من بوابة أو وبوابتَي و وعاكس. وهي تأخذ إشارتَي دخل، A وB، ولها إشارتا خرج، S وC. وستصير S تساوي 1 متى كان واحدٌ فقط من A وB يساوي 1، وستصير C تساوي 1 متى كان A وB كلاهما يساوي 1. ونستطيع أن نرى من الشكل أنّ المخارج - بسبب التأخيرات الداخلة في الأمر - قد تُولَّد في أزمنةٍ مختلفة. والعديد من صعوبات تصميم الدوائر الرقميّة ينشأ من هذه الحقيقة.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-13-Fig3.25c.std.webp" alt=""></p>
+<p><strong>الشكل 3.25:</strong> دائرة جامع النصف.</p>
+<p>سنبني الآن برنامجًا لنمذجة دوائر المنطق الرقميّ التي نريد دراستها. وسينشئ البرنامج كائناتٍ حسابيّةً تنمذج الأسلاك، وهي التي ستـ«تحتفظ» بالإشارات. وستُنمذج صناديق الدوالّ بإجراءاتٍ تفرض العلاقات الصحيحة بين الإشارات.</p>
+<p>سيكون أحد العناصر الأساسيّة في محاكاتنا إجراءً اسمه <code>make-wire</code>، وهو الذي يبني الأسلاك. فإنّه يمكننا - مثلًا - بناء ستّة أسلاك كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> a (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> b (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> c (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> d (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> e (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> s (<span class="hljs-name">make-wire</span>))
+</code></pre>
+<p>نحن نُرفِق صندوق دالّةٍ بمجموعةٍ من الأسلاك بنداء إجراءٍ يبني ذلك النوع من الصناديق. ومعطيات إجراء الباني هي الأسلاك التي ستُرفَق بالصندوق. فإنّه إذا افترضنا أنّنا نستطيع بناء بوابات و وبوابات أو وعواكس، فيمكننا توصيل مكوّنات نصف الجامع الموضّح في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.25</a> بعضها ببعض كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">or-gate</span> a b d)
+ok
+
+(<span class="hljs-name">and-gate</span> a b c)
+ok
+
+(<span class="hljs-name">inverter</span> c e)
+ok
+
+(<span class="hljs-name">and-gate</span> d e s)
+ok
+</code></pre>
+<p>والأفضل من ذلك، أنّنا نستطيع تسمية هذه العمليّة صراحةً بتعريف إجراءٍ اسمه <code>half-adder</code> يبني هذه الدائرة، إذا أُعطي الأسلاك الخارجيّة الأربعة التي ستُرفَق بنصف الجامع:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">half-adder</span> a b s c)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">d</span> (<span class="hljs-name">make-wire</span>)) (<span class="hljs-name">e</span> (<span class="hljs-name">make-wire</span>)))
+    (<span class="hljs-name">or-gate</span> a b d)
+    (<span class="hljs-name">and-gate</span> a b c)
+    (<span class="hljs-name">inverter</span> c e)
+    (<span class="hljs-name">and-gate</span> d e s)
+    <span class="hljs-symbol">&#x27;ok</span>))
+</code></pre>
+<p>وفائدة هذا التعريف أنّنا نستطيع استخدام <code>half-adder</code> ذاته كوحدة بناءٍ في إنشاء دوائر أكثر تعقيدًا. فإنّ <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.26</a> - مثلًا - يُظهر <em>جامعًا كاملًا (full-adder)</em> مؤلّفًا من نصفَي جامعٍ وبوابة أو.<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup> ونستطيع بناء جامعٍ كاملٍ كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">full-adder</span> a b c-in sum c-out)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">c1</span> (<span class="hljs-name">make-wire</span>)) 
+        (<span class="hljs-name">c2</span> (<span class="hljs-name">make-wire</span>))
+        (<span class="hljs-name">s</span>  (<span class="hljs-name">make-wire</span>)))
+    (<span class="hljs-name">half-adder</span> b c-in s c1)
+    (<span class="hljs-name">half-adder</span> a s sum c2)
+    (<span class="hljs-name">or-gate</span> c1 c2 c-out)
+    <span class="hljs-symbol">&#x27;ok</span>))
+</code></pre>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-14-Fig3.26.std.webp" alt=""></p>
+<p><strong>الشكل 3.26:</strong> دائرة جامع كامل.</p>
+<p>وبعد أن عرّفنا <code>full-adder</code> كإجراءٍ، يمكننا الآن استخدامه كوحدة بناءٍ لإنشاء دوائر أكثر تعقيدًا بعد. (انظر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.30</a> مثلًا.)</p>
+<p>في الجوهر، يزوّدنا محاكينا بالأدوات اللازمة لبناء لغة الدوائر. فإذا تبنّينا المنظور العامّ على اللغات الذي تناولنا به دراسة Lisp في <a href="https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1">1.1</a>، فإنّنا نستطيع القول إنّ صناديق الدوالّ الأوّليّة تُشكّل العناصر الأوّليّة للغة، وإنّ توصيل الصناديق بعضها ببعضٍ يُوفّر وسيلة تركيب، وإنّ تحديد أنماط التوصيل كإجراءاتٍ يؤدّي دور وسيلة تجريد.</p>
+<h4>صناديق الدوالّ الأوّليّة</h4>
+<p>تُنفّذ صناديق الدوالّ الأوّليّة «القوى» التي يؤثّر بوساطتها تغيّر الإشارة على سلكٍ واحدٍ في إشارات الأسلاك الأخرى. ولبناء صناديق الدوالّ، نستخدم العمليّات الآتية على الأسلاك:</p>
+<ul>
+<li><code>(get-signal ⟨wire⟩)</code> يعيد القيمة الحاليّة للإشارة على السلك.</li>
+<li><code>(set-signal! ⟨wire⟩ ⟨new value⟩)</code> يغيّر قيمة الإشارة على السلك إلى القيمة الجديدة.</li>
+<li><code>(add-action! ⟨wire⟩ ⟨procedure of no arguments⟩)</code> يُقرّر أنّ الإجراء المحدَّد ينبغي أن يُنفَّذ كلّما تغيّرت قيمة الإشارة على السلك. وهذه الإجراءات هي الوسيلة التي تُنقل بها تغيّرات قيمة الإشارة على السلك إلى الأسلاك الأخرى.</li>
+</ul>
+<p>وبالإضافة إلى ذلك، سنستفيد من إجراءٍ اسمه <code>after-delay</code> يأخذ تأخيرًا زمنيًّا وإجراءً يُنفَّذ، ثمّ ينفّذ الإجراء المعطى بعد التأخير المعطى.</p>
+<p>وباستخدام هذه الإجراءات، يمكننا تعريف الدوالّ الأوّليّة للمنطق الرقميّ. ولوصْل مدخلٍ بخرجٍ بواسطة عاكس، نستخدم <code>add-action!</code> لربط سلك الدخل بإجراءٍ سيُنفَّذ كلّما تغيّرت قيمة الإشارة على سلك الدخل. وهذا الإجراء يحسب <code>logical-not</code> لإشارة الدخل، ثمّ - بعد تأخير عاكس واحد (<code>inverter-delay</code>) - يضبط إشارة الخرج لتكون هذه القيمة الجديدة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">inverter</span> input output)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">invert-input</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">new-value</span> 
+           (<span class="hljs-name">logical-not</span> (<span class="hljs-name">get-signal</span> input))))
+      (<span class="hljs-name">after-delay</span> 
+       inverter-delay
+       (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+         (<span class="hljs-name">set-signal!</span> output new-value)))))
+  (<span class="hljs-name">add-action!</span> input invert-input)
+  <span class="hljs-symbol">&#x27;ok</span>)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">logical-not</span> s)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> s <span class="hljs-number">0</span>) <span class="hljs-number">1</span>)
+        ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> s <span class="hljs-number">1</span>) <span class="hljs-number">0</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Invalid signal&quot;</span> s))))
+</code></pre>
+<p>أمّا بوابة و فأكثر تعقيدًا بعض الشيء. فينبغي أن يُنفَّذ إجراء الفعل إذا تغيّر أيٌّ من مدخلي البوابة. وهو يحسب <code>logical-and</code> (باستخدام إجراءٍ نظير <code>logical-not</code>) قيمتَي الإشارتين على سلكَي الدخل، ويُعِدّ تغيّرًا إلى القيمة الجديدة ليجري على سلك الخرج بعد تأخير بوابة وٍ واحد (<code>and-gate-delay</code>).</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">and-gate</span> a1 a2 output)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">and-action-procedure</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">new-value</span>
+           (<span class="hljs-name">logical-and</span> (<span class="hljs-name">get-signal</span> a1) 
+                        (<span class="hljs-name">get-signal</span> a2))))
+      (<span class="hljs-name">after-delay</span> 
+       and-gate-delay
+       (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+         (<span class="hljs-name">set-signal!</span> output new-value)))))
+  (<span class="hljs-name">add-action!</span> a1 and-action-procedure)
+  (<span class="hljs-name">add-action!</span> a2 and-action-procedure)
+  <span class="hljs-symbol">&#x27;ok</span>)
+</code></pre>
+<blockquote>
+<p><strong>التمرين 3.28:</strong> عرّف بوابة أو كصندوق دالّةٍ أوّليّ. وينبغي أن يكون باني <code>or-gate</code> خاصّتك شبيهًا بـ<code>and-gate</code>.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.29:</strong> ثمّة طريقةٌ أخرى لبناء بوابة أو، وهي كجهاز منطقٍ رقميّ مركّب مبنيٍّ من بوابات و وعواكس. عرّف إجراءً <code>or-gate</code> يُنجز ذلك. فما مدّة تأخير بوابة أو بدلالة <code>and-gate-delay</code> و<code>inverter-delay</code>؟</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 3.30:</strong> يُظهر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.27</a> <em>جامعًا تراكميّ الانتشار (ripple-carry adder)</em> متشكّلًا من ربط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> من الجامعات الكاملة بعضها في إثر بعض. وهذه هي أبسط صيغةٍ من الجامع المتوازي لجمع عددين ثنائيَّين كلٌّ منهما <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> بِتّ. والمدخلان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">A_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">A_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">A_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و… و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">A_{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">B_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">B_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">B_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و… و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">B_{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> هما العددان الثنائيّان اللذان يُجمعان (وكلٌّ من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">A_{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">B_{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> هو 0 أو 1). والدائرة تُنتج <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">S_{1}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">S_{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">S_{3}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> و… و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">S_{n}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.1514em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">n</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> ، وهي بِتّات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> الخاصة بالمجموع، و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> ، وهي الحاملة الناتجة عن الجمع. اكتب إجراءً <code>ripple-carry-adder</code> يُولّد هذه الدائرة. وينبغي أن يأخذ الإجراء كمعطياتٍ ثلاث قوائم من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> سلكًا لكلٍّ منها - الـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">A_{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal">A</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> والـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">B_{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0502em;">B</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0502em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> والـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">S_{k}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8333em;vertical-align:-0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0576em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span> - وسلكًا آخر <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> . والعائق الرئيسيّ في الجامع التراكميّ الانتشار هو ضرورة انتظار انتشار إشارات الحمل. فما التأخير اللازم للحصول على الخرج الكامل من جامع تراكميّ الانتشار ذي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> بِتّ، معبَّرًا عنه بدلالة تأخيرات بوابات و وبوابات أو والعواكس؟</p>
+</blockquote>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-15-Fig3.27b.std.webp" alt=""></p>
+<p><strong>الشكل 3.27:</strong> جامع تراكميّ الانتشار للأعداد ذات الـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> بِتّ.</p>
+<h4>تمثيل الأسلاك</h4>
+<p>سيكون السلك في محاكاتنا كائنًا حسابيًّا له متغيّرا حالة محلّيّان: <code>signal-value</code> (يُفترض مبدئيًّا أنّه 0) ومجموعةٌ من <code>action-procedures</code> تُنفَّذ متى تغيّرت قيمة الإشارة. ونحن نُنفّذ السلك - مستخدمين أسلوب تمرير الرسائل - كمجموعةٍ من الإجراءات المحلّيّة إلى جانب إجراء <code>dispatch</code> ينتخب العمليّة المحلّيّة الملائمة، تمامًا كما فعلنا مع كائن الحساب المصرفيّ البسيط في <a href="https://sarabander.github.io/sicp/html/3_002e1.xhtml#g_t3_002e1_002e1">3.1.1</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-wire</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">signal-value</span> <span class="hljs-number">0</span>) 
+        (<span class="hljs-name">action-procedures</span> &#x27;()))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-my-signal!</span> new-value)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> signal-value new-value))
+          (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> signal-value new-value)
+                 (<span class="hljs-name">call-each</span> 
+                  action-procedures))
+          <span class="hljs-symbol">&#x27;done</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">accept-action-procedure!</span> proc)
+      (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> action-procedures 
+            (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> proc action-procedures))
+      (<span class="hljs-name">proc</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">dispatch</span> m)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;get-signal</span>) 
+             signal-value)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;set-signal!</span>) 
+             set-my-signal!)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> m <span class="hljs-symbol">&#x27;add-action!</span>) 
+             accept-action-procedure!)
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown operation: 
+                          WIRE&quot;</span> m))))
+    dispatch))
+</code></pre>
+<p>يختبر الإجراء المحلّيّ <code>set-my-signal!</code> ما إذا كانت قيمة الإشارة الجديدة تُغيّر الإشارة على السلك. فإن كان الأمر كذلك، فإنّه ينفّذ كلّ إجراءٍ من إجراءات الفعل، باستخدام الإجراء <code>call-each</code> الآتي، الذي ينادي كلّ عنصرٍ في قائمةٍ من الإجراءات عديمة المعطيات:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">call-each</span> procedures)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> procedures)
+      <span class="hljs-symbol">&#x27;done</span>
+      (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> ((<span class="hljs-name"><span class="hljs-built_in">car</span></span> procedures))
+             (<span class="hljs-name">call-each</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> procedures)))))
+</code></pre>
+<p>والإجراء المحلّيّ <code>accept-action-procedure!</code> يُضيف الإجراء المعطى إلى قائمة الإجراءات التي ستُنفَّذ، ثمّ ينفّذ الإجراء الجديد مرّةً واحدة. (انظر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.31</a>.)</p>
+<p>وبعد إعداد إجراء <code>dispatch</code> المحلّيّ كما حُدِّد، فإنّنا نستطيع توفير الإجراءات الآتية للوصول إلى العمليّات المحلّيّة على الأسلاك:<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">get-signal</span> wire)
+  (<span class="hljs-name">wire</span> <span class="hljs-symbol">&#x27;get-signal</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-signal!</span> wire new-value)
+  ((<span class="hljs-name">wire</span> <span class="hljs-symbol">&#x27;set-signal!</span>) new-value))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">add-action!</span> wire action-procedure)
+  ((<span class="hljs-name">wire</span> <span class="hljs-symbol">&#x27;add-action!</span>) action-procedure))
+</code></pre>
+<p>والأسلاك - التي لها إشارات متغيّرة مع الزمن، وقد تُرفَق بالأجهزة تزايديًّا - نموذجيّة للكائنات القابلة للتغيير. ونحن نمذجناها كإجراءاتٍ ذات متغيّرات حالةٍ محلّيّةٍ تُعدَّل بالإحلال. وحين يُنشَأ سلكٌ جديد، فإنّ مجموعةً جديدةً من متغيّرات الحالة تُخصَّص (بتعبير <code>let</code> في <code>make-wire</code>)، ويُبنى إجراء <code>dispatch</code> جديد ويُعاد، ملتقطًا البيئة التي تحوي متغيّرات الحالة الجديدة.</p>
+<p>والأسلاك مشتركةٌ بين الأجهزة المتعدّدة التي رُبِطت بها. وهكذا، فإنّ التغيّر الذي يُحدثه تفاعلٌ مع جهازٍ واحدٍ سيؤثّر في جميع الأجهزة الأخرى الموصولة بالسلك. والسلك يُبلّغ التغيّر إلى جيرانه بنداء إجراءات الفعل المزوَّدة به عند إنشاء الوصلات.</p>
+<h4>جدول الأعمال</h4>
+<p>الشيء الوحيد اللازم لإكمال المحاكي هو <code>after-delay</code>. والفكرة هنا هي أنّنا نحفظ بنية بياناتٍ، تُسمّى <em>جدول الأعمال (agenda)</em>، تحتوي جدولًا بما ينبغي أداؤه. والعمليّات الآتية معرَّفةٌ لجداول الأعمال:</p>
+<ul>
+<li><code>(make-agenda)</code> يعيد جدول أعمالٍ جديدًا خاليًا.</li>
+<li><code>(empty-agenda? ⟨agenda⟩)</code> يكون صادقًا إذا كان جدول الأعمال المحدَّد خاليًا.</li>
+<li><code>(first-agenda-item ⟨agenda⟩)</code> يعيد أوّل عنصرٍ في جدول الأعمال.</li>
+<li><code>(remove-first-agenda-item! ⟨agenda⟩)</code> يُعدّل جدول الأعمال بحذف أوّل عنصرٍ فيه.</li>
+<li><code>(add-to-agenda! ⟨time⟩ ⟨action⟩ ⟨agenda⟩)</code> يُعدّل جدول الأعمال بإضافة إجراء الفعل المعطى ليجري في الزمن المحدَّد.</li>
+<li><code>(current-time ⟨agenda⟩)</code> يعيد زمن المحاكاة الحاليّ.</li>
+</ul>
+<p>وجدول الأعمال الخاصّ الذي نستخدمه يُشار إليه بـ<code>the-agenda</code>. والإجراء <code>after-delay</code> يُضيف عناصر جديدة إلى <code>the-agenda</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">after-delay</span> delay action)
+  (<span class="hljs-name">add-to-agenda!</span> 
+   (<span class="hljs-name"><span class="hljs-built_in">+</span></span> delay (<span class="hljs-name">current-time</span> the-agenda))
+   action
+   the-agenda))
+</code></pre>
+<p>وتقود المحاكاة الإجراء <code>propagate</code>، الذي يعمل على <code>the-agenda</code> منفّذًا كلّ إجراءٍ في جدول الأعمال بالتتابع. وعمومًا، وبينما تجري المحاكاة، ستُضاف عناصر جديدة إلى جدول الأعمال، وسيواصل <code>propagate</code> المحاكاة ما دامت هناك عناصر في جدول الأعمال:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">propagate</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">empty-agenda?</span> the-agenda)
+      <span class="hljs-symbol">&#x27;done</span>
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">first-item</span> 
+             (<span class="hljs-name">first-agenda-item</span> the-agenda)))
+        (<span class="hljs-name">first-item</span>)
+        (<span class="hljs-name">remove-first-agenda-item!</span> the-agenda)
+        (<span class="hljs-name">propagate</span>))))
+</code></pre>
+<h4>محاكاة نموذجيّة</h4>
+<p>والإجراء الآتي، الذي يضع «مسبارًا» على سلكٍ، يُظهر المحاكي في العمل. فالمسبار يخبر السلك بأنّه - كلّما تغيّرت قيمة إشارته - ينبغي أن يطبع قيمة الإشارة الجديدة، مع الزمن الحاليّ واسمٍ يُحدِّد السلك:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">probe</span> name wire)
+  (<span class="hljs-name">add-action!</span> 
+   wire
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+     (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>)
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> name)
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-string">&quot; &quot;</span>)
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> (<span class="hljs-name">current-time</span> the-agenda))
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-string">&quot;  New-value = &quot;</span>)
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> (<span class="hljs-name">get-signal</span> wire)))))
+</code></pre>
+<p>نبدأ بتهيئة جدول الأعمال وتحديد التأخيرات الخاصة بصناديق الدوالّ الأوّليّة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-agenda (<span class="hljs-name">make-agenda</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> inverter-delay <span class="hljs-number">2</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> and-gate-delay <span class="hljs-number">3</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> or-gate-delay <span class="hljs-number">5</span>)
+</code></pre>
+<p>والآن نُعرّف أربعة أسلاك، موضعين مسابير على اثنين منها:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> input-1 (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> input-2 (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> sum (<span class="hljs-name">make-wire</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> carry (<span class="hljs-name">make-wire</span>))
+
+(<span class="hljs-name">probe</span> <span class="hljs-symbol">&#x27;sum</span> sum)
+sum <span class="hljs-number">0</span>  New-value = <span class="hljs-number">0</span>
+
+(<span class="hljs-name">probe</span> <span class="hljs-symbol">&#x27;carry</span> carry)
+carry <span class="hljs-number">0</span>  New-value = <span class="hljs-number">0</span>
+</code></pre>
+<p>ثمّ نوصّل الأسلاك في دائرة نصف جامع (كما في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.25</a>)، ونضبط الإشارة على <code>input-1</code> لتكون 1، ثمّ نشغّل المحاكاة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">half-adder</span> input-1 input-2 sum carry)
+ok
+
+(<span class="hljs-name">set-signal!</span> input-1 <span class="hljs-number">1</span>)
+done
+
+(<span class="hljs-name">propagate</span>)
+sum <span class="hljs-number">8</span>  New-value = <span class="hljs-number">1</span>
+done
+</code></pre>
+<p>وتتغيّر إشارة <code>sum</code> إلى 1 في الزمن 8. ونكون الآن على مباعدة ثماني وحدات زمنيّة من بداية المحاكاة. وعند هذه النقطة، يمكننا ضبط الإشارة على <code>input-2</code> لتكون 1 والسماح للقيم بالانتشار:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">set-signal!</span> input-2 <span class="hljs-number">1</span>)
+done
+
+(<span class="hljs-name">propagate</span>)
+carry <span class="hljs-number">11</span>  New-value = <span class="hljs-number">1</span>
+sum <span class="hljs-number">16</span>  New-value = <span class="hljs-number">0</span>
+done
+</code></pre>
+<p>ويتغيّر <code>carry</code> إلى 1 في الزمن 11، وتتغيّر <code>sum</code> إلى 0 في الزمن 16.</p>
+<p><strong>التمرين 3.31:</strong> الإجراء الداخليّ <code>accept-action-procedure!</code> المعرَّف في <code>make-wire</code> ينصّ على أنّه - متى أُضيف إجراء فعلٍ جديد إلى سلكٍ - فإنّ الإجراء يُنفَّذ فورًا. فسّر لماذا هذه التهيئة ضروريّة. وخاصّةً، تتبّع مثال نصف الجامع في الفقرات أعلاه، وقل كيف كان ردّ النظام سيختلف لو كنّا قد عرّفنا <code>accept-action-procedure!</code> كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">accept-action-procedure!</span> proc)
+  (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> action-procedures 
+        (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> proc action-procedures)))
+</code></pre>
+<h4>تنفيذ جدول الأعمال</h4>
+<p>وأخيرًا، نُقدّم تفاصيل بنية بيانات جدول الأعمال، التي تحتفظ بالإجراءات المُقرَّر تنفيذها مستقبلًا.</p>
+<p>ويتكوّن جدول الأعمال من <em>قطاعاتٍ زمنيّة (time segments)</em>. وكلّ قطاعٍ زمنيٍّ زوجٌ يتألّف من عدد (الزمن) وطابور (انظر <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.32</a>) يحتفظ بالإجراءات التي حُدِّد تنفيذها خلال ذلك القطاع الزمنيّ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-time-segment</span> time queue)
+  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> time queue))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">segment-time</span> s) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">segment-queue</span> s) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> s))
+</code></pre>
+<p>وسنعمل على طوابير القطاعات الزمنيّة باستخدام عمليّات الطابور الموصوفة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.2</a>.</p>
+<p>وجدول الأعمال ذاته جدولٌ أحاديّ الأبعاد من القطاعات الزمنيّة. وهو يختلف عن الجداول الموصوفة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.3</a> في أنّ القطاعات ستكون مرتّبةً بترتيبٍ تصاعديّ للزمن. وبالإضافة إلى ذلك، نخزّن <em>الزمن الحاليّ</em> (أي زمن آخر فعلٍ جرىت معالجته) في رأس جدول الأعمال. وجدول الأعمال المُنشأ حديثًا لا يحتوي قطاعاتٍ زمنيّةً، وزمنه الحاليّ 0:<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-agenda</span>) (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-number">0</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">current-time</span> agenda) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> agenda))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-current-time!</span> agenda time)
+  (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> agenda time))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">segments</span> agenda) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> agenda))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-segments!</span> agenda segments)
+  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> agenda segments))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">first-segment</span> agenda) 
+  (<span class="hljs-name"><span class="hljs-built_in">car</span></span> (<span class="hljs-name">segments</span> agenda)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">rest-segments</span> agenda) 
+  (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> (<span class="hljs-name">segments</span> agenda)))
+</code></pre>
+<p>ويكون جدول الأعمال خاليًا إذا لم يكن فيه قطاعاتٌ زمنيّة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">empty-agenda?</span> agenda)
+  (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name">segments</span> agenda)))
+</code></pre>
+<p>ولإضافة فعلٍ إلى جدول أعمالٍ، نتحقّق أوّلًا مما إذا كان جدول الأعمال خاليًا. فإن كان كذلك، نُنشئ قطاعًا زمنيًّا للفعل ونُثبّته في جدول الأعمال. وإلّا، فنحن نمسح جدول الأعمال، فاحصين زمن كلّ قطاع. فإن وجدنا قطاعًا للزمن الذي حُدِّد لنا، أضفنا الفعل إلى الطابور المرتبط به. وإذا وصلنا إلى زمنٍ متأخّرٍ عن الزمن الذي حُدِّد لنا، نُدرج قطاعًا زمنيًّا جديدًا في جدول الأعمال قبله مباشرة. وإذا وصلنا إلى نهاية جدول الأعمال، فيجب أن نُنشئ قطاعًا زمنيًّا جديدًا في نهايته.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">add-to-agenda!</span> time action agenda)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">belongs-before?</span> segments)
+    (<span class="hljs-name"><span class="hljs-built_in">or</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> segments)
+        (<span class="hljs-name"><span class="hljs-built_in">&lt;</span></span> time 
+           (<span class="hljs-name">segment-time</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> segments)))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-new-time-segment</span> time action)
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">q</span> (<span class="hljs-name">make-queue</span>)))
+      (<span class="hljs-name">insert-queue!</span> q action)
+      (<span class="hljs-name">make-time-segment</span> time q)))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">add-to-segments!</span> segments)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name">segment-time</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> segments)) time)
+        (<span class="hljs-name">insert-queue!</span> 
+         (<span class="hljs-name">segment-queue</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> segments))
+         action)
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">rest</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> segments)))
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">belongs-before?</span> rest)
+              (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span>
+               segments
+               (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">make-new-time-segment</span> 
+                      time 
+                      action)
+                     (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> segments)))
+              (<span class="hljs-name">add-to-segments!</span> rest)))))
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">segments</span> (<span class="hljs-name">segments</span> agenda)))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">belongs-before?</span> segments)
+        (<span class="hljs-name">set-segments!</span>
+         agenda
+         (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">make-new-time-segment</span> 
+                time 
+                action)
+               segments))
+        (<span class="hljs-name">add-to-segments!</span> segments))))
+</code></pre>
+<p>والإجراء الذي يحذف أوّل بندٍ من جدول المواعيد يحذف البند الموجود في مقدّمة الطابور في المقطع الزمنيّ الأوّل. فإن جعل هذا الحذف المقطع الزمنيّ فارغًا، أزِلْناه من قائمة المقاطع:<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">remove-first-agenda-item!</span> agenda)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">q</span> (<span class="hljs-name">segment-queue</span> 
+            (<span class="hljs-name">first-segment</span> agenda))))
+    (<span class="hljs-name">delete-queue!</span> q)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">empty-queue?</span> q)
+        (<span class="hljs-name">set-segments!</span> 
+         agenda 
+         (<span class="hljs-name">rest-segments</span> agenda)))))
+</code></pre>
+<p>ويُعثَر على أوّل بندٍ في جدول المواعيد في رأس الطابور في المقطع الزمنيّ الأوّل. وكلّما استخرجنا بندًا، نُحدّث أيضًا الزمن الحاليّ:<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">first-agenda-item</span> agenda)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">empty-agenda?</span> agenda)
+      (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Agenda is empty: 
+              FIRST-AGENDA-ITEM&quot;</span>)
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">first-seg</span> 
+             (<span class="hljs-name">first-segment</span> agenda)))
+        (<span class="hljs-name">set-current-time!</span> 
+         agenda 
+         (<span class="hljs-name">segment-time</span> first-seg))
+        (<span class="hljs-name">front-queue</span> 
+         (<span class="hljs-name">segment-queue</span> first-seg)))))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 3.32:</strong> الإجراءات التي ينبغي تنفيذها خلال كلّ مقطعٍ زمنيٍّ من جدول المواعيد محفوظةٌ في طابور. وبالتالي، فإنّ إجراءات كلّ مقطعٍ تُنادى بالترتيب الذي أُضيفت به إلى جدول المواعيد (الأوّل دخولًا أوّل خروجًا). فسّر لماذا ينبغي استخدام هذا الترتيب. وعلى وجه الخصوص، تتبّع سلوك بوابة and تتغيّر معطياتها من 0, 1 إلى 1, 0 في المقطع نفسه، وقُل كيف كان السلوك ليختلف لو كنّا خزّنّا إجراءات المقطع في قائمةٍ اعتياديّةٍ، نُضيف الإجراءات إليها ونحذفها من المقدّمة فقط (الأخير دخولًا أوّل خروجًا).</p>
+</blockquote>
+<h4>3.3.5 انتشار القيود</h4>
+<p>تُنظَّم البرامج الحاسوبيّة تقليديًّا في صورة عمليّاتٍ حسابيّةٍ أحاديّة الاتجاه، تؤدّي عمليّاتٍ على معطياتٍ محدَّدةٍ سلفًا لإنتاج المخرجات المرغوبة. ومن جانبٍ آخر، فإنّنا نمثّل النظم غالبًا بدلالة العلاقات بين الكميّات. فمثلًا، قد يتضمّن نموذجٌ رياضيٌّ لبنيةٍ ميكانيكيّةٍ المعلومات القائلة إنّ الانحراف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> لقضيبٍ معدنيٍّ مرتبطٌ بالقوة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi></mrow><annotation encoding="application/x-tex">F</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span></span></span></span> على القضيب، والطول <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi></mrow><annotation encoding="application/x-tex">L</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">L</span></span></span></span> للقضيب، ومساحة المقطع العرضيّ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> ، ومعامل المرونة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi></mrow><annotation encoding="application/x-tex">E</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span></span></span></span> ، وذلك عبر المعادلة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>A</mi><mi>E</mi><mo>=</mo><mi>F</mi><mi>L</mi><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">d A E = F L .</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right:0.0576em;">E</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal">L</span><span class="mord">.</span></span></span></span> ومثل هذه المعادلة ليست أحاديّة الاتجاه. فبمعلوميّة أيّ أربعٍ من الكميّات، يمكننا استخدامها لاحتساب الخامسة. غير أنّ ترجمة المعادلة إلى لغة حاسوبٍ تقليديّةٍ ستُلزمنا باختيار واحدةٍ من الكميّات لتُحتسب بدلالة الأربع الأخرى. وبالتالي، فلن يكون إجراءٌ لاحتساب المساحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> قابلًا للاستخدام في احتساب الانحراف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> ، رغم أنّ احتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal">A</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi></mrow><annotation encoding="application/x-tex">d</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">d</span></span></span></span> ينبعان من المعادلة ذاتها.<sup class="footnote-ref"><a href="#fn16" id="fnref16">[16]</a></sup></p>
+<p>في هذا القسم، نرسم ملامح تصميم لغةٍ تُمكّننا من العمل بدلالة العلاقات ذاتها. فالعناصر الأوّليّة للغة هي <em>القيود الأوّليّة (primitive constraints)</em>، التي تنصّ على أنّ علاقاتٍ معيّنةٍ قائمةٌ بين الكميّات. فمثلًا، يحدّد <code>(adder a b c)</code> أنّ الكميّات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> ينبغي أن تكون مرتبطةً بالمعادلة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>+</mo><mi>b</mi><mo>=</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">a + b = c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6667em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span> ، ويعبّر <code>(multiplier x y z)</code> عن القيد <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mi>y</mi><mo>=</mo><mi>z</mi></mrow><annotation encoding="application/x-tex">x y = z</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">x</span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.044em;">z</span></span></span></span> ، ويقول <code>(constant 3.14 x)</code> إنّ قيمة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> ينبغي أن تكون 3.14.</p>
+<p>تُوفّر لغتنا وسيلةً لدمج القيود الأوّليّة للتعبير عن علاقاتٍ أكثر تعقيدًا. فنحن ندمج القيود ببناء <em>شبكات القيود (constraint networks)</em>، التي تُوصَل فيها القيود بـ<em>الموصّلات (connectors)</em>. والموصّل كائنٌ «يحتفظ» بقيمةٍ قد تشارك في قيدٍ واحدٍ أو أكثر. فمثلًا، نعلم أنّ العلاقة بين درجتَي الحرارة بالسيلسيوس وبالفهرنهايت هي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>C</mi><mo>=</mo><mn>5</mn><mo stretchy="false">(</mo><mi>F</mi><mo>−</mo><mn>32</mn><mo stretchy="false">)</mo><mi mathvariant="normal">.</mi></mrow><annotation encoding="application/x-tex">9 C = 5 ( F − 32 ) .</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">9</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">32</span><span class="mclose">)</span><span class="mord">.</span></span></span></span> ويمكن النظر إلى مثل هذا القيد على أنّه شبكةٌ متألّفةٌ من قيود جامعٍ ومضاعفٍ وثابتٍ أوّليّة (<a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.28</a>). ففي الشكل، نرى على اليسار صندوق مضاعفةٍ له ثلاثة أطراف، موسومةً بـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">m 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">1</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">2</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> . وهذه توصِل المضاعف ببقيّة الشبكة على النحو الآتي: الطرف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">m 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">1</span></span></span></span> مرتبطٌ بموصّل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> ، الذي سيحتفظ بدرجة الحرارة بالسيلسيوس. والطرف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">2</span></span></span></span> مرتبطٌ بموصّل <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span></span></span></span> ، وهو مرتبطٌ كذلك بصندوق ثابتٍ يحتفظ بالعدد 9. والطرف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> ، الذي يقيّده صندوق المضاعفة بأن يكون حاصل ضرب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">m 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">1</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">2</span></span></span></span> ، مرتبطٌ بالطرف <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">p</span></span></span></span> لصندوق مضاعفةٍ آخر، <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">m 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">2</span></span></span></span> فيه موصولٌ بثابتٍ هو 5 و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">m 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord mathnormal">m</span><span class="mord">1</span></span></span></span> فيه موصولٌ بأحد حدَّي مجموعٍ.</p>
+<p><img src="/arabic-cs-library/images/sicp/c3-modularity-objects-and-state-16-Fig3.28.std.webp" alt=""></p>
+<p><strong>الشكل 3.28:</strong> العلاقة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mi>C</mi><mo>=</mo><mn>5</mn><mo stretchy="false">(</mo><mi>F</mi><mo>−</mo><mn>32</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">9 C = 5 ( F − 32 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord">9</span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">5</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">32</span><span class="mclose">)</span></span></span></span> معبَّرًا عنها كشبكة قيود.</p>
+<p>يجري الاحتساب بمثل هذه الشبكة على النحو الآتي: حين يُعطى موصّلٌ قيمةً (من المستخدم أو من صندوق قيدٍ مرتبطٍ به)، فإنّه يُنبّه جميع القيود المرتبطة به (باستثناء القيد الذي أنبّهه للتوّ) ليُخبرها بأنّ له قيمة. ثمّ يستطلع كلّ صندوق قيدٍ مُنبَّهٍ موصّلاته ليرى ما إذا كانت هناك معلوماتٌ كافيّةٌ لتحديد قيمةٍ لأحد الموصّلات. فإن كان الأمر كذلك، ضبط الصندوق ذلك الموصّل، الذي يُنبّه بدوره جميع القيود المرتبطة به، وهكذا دواليْك. فمثلًا، في التحويل بين السيلسيوس والفهرنهايت، تُضبط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi></mrow><annotation encoding="application/x-tex">w</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0269em;">w</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">y</span></span></span></span> فورًا بصناديق الثوابت على 9 و5 و32 على الترتيب. فتنبّه الموصّلات المضاعفات والجامع، التي تحدّد أنّه لا توجد معلوماتٌ كافيّةٍ للمضيّ قدمًا. فإن ضبط المستخدم (أو جزءٌ آخر من الشبكة) <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6833em;"></span><span class="mord mathnormal" style="margin-right:0.0715em;">C</span></span></span></span> على قيمةٍ (25 مثلًا)، انبعث المضاعف الأيسر، فضبط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> على <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>25</mn><mo>⋅</mo><mn>9</mn><mo>=</mo><mn>225</mn></mrow><annotation encoding="application/x-tex">25 ⋅ 9 = 225</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">25</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">9</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">225</span></span></span></span> . ثمّ أنبّه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">u</span></span></span></span> المضاعف الثاني، فضبط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> على 45، وأنبّه <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span></span></span></span> الجامع، فضبط <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi></mrow><annotation encoding="application/x-tex">f</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span></span></span></span> على 77.</p>
+<h4>استخدام نظام القيود</h4>
+<p>لاستخدام نظام القيود لأداء العمليّة الحسابيّة لدرجات الحرارة الموصوفة أعلاه، نُنشئ أوّلًا موصّلين، <code>C</code> و<code>F</code> ، بمناداة البانيّ <code>make-connector</code> ، ونربط <code>C</code> و<code>F</code> في شبكةٍ مناسبةٍ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> C (<span class="hljs-name">make-connector</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> F (<span class="hljs-name">make-connector</span>))
+(<span class="hljs-name">celsius-fahrenheit-converter</span> C F)
+ok
+</code></pre>
+<p>والإجراء الذي يُنشئ الشبكة معرَّفٌ كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">celsius-fahrenheit-converter</span> c f)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">u</span> (<span class="hljs-name">make-connector</span>))
+        (<span class="hljs-name">v</span> (<span class="hljs-name">make-connector</span>))
+        (<span class="hljs-name">w</span> (<span class="hljs-name">make-connector</span>))
+        (<span class="hljs-name">x</span> (<span class="hljs-name">make-connector</span>))
+        (<span class="hljs-name">y</span> (<span class="hljs-name">make-connector</span>)))
+    (<span class="hljs-name">multiplier</span> c w u)
+    (<span class="hljs-name">multiplier</span> v x u)
+    (<span class="hljs-name">adder</span> v y f)
+    (<span class="hljs-name">constant</span> <span class="hljs-number">9</span> w)
+    (<span class="hljs-name">constant</span> <span class="hljs-number">5</span> x)
+    (<span class="hljs-name">constant</span> <span class="hljs-number">32</span> y)
+    <span class="hljs-symbol">&#x27;ok</span>))
+</code></pre>
+<p>ويُنشئ هذا الإجراء الموصّلات الداخليّة <code>u</code> و<code>v</code> و<code>w</code> و<code>x</code> و<code>y</code> ، ويربطها كما هو موضّح في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">الشكل 3.28</a> باستخدام بانيات القيود الأوّليّة <code>adder</code> و<code>multiplier</code> و<code>constant</code> . فكما هو الحال في محاكي الدارات الرقميّة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.4</a>، فإنّ التعبير عن هذه التركيبات من العناصر الأوّليّة بدلالة الإجراءات يُوفّر تلقائيًّا للغتنا وسيلةَ تجريدٍ للكائنات المركّبة.</p>
+<p>ولمراقبة الشبكة وهي تعمل، يمكننا وضع مسابير على الموصّلين <code>C</code> و<code>F</code> باستخدام إجراء <code>probe</code> شبيهٍ بالذي استخدمناه لمراقبة الأسلاك في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.4</a>. فإنّ وضع مِسبارٍ على موصّلٍ سيُسبّب طباعة رسالةٍ كلّما أُعطي الموصّل قيمةً:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">probe</span> <span class="hljs-string">&quot;Celsius temp&quot;</span> C)
+(<span class="hljs-name">probe</span> <span class="hljs-string">&quot;Fahrenheit temp&quot;</span> F)
+</code></pre>
+<p>ثمّ نضبط قيمة <code>C</code> على 25. (والمعطى الثالث لـ<code>set-value!</code> يخبر <code>C</code> بأنّ هذا التوجيه قادم من <code>user</code> .)</p>
+<pre><code class="language-scheme">(<span class="hljs-name">set-value!</span> C <span class="hljs-number">25</span> <span class="hljs-symbol">&#x27;user</span>)
+Probe: Celsius temp = <span class="hljs-number">25</span>
+Probe: Fahrenheit temp = <span class="hljs-number">77</span>
+done
+</code></pre>
+<p>فينبعث المِسبار على <code>C</code> ويُبلّغ عن القيمة. وينتشر <code>C</code> بقيمته عبر الشبكة كما وُصف أعلاه. وهذا يضبط <code>F</code> على 77، وهو ما يُبلّغ عنه المِسبار على <code>F</code> .</p>
+<p>ويمكننا الآن أن نحاول ضبط <code>F</code> على قيمةٍ جديدة، 212 مثلًا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">set-value!</span> F <span class="hljs-number">212</span> <span class="hljs-symbol">&#x27;user</span>)
+Error! Contradiction (<span class="hljs-name">77</span> <span class="hljs-number">212</span>)
+</code></pre>
+<p>ويشتكي الموصّل من أنّه أحسّ بتناقض: قيمته 77، وأحدهم يحاول ضبطها على 212. فإذا أردنا حقًّا إعادة استخدام الشبكة بقيمٍ جديدة، فيمكننا أن نطلب من <code>C</code> أن ينسى قيمته القديمة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">forget-value!</span> C <span class="hljs-symbol">&#x27;user</span>)
+Probe: Celsius temp = ?
+Probe: Fahrenheit temp = ?
+done
+</code></pre>
+<p>فيجد <code>C</code> أنّ <code>user</code> ، الذي ضبط قيمته في الأصل، يسحبها الآن، فيوافق <code>C</code> على فقدان قيمته، كما يُظهره المِسبار، ويُخبر بقيّة الشبكة بهذه الحقيقة. وهذه المعلومة تنتشر في النهاية إلى <code>F</code> ، الذي يجد الآن أنّ ليس لديه سببٌ للاستمرار في الاعتقاد بأنّ قيمته 77. وبالتالي، يتخلّى <code>F</code> أيضًا عن قيمته، كما يُظهره المِسبار.</p>
+<p>وحيث إنّ <code>F</code> لم يعد له قيمةٌ الآن، صرنا أحرارًا في ضبطها على 212:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">set-value!</span> F <span class="hljs-number">212</span> <span class="hljs-symbol">&#x27;user</span>)
+Probe: Fahrenheit temp = <span class="hljs-number">212</span>
+Probe: Celsius temp = <span class="hljs-number">100</span>
+done
+</code></pre>
+<p>وهذه القيمة الجديدة، حين تنتشر عبر الشبكة، تُلزم <code>C</code> بأن تكون له قيمة 100، وهذا ما يُسجّله المِسبار على <code>C</code> . ولاحِظ أنّ الشبكة ذاتها بالضبط تُستخدم لاحتساب <code>C</code> بمعلوميّة <code>F</code> ولاحتساب <code>F</code> بمعلوميّة <code>C</code> . وهذه اللّا اتجاهيّة للاحتساب هي السمة المميّزة للنظم المبنيّة على القيود.</p>
+<h4>تنفيذ نظام القيود</h4>
+<p>ويُنفَّذ نظام القيود بكائناتٍ إجرائيّةٍ ذات حالةٍ محلّيّةٍ، على نسقٍ يشبه إلى حدٍّ بعيدٍ محاكي الدارات الرقميّة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.4</a>. فرغم أنّ الكائنات الأوّليّة لنظام القيود أكثر تعقيدًا بعض الشيء، فإنّ النظام الكلّيّ أبسط، إذ لا يوجد همٌّ بشأن جداول المواعيد وتأخيرات المنطق.</p>
+<p>والعمليّات الأساسيّة على الموصّلات هي الآتية:</p>
+<ul>
+<li><code>(has-value? ⟨connector⟩)</code> يقول ما إذا كان الموصّل يملك قيمةً.</li>
+<li><code>(get-value ⟨connector⟩)</code> يعيد القيمة الحاليّة للموصّل.</li>
+<li><code>(set-value! ⟨connector⟩ ⟨new-value⟩ ⟨informant⟩)</code> يشير إلى أنّ المُبلِّغ يطلب من الموصّل ضبط قيمته على القيمة الجديدة.</li>
+<li><code>(forget-value! ⟨connector⟩ ⟨retractor⟩)</code> يقول للموصّل إنّ الساحب يطلب منه نسيان قيمته.</li>
+<li><code>(connect ⟨connector⟩ ⟨new-constraint⟩)</code> يقول للموصّل أن يشارك في القيد الجديد.</li>
+</ul>
+<p>وتتّصل الموصّلات بالقيود بواسطة الإجراءَين <code>inform-about-value</code> ، الذي يقول للقيد المعطى إنّ الموصّل يملك قيمةً، و<code>inform-about-no-value</code> ، الذي يقول للقيد إنّ الموصّل فقد قيمته.</p>
+<p>ويُنشئ <code>Adder</code> قيدَ جمعٍ بين موصّلي حدَّي الجمع <code>a1</code> و<code>a2</code> وموصّل المجموع <code>sum</code> . ويُنفَّذ الجامع كإجراءٍ ذي حالةٍ محلّيّةٍ (الإجراء <code>me</code> أدناه):</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">adder</span> a1 a2 sum)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-new-value</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> a1) 
+                (<span class="hljs-name">has-value?</span> a2))
+           (<span class="hljs-name">set-value!</span> sum
+                       (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">get-value</span> a1) 
+                          (<span class="hljs-name">get-value</span> a2))
+                       me))
+          ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> a1) 
+                (<span class="hljs-name">has-value?</span> sum))
+           (<span class="hljs-name">set-value!</span> a2
+                       (<span class="hljs-name"><span class="hljs-built_in">-</span></span> (<span class="hljs-name">get-value</span> sum) 
+                          (<span class="hljs-name">get-value</span> a1))
+                       me))
+          ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> a2) 
+                (<span class="hljs-name">has-value?</span> sum))
+           (<span class="hljs-name">set-value!</span> a1
+                       (<span class="hljs-name"><span class="hljs-built_in">-</span></span> (<span class="hljs-name">get-value</span> sum) 
+                          (<span class="hljs-name">get-value</span> a2))
+                       me))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-forget-value</span>)
+    (<span class="hljs-name">forget-value!</span> sum me)
+    (<span class="hljs-name">forget-value!</span> a1 me)
+    (<span class="hljs-name">forget-value!</span> a2 me)
+    (<span class="hljs-name">process-new-value</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-have-a-value</span>)
+           (<span class="hljs-name">process-new-value</span>))
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-lost-my-value</span>)
+           (<span class="hljs-name">process-forget-value</span>))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown request: 
+                        ADDER&quot;</span> request))))
+  (<span class="hljs-name">connect</span> a1 me)
+  (<span class="hljs-name">connect</span> a2 me)
+  (<span class="hljs-name">connect</span> sum me)
+  me)
+</code></pre>
+<p>ويربط <code>Adder</code> الجامع الجديد بالموصّلات المعيَّنة ويعيده قيمةً له. والإجراء <code>me</code> ، الذي يمثّل الجامع، يعمل بوصفه موزّعًا إلى الإجراءات المحليّة. وتُستخدم «واجهات الصياغة» (syntax interfaces) الآتية (انظر <a href="#Footnote-155">الحاشية 155</a> في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">3.3.4</a>) اقترانًا مع الموزّع:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">inform-about-value</span> constraint)
+  (<span class="hljs-name">constraint</span> <span class="hljs-symbol">&#x27;I-have-a-value</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">inform-about-no-value</span> constraint)
+  (<span class="hljs-name">constraint</span> <span class="hljs-symbol">&#x27;I-lost-my-value</span>))
+</code></pre>
+<p>يُنادى الإجراء المحليّ <code>process-new-value</code> حين يُبلَّغ الجامع بأنّ أحد موصّلاته يملك قيمةً. فيتحقّق الجامع أوّلًا من كون <code>a1</code> و<code>a2</code> يملكان قيمة. فإن كانا كذلك، طلب من <code>sum</code> ضبط قيمته على مجموع الحدَّين. والمعطى <code>informant</code> لـ<code>set-value!</code> هو <code>me</code> ، وهو كائن الجامع ذاته. فإن لم يكن <code>a1</code> و<code>a2</code> يملكان كلاهما قيمة، تحقّق الجامع حينئذٍ من كون <code>a1</code> و<code>sum</code> يملكان قيمة. فإن كانا كذلك، ضبط <code>a2</code> على فرق بين هذين. وأخيرًا، إذا كان <code>a2</code> و<code>sum</code> يملكان قيمة، أعطى هذا الجامع معلوماتٍ كافيّةً لضبط <code>a1</code> . وإذا قيل للجامع إنّ أحد موصّلاته فقد قيمته، فإنّه يطلب من جميع موصّلاته أن تفقد قيمتها الآن. (والقيم التي تُفقَد فعليًّا هي تلك التي ضبطها هذا الجامع فقط.) ثمّ يُشغّل <code>process-new-value</code> . وسبب هذه الخطوة الأخيرة أنّ موصّلًا واحدًا أو أكثر قد يزال يملك قيمة (أي أنّ موصّلًا قد تكون له قيمة لم يضبطها الجامع في الأصل)، وهذه القيم قد تحتاج إلى أن تنتشر رجعةً عبر الجامع.</p>
+<p>أمّا المضاعف فيشبه الجامع إلى حدٍّ بعيدٍ. وسيضبط حاصل الضرب <code>product</code> على 0 إذا كان أحد العاملين 0، حتّى لو كان العامل الآخر غير معروف.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">multiplier</span> m1 m2 product)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-new-value</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">or</span></span> (<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> m1) 
+                    (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name">get-value</span> m1) <span class="hljs-number">0</span>))
+               (<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> m2) 
+                    (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name">get-value</span> m2) <span class="hljs-number">0</span>)))
+           (<span class="hljs-name">set-value!</span> product <span class="hljs-number">0</span> me))
+          ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> m1) 
+                (<span class="hljs-name">has-value?</span> m2))
+           (<span class="hljs-name">set-value!</span> product
+                       (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">get-value</span> m1) 
+                          (<span class="hljs-name">get-value</span> m2))
+                       me))
+          ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> product) 
+                (<span class="hljs-name">has-value?</span> m1))
+           (<span class="hljs-name">set-value!</span> m2
+                       (<span class="hljs-name"><span class="hljs-built_in">/</span></span> (<span class="hljs-name">get-value</span> product) 
+                          (<span class="hljs-name">get-value</span> m1))
+                       me))
+          ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name">has-value?</span> product) 
+                (<span class="hljs-name">has-value?</span> m2))
+           (<span class="hljs-name">set-value!</span> m1
+                       (<span class="hljs-name"><span class="hljs-built_in">/</span></span> (<span class="hljs-name">get-value</span> product) 
+                          (<span class="hljs-name">get-value</span> m2))
+                       me))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-forget-value</span>)
+    (<span class="hljs-name">forget-value!</span> product me)
+    (<span class="hljs-name">forget-value!</span> m1 me)
+    (<span class="hljs-name">forget-value!</span> m2 me)
+    (<span class="hljs-name">process-new-value</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-have-a-value</span>)
+           (<span class="hljs-name">process-new-value</span>))
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-lost-my-value</span>)
+           (<span class="hljs-name">process-forget-value</span>))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+           (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown request: 
+                   MULTIPLIER&quot;</span> 
+                  request))))
+  (<span class="hljs-name">connect</span> m1 me)
+  (<span class="hljs-name">connect</span> m2 me)
+  (<span class="hljs-name">connect</span> product me)
+  me)
+</code></pre>
+<p>أمّا بانيّ <code>constant</code> فيضبط ببساطةٍ قيمة الموصّل المعيَّن. وستُنتج أيّ رسالة <code>I-have-a-value</code> أو <code>I-lost-my-value</code> تُرسَل إلى صندوق الثابت خطأً.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">constant</span> value connector)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request)
+    (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown request: CONSTANT&quot;</span> 
+           request))
+  (<span class="hljs-name">connect</span> connector me)
+  (<span class="hljs-name">set-value!</span> connector value me)
+  me)
+</code></pre>
+<p>وأخيرًا، يطبع المِسبار رسالةً عن ضبط الموصّل المعيَّن أو إلغاء ضبطه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">probe</span> name connector)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">print-probe</span> value)
+    (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>) (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-string">&quot;Probe: &quot;</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">display</span></span> name) (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-string">&quot; = &quot;</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">display</span></span> value))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-new-value</span>)
+    (<span class="hljs-name">print-probe</span> (<span class="hljs-name">get-value</span> connector)))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-forget-value</span>)
+    (<span class="hljs-name">print-probe</span> <span class="hljs-string">&quot;?&quot;</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-have-a-value</span>)
+           (<span class="hljs-name">process-new-value</span>))
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;I-lost-my-value</span>)
+           (<span class="hljs-name">process-forget-value</span>))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown request: 
+                        PROBE&quot;</span> request))))
+  (<span class="hljs-name">connect</span> connector me)
+  me)
+</code></pre>
+<h4>تمثيل الموصّلات</h4>
+<p>ويُُمثَّل الموصّل بكائنٍ إجرائيٍّ ذي متغيّرات حالةٍ محلّيّةٍ هي <code>value</code> ، القيمة الحاليّة للموصّل؛ و<code>informant</code> ، الكائن الذي ضبط قيمة الموصّل؛ و<code>constraints</code> ، قائمة القيود التي يشارك فيها الموصّل.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-connector</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">value</span> false) 
+        (<span class="hljs-name">informant</span> false) 
+        (<span class="hljs-name">constraints</span> &#x27;()))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-my-value</span> newval setter)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name">has-value?</span> me))
+             (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> value newval)
+             (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> informant setter)
+             (<span class="hljs-name">for-each-except</span> 
+              setter
+              inform-about-value
+              constraints))
+            ((<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> value newval))
+             (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Contradiction&quot;</span> 
+                    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> value newval)))
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> <span class="hljs-symbol">&#x27;ignored</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">forget-my-value</span> retractor)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> retractor informant)
+          (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> informant false)
+                 (<span class="hljs-name">for-each-except</span> 
+                  retractor
+                  inform-about-no-value
+                  constraints))
+          <span class="hljs-symbol">&#x27;ignored</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">connect</span> new-constraint)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">memq</span></span> new-constraint 
+                     constraints))
+          (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> constraints
+                (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> new-constraint 
+                      constraints)))
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">has-value?</span> me)
+          (<span class="hljs-name">inform-about-value</span> new-constraint))
+      <span class="hljs-symbol">&#x27;done</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;has-value?</span>)
+             (<span class="hljs-name"><span class="hljs-built_in">if</span></span> informant true false))
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;value</span>) value)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;set-value!</span>) 
+             set-my-value)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;forget</span>) 
+             forget-my-value)
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> request <span class="hljs-symbol">&#x27;connect</span>) connect)
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown operation: 
+                          CONNECTOR&quot;</span>
+                         request))))
+    me))
+</code></pre>
+<p>ويُنادى الإجراء المحليّ الخاصّ بالموصّل <code>set-my-value</code> حين يأتي طلبٌ لضبط قيمة الموصّل. فإن لم يكن الموصّل يملك قيمةً حاليًّا، فسيضبط قيمته ويتذكّر <code>informant</code> بوصفه القيد الذي طلب ضبط القيمة.<sup class="footnote-ref"><a href="#fn17" id="fnref17">[17]</a></sup> ثمّ يُخطِر الموصّل جميع القيود المشاركة له، باستثناء القيد الذي طلب ضبط القيمة. ويُنجَز هذا باستخدام المُكَرِّر (iterator) الآتي، الذي يُطبّق إجراءً معيَّنًا على جميع بنود قائمةٍ باستثناء بندٍ معطًى واحدٍ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">for-each-except</span> exception 
+                         procedure 
+                         list)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">loop</span> items)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> items) <span class="hljs-symbol">&#x27;done</span>)
+          ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items) exception) 
+           (<span class="hljs-name">loop</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items)))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">procedure</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items))
+                (<span class="hljs-name">loop</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items)))))
+  (<span class="hljs-name">loop</span> list))
+</code></pre>
+<p>وإذا طُلب من موصّلٍ أن ينسى قيمته، فإنّه يُشغّل الإجراء المحليّ <code>forget-my-value</code> ، الذي يتحقّق أوّلًا من أنّ الطلب قادم من الكائن ذاته الذي ضبط القيمة في الأصل. فإن كان الأمر كذلك، أَخْطَر الموصّل القيود المرتبطة به بفقدان القيمة.</p>
+<p>ويُضيف الإجراء المحليّ <code>connect</code> القيد الجديد المعيَّن إلى قائمة القيود إذا لم يكن موجودًا فيها من قبل. ثمّ، إذا كان الموصّل يملك قيمةً، يُخطِر القيد الجديد بهذه الحقيقة.</p>
+<p>ويعمل إجراء الموصّل <code>me</code> بوصفه موزّعًا إلى الإجراءات الداخليّة الأخرى، ويمثّل الموصّل أيضًا ككائن. والإجراءات الآتية تُوفّر واجهة صياغةٍ للموزّع:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">has-value?</span> connector)
+  (<span class="hljs-name">connector</span> <span class="hljs-symbol">&#x27;has-value?</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">get-value</span> connector)
+  (<span class="hljs-name">connector</span> <span class="hljs-symbol">&#x27;value</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-value!</span> connector 
+                    new-value 
+                    informant)
+  ((<span class="hljs-name">connector</span> <span class="hljs-symbol">&#x27;set-value!</span>) 
+   new-value 
+   informant))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">forget-value!</span> connector retractor)
+  ((<span class="hljs-name">connector</span> <span class="hljs-symbol">&#x27;forget</span>) retractor))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">connect</span> connector new-constraint)
+  ((<span class="hljs-name">connector</span> <span class="hljs-symbol">&#x27;connect</span>) new-constraint))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 3.33:</strong> باستخدام قيود المضاعف والجامع والثابت الأوّليّة، عرّف إجراءً <code>averager</code> يأخذ ثلاثة موصّلات <code>a</code> و<code>b</code> و<code>c</code> كمعطياتٍ ويُرسّخ القيد القاضي بأنّ قيمة <code>c</code> هي متوسّط قيمتَي <code>a</code> و<code>b</code> .</p>
+</blockquote>
+<p><strong>التمرين 3.34:</strong> يريد لويس ريزَنر أن يبني مربِّعًا، وهو جهاز قيدٍ ذو طرفين تتحقّق فيه أنّ قيمة الموصّل <code>b</code> على الطرف الثاني ستكون دائمًا مربّع القيمة <code>a</code> على الطرف الأوّل. وهو يقترح الجهاز البسيط الآتي المبنيّ على مضاعفٍ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">squarer</span> a b) (<span class="hljs-name">multiplier</span> a a b))
+</code></pre>
+<p>وهناك خللٌ خطيرٌ في هذه الفكرة. فسّره.</p>
+<p><strong>التمرين 3.35:</strong> يخبر بن بيتدِل لويس أنّ إحدى طرائق تجنّب المتعلّة الواردة في <a href="/arabic-cs-library/book/sicp/c3-modularity-objects-and-state/3-3/">التمرين 3.34</a> هي تعريف المربّع كقيدٍ أوّليٍّ جديد. فأكمل الأجزاء الناقصة في المخطّط الذي رسمه بن لإجراءٍ يُنفّذ مثل هذا القيد:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">squarer</span> a b)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-new-value</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">has-value?</span> b)
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&lt;</span></span> (<span class="hljs-name">get-value</span> b) <span class="hljs-number">0</span>)
+            (<span class="hljs-name">error</span> <span class="hljs-string">&quot;square less than 0: 
+                    SQUARER&quot;</span> 
+                   (<span class="hljs-name">get-value</span> b))
+            ⟨alternative1⟩)
+        ⟨alternative2⟩))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">process-forget-value</span>) ⟨body1⟩)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">me</span> request) ⟨body2⟩)
+  ⟨rest of definition⟩
+  me)
+</code></pre>
+<p>فلنفترض أنّنا قيّمنا التتالي الآتي من التعابير في البيئة العامّة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> a (<span class="hljs-name">make-connector</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> b (<span class="hljs-name">make-connector</span>))
+(<span class="hljs-name">set-value!</span> a <span class="hljs-number">10</span> <span class="hljs-symbol">&#x27;user</span>)
+</code></pre>
+<p>في وقتٍ ما أثناء تقييم <code>set-value!</code>، يُقيَّم التعبير الآتي الوارد في الإجراء المحليّ الخاصّ بالموصّل:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">for-each-except</span> 
+  setter inform-about-value constraints)
+</code></pre>
+<p>ارسم مخطّطًا للبيئة يُظهر البيئة التي يُقيَّم فيها التعبير الوارد أعلاه.</p>
+<p><strong>التمرين 3.37:</strong> إنّ إجراء <code>celsius-fahrenheit-converter</code> ثقيلُ الاستعمال بالمقارنة مع أسلوب تعريفٍ أكثر توجهًا نحو التعابير، مثل</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">celsius-fahrenheit-converter</span> x)
+  (<span class="hljs-name">c+</span> (<span class="hljs-name">c*</span> (<span class="hljs-name">c/</span> (<span class="hljs-name">cv</span> <span class="hljs-number">9</span>) (<span class="hljs-name">cv</span> <span class="hljs-number">5</span>))
+          x)
+      (<span class="hljs-name">cv</span> <span class="hljs-number">32</span>)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> C (<span class="hljs-name">make-connector</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> F (<span class="hljs-name">celsius-fahrenheit-converter</span> C))
+</code></pre>
+<p>ها هنا <code>c+</code> و<code>c*</code> وهكذا هي صيغ «القيد» من العمليّات الحسابيّة. فمثلًا، يأخذ <code>c+</code> موصّلين كمعطيين ويعيد موصّلًا مرتبطًا بهذين بقيد جامع:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">c+</span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">z</span> (<span class="hljs-name">make-connector</span>)))
+    (<span class="hljs-name">adder</span> x y z)
+    z))
+</code></pre>
+<p>عرِّف إجراءاتٍ نظيرةً <code>c-</code>، و<code>c*</code>، و<code>c/</code>، و<code>cv</code> (قيمة ثابتة) تُمكّننا من تعريف قيودَ مركّبةٍ كما في مثال المحوِّل أعلاه.<sup class="footnote-ref"><a href="#fn18" id="fnref18">[18]</a></sup></p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>لا تتضمّن قائمة المسجّلات هذه المسجّلات التي يستخدمها نظام تخصيص التخزين—<code>root</code> و<code>the-cars</code> و<code>the-cdrs</code> وغيرها من المسجّلات التي ستُعرَّف في هذا القسم. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>اصطلح على مصطلح <em>القلب المكسور (broken heart)</em> ديفيد كريسي، الذي كتب جامع قمامةٍ للغة MDL، وهي لهجةٌ من Lisp طُوّرت في MIT في أوائل سبعينيّات القرن العشرين. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>يستخدم جامع القمامة المُسَيِّم منخفض المستوى <code>pointer-to-pair?</code> بدلًا من عمليّة بنية القوائم <code>pair?</code>، لأنّه قد توجد في نظامٍ حقيقيّ أمورٌ شتّى تُعامَل معاملة الأزواج لأغراض جمع القمامة. ففي نظامٍ من أنظمة Scheme مطابق لمعيار IEEE، مثلًا، قد يُنفّذ كائن الإجراء كنوعٍ خاصّ من «الزوج» لا يحقّقه المسيّم <code>pair?</code>. ولأغراض المحاكاة، يمكن تنفيذ <code>pointer-to-pair?</code> بدلالة <code>pair?</code>. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Batali-et-al_002e-1982">باتالي وآخرون 1982</a> لمزيدٍ من المعلومات عن الرقاقة وعن الطريقة التي صُمّمت بها. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>في متحكّمنا، يُكتب التوزيع كسلسلةٍ من تعليمتَي <code>test</code> و<code>branch</code>. وبدلًا من ذلك، كان في الإمكان كتابته بأسلوبٍ موجَّهٍ بالبيانات (وكذلك سيكون الأمر في نظامٍ حقيقيّ على الأرجح) لتجنّب الحاجة إلى إجراء اختباراتٍ متسلسلةٍ وتسهيل تعريف أنواع تعبيراتٍ جديدة. ومن المرجّح أنّ آلةً مصمّمةً لتشغيل Lisp تتضمّن تعليمة <code>dispatch-on-type</code> تُنفّذ مثل هذه التوزيعات الموجَّهة بالبيانات بكفاءة. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>هذه نقطة مهمّةٌ وإنّما خفيّةٌ في ترجمة الخوارزميّات من لغةٍ إجرائيّة، مثل Lisp، إلى لغة آلات المسجّلات. فبدلًا من حفظ ما يلزم فقط، كان بوسعنا حفظ كلّ المسجّلات (عدا <code>val</code>) قبل كلّ نداءٍ تعاوديّ. ويُسمّى هذا نظامَ المكدس المؤطَّر. وهذا ينجح، لكنّه قد يحفظ مسجّلاتٍ أكثر من اللازم؛ وقد يكون هذا اعتبارًا مهمًّا في نظامٍ تكون فيه عمليّات المكدس مكلفة. كما أنّ حفظ مسجّلاتٍ لن تُحتاج محتوياتها لاحقًا قد يُبقي بياناتٍ لا فائدة منها كان يمكن جمعها كانقالًا، فتتفرّغ مساحتها لإعادة الاستخدام. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>نضيف إلى إجراءات بنية البيانات الخاصّة بالمُقيّم الواردة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a> الإجراءَين التاليين للتلاعب بقوائم المعطيات: <code>scheme (define (empty-arglist) '()) (define (adjoin-arg arg arglist) (append arglist (list arg))) </code> <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>يُعرَف تحسين معاملة المُعامل الأخير معاملةً خاصّةً باسم <em>التعاوب الذيلي في evlis</em> (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Wand-1980">واند 1980</a>). وكان بوسعنا أن نكون أكفأ قليلًا في حلقة تقييم المعطيات لو جعلنا تقييم المُعامل الأوّل حالةً خاصّةً أيضًا. وهو ما كان سيسمح لنا بتأجيل تهيئة <code>argl</code> حتّى بعد تقييم المُعامل الأوّل، تفاديًا لحفظ <code>argl</code> في هذه الحالة. والمصرّف الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5">5.5</a> يُجري هذا التحسين. (قارن بإجراء <code>construct-arglist</code> الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e3">5.5.3</a>.) <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>يحدّد ترتيب تقييم المُعاملات في المُقيّم الحلقيّ الوسيط بترتيب تقييم معطيات <code>cons</code> في الإجراء <code>list-of-values</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> (انظر <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e1">التمرين 4.1</a>). <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>رأينا في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1">5.1</a> كيف نُنفّذ عمليّةً كهذه بآلة مسجّلاتٍ لا مكدس لها؛ إذ كانت حالة العمليّة تُخزَّن في مجموعةٍ ثابتةٍ من المسجّلات. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>هذا التنفيذ للتعاوب الذيلي في <code>ev-sequence</code> نوعٌ من تقنيّة تحسينٍ معروفةٍ يستخدمها كثيرٌ من المصرّفات. فعند تصريف إجراءٍ ينتهي بنداء إجراء، يمكن استبدال النداء بقفزةٍ إلى نقطة دخول الإجراء المندىّ. وبناء هذه الاستراتيجيّة في المفسّر، كما فعلنا في هذا القسم، يُوفّر التحسين بصورةٍ موحّدةٍ في اللغة كلّها. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>يمكننا تعريف <code>no-more-exps?</code> كما يلي: <code>scheme (define (no-more-exps? seq) (null? seq)) </code> <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>هذا ليس غشًّا حقًّا. ففي تنفيذٍ فعليٍّ مبنيٍّ من الصفر، كنّا سنستخدم مُقيّمنا ذا المتحكّم الصريح لتفسير برنامج Scheme يُجري تحويلاتٍ على مستوى المصدر، مثل <code>cond-&gt;if</code>، في مرحلة صياغةٍ تجري قبل التنفيذ. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>نفترض هنا أنّ <code>read</code> ومختلف عمليّات الطباعة متاحةٌ كعمليّات آلةٍ أوّليّة، وهذا مفيدٌ لمحاكاتنا، لكنّه غير واقعيّ إطلاقًا في الممارسة. فهذه في الحقيقة عمليّات شديدة التعقيد. وفي الممارسة، كانت ستُنفّذ باستخدام عمليّات إدخالٍ وإخراجٍ منخفضة المستوى، مثل نقل محارف مفردةٍ إلى جهازٍ ومنه. ولدعم عمليّة <code>get-global-environment</code> نُعرّف <code>scheme (define the-global-environment (setup-environment)) (define (get-global-environment) the-global-environment) </code> <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn15" class="footnote-item"><p>ثمّة أخطاء أخرى نودّ أن يتعامل معها المفسّر، لكنّها ليست بهذه البساطة. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.30</a>. <a href="#fnref15" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn16" class="footnote-item"><p>كان بوسعنا إجراء تهيئة المكدس بعد الأخطاء فقط، لكنّ إجراءها في حلقة المُشغّل سيكون مريحًا لمراقبة أداء المُقيّم، كما سنُبيّن أدناه. <a href="#fnref16" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn17" class="footnote-item"><p>للأسفّ، هذا هو الحال الطبيعيّ في أنظمة اللغات التقليديّة المبنيّة على المصرّفات، مثل C. ففي UNIX(tm) «يفرغ النظام لبَّه»، وفي DOS/Windows(tm) يصير كسولًا. أمّا Macintosh(tm) فيعرض صورة قنبلةٍ منفجرةٍ ويعرض عليك فرصة إعادة تشغيل الحاسوب—إن كنت محظوظًا. <a href="#fnref17" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn18" class="footnote-item"><p>هذا بيانٌ نظريّ. فنحن لا ندّعي أنّ مسارات البيانات الخاصّة بالمُقيّم مجموعةٌ مناسبةٌ أو فعّالةٌ بشكلٍ خاصّ لتكون مسارات حاسوبٍ عامّ الغرض. فهي مثلًا غير جيّدةٍ لتنفيذ حسابات النقاط العائمة عالية الأداء أو الحسابات التي تتلاعب بكثافةٍ بمتجهات البتّات. <a href="#fnref18" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,t={book:s,chapter:a,chapterTitle:n,slug:"3-3",title:e,headings:l,html:p};export{s as book,a as chapter,n as chapterTitle,t as default,l as headings,p as html,c as slug,e as title};

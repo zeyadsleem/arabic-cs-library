@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C6hGpua7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D48GbTL7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRD7Fe-q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.aeeFG9Oy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.Dh5PyVQG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/AHpcJv2x.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BV_SoFfy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DNSXVn76.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CXjS4wCz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/UvN_Qp53.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="4.3 تنويعات على Scheme — الحوسبة غير الحتميّة — التجريد فوق اللغوي"/><!----><title>4.3 تنويعات على Scheme — الحوسبة غير الحتميّة | بنية وتفسير برامج الحاسوب</title>
+		<link href="../../../../_app/immutable/assets/0.Ct6nQQu3.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/sicp">بنية وتفسير برامج الحاسوب</a> <span class="reader-bar__chapter">› التجريد فوق اللغوي</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 5 من 7">5 / 7</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/sicp/c4-metalinguistic-abstraction/4-2">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/sicp/c4-metalinguistic-abstraction/4-4">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مقدّمة الكتاب</h3> <ul><!--[--><li><a href="../../../../book/sicp/c0-frontmatter/index">مقدّمة الكتاب</a></li><li><a href="../../../../book/sicp/c0-frontmatter/taqdimah">تقدمة</a></li><li><a href="../../../../book/sicp/c0-frontmatter/tamhida-2nd">تمهيد للطبعة الثانية</a></li><li><a href="../../../../book/sicp/c0-frontmatter/tamhida-1st">تمهيد للطبعة الأولى</a></li><li><a href="../../../../book/sicp/c0-frontmatter/shukr-taqdir">شكر وتقدير</a></li><!--]--></ul><h3>بناء التجريدات بالإجراءات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/index">بناء التجريدات بالإجراءات</a></li><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/1-2">1.2 الإجراءات والعمليات التي تولّدها</a></li><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/1-3">1.3 صياغة التجريدات بإجراءات عليا الرتبة</a></li><!--]--></ul><h3>بناء التجريدات بالبيانات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/index">بناء التجريدات بالبيانات</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-2">2.2 البيانات الهرميّة وخاصّيّة الإغلاق</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-3">2.3 البيانات الرمزيّة</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-4">2.4 تمثيلات متعدّدة للبيانات المجرّدة</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-5">2.5 أنظمة ذات عمليّات عامّة</a></li><!--]--></ul><h3>الوحدانية والكائنات والحالة</h3> <ul><!--[--><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/index">الوحدانية والكائنات والحالة</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-2">3.2 نموذج البيئة للتقييم</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-3">3.3 النمذجة بالبيانات القابلة للتغيير</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-4">3.4 التزامن: الزمن أمرٌ جوهريّ</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-5">3.5 المجاري</a></li><!--]--></ul><h3 class="active-chapter">التجريد فوق اللغوي</h3> <ul><!--[--><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/index">التجريد فوق اللغوي</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-2">4.2 تنويعات على Scheme — التقييم المتأخّر</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-3" class="active">4.3 تنويعات على Scheme — الحوسبة غير الحتميّة</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-4">4.4 البرمجة المنطقيّة</a></li><!--]--></ul><h3>الحوسبة بآلات المسجّلات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c5-computing-with-register-machines/index">الاحتساب بآلات المسجّلات</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-2">5.2 محاكي آلة مسجّلات</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-3">5.3 تخصيص التخزين وجمع القمامة</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-4">5.4 المقيّم ذو التحكّم الصريح</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-5">5.5 التصريف</a></li><!--]--></ul><h3>الملاحق والمصطلحات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c6-backmatter/index">الملاحق والمصطلحات</a></li><li><a href="../../../../book/sicp/c6-backmatter/lista-tamrin">قائمة التمارين</a></li><li><a href="../../../../book/sicp/c6-backmatter/lista-ashkal">قائمة الأشكال</a></li><li><a href="../../../../book/sicp/c6-backmatter/bayanta-nashr">بيانات النشر</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>4.3 تنويعات على Scheme — الحوسبة غير الحتميّة</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h3 id="43-تنويعات-على-scheme-الحوسبة-غير-الحتمية">4.3 تنويعات على Scheme — الحوسبة غير الحتميّة</h3>
+<p>في هذا القسم، نوسّع مقيّم Scheme لدعم نموذج برمجةٍ يُسمّى <em>الحوسبة غير الحتميّة (nondeterministic computing)</em>، وذلك ببناء تسهيلٍ داخل المقيّم لدعم البحث الآليّ. وهذا تغييرٌ في اللغة أعمقُ بكثيرٍ من إدخال التقييم الكسول في <a href="https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2">4.2</a>.</p>
+<p>والحوسبة غير الحتميّة، كمعالجة المجاري، مفيدةٌ في تطبيقات «التوليد والاختبار». فتأمّل مهمّة الانطلاق بقائمتَي أعدادٍ صحيحةٍ موجبةٍ وإيجاد زوجٍ من الأعداد—واحدٍ من القائمة الأولى وآخر من القائمة الثانية—مجموعه أوّليّ. وقد رأينا كيف نتعامل مع هذا باستخدام عمليّات التسلسلات المنتهيّة في <a href="https://sarabander.github.io/sicp/html/2_002e2.xhtml#g_t2_002e2_002e3">2.2.3</a> وباستخدام المجاري اللاّنهائيّة في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e3">3.5.3</a>. وكان نهجنا توليد تسلسل جميع الأزواج الممكنة وترشيحها لاختيار الأزواج التي مجموعها أوّليّ. وسواءٌ كنّا نُولّد تسلسل الأزواج كلّه أوّلًا كما في <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a>، أو نُشابك التوليد والترشيح كما في <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a>، فذلك لا يمسّ الصورة الجوهريّة لكيفيّة تنظيم الاحتساب.</p>
+<p>والنهج غير الحتميّ يستحضر صورةً مختلفة. فتخيّل ببساطةٍ أنّنا نختار (بصورةٍ ما) عددًا من القائمة الأولى وعددًا من القائمة الثانية، ونُقتضى (باستخدام آليّةٍ ما) أن يكون مجموعهما أوّلِيًّا. ويُعبَّر عن هذا بالإجراء الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">prime-sum-pair</span> list1 list2)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">a</span> (<span class="hljs-name">an-element-of</span> list1))
+        (<span class="hljs-name">b</span> (<span class="hljs-name">an-element-of</span> list2)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name">prime?</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> a b)))
+    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> a b)))
+</code></pre>
+<p>قد يبدو كأنّ هذا الإجراء لا يفعل سوى إعادة صياغة المسألة، بدلًا من تحديد طريقةٍ لحلّها. ومع ذلك، فهذا برنامجٌ غير حتميّ مشروع.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>والفكرة المفتاحيّة هنا هي أنّ التعابير في لغةٍ غير حتميّةٍ قد يكون لها أكثر من قيمة ممكنة. فمثلًا، قد يُعيد <code>an-element-of</code> أيّ عنصر من القائمة المعطاة. وسيعمل مقيّم البرامج غير الحتميّة باختيار قيمةٍ ممكنةٍ آليًّا ومتابعة الخيار. فإن لم يُستوفَ مقتضى لاحق، جرّب المقيّم خيارًا مختلفًا، واستمرّ في تجربة خياراتٍ جديدة حتّى ينجح التقييم، أو حتّى تنفد الخيارات. فكما حرّر المقيّم الكسول المبرمجَ من تفاصيل كيفيّة تأخير القيم وإجبارها، سيحرّر مقيّم البرامج غير الحتميّة المبرمجَ من تفاصيل كيفيّة إجراء الاختيارات.</p>
+<p>ومن المفيد تقابل صور الوقت المختلفة التي تستحضرها العمليّتان: التقييم غير الحتميّ ومعالجة المجاري. فمعالجة المجاري تستخدم التقييم الكسول لفصل الوقت الذي تُجمَّع فيه مجاري الأجوبة الممكنة عن الوقت الذي تُنتَج فيه عناصر المجرى فعلًا. ويدعم المقيّم الوهم القائل إنّ جميع الأجوبة الممكنة مبسوطةٌ أمامنا في تسلسلٍ خارج الزمن. وبالتقييم غير الحتميّ، يمثّل التعبير استكشافًا لمجموعةٍ من العوالم الممكنة، يحدّدها كلٌّ منها مجموعةٌ من الاختيارات. وبعض العوالم الممكنة يؤدّي إلى طرقٍ مسدودة، بينما لبعضها الآخر قيم مفيدة. ويدعم مقيّم البرامج غير الحتميّة الوهم القائل إنّ الزمن يتفرّع، وإنّ لبرامجنا تواريخ تنفيذٍ مختلفةً ممكنة. وحين نصل إلى طريقٍ مسدود، نستطيع العودة إلى نقطة اختيارٍ سابقةٍ والمواصلة على فرعٍ مختلف.</p>
+<p>ويُسمّى مقيّم البرامج غير الحتميّة المنفّذ أدناه مقيّم <code>amb</code> لأنّه مبنيٌّ على صيغةٍ خاصّةٍ جديدةٍ تُسمّى <code>amb</code>. ويمكننا كتابة تعريف <code>prime-sum-pair</code> المعطى أعلاه في حلقة مُشغّل مقيّم <code>amb</code> (مع تعاريف <code>prime?</code> و<code>an-element-of</code> و<code>require</code>) وتشغيل الإجراء على النحو الآتي:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">prime-sum-pair</span> &#x27;(<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>) &#x27;(<span class="hljs-number">20</span> <span class="hljs-number">35</span> <span class="hljs-number">110</span>))
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">3</span> <span class="hljs-number">20</span>)
+</code></pre>
+<p>والقيمة المُعادة تحقّقت بعد أن اختار المقيّم عناصر من كلٍّ من القائمتين تكرارًا، حتّى أُجري اختيارٌ ناجح.</p>
+<p>يُقدّم القسم <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">4.3.1</a> الصيغة <code>amb</code> ويشرح كيف تدعم عدم الحتميّة من خلال آليّة البحث الآليّ في المقيّم. ويعرض القسم <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">4.3.2</a> أمثلةً على البرامج غير الحتميّة، ويعطي القسم <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">4.3.3</a> تفاصيل كيفيّة تنفيذ مقيّم <code>amb</code> بتعديل مقيّم Scheme العاديّ.</p>
+<h4>4.3.1 Amb والبحث</h4>
+<p>لتمديد Scheme لدعم عدم الحتميّة، نُدخل صيغةً خاصّةً جديدةً تُسمّى <code>amb</code>.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> فالتعبير</p>
+<pre><code class="language-scheme">(<span class="hljs-name">amb</span> ⟨e₁⟩ ⟨e₂⟩ … ⟨eₙ⟩)
+</code></pre>
+<p>يُعيد قيمة أحد التعابير الـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ e_{i} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3117em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> «على نحوٍ غامض». فمثلًا، التعبير</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">list</span></span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span>) (<span class="hljs-name">amb</span> <span class="hljs-symbol">&#x27;a</span> <span class="hljs-symbol">&#x27;b</span>))
+</code></pre>
+<p>قد يكون له ستّ قيم ممكنة:</p>
+<pre><code>(1 a) (1 b) (2 a) (2 b) (3 a) (3 b)
+</code></pre>
+<p>إنّ <code>Amb</code> مع اختيارٍ واحدٍ يُنتج قيمةً عاديّةً (وحيدة).</p>
+<p>إنّ <code>Amb</code> دون اختيارات—التعبير <code>(amb)</code>—تعبيرٌ لا قيمة مقبولة له. وتشغيليًّا، يمكننا التفكير في <code>(amb)</code> كتعبيرٍ يُسبّب «فشل» الاحتساب عند تقييمه: فيُنقطع الاحتساب ولا تُنتَج أيّ قيمة. وباستخدام هذه الفكرة، نستطيع التعبير عن المقتضى القائل إنّ تعبير مُسَيِّمٍ معيَّن <code>p</code> لا بدّ أن يكون صحيحًا، على النحو الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">require</span></span> p)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> p) (<span class="hljs-name">amb</span>)))
+</code></pre>
+<p>وباستخدام <code>amb</code> و<code>require</code>، نستطيع تنفيذ إجراء <code>an-element-of</code> المستخدم أعلاه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">an-element-of</span> items)
+  (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> items)))
+  (<span class="hljs-name">amb</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items) 
+       (<span class="hljs-name">an-element-of</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items))))
+</code></pre>
+<p>يفشل <code>an-element-of</code> إذا كانت القائمة فارغة. وإلّا فهو يُعيد إمّا أوّل عنصر من القائمة وإمّا عنصرًا مختارًا من بقيّة القائمة، على نحوٍ غامض.</p>
+<p>ويمكننا أيضًا التعبير عن مدىاتٍ لاّنهائيّةٍ من الخيارات. فالإجراء الآتي يُعيد مُحتمَلًا أيّ عددٍ صحيحٍ أكبر أو مساوٍ لعددٍ معطى <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> :</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">an-integer-starting-from</span> n)
+  (<span class="hljs-name">amb</span> n (<span class="hljs-name">an-integer-starting-from</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> n <span class="hljs-number">1</span>))))
+</code></pre>
+<p>وهذا شبيهٌ بإجراء المجرى <code>integers-starting-from</code> الموصوف في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e2">3.5.2</a>، لكن بفرقٍ مهمّ: فإجراء المجرى يُعيد كائنًا يمثّل تسلسل جميع الأعداد الصحيحة التي تبدأ من <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> ، بينما يُعيد إجراء <code>amb</code> عددًا صحيحًا واحدًا.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>وبصورةٍ مجرّدة، يمكننا أن نتخيّل أنّ تقييم تعبير <code>amb</code> يُسبّب انقسام الزمن إلى فروع، حيث يستمرّ الاحتساب في كلّ فرعٍ بإحدى القيم الممكنة للتعبير. ونقول إنّ <code>amb</code> يُمثّل <em>نقطة اختيارٍ غير حتميّة (nondeterministic choice point)</em>. فلو كانت لدينا آلةٌ بعددٍ كافٍ من المعالجات القابلة للتخصيص ديناميكيًّا، لأمكننا تنفيذ البحث تنفيذًا مباشرًا. فيسير التنفيذ كما في آلةٍ تسلسليّةٍ، حتّى يُصادَف تعبير <code>amb</code>، وعند تلك النقطة تُخصَّص معالجاتٌ إضافيّةٌ وتُهيّأ لمواصلة جميع التنفيذات المتوازية التي يستلزمها الاختيار. ويسير كلّ معالجٍ تسلسليًّا كأنّه الاختيار الوحيد، حتّى إمّا أن ينتهي بمصادفة فشل، أو أن يتفرّع أكثر، أو أن يُكمل.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<p>ومن جهةٍ أخرى، فإن كانت لدينا آلةٌ لا تستطيع تنفيذ إلّا عمليّةً واحدة (أو عدّة عمليّاتٍ متزامنةٍ قليلة)، فلا بدّ من النظر في البدائل تسلسليًّا. ويمكن للمرء أن يتخيّل تعديل مقيّم ليتخيّر فرعًا عشوائيًّا ليتبعه كلّما صادف نقطة اختيار. غير أنّ الاختيار العشوائيّ قد يؤدّي بسهولةٍ إلى قيمٍ فاشلة. وقد نجرّب تشغيل المقيّم مرّةً بعد أخرى، باختياراتٍ عشوائيّةٍ وعلى أمل العثور على قيمةٍ غير فاشلة، لكنّ الأفضلَ <em>البحث المنهجيّ (systematic search)</em> في جميع مسارات التنفيذ الممكنة. ومقيّم <code>amb</code> الذي سنطوّره ونعمل به في هذا القسم يُنفّذ بحثًا منهجيًّا على النحو الآتي: حين يصادف المقيّم تطبيقًا لـ<code>amb</code>، فهو يختار أوّلًا البديل الأوّل. وهذا الاختيار قد يؤدّي بذاته إلى اختيارٍ لاحق. وسيختار المقيّم دائمًا البديل الأوّل في كلّ نقطة اختيار. فإن أفضى اختيارٌ إلى فشل، فإنّ المقيّم <em>يتراجع رجعيًّا (backtracks)</em> تلقائيًّا<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> إلى أحدث نقطة اختيار ويجرّب البديل التالي. فإن نفدت البدائل في أيّ نقطة اختيار، رجع المقيّم إلى نقطة الاختيار السابقة واستأنف من هناك. وتؤدّي هذه العمليّة إلى استراتيجيّة بحثٍ تُعرف بـ<em>البحث بالعمق أوّلًا (depth-first search)</em> أو <em>التتبّع الرجعيّ الزمنيّ (chronological backtracking)</em>.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<h4>حلقة المُشغّل</h4>
+<p>ولحلقة مُشغّل مقيّم <code>amb</code> بعض الخصائص غير المعتادة. فهي تقرأ تعبيرًا وتطبع قيمة أوّل تنفيذٍ غير فاشل، كما في مثال <code>prime-sum-pair</code> المعروض أعلاه. فإن أردنا رؤية قيمة التنفيذ الناجح التالي، فبوسعنا أن نطلب من المفسّر أن يتراجع رجعيًّا ويحاول توليد تنفيذٍ ثانٍ غير فاشل. ويُشار إلى ذلك بكتابة الرمز <code>try-again</code>. فلو أُعطي أيّ تعبيرٍ غير <code>try-again</code>، سيبدأ المفسّر مسألةً جديدةً، مُتخلّيًا عن البدائل غير المستكشفة في المسألة السابقة. وهاك مثالًا على تفاعل:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">prime-sum-pair</span> &#x27;(<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>) &#x27;(<span class="hljs-number">20</span> <span class="hljs-number">35</span> <span class="hljs-number">110</span>))
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">3</span> <span class="hljs-number">20</span>)
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+try-again
+
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">3</span> <span class="hljs-number">110</span>)
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+try-again
+
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">8</span> <span class="hljs-number">35</span>)
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+try-again
+
+<span class="hljs-comment">;;; There are no more values of</span>
+(<span class="hljs-name">prime-sum-pair</span> 
+ (<span class="hljs-name"><span class="hljs-built_in">quote</span></span> (<span class="hljs-name">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>)) 
+ (<span class="hljs-name"><span class="hljs-built_in">quote</span></span> (<span class="hljs-name">20</span> <span class="hljs-number">35</span> <span class="hljs-number">110</span>)))
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">prime-sum-pair</span> &#x27;(<span class="hljs-number">19</span> <span class="hljs-number">27</span> <span class="hljs-number">30</span>) &#x27;(<span class="hljs-number">11</span> <span class="hljs-number">36</span> <span class="hljs-number">58</span>))
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">30</span> <span class="hljs-number">11</span>)
+</code></pre>
+<p><strong>التمرين 4.35:</strong> اكتب إجراءً <code>an-integer-between</code> يُعيد عددًا صحيحًا بين حدّين معطيين. ويمكن استخدام ذلك لتنفيذ إجراءٍ يجد الثلاثيات الفيثاغورسيّة، أي ثلاثيات من الأعداد الصحيحة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>i</mi><mo separator="true">,</mo><mi>j</mi><mo separator="true">,</mo><mi>k</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">( i , j , k )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">i</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="mpunct">,</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="mclose">)</span></span></span></span> بين الحدّين المعطيين بحيثُ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>≤</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i ≤ j</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7955em;vertical-align:-0.136em;"></span><span class="mord mathnormal">i</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.854em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0572em;">j</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>i</mi><mn>2</mn></msup><mo>+</mo><msup><mi>j</mi><mn>2</mn></msup><mo>=</mo><msup><mi>k</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">i^{2} + j^{2} = k^{2}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">i</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1.0085em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0572em;">j</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0315em;">k</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span> ، على النحو الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">a-pythagorean-triple-between</span> low high)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">i</span> (<span class="hljs-name">an-integer-between</span> low high)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">j</span> (<span class="hljs-name">an-integer-between</span> i high)))
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">k</span> (<span class="hljs-name">an-integer-between</span> j high)))
+        (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> i i) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> j j)) 
+                    (<span class="hljs-name"><span class="hljs-built_in">*</span></span> k k)))
+        (<span class="hljs-name"><span class="hljs-built_in">list</span></span> i j k)))))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 4.36:</strong> ناقش <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#Exercise-3_002e69">التمرين 3.69</a> كيف تُولَّد مجرة <em>جميع</em> الثلاثيات الفيثاغورسيّة، دون حدٍّ أعلى لحجم الأعداد الصحيحة التي تُبحث. فوضّح لماذا لا يصلح مجرّد استبدال <code>an-integer-between</code> بـ<code>an-integer-starting-from</code> في الإجراء الوارد في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.35</a> سبيلًا مناسبًا لتوليد ثلاثياتٍ فيثاغورسيّةٍ اعتراضيّة. واكتب إجراءً يُنجز ذلك فعلًا. (أي اكتب إجراءً يجعل تكرار كتابة <code>try-again</code> يُولّد من حيث المبدأ جميع الثلاثيات الفيثاغورسيّة في النهاية.)</p>
+</blockquote>
+<p><strong>التمرين 4.37:</strong> يدّعي بن بِتدل أنّ الطريقة الآتية لتوليد الثلاثيات الفيثاغورسيّة أكفأُ من تلك الواردة في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.35</a>. فأهل مُحقّ؟ (تلميح: فكّر في عدد الاحتمالات التي يجب استكشافها.)</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">a-pythagorean-triple-between</span> low high)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">i</span> (<span class="hljs-name">an-integer-between</span> low high))
+        (<span class="hljs-name">hsq</span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> high high)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">j</span> (<span class="hljs-name">an-integer-between</span> i high)))
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">ksq</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> i i) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> j j))))
+        (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">&gt;=</span></span> hsq ksq))
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">k</span> (<span class="hljs-name"><span class="hljs-built_in">sqrt</span></span> ksq)))
+          (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">integer?</span></span> k))
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> i j k))))))
+</code></pre>
+<h4>4.3.2 أمثلة على البرامج غير الحتميّة</h4>
+<p>يصف القسم <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">4.3.3</a> تنفيذ مقيّم <code>amb</code>. غير أنّنا، أوّلًا، نُعطي بعض الأمثلة على كيفيّة استخدامه. وميزة البرمجة غير الحتميّة هي أنّنا نستطيع إخفاء تفاصيل كيفيّة إجراء البحث، وبذلك التعبير عن برامجنا على مستوى أعلى من التجريد.</p>
+<h4>ألغاز منطقيّة</h4>
+<p>اللغز الآتي (مأخوذٌ من <a href="https://sarabander.github.io/sicp/html/References.xhtml#Dinesman-1968">دينسمان 1968</a>) يمثّل نموذجًا لصنفٍ كبيرٍ من الألغاز المنطقيّة البسيطة:</p>
+<blockquote>
+<p>يسكن بيكر، وكوبر، وفلتشر، وميلر، وسميث في طوابق مختلفةٍ من عمارةٍ سكنيّةٍ لا تحتوي إلّا خمسة طوابق. ولا يسكن بيكر في الطابق العلويّ. ولا يسكن كوبر في الطابق السفليّ. ولا يسكن فلتشر في الطابق العلويّ ولا في السفليّ. ويسكن ميلر في طابقٍ أعلى من طابق كوبر. ولا يسكن سميث في طابقٍ مجاور لطابق فلتشر. ولا يسكن فلتشر في طابقٍ مجاور لطابق كوبر. فأين يسكن كلٌّ منهم؟</p>
+</blockquote>
+<p>ويمكننا تحديد من يسكن في كلّ طابقٍ على سبيلٍ مباشرٍ بحصر جميع الاحتمالات وفرض القيود المعطاة:<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">multiple-dwelling</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">baker</span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>))
+        (<span class="hljs-name">cooper</span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>))
+        (<span class="hljs-name">fletcher</span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>))
+        (<span class="hljs-name">miller</span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>))
+        (<span class="hljs-name">smith</span> (<span class="hljs-name">amb</span> <span class="hljs-number">1</span> <span class="hljs-number">2</span> <span class="hljs-number">3</span> <span class="hljs-number">4</span> <span class="hljs-number">5</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span>
+     (<span class="hljs-name">distinct?</span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> baker cooper fletcher 
+                      miller smith)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> baker <span class="hljs-number">5</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> cooper <span class="hljs-number">1</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> fletcher <span class="hljs-number">5</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> fletcher <span class="hljs-number">1</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">&gt;</span></span> miller cooper))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span>
+     (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name"><span class="hljs-built_in">abs</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> smith fletcher)) <span class="hljs-number">1</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> 
+     (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name"><span class="hljs-built_in">abs</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> fletcher cooper)) <span class="hljs-number">1</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;baker</span> baker)
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;cooper</span> cooper)
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;fletcher</span> fletcher)
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;miller</span> miller)
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;smith</span> smith))))
+</code></pre>
+<p>وإنّ تقييم التعبير <code>(multiple-dwelling)</code> يُنتج النتيجة</p>
+<pre><code class="language-scheme">((<span class="hljs-name">baker</span> <span class="hljs-number">3</span>) (<span class="hljs-name">cooper</span> <span class="hljs-number">2</span>) (<span class="hljs-name">fletcher</span> <span class="hljs-number">4</span>)
+ (<span class="hljs-name">miller</span> <span class="hljs-number">5</span>) (<span class="hljs-name">smith</span> <span class="hljs-number">1</span>))
+</code></pre>
+<p>وعلى الرغم من أنّ هذا الإجراء البسيط يعمل، فهو بطيءٌ جدًّا. ويناقش <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.39</a> و<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.40</a> بعض التحسينات الممكنة.</p>
+<blockquote>
+<p><strong>التمرين 4.38:</strong> عدّل إجراء multiple-dwelling لإسقاط المقتضى القائل إنّ سميث وفلتشر لا يسكنان في طابقين متجاورين. فكم حلًّا يوجد لهذا اللغز المعدّل؟</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.39:</strong> فهل يؤثّر ترتيب القيود في إجراء multiple-dwelling في الجواب؟ وهل يؤثّر في الوقت اللازم لإيجاد جواب؟ فإن كنت تظنّ أنّه يؤثّر، فأظهِر برنامجًا أسرع متحصّلٌ من المعطى بإعادة ترتيب القيود. وإن كنت تظنّ أنّه لا يؤثّر، فحاجج قضيّتك.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.40:</strong> في مسألة العمارة السكنيّة، فكم مجموعةً من الإحلالات للأشخاص في الطوابق، قبل المقتضى القاضي بأن تكون إحلالات الطوابق متمايزةً وبعده؟ إنّ توليد جميع الإحلالات الممكنة للأشخاص في الطوابق وترك الأمر بعد ذلك للتتبّع الرجعيّ ليستنفدها أمرٌ غير كفؤٍ على الإطلاق. فمثلًا، أكثر القيود يعتمد على متغيّرٍ أو متغيّرَي شخص-طابق فحسب، وبوسعه بالتالي أن يُفرض قبل أن تُختار طوابقٌ لجميع الأشخاص. واكتب وأظهِر إجراءً غير حتميًّ أكفأُ بكثيرٍ يحلّ هذه المسألة بناءً على توليد تلك الاحتمالات غير المستنفدة بحكم قيودٍ سابقةٍ فحسب. (تلميح: سيستلزم هذا عشًّا من تعابير <code>let</code>.)</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.41:</strong> اكتب برنامج Scheme عاديًّا لحلّ لغز العمارة السكنيّة.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.42:</strong> حُلّ لغز «الكاذبات» الآتي (مأخوذٌ من <a href="https://sarabander.github.io/sicp/html/References.xhtml#Phillips-1934">فيليبس 1934</a>): جلست خمسُ تلميذاتٍ لامتحانٍ. وقد أظهر والدا هنّ - بحسب ما ظنّن - اهتمامًا مفرطًا بالنتيجة. ولذلك اتّفقن على أنّ كلَّ واحدةٍ منهنّ، حين تكتب إلى أهلها عن الامتحان، تصدر عبارةً صحيحةً واحدةً وعبارةً غير صحيحةٍ واحدة. والآتي هي المقاطع ذات الصلة من رسائلهنّ: بيتي: «كانت كيتي الثانية في الامتحان. وأنا لم أكن سوى الثالثة.»</p>
+<blockquote>
+<p>إثيل: «سيسرّك أن تسمعي أنّي كنت الأولى. وكانت جوان الثانية.»
+جوان: «كنتُ الثالثة، وإثيل المسكينة كانت الأخيرة.»
+كيتي: «كنتُ الثانية. وكانت ماري الرابعة فقط.»
+ماري: «كنتُ الرابعة. وقد نالت بيتي الصدارة.»</p>
+<p>فما هو الترتيب الذي جاءت به التلميذات الخمس فعلًا؟</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.43:</strong> استخدم مقيّم <code>amb</code> لحلّ اللغز الآتي:<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup> يملك والد ماري آن مور يختًا، وكذلك يفعل كلٌّ من أصحابه الأربعة: العقيد داونينغ، والسيد هال، والسير بارناكِل هود، والدكتور باركر. ولكلٍّ من الخمسة أيضًا ابنةٌ واحدة، وقد سمّى كلٌّ منهم يخته باسم ابنةٍ لأحد الآخرين. فاليخت المسمّى Gabrielle هو يخت السير بارناكِل، والسيد مور يملك Lorna؛ أمّا السيد هال فيملك Rosalind. واليخت Melissa، المملوك للعقيد داونينغ، مسمّىً باسم ابنة السير بارناكِل. وأبو Gabrielle يملك اليخت المسمّى باسم ابنة الدكتور باركر. فمن هو أبو Lorna؟</p>
+</blockquote>
+<p>حاول كتابة البرنامج بحيث يعمل بكفاءةٍ (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.40</a>). وحدّد أيضًا عدد الحلول الموجودة إذا لم يُقَل لنا إنّ اسم عائلة ماري آن هو مور.</p>
+<blockquote>
+<p><strong>التمرين 4.44:</strong> لقد وصف <a href="https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e42">التمرين 2.42</a> «لغز الملكات الثماني»، وهو وضع ملكاتٍ على رقعة شطرنجٍ بحيث لا يهاجم بعضهنّ بعضًا. اكتب برنامجًا غير حتميٍّ لحلّ هذا اللغز.</p>
+</blockquote>
+<h4>تحليل اللغة الطبيعيّة</h4>
+<p>تبدأ البرامج المصمّمة لقبول اللغة الطبيعيّة كدخل (input) عادةً بمحاولة <em>تحليل (parse)</em> الدخل، أي مطابقته مع بنيةٍ نحويّةٍ ما. فمثلًا، قد نحاول التعرّف على جملٍ بسيطةٍ تتكوّن من أداة تعريفٍ تليها اسمٌ يليه فعل، مثل «القطّ يأكل». ولإنجاز تحليلٍ كهذا، ينبغي أن نكون قادرين على تحديد أقسام كلام الكلمات المفردة. ويستطيع المرء البدء ببعض القوائم التي تصنّف كلماتٍ متنوّعة:<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> nouns 
+  &#x27;(noun student professor cat class))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> verbs 
+  &#x27;(verb studies lectures eats sleeps))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> articles &#x27;(article the a))
+</code></pre>
+<p>ونحتاج أيضًا إلى <em>نحوٍ (grammar)</em>، أي مجموعةٍ من القواعد تصف كيف تُركّب العناصر النحويّة من عناصر أبسط. فقد ينصّ نحوٌ بسيطٌ جدًّا على أنّ الجملة تتكوّن دائمًا من قطعتين - <em>عبارةٌ اسميّةٌ (noun phrase)</em> تليها فعل - وعلى أنّ العبارة الاسميّة تتكوّن من أداة تعريفٍ تليها اسمٌ. وبهذا النحو، تُحلَّل الجملة «القطّ يأكل» على النحو الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">sentence</span>
+ (<span class="hljs-name">noun-phrase</span> (<span class="hljs-name">article</span> the) (<span class="hljs-name">noun</span> cat))
+ (<span class="hljs-name">verb</span> eats))
+</code></pre>
+<p>ويستطيع المرء أن يولّد تحليلًا كهذا ببرنامجٍ بسيطٍ له إجراءاتٌ منفصلةٌ لكلّ قاعدةٍ من القواعد النحويّة. فلتحليل جملةٍ، نحدّد قطعتَيها المكوّنتين ونعيد قائمةً بهذين العنصرين، موسومةً بالرمز <code>sentence</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-sentence</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;sentence</span>
+         (<span class="hljs-name">parse-noun-phrase</span>)
+         (<span class="hljs-name">parse-word</span> verbs)))
+</code></pre>
+<p>وتُحلَّل العبارة الاسميّة، بالمثل، بإيجاد أداة تعريفٍ تليها اسمٌ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-noun-phrase</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;noun-phrase</span>
+        (<span class="hljs-name">parse-word</span> articles)
+        (<span class="hljs-name">parse-word</span> nouns)))
+</code></pre>
+<p>وفي أدنى مستوى، ينحصر التحليل في التحقّق المتكرّر من أنّ الكلمة التالية غير المحلَّلة هي عضوٌ في قائمة كلمات قسم الكلام المطلوب. ولتنفيذ هذا، نحافظ على متغيّرٍ شاملٍ <code>*unparsed*</code>، وهو الدخل الذي لم يُحلَّل بعد. وكلّما فحصنا كلمةً، نقتضي أن يكون <code>*unparsed*</code> غير فارغٍ وأن يبدأ بكلمةٍ من القائمة المعيَّنة. فإن كان الأمر كذلك، نحذف تلك الكلمة من <code>*unparsed*</code> ونعيدها مع قسم كلامها (الذي يُوجد في رأس القائمة):<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-word</span> word-list)
+  (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> *unparsed*)))
+  (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">memq</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> *unparsed*) 
+                 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> word-list)))
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">found-word</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> *unparsed*)))
+    (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> *unparsed* (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> *unparsed*))
+    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> word-list) found-word)))
+</code></pre>
+<p>ولابتداء التحليل، كلّ ما علينا فعله هو ضبط <code>*unparsed*</code> ليكون الدخل بأكمله، ومحاولة تحليل جملةٍ، والتحقّق من أنّ لا شيء بقيَ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> *unparsed* &#x27;())
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse</span> input)
+  (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> *unparsed* input)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">sent</span> (<span class="hljs-name">parse-sentence</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> *unparsed*))
+    sent))
+</code></pre>
+<p>ويستطيع المرء الآن تجربة المحلّل والتحقّق من أنّه يعمل من أجل جملة اختبارنا البسيطة:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">parse</span> &#x27;(the cat eats))
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">sentence</span> 
+ (<span class="hljs-name">noun-phrase</span> (<span class="hljs-name">article</span> the) (<span class="hljs-name">noun</span> cat))
+ (<span class="hljs-name">verb</span> eats))
+</code></pre>
+<p>ومقيّم <code>amb</code> مفيدٌ هنا لأنّه ملائمٌ للتعبير عن قيود التحليل بمعونة <code>require</code>. أمّا البحث الآليّ والتتبّع الرجعيّ فيُجدِيان ثمارهما حقًّا حين ننظر في قواعد نحويّةٍ أكثر تعقيدًا، حيث تكون هناك خياراتٌ لكيفيّة تفكيك الوحدات.</p>
+<p>فلنُضِف إلى نحوّنا قائمةً بحروف الجرّ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> prepositions 
+  &#x27;(prep for to in by with))
+</code></pre>
+<p>ولنُعرّف <em>عبارة حرف الجرّ (prepositional phrase)</em> (مثلًا «للقطّ») على أنّها حرف جرٍّ يتبعه عبارةٌ اسميّةٌ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-prepositional-phrase</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;prep-phrase</span>
+        (<span class="hljs-name">parse-word</span> prepositions)
+        (<span class="hljs-name">parse-noun-phrase</span>)))
+</code></pre>
+<p>ويسعنا الآن تعريف الجملة على أنّها عبارةٌ اسميّةٌ تليها <em>عبارةٌ فعليّة (verb phrase)</em>، حيث يمكن أن تكون العبارة الفعليّة إمّا فعلًا وإمّا عبارةً فعليّةً موسّعةً بعبارة حرف جرٍّ:<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-sentence</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;sentence</span>
+         (<span class="hljs-name">parse-noun-phrase</span>)
+         (<span class="hljs-name">parse-verb-phrase</span>)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-verb-phrase</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">maybe-extend</span> verb-phrase)
+    (<span class="hljs-name">amb</span> 
+     verb-phrase
+     (<span class="hljs-name">maybe-extend</span> 
+      (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;verb-phrase</span>
+            verb-phrase
+            (<span class="hljs-name">parse-prepositional-phrase</span>)))))
+  (<span class="hljs-name">maybe-extend</span> (<span class="hljs-name">parse-word</span> verbs)))
+</code></pre>
+<p>وبمناسبة الحديث، يستطيع المرء أيضًا أن يُفصّل تعريف العبارات الاسميّة للسماح بأمورٍ مثل «قطةٍ في الصفّ». فما كنّا نسمّيه عبارةً اسميّةً، سنسمّيه الآن عبارةً اسميّةً بسيطة، وستكون العبارة الاسميّة إمّا عبارةً اسميّةً بسيطةً وإمّا عبارةً اسميّةً موسّعةً بعبارة حرف جرٍّ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-simple-noun-phrase</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;simple-noun-phrase</span>
+        (<span class="hljs-name">parse-word</span> articles)
+        (<span class="hljs-name">parse-word</span> nouns)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-noun-phrase</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">maybe-extend</span> noun-phrase)
+    (<span class="hljs-name">amb</span> 
+     noun-phrase
+     (<span class="hljs-name">maybe-extend</span> 
+      (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;noun-phrase</span>
+            noun-phrase
+            (<span class="hljs-name">parse-prepositional-phrase</span>)))))
+  (<span class="hljs-name">maybe-extend</span> (<span class="hljs-name">parse-simple-noun-phrase</span>)))
+</code></pre>
+<p>ويسمح لنا نحوّنا الجديد بتحليل جملٍ أكثر تعقيدًا. فمثلًا</p>
+<pre><code class="language-scheme">(<span class="hljs-name">parse</span> &#x27;(the student with the cat 
+         sleeps in the class))
+</code></pre>
+<p>يُنتج</p>
+<pre><code class="language-scheme">(<span class="hljs-name">sentence</span>
+ (<span class="hljs-name">noun-phrase</span>
+  (<span class="hljs-name">simple-noun-phrase</span> (<span class="hljs-name">article</span> the) 
+                      (<span class="hljs-name">noun</span> student))
+  (<span class="hljs-name">prep-phrase</span> (<span class="hljs-name">prep</span> with)
+               (<span class="hljs-name">simple-noun-phrase</span>
+                (<span class="hljs-name">article</span> the)
+                (<span class="hljs-name">noun</span> cat))))
+ (<span class="hljs-name">verb-phrase</span>
+  (<span class="hljs-name">verb</span> sleeps)
+  (<span class="hljs-name">prep-phrase</span> (<span class="hljs-name">prep</span> in)
+               (<span class="hljs-name">simple-noun-phrase</span>
+                (<span class="hljs-name">article</span> the)
+                (<span class="hljs-name">noun</span> class)))))
+</code></pre>
+<p>لاحِظ أنّ دخلًا معيَّنًا قد يكون له أكثر من تحليلٍ مشروع. ففي الجملة «الأستاذ يلقي محاضرةً للطالب مع القطّ»، قد يكون الأستاذ يُحاضر ومعه القطّ، وقد يكون الطالب هو الذي معه القطّ. وبرنامجنا غير الحتميّ يجد كلا الاحتمالين:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">parse</span> &#x27;(the professor lectures to 
+         the student with the cat))
+</code></pre>
+<p>يُنتج</p>
+<pre><code class="language-scheme">(<span class="hljs-name">sentence</span>
+ (<span class="hljs-name">simple-noun-phrase</span> (<span class="hljs-name">article</span> the) 
+                     (<span class="hljs-name">noun</span> professor))
+ (<span class="hljs-name">verb-phrase</span>
+  (<span class="hljs-name">verb-phrase</span>
+   (<span class="hljs-name">verb</span> lectures)
+   (<span class="hljs-name">prep-phrase</span> (<span class="hljs-name">prep</span> to)
+                (<span class="hljs-name">simple-noun-phrase</span>
+                 (<span class="hljs-name">article</span> the) 
+                 (<span class="hljs-name">noun</span> student))))
+  (<span class="hljs-name">prep-phrase</span> (<span class="hljs-name">prep</span> with)
+               (<span class="hljs-name">simple-noun-phrase</span>
+                (<span class="hljs-name">article</span> the) 
+                (<span class="hljs-name">noun</span> cat)))))
+</code></pre>
+<p>وطلب المحاولة مرّةً أخرى من المقيّم يُنتج</p>
+<pre><code class="language-scheme">(<span class="hljs-name">sentence</span>
+ (<span class="hljs-name">simple-noun-phrase</span> (<span class="hljs-name">article</span> the) 
+                     (<span class="hljs-name">noun</span> professor))
+ (<span class="hljs-name">verb-phrase</span> (<span class="hljs-name">verb</span> lectures)
+              (<span class="hljs-name">prep-phrase</span> 
+               (<span class="hljs-name">prep</span> to)
+               (<span class="hljs-name">noun-phrase</span>
+                (<span class="hljs-name">simple-noun-phrase</span>
+                 (<span class="hljs-name">article</span> the) 
+                 (<span class="hljs-name">noun</span> student))
+                (<span class="hljs-name">prep-phrase</span> 
+                 (<span class="hljs-name">prep</span> with)
+                 (<span class="hljs-name">simple-noun-phrase</span>
+                  (<span class="hljs-name">article</span> the) 
+                  (<span class="hljs-name">noun</span> cat)))))))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 4.45:</strong> بالنحو المعطى أعلاه، يمكن تحليل الجملة الآتية بخمس طرائق مختلفة: «الأستاذ يلقي محاضرةً للطالب في الصفّ مع القطّ». أعطِ التحليلات الخمس، واشرح الفروق في ظلال المعنى بينها.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.46:</strong> إنّ المقيّمين في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a> و<a href="https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2">4.2</a> لا يحدّدان الترتيب الذي تُقيَّم به العوامل. وسنرى أنّ مقيّم <code>amb</code> يقيّمها من اليسار إلى اليمين. فسرح لماذا لن يعمل برنامج التحليل لدينا لو قُيِّمت العوامل بترتيبٍ آخر.</p>
+</blockquote>
+<p><strong>التمرين 4.47:</strong> يقترح لويس ريزنر أنّهُ، إذ كانت العبارة الفعليّة إمّا فعلًا وإمّا عبارةً فعليّةً تليها عبارة حرف جرٍّ، فسيكون تعريف إجراء <code>parse-verb-phrase</code> أبسطَ كثيرًا على النحو الآتي (وبالمثل بالنسبة للعبارات الاسميّة):</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parse-verb-phrase</span>)
+  (<span class="hljs-name">amb</span> (<span class="hljs-name">parse-word</span> verbs)
+       (<span class="hljs-name"><span class="hljs-built_in">list</span></span> 
+        <span class="hljs-symbol">&#x27;verb-phrase</span>
+        (<span class="hljs-name">parse-verb-phrase</span>)
+        (<span class="hljs-name">parse-prepositional-phrase</span>))))
+</code></pre>
+<p>فهل يعمل هذا؟ وهل يتغيّر سلوك البرنامج إذا بدّلنا ترتيب التعابير في الـ<code>amb</code>؟</p>
+<blockquote>
+<p><strong>التمرين 4.48:</strong> وسّع النحو المعطى أعلاه ليتعامل مع جملٍ أكثر تعقيدًا. فمثلًا، يستطيع المرء توسيع العبارات الاسميّة والعبارات الفعليّة لتشمل الصفات والظروف، أو التعامل مع الجمل المركّبة.<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.49:</strong> أليسا ب. هاكر أكثر اهتمامًا بتوليد جملٍ مثيرةٍ للاهتمامٍ من اهتمامها بتحليلها. وهي تستدلّ بأنّه بمجرّد تغيير إجراء <code>parse-word</code> بحيث يتجاهل «جملة الدخل» ويكون ناجحًا دائمًا ويولّد كلمةً مناسبةً بدلًا من ذلك، فسيمكننا استخدام البرامج التي بنيناها للتحليل لأداء التوليد بدلًا منه. نفّذ فكرة أليسا، وأظهِر أوّل نصف دستةٍ أو نحوه من الجمل المولّدة.<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+</blockquote>
+<h4>4.3.3 تنفيذ مقيّم <code>Amb</code></h4>
+<p>فإنّ تقييم تعبير Scheme عاديٍّ قد يُعيد قيمةً، وقد لا ينتهي أبدًا، وقد يُشير إلى خطأٍ. أمّا في Scheme غير الحتميّة، فقد يؤدّي تقييم تعبيرٍ - بالإضافة إلى ذلك - إلى اكتشاف طريقٍ مسدود، وفي هذه الحالة ينبغي أن يتراجع التقييم رجعيًّا إلى نقطة اختيارٍ سابقة. وتأويل Scheme غير الحتميّة معقّدٌ بحكم هذه الحالة الإضافيّة.</p>
+<p>وسنبني مقيّم <code>amb</code> من أجل Scheme غير الحتميّة بتعديل المقيّم المُحلِّل الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>.<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup> فكما في المقيّم المُحلِّل، يُنجَز تقييم التعبير بنداء إجراءٍ تنفيذيٍّ يُنتَج بتحليل ذلك التعبير. وسيكون الفرق بين تأويل Scheme العاديّة وتأويل Scheme غير الحتميّة كلَّه في الإجراءات التنفيذيّة.</p>
+<h4>الإجراءات التنفيذيّة وإجراءات الاستمرار</h4>
+<p>تذكّر أنّ الإجراءات التنفيذيّة في المقيّم العاديّ تأخذ معطىً واحدًا: بيئة التنفيذ. أمّا الإجراءات التنفيذيّة في مقيّم <code>amb</code> فتأخذ ثلاثة معطيات: البيئة، وإجراءين يُسمّيان <em>استمرارين (continuation procedures)</em>. وسينتهي تقييم التعبير بنداء أحد هذين الاستمرارين: فإن أدّى التقييم إلى قيمة، دُعي <em>استمرار النجاح (success continuation)</em> بتلك القيمة؛ وإن أدّى التقييم إلى اكتشاف طريقٍ مسدود، دُعي <em>استمرار الفشل (failure continuation)</em>. وبناء الاستمرارات الملائمة ونداؤها هي الآليّة التي يُنفّذ بها المقيّم غير الحتميّ التتبّع الرجعيّ.</p>
+<p>ومهمّة استمرار النجاح هي تلقّي قيمةٍ ومتابعة الاحتساب. فمع تلك القيمة، يُمرَّر إلى استمرار النجاح استمرارُ فشلٍ آخر، يُدعى لاحقًا إذا أدّى استخدام تلك القيمة إلى طريقٍ مسدود.</p>
+<p>ومهمّة استمرار الفشل هي تجربة فرعٍ آخر من العمليّة غير الحتميّة. وجوهر اللغة غير الحتميّة يكمن في أنّ التعابير قد تمثّل اختياراتٍ بين بدائل. فينبغي لتقييم تعبيرٍ كهذا أن يمضي بأحد الاختيارات البديلة المشار إليها، وإن لم يكن معروفًا مقدّمًا أيّ الاختيارات سيؤدّي إلى نتائج مقبولة. وللتعامل مع هذا، يختار المقيّم أحد البدائل ويمرّر هذه القيمة إلى استمرار النجاح. ومع هذه القيمة، يبني المقيّم استمرارَ فشلٍ ويمرّره معها، يمكن نداؤه لاحقًا لاختيار بديلٍ مختلف.</p>
+<p>ويُثار فشلٌ أثناء التقييم (أي يُدعى استمرار الفشل) حين يرفض برنامج المستخدم خطّ الهجوم الحالي رفضًا صريحًا (فمثلًا، قد يؤدّي نداء <code>require</code> إلى تنفيذ <code>(amb)</code>، وهو تعبيرٌ يفشل دائمًا - انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">4.3.1</a>). واستمرار الفشل المتاح عند تلك النقطة سيؤدّي إلى أن تختار أحدث نقطة اختيارٍ بديلًا آخر. فإن لم تكن هناك بدائل أخرى يُنظر فيها عند تلك النقطة، أُثير فشلٌ عند نقطة اختيارٍ سابقة، وهكذا. وتُستدعى استمرارات الفشل أيضًا من حلقة المُشغّل استجابةً لطلب <code>try-again</code>، لإيجاد قيمةٍ أخرى للتعبير.</p>
+<p>وبالإضافة إلى ذلك، فإن حدثت عمليّةٌ ذات أثرٍ جانبيّ (كإحلال قيمةٍ في متغيّر) على فرعٍ من العمليّة الناشئ عن اختيارٍ، فقد يلزم، حين تجد العمليّة طريقًا مسدودًا، التراجع عن الأثر الجانبيّ قبل إجراء اختيارٍ جديد. ويُنجَز هذا بجعل العمليّة ذات الأثر الجانبيّ تُنتج استمرارَ فشلٍ يتراجع عن الأثر الجانبيّ وينشر الفشل.</p>
+<p>وباختصار، تُبنى استمرارات الفشل بواسطة</p>
+<ul>
+<li>تعابير <code>amb</code> - لتوفير آليّةٍ لإجراء اختياراتٍ بديلةٍ إذا أدّى الاختيار الحالي الذي أجراه تعبير <code>amb</code> إلى طريقٍ مسدود؛</li>
+<li>مُشغّل المستوى الأعلى - لتوفير آليّةٍ للإبلاغ عن الفشل حين تنفد الاختيارات؛</li>
+<li>الإحلالات - لاعتراض الفشل والتراجع عن الإحلالات أثناء التتبّع الرجعيّ.</li>
+</ul>
+<p>ولا تُبدأ الفشل إلّا عند مصادفة طريقٍ مسدود. ويقع ذلك</p>
+<ul>
+<li>إذا نفّذ برنامج المستخدم <code>(amb)</code>؛</li>
+<li>إذا كتب المستخدم <code>try-again</code> عند مُشغّل المستوى الأعلى.</li>
+</ul>
+<p>وتُدعى استمرارات الفشل أيضًا أثناء معالجة فشلٍ:</p>
+<ul>
+<li>حين ينتهي استمرار الفشل الذي أنشأه إحلالٌ من التراجع عن أثرٍ جانبيّ، فإنّه يدعو استمرار الفشل الذي اعترضه، بغية نشر الفشل راجعًا إلى نقطة الاختيار التي أوصلت إلى هذا الإحلال أو إلى المستوى الأعلى.</li>
+<li>حين ينفد اختيارات استمرار الفشل الخاصّ بتعبير <code>amb</code>، فإنّه يدعو استمرار الفشل المُعطى أصلًا لتعبير <code>amb</code>، بغية نشر الفشل راجعًا إلى نقطة الاختيار السابقة أو إلى المستوى الأعلى.</li>
+</ul>
+<h4>بنية المقيّم</h4>
+<p>إنّ إجراءات الصياغة وتمثيل البيانات الخاصّة بمقيّم <code>amb</code>، وكذلك إجراء <code>analyze</code> الأساسيّ، مطابقةٌ لتلك الواردة في مقيّم <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>، إلّا في كوننا نحتاج إلى إجراءات صياغةٍ إضافيّةٍ للتعرّف على الصيغة الخاصّة <code>amb</code>:<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">amb?</span> exp) (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;amb</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">amb-choices</span> exp) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> exp))
+</code></pre>
+<p>وينبغي لنا أيضًا أن نُضيف إلى التوزيع في <code>analyze</code> بندًا يتعرّف على هذه الصيغة الخاصّة ويولّد إجراءً تنفيذيًّا ملائمًا:</p>
+<pre><code class="language-scheme">((<span class="hljs-name">amb?</span> exp) (<span class="hljs-name">analyze-amb</span> exp))
+</code></pre>
+<p>وإجراء المستوى الأعلى <code>ambeval</code> (الشبيه بإصدار <code>eval</code> المعطى في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>) يحلّل التعبير المعطى ويطبّق إجراء التنفيذ الناتج على البيئة المعطاة، مع استمرارين معطيين:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">ambeval</span> exp env succeed fail)
+  ((<span class="hljs-name">analyze</span> exp) env succeed fail))
+</code></pre>
+<p>واستمرار النجاح إجراءٌ بمعطيين: القيمة التي حُصِل عليها لتوّها، واستمرار فشلٍ آخر يُستخدم إذا أدّت تلك القيمة إلى فشلٍ لاحق. وأمّا استمرار الفشل فإجراءٌ بلا معطيات. وبذلك، فالصورة العامّة لإجراء تنفيذيّ هي</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+  <span class="hljs-comment">;; succeed is (lambda (value fail) …)</span>
+  <span class="hljs-comment">;; fail is (lambda () …)</span>
+  …)
+</code></pre>
+<p>فمثلًا، تنفيذ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">ambeval</span> ⟨exp⟩
+         the-global-environment
+         (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (value fail) value)
+         (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> () <span class="hljs-symbol">&#x27;failed</span>))
+</code></pre>
+<p>سيحاول تقييم التعبير المعطى وسيعيد إمّا قيمة التعبير (إذا نجح التقييم) وإمّا الرمز <code>failed</code> (إذا فشل التقييم). أمّا نداء <code>ambeval</code> في حلقة المُشغّل المعروضة أدناه فيستخدم إجراءات استمرارٍ أعقدَ بكثيرٍ، تواصل الحلقة وتدعم طلب <code>try-again</code>.</p>
+<p>ويَنشأ معظم تعقيد مقيّم <code>amb</code> من ميكانيكا تمرير الاستمرارات فيما تنداي الإجراءات التنفيذيّة بعضها بعضًا. وعند المرور على الشيفرة الآتية، ينبغي أن تقارن كلّ إجراءٍ تنفيذيٍّ بالإجراء المقابل له في المقيّم العاديّ المعطى في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>.</p>
+<h4>التعابير البسيطة</h4>
+<p>والإجراءات التنفيذيّة الخاصّة بأبسط أنواع التعابير هي في أساسها ذاتها تلك الخاصّة بالمقيّم العاديّ، إلّا في الحاجة إلى إدارة الاستمرارات. فالإجراءات التنفيذيّة تنجح ببساطةٍ بقيمة التعبير، ممرّرةً استمرار الفشل الذي مُرِّر إليها.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-self-evaluating</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+    (<span class="hljs-name">succeed</span> exp fail)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-quoted</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">qval</span> (<span class="hljs-name">text-of-quotation</span> exp)))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">succeed</span> qval fail))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-variable</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+    (<span class="hljs-name">succeed</span> (<span class="hljs-name">lookup-variable-value</span> exp env)
+             fail)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-lambda</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">vars</span> (<span class="hljs-name">lambda-parameters</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>))
+        (<span class="hljs-name">bproc</span> (<span class="hljs-name">analyze-sequence</span> 
+                (<span class="hljs-name">lambda-body</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">succeed</span> (<span class="hljs-name">make-procedure</span> vars bproc env)
+               fail))))
+</code></pre>
+<p>لاحِظ أنّ البحث عن قيمة متغيّرٍ «ينجح» دائمًا. فإن فشل <code>lookup-variable-value</code> في العثور على المتغيّر، فإنّه يُشير إلى خطأٍ، كالعادة. و«فشلٌ» كهذا يدلّ على علةٍ في البرنامج - إشارةٌ إلى متغيّرٍ غير مقيّد؛ وهو ليس دلالةً على وجوب تجربة اختيارٍ غير حتميٍّ آخر بدلًا من الاختيار المُجرَّب حاليًّا.</p>
+<h4>التعابير الشرطيّة والتسلسلات</h4>
+<p>والتعابير الشرطيّة تُعالَج أيضًا بطريقةٍ مشابهةٍ لطريق معالجتها في المقيّم العاديّ. فإجراء التنفيذ الذي يولّده <code>analyze-if</code> يستدعي إجراء التنفيذ المُسَيِّم <code>pproc</code> باستمرار نجاحٍ يفحص ما إذا كانت قيمة المُسَيِّم صحيحة ثم يمضي لتنفيذ الفرع المترتّب أو الفرع البديل. فإن فشل تنفيذ <code>pproc</code>، دُعي استمرار الفشل الأصليّ الخاصّ بتعبير <code>if</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-if</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">pproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-predicate</span> exp)))
+        (<span class="hljs-name">cproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-consequent</span> exp)))
+        (<span class="hljs-name">aproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-alternative</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">pproc</span> env
+             <span class="hljs-comment">;; success continuation for evaluating</span>
+             <span class="hljs-comment">;; the predicate to obtain pred-value</span>
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (pred-value fail2)
+               (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">true?</span> pred-value)
+                   (<span class="hljs-name">cproc</span> env succeed fail2)
+                   (<span class="hljs-name">aproc</span> env succeed fail2)))
+             <span class="hljs-comment">;; failure continuation for</span>
+             <span class="hljs-comment">;; evaluating the predicate</span>
+             fail))))
+</code></pre>
+<p>والتسلسلات تُعالَج أيضًا بالطريقة ذاتها كما في المقيّم السابق، إلّا في المناورات التي تلزم في الإجراء الفرعيّ <code>sequentially</code> لتمرير الاستمرارات. أي أنّنا، لتنفيذ <code>a</code> تتابعيًّا ثم <code>b</code>، ندعو <code>a</code> باستمرار نجاحٍ يدعو <code>b</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-sequence</span> exps)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">sequentially</span> a b)
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">a</span> env
+         <span class="hljs-comment">;; success continuation for calling a</span>
+         (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (a-value fail2)
+           (<span class="hljs-name">b</span> env succeed fail2))
+         <span class="hljs-comment">;; failure continuation for calling a</span>
+         fail)))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">loop</span> first-proc rest-procs)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> rest-procs)
+        first-proc
+        (<span class="hljs-name">loop</span> (<span class="hljs-name">sequentially</span> first-proc 
+                            (<span class="hljs-name"><span class="hljs-built_in">car</span></span> rest-procs))
+              (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> rest-procs))))
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">procs</span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze exps)))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> procs)
+        (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Empty sequence: ANALYZE&quot;</span>))
+    (<span class="hljs-name">loop</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> procs) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> procs))))
+</code></pre>
+<h4>التعريفات والإحلالات</h4>
+<p>والتعريفات حالةٌ أخرى يلزم فيها أن نتكلّف بعض المشقّة لإدارة الاستمرارات، إذ من الضروريّ تقييم تعبير قيمة التعريف قبل تعريف المتغيّر الجديد فعلًا. ولكي يُنجَز هذا، يُدعى إجراء تنفيذ قيمة التعريف <code>vproc</code> بالبيئة، وباستمرار نجاحٍ، وباستمرار الفشل. فإن نجح تنفيذ <code>vproc</code> فحصل على قيمة <code>val</code> للمتغيّر المعرَّف، عُرِّف المتغيّر ونُشِر النجاح:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-definition</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">definition-variable</span> exp))
+        (<span class="hljs-name">vproc</span> (<span class="hljs-name">analyze</span> 
+                (<span class="hljs-name">definition-value</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">vproc</span> env
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (val fail2)
+               (<span class="hljs-name">define-variable!</span> var val env)
+               (<span class="hljs-name">succeed</span> <span class="hljs-symbol">&#x27;ok</span> fail2))
+             fail))))
+</code></pre>
+<p>والإحلالات أكثر إمتاعًا. فهذا أوّل موضعٍ نستخدم فيه الاستمرارات استخدامًا حقيقيًّا، لا مجرّد تمريرها من هنا إلى هناك. فيبدأ إجراء التنفيذ الخاصّ بالإحلالات كما يبدأ إجراء التعريفات. فهو يحاول أوّلًا الحصول على القيمة الجديدة التي ستُحَلّ في المتغيّر. فإن فشل تقييم <code>vproc</code> هذا، فشل الإحلال.</p>
+<p>أمّا إذا نجح <code>vproc</code>، ومضينا في إجراء الإحلال، فينبغي أن ننظر في احتمال أن يفشل هذا الفرع من الاحتساب لاحقًا، ممّا سيقتضي منّا التراجع رجعيًّا خارج الإحلال. وبذلك، ينبغي لنا أن نُرتّب للتراجع عن الإحلال كجزءٍ من عمليّة التتبّع الرجعيّ.<sup class="footnote-ref"><a href="#fn16" id="fnref16">[16]</a></sup></p>
+<p>ويُنجَز هذا بإعطاء <code>vproc</code> استمرار نجاحٍ (مُعلَّمٍ بالتعليق «<em>1</em>» أدناه) يحفظ القيمة القديمة للمتغيّر قبل إحلال القيمة الجديدة فيه والمواصلة انطلاقًا من الإحلال. وأمّا استمرار الفشل الممرَّر مع قيمة الإحلال (المُعلَّم بالتعليق «<em>2</em>» أدناه) فيستعيد القيمة القديمة للمتغيّر قبل مواصلة الفشل. أي أنّ الإحلال الناجح يُوفّر استمرارَ فشلٍ يعترض فشلًا لاحقًا؛ فأيّ فشلٍ كان سيدعو <code>fail2</code> لولا ذلك، يدعو هذا الإجراء بدلًا منه، للتراجع عن الإحلال قبل دعاء <code>fail2</code> فعلًا.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-assignment</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">assignment-variable</span> exp))
+        (<span class="hljs-name">vproc</span> (<span class="hljs-name">analyze</span> 
+                (<span class="hljs-name">assignment-value</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">vproc</span> env
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (val fail2)    <span class="hljs-comment">; *1*</span>
+               (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">old-value</span>
+                      (<span class="hljs-name">lookup-variable-value</span> 
+                       var 
+                       env)))
+                 (<span class="hljs-name">set-variable-value!</span>
+                  var 
+                  val 
+                  env)
+                 (<span class="hljs-name">succeed</span> 
+                  <span class="hljs-symbol">&#x27;ok</span>
+                  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()    <span class="hljs-comment">; *2*</span>
+                    (<span class="hljs-name">set-variable-value!</span> 
+                     var
+                     old-value
+                     env)
+                    (<span class="hljs-name">fail2</span>)))))
+               fail))))
+</code></pre>
+<h4>تطبيقات الإجراءات</h4>
+<p>وإجراء التنفيذ الخاصّ بالتطبيقات لا يحتوي على أفكارٍ جديدة، إلّا التعقيد الفنّيّ في إدارة الاستمرارات. وينشأ هذا التعقيد في <code>analyze-application</code>، نظرًا للحاجة إلى متابعة استمراري النجاح والفشل بينما نقيّم العوامل. ونستخدم إجراء <code>get-args</code> لتقييم قائمة العوامل، بدلًا من <code>map</code> البسيط كما في المقيّم العاديّ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-application</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">fproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">operator</span> exp)))
+        (<span class="hljs-name">aprocs</span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze (<span class="hljs-name">operands</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">fproc</span> env
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (proc fail2)
+               (<span class="hljs-name">get-args</span> 
+                aprocs
+                env
+                (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (args fail3)
+                  (<span class="hljs-name">execute-application</span>
+                   proc args succeed fail3))
+                fail2))
+             fail))))
+</code></pre>
+<p>وفي <code>get-args</code>، لاحِظ كيف يُنجَز النزول بـ<code>cdr</code> في قائمة إجراءات التنفيذ <code>aproc</code> والبناء بـ<code>cons</code> لقائمة <code>args</code> الناتجة، بدعاء كلّ <code>aproc</code> في القائمة باستمرار نجاحٍ يدعو <code>get-args</code> تعاوديًّا. ولكلّ نداءٍ من هذه النداءات التعاوديّة لـ<code>get-args</code> استمرارُ نجاحٍ قيمتُه <code>cons</code> للمعطى المحصَل عليه حديثًا على قائمة المعطيات المتراكمة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">get-args</span> aprocs env succeed fail)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> aprocs)
+      (<span class="hljs-name">succeed</span> &#x27;() fail)
+      ((<span class="hljs-name"><span class="hljs-built_in">car</span></span> aprocs) 
+       env
+       <span class="hljs-comment">;; success continuation for this aproc</span>
+       (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (arg fail2)
+         (<span class="hljs-name">get-args</span> 
+          (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> aprocs)
+          env
+          <span class="hljs-comment">;; success continuation for</span>
+          <span class="hljs-comment">;; recursive call to get-args</span>
+          (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (args fail3)
+            (<span class="hljs-name">succeed</span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> arg args)
+                     fail3))
+          fail2))
+       fail)))
+</code></pre>
+<p>يَتمّ تطبيق الإجراء الفعليّ، الذي يؤدّاه <code>execute-application</code>، بالطريقة ذاتها كما في المقيّم الاعتياديّ، باستثناء ضرورة إدارة الاستمراريّات (continuations).</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">execute-application</span> 
+         proc args succeed fail)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">primitive-procedure?</span> proc)
+         (<span class="hljs-name">succeed</span> 
+          (<span class="hljs-name">apply-primitive-procedure</span> 
+           proc args)
+          fail))
+        ((<span class="hljs-name">compound-procedure?</span> proc)
+         ((<span class="hljs-name">procedure-body</span> proc)
+          (<span class="hljs-name">extend-environment</span> 
+           (<span class="hljs-name">procedure-parameters</span> proc)
+           args
+           (<span class="hljs-name">procedure-environment</span> proc))
+          succeed
+          fail))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown procedure type: 
+                      EXECUTE-APPLICATION&quot;</span>
+                     proc))))
+</code></pre>
+<h4>تقييم تعابير <code>amb</code></h4>
+<p>صيغة <code>amb</code> الخاصّة هي العنصر الأساسيّ في اللغة غير الحتميّة (nondeterministic). وهنا نرى جوهر عمليّة التفسير وسبب تتبّع الاستمراريّات. فإنّ إجراء التنفيذ الخاص بـ<code>amb</code> يُعرّف حلقةً <code>try-next</code> تتنقّل بين إجراءات التنفيذ لجميع القيم الممكنة لتعبير <code>amb</code>. ويُستدعى كلّ إجراء تنفيذٍ مع استمراريّة فشلٍ تُجرّب التالي منها. وعندما لا تعود هناك بدائلٌ لتُجرَّب، يفشل تعبير <code>amb</code> كلَّه.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-amb</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">cprocs</span>
+         (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze (<span class="hljs-name">amb-choices</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">try-next</span> choices)
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> choices)
+            (<span class="hljs-name">fail</span>)
+            ((<span class="hljs-name"><span class="hljs-built_in">car</span></span> choices) 
+             env
+             succeed
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+               (<span class="hljs-name">try-next</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> choices))))))
+      (<span class="hljs-name">try-next</span> cprocs))))
+</code></pre>
+<h4>حلقة المشغّل</h4>
+<p>حلقة المشغّل (driver loop) لمقيّم <code>amb</code> معقّدة، بسبب الآليّة التي تسمح للمستخدم بأن يُعيد المحاولة في تقييم تعبيرٍ ما. ويستخدم المشغّل إجراءً يُسمّى <code>internal-loop</code>، يأخذ كمعطىً إجراءً <code>try-again</code>. والمقصود أنّ نداء <code>try-again</code> ينبغي أن يمضي إلى البديل غير المُجرَّب التالي في التقييم غير الحتميّ. وإجراء <code>Internal-loop</code> إمّا أن يستدعي <code>try-again</code> استجابةً لكتابة المستخدم <code>try-again</code> في حلقة المشغّل، وإلّا فيبدأ تقييمًا جديدًا بنداء <code>ambeval</code>.</p>
+<p>تبلّغ استمراريّة الفشل الخاصة بهذا النداء لـ<code>ambeval</code> المستخدمَ بأنّه لا تعود هناك قيم، وتستدعي حلقة المشغّل من جديد.</p>
+<p>أمّا استمراريّة النجاح الخاصة بنداء <code>ambeval</code> فأخفى أثرًا. فنحن نطبع القيمة المتحصّلة ثمّ نستدعي الحلقة الداخليّة من جديد مع إجراء <code>try-again</code> يكون قادرًا على تجريب البديل التالي. وهذا الإجراء <code>next-alternative</code> هو الوسيط الثاني الذي مُرِّر إلى استمراريّة النجاح. واعتياديًّا، نفكّر في هذا الوسيط الثاني بوصفه استمراريّة فشلٍ تُستخدَم إن فشل فرع التقييم الحاليّ لاحقًا. لكن في هذه الحالة، يكون قد أُتمّ تقييمٌ ناجح، فيمكننا استدعاء فرع البديل «الفاشل» باحثين عن تقييماتٍ ناجحةٍ إضافيّة.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> input-prompt  <span class="hljs-string">&quot;;;; Amb-Eval input:&quot;</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> output-prompt <span class="hljs-string">&quot;;;; Amb-Eval value:&quot;</span>)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">driver-loop</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">internal-loop</span> try-again)
+    (<span class="hljs-name">prompt-for-input</span> input-prompt)
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">input</span> (<span class="hljs-name"><span class="hljs-built_in">read</span></span>)))
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> input <span class="hljs-symbol">&#x27;try-again</span>)
+          (<span class="hljs-name">try-again</span>)
+          (<span class="hljs-name"><span class="hljs-built_in">begin</span></span>
+            (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>)
+            (<span class="hljs-name"><span class="hljs-built_in">display</span></span> 
+             <span class="hljs-string">&quot;;;; Starting a new problem &quot;</span>)
+            (<span class="hljs-name">ambeval</span> 
+             input
+             the-global-environment
+             <span class="hljs-comment">;; ambeval success</span>
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (val next-alternative)
+               (<span class="hljs-name">announce-output</span> 
+                output-prompt)
+               (<span class="hljs-name">user-print</span> val)
+               (<span class="hljs-name">internal-loop</span> 
+                next-alternative))
+             <span class="hljs-comment">;; ambeval failure</span>
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+               (<span class="hljs-name">announce-output</span>
+                <span class="hljs-string">&quot;;;; There are no 
+                 more values of&quot;</span>)
+               (<span class="hljs-name">user-print</span> input)
+               (<span class="hljs-name">driver-loop</span>)))))))
+  (<span class="hljs-name">internal-loop</span>
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> ()
+     (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>)
+     (<span class="hljs-name"><span class="hljs-built_in">display</span></span> 
+      <span class="hljs-string">&quot;;;; There is no current problem&quot;</span>)
+     (<span class="hljs-name">driver-loop</span>))))
+</code></pre>
+<p>يستخدم النداء الأوّل لـ<code>internal-loop</code> إجراء <code>try-again</code> يشتكي من عدم وجود مسألةٍ جارية، ويعيد تشغيل حلقة المشغّل. وهذا هو السلوك الذي سيحدث إن كتب المستخدم <code>try-again</code> حين لا يكون هناك تقييمٌ جارٍ.</p>
+<blockquote>
+<p><strong>التمرين 4.50:</strong> نفّذ صيغةً خاصّةً جديدةً تُسمّى <code>ramb</code> تشبه <code>amb</code> إلّا في أنّها تبحث في البدائل بترتيبٍ عشوائيّ، بدلًا من ترتيبها من اليسار إلى اليمين. وأظهر كيف يمكن أن يساعد هذا في مسألة أليسا الواردة في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.49</a>.</p>
+</blockquote>
+<p><strong>التمرين 4.51:</strong> نفّذ نوعًا جديدًا من الإحلال يُسمّى <code>permanent-set!</code> لا يُتراجع عنه عند الفشل. فمثلًا، يمكننا اختيار عنصرين متمايزين من قائمةٍ وعدّ عدد المحاولات اللازمة لإتيان اختيارٍ ناجح على النحو الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> count <span class="hljs-number">0</span>)
+(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">x</span> (<span class="hljs-name">an-element-of</span> &#x27;(a b c)))
+      (<span class="hljs-name">y</span> (<span class="hljs-name">an-element-of</span> &#x27;(a b c))))
+  (<span class="hljs-name">permanent-set!</span> count (<span class="hljs-name"><span class="hljs-built_in">+</span></span> count <span class="hljs-number">1</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> x y)))
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> x y count))
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">a</span> b <span class="hljs-number">2</span>)
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+try-again
+
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+(<span class="hljs-name">a</span> c <span class="hljs-number">3</span>)
+</code></pre>
+<p>ما القيم التي كانت ستُعرَض لو كنّا قد استخدمنا <code>set!</code> هنا بدلًا من <code>permanent-set!</code>؟</p>
+<p><strong>التمرين 4.52:</strong> نفّذ بنيةً جديدةً تُسمّى <code>if-fail</code> تسمح للمستخدم بالإمساك بفشل تعبيرٍ ما. يأخذ <code>If-fail</code> تعبيرين. فهو يقيّم التعبير الأوّل كما هو معتاد ويعيد كما هو معتاد إن نجح التقييم. لكن إن فشل التقييم، فتُعاد قيمة التعبير الثاني، كما في المثال التالي:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">if-fail</span> 
+ (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">x</span> (<span class="hljs-name">an-element-of</span> &#x27;(<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span>))))
+   (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> x))
+   x)
+ <span class="hljs-symbol">&#x27;all-odd</span>)
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+all-odd
+
+<span class="hljs-comment">;;; Amb-Eval input:</span>
+(<span class="hljs-name">if-fail</span>
+ (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">x</span> (<span class="hljs-name">an-element-of</span> &#x27;(<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>))))
+   (<span class="hljs-name"><span class="hljs-built_in">require</span></span> (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> x))
+   x)
+ <span class="hljs-symbol">&#x27;all-odd</span>)
+
+<span class="hljs-comment">;;; Starting a new problem</span>
+<span class="hljs-comment">;;; Amb-Eval value:</span>
+<span class="hljs-number">8</span>
+</code></pre>
+<p><strong>التمرين 4.53:</strong> باستخدام <code>permanent-set!</code> كما هو موصوف في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.51</a> و<code>if-fail</code> كما في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-3/">التمرين 4.52</a>، فما ستكون عليه نتيجة تقييم</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">pairs</span> &#x27;()))
+  (<span class="hljs-name">if-fail</span> 
+   (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">p</span> (<span class="hljs-name">prime-sum-pair</span> 
+             &#x27;(<span class="hljs-number">1</span> <span class="hljs-number">3</span> <span class="hljs-number">5</span> <span class="hljs-number">8</span>) 
+             &#x27;(<span class="hljs-number">20</span> <span class="hljs-number">35</span> <span class="hljs-number">110</span>))))
+     (<span class="hljs-name">permanent-set!</span> pairs 
+                     (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> p pairs))
+     (<span class="hljs-name">amb</span>))
+   pairs))
+</code></pre>
+<p><strong>التمرين 4.54:</strong> لو كنّا لم نُدرك أنّ <code>require</code> يمكن تنفيذه كإجراءٍ اعتياديّ يستخدم <code>amb</code>، يُعرَّف من قِبل المستخدم كجزءٍ من برنامجٍ غير حتميّ، لَكُنّا اضطررنا إلى تنفيذه كصيغةٍ خاصّة. وهذا كان سيتطلّب إجراءات صياغة</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">require?</span> exp) 
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;require</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">require-predicate</span> exp) 
+  (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+</code></pre>
+<p>وبندًا جديدًا في التوزيع داخل <code>analyze</code></p>
+<pre><code class="language-scheme">((<span class="hljs-name">require?</span> exp) (<span class="hljs-name">analyze-require</span> exp))
+</code></pre>
+<p>وكذلك الإجراء <code>analyze-require</code> الذي يعالج تعابير <code>require</code>. أكمل التعريف التالي لـ<code>analyze-require</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-require</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">pproc</span> (<span class="hljs-name">analyze</span> 
+                (<span class="hljs-name">require-predicate</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env succeed fail)
+      (<span class="hljs-name">pproc</span> env
+             (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (pred-value fail2)
+               (<span class="hljs-name"><span class="hljs-built_in">if</span></span> ⟨??⟩
+                   ⟨??⟩
+                   (<span class="hljs-name">succeed</span> <span class="hljs-symbol">&#x27;ok</span> fail2)))
+             fail))))
+</code></pre>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>لاحظ أنّ <code>preserving</code> ينادي <code>append</code> بثلاثة معطيات. ومع أنّ تعريف <code>append</code> المعروض في هذا الكتاب لا يقبل إلّا معطيين، فإنّ Scheme يوفّر قياسيًّا إجراء <code>append</code> يأخذ عددًا اعتباطيًّا من المعطيات. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>لقد استخدمنا الرمز <code>+</code> نفسه هنا للدلالة على كلٍّ من إجراء لغة المصدر وعمليّة الآلة. وبشكلٍ عام، لن توجد مقابلةٌ واحدٌ بواحدٍ بين أوّليّات لغة المصدر وأوّليّات الآلة. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>جعل الأوّليّات كلماتٍ محجوزة هو فكرةٌ سيّئةٌ عمومًا، إذ لا يستطيع المستخدم حينها إعادة ربط هذه الأسماء بإجراءاتٍ مختلفة. والأسوأ من ذلك، أنّ إضافة كلماتٍ محجوزةً إلى مصرّفٍ قيد الاستخدام ستجعل البرامج الموجودة التي تُعرِّف إجراءاتٍ بهذه الأسماء تتوقّف عن العمل. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.44</a> لأفكارٍ عن كيفيّة تجنّب هذه المشكلة. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>لا يصحّ هذا إذا سمحنا بتعريفاتٍ داخليّة، إلّا إذا استخرجناه بالمسح. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>هذا هو التعديل المطلوب على البحث عن المتغيّرات إذا نُفّذت طريقة الاستخراج لإزالة التعريفات الداخليّة (<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>). وسنحتاج إلى إزالة هذه التعريفات لكي تعمل العنونة المعجميّة. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>لا يمكن استخدام العناوين المعجميّة للوصول إلى المتغيّرات في البيئة العامّة، لأنّ هذه الأسماء يمكن تعريفها وإعادة تعريفها تفاعليًّا في أيّ وقت. فمع استخراج التعريفات الداخليّة، كما في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>، تكون التعريفات الوحيدة التي يراها المصرّف هي التعريفات على المستوى الأعلى، وهي التي تعمل على البيئة العامّة. ولا يتسبّب تصريف تعريفٍ في إدخال الاسم المعرَّف في بيئة وقت التصريف. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>وبالطبع، الإجراءات المصرّفة كالإجراءات المُفسَّرة مركّبةٌ (غير أوّليّة). واتّفاقًا مع المصطلحات المستخدمة في المُقيّم ذي المتحكّم الصريح، سنستخدم في هذا القسم «مركّب» بمعنى مُفسَّر (مقابلًا لمصرَّف). <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>وحيث إنّ آلة المُقيّم تبدأ الآن بـ<code>branch</code>، ينبغي لنا دائمًا تهيئة المسجّل <code>flag</code> قبل تشغيل آلة المُقيّم. ولتشغيل الآلة على حلقة القراءة-التقييم-الطباعة المعتادة، كان بوسعنا استخدام <code>scheme (define (start-eceval) (set! the-global-environment (setup-environment)) (set-register-contents! eceval 'flag false) (start eceval)) </code> <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>وبما أنّ الإجراء المصرّف كائنٌ قد يحاول النظام طباعته، نُعدّل أيضًا عمليّة طباعة النظام <code>user-print</code> (الواردة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>) حتّى لا تحاول طباعة مكوّنات الإجراء المصرّف: <code>scheme (define (user-print object) (cond ((compound-procedure? object) (display (list 'compound-procedure (procedure-parameters object) (procedure-body object) '))) ((compiled-procedure? object) (display ')) (else (display object)))) </code> <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>وبوسعنا أن نفعل أفضل من ذلك بتمديد المصرّف للسماح للشيفرة المصرّفة بنداء الإجراءات المُفسَّرة. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.47</a>. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>مستقلًّا عن استراتيجيّة التنفيذ، نتحمّل عبئًا إضافيًّا كبيرًا إذا أصرَرنا على كشف الأخطاء التي تقع أثناء تنفيذ برنامج المستخدم والإشارة إليها، بدلًا من السّماح لها بإسقاط النظام أو إنتاج إجابات خاطئة. فمثلًا، يمكن كشف مرجع مصفوفةٍ خارج الحدود بالتحقّق من صلاحيّة المرجع قبل إجرائه. غير أنّ عبء التحقّق قد يبلغ أضعاف كلفة مرجع المصفوفة نفسه، وعلى المبرمج أن يوزن بين السرعة والأمان في تحديد مدى رغبته في مثل هذا التحقّق. وينبغي لمصرّفٍ جيّدٍ أن يكون قادرًا على إنتاج شيفرةٍ تتضمّن مثل هذه التحقّقات، وأن يتجنّب التحقّقات الزائدة، وأن يسمح للمبرمجين بالتحكّم في مدى فحوص الأخطاء ونوعها في الشيفرة المصرّفة. أمّا مصرّفات اللغات الشائعة، مثل C وC++، فلا تُدخل إلّا القليل جدًّا من عمليّات التحقّق من الأخطاء في الشيفرة العاملة، حتّى تجري الأمور بأسرع ما يمكن. ونتيجةً لذلك، يقع على عاتق المبرمجين تدبير التحقّق من الأخطاء صراحةً. ومؤسفٌ أنّ الناس يغفلون عن ذلك كثيرًا، حتّى في التطبيقات الحرجة حيث لا يكون هناك قيدٌ على السرعة. فبرامجهم تعيش حياةً سريعةً وخطرة. فمثلًا، استغلّت «الدودة» (Worm) الشهيرة التي شلّت الإنترنت عام 1988 فشل نظام التشغيل UNIX(tm) في التحقّق من أنّ مخزَن الإدخال قد فاض في عفريت finger. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Spafford-1989">سبافورد 1989</a>.) <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>وبالطبع، مع كلٍّ من استراتيجيّة التفسير واستراتيجيّة التصريف، يتحتّم علينا أيضًا أن نُنفّذ للآلة الجديدة تخصيص التخزين، والإدخال والإخراج، وكلّ العمليّات المتنوّعة التي أخذناها كـ«أوّليّات» في مناقشتنا للمُقيّم والمصرّف. وإحدى استراتيجيّات تقليل العمل هنا هي كتابة أكبر عددٍ ممكن من هذه العمليّات في Lisp ثمّ تصريفها للآلة الجديدة. وفي النهاية، يندرج كلّ شيءٍ في نواةٍ صغيرة (مثل جمع القمامة وآليّة تطبيق أوّليّات الآلة الفعليّة) تُكتب يدويًّا للآلة الجديدة. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>تؤدّي هذه الاستراتيجيّة إلى اختباراتٍ ممتعةٍ لصحّة المصرّف، مثل التحقّق ممّا إذا كان تصريف برنامجٍ على الآلة الجديدة، باستخدام المصرّف المصرَّف، مطابقًا لتصريف البرنامج على نظام Lisp الأصليّ. وتتبّع مصدر الفروقات أمرٌ ممتعٌ لكنّه مُحبطٌ غالبًا، لأنّ النتائج حسّاسةٌ للغاية حتّى لأدقّ التفاصيل. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>اخترنا تنفيذ المقيّم المتأخّر في <a href="https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2">4.2</a> بوصفه تعديلًا على المقيّم الحلقيّ الوسيط الاعتياديّ الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>. وعلى النقيض، سنُأسيس مقيّم <code>amb</code> على المقيّم المُحلِّل الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>، لأنّ إجراءات التنفيذ في ذلك المقيّم تُوفّر إطارًا مريحًا لتنفيذ التتبّع الرجعيّ. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn15" class="footnote-item"><p>نفترض أنّ المقيّم يدعم <code>let</code> (انظر <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e22">التمرين 4.22</a>)، التي استخدمناها في برامجنا غير الحتميّة. <a href="#fnref15" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn16" class="footnote-item"><p>لم نقلق بشأن إلغاء التعريفات، إذ يُمكننا الافتراض بأنّ التعريفات الداخليّة مُستخرَجة بالمسح (<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6">4.1.6</a>). <a href="#fnref16" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-2"><span class="prev-next__label">السابق</span> <span class="prev-next__title">4.2 تنويعات على Scheme — التقييم المتأخّر</span></a><!--]--> <!--[0--><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-4"><span class="prev-next__label">التالي</span> <span class="prev-next__title">4.4 البرمجة المنطقيّة</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_cvii3e = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C6hGpua7.js"),
+						import("../../../../_app/immutable/entry/app.aeeFG9Oy.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

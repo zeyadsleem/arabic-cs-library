@@ -1,0 +1,1316 @@
+const s="sicp",a="c5-computing-with-register-machines",n="الحوسبة بآلات المسجّلات",c="5-5",e="5.5 التصريف",l=[{depth:3,id:"55-التصريف",text:"5.5 التصريف"}],p=`<h3 id="55-التصريف">5.5 التصريف</h3>
+<p>إنّ المقيّم ذا المتحكّم الصريح الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4">5.4</a> آلةُ مسجّلاتٍ متحكّمها يفسّر برامج Scheme. وفي هذا القسم سنرى كيف نشغّل برامج Scheme على آلة مسجّلاتٍ متحكّمها ليس مفسّر Scheme.</p>
+<p>إنّ آلة المقيّم ذي المتحكّم الصريح عامّة - فهي قادرة على أداء أيّ عمليّةٍ حسابيّةٍ يمكن وصفها بـScheme. ومتحكّم المقيّم ينسّق استخدام مسارات بياناته لأداء الاحتساب المطلوب. وبذلك، فإنّ مسارات بيانات المقيّم عامّة: فهي كافيّة لأداء أيّ احتسابٍ نرغبه، بمتحكّمٍ مناسب.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>إنّ الحواسيب التجاريّة العامّة الغرض آلاتُ مسجّلاتٍ منظّمةٌ حول مجموعةٍ من المسجّلات والعمليّات التي تُشكّل مجموعةً عامّةً كفوءةً ومريحةً من مسارات البيانات. أمّا متحكّم آلةٍ عامّة الغرض فهو مفسّرٌ للغةٍ من لغات آلات المسجّلات شبيهة بتلك التي كنّا نستخدمها. وهذه اللغة تُسمّى <em>اللغة الأصليّة (native language)</em> للآلة، أو باختصار <em>لغة الآلة (machine language)</em>. والبرامج المكتوبة بلغة الآلة تسلسلاتٌ من التعليمات التي تستخدم مسارات بيانات الآلة. فإنّ تسلسل تعليمات المقيّم ذي المتحكّم الصريح مثلًا يمكن النظر إليه كبرنامجٍ بلغة الآلة لحاسوبٍ عامّ الغرض بدلًا من اعتباره متحكّمًا لآلة مفسّرٍ متخصّصة.</p>
+<p>ثمّة استراتيجيّتان شائعتان لردم الفجوة بين اللغات العالية المستوى ولغات آلات المسجّلات. ويُمثّل المقيّم ذو المتحكّم الصريح استراتيجيّة التفسير. فالمفسّر المكتوب باللغة الأصليّة لآلةٍ يُهيّئ الآلة لتنفيذ برامجٍ مكتوبةٍ بلغةٍ (تُسمّى <em>لغة المصدر (source language)</em>) قد تختلف عن اللغة الأصليّة للآلة التي تُجري التقييم. وتُنفَّذ الإجراءات الأوّليّة للغة المصدر كمكتبةٍ من الإجراءات الفرعيّة المكتوبة باللغة الأصليّة للآلة المعطاة. أمّا البرنامج المراد تفسيره (ويُسمّى <em>البرنامج المصدريّ (source program)</em>) فيُمثَّل كبنية بيانات. والمفسّر يجتاز بنية البيانات هذه، محلّلًا البرنامج المصدريّ. وبينما يفعل ذلك، فإنّه يحاكي السلوك المقصود من البرنامج المصدريّ بنداء الإجراءات الفرعيّة الأوّليّة الملائمة من المكتبة.</p>
+<p>وفي هذا القسم نستكشف الاستراتيجيّة البديلة، وهي <em>التصريف (compilation)</em>. فإنّ المصرِّف الخاصّ بلغة مصدرٍ وآلةٍ معيّنتين يُترجم برنامجًا مصدريًّا إلى برنامجٍ مكافئٍ (يُسمّى <em>البرنامج الهدف (object program)</em>) مكتوبٍ بلغة الآلة الأصليّة. أمّا المصرِّف الذي ننفّذه في هذا القسم فيُترجم البرامج المكتوبة بـScheme إلى تسلسلاتٍ من التعليمات التي يُنفَّذ باستخدام مسارات بيانات آلة المقيّم ذي المتحكّم الصريح.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>وبالمقارنة مع التفسير، فإنّ التصريف قادرٌ على توفير زيادةٍ كبيرةٍ في كفاءة تنفيذ البرامج، كما سنشرح أدناه في استعراضنا للمصرِّف. ومن جهةٍ أخرى، فإنّ المفسّر يوفّر بيئةً أكثر قوّةٍ لتطوير البرامج التفاعليّ وتصحيحها، لأنّ البرنامج المصدريّ قيد التنفيذ متاحٌ في زمن التشغيل للفحص والتعديل. وبالإضافة إلى ذلك، وبسبب حضور مكتبة الأوّليّات بتمامها، يمكن بناء برامج جديدة وإضافتها إلى النظم أثناء التصحيح.</p>
+<p>وإذ نُلاحِظ المزايا المكمّلة للتصريف والتفسير، فإنّ بيئات تطوير البرامج الحديثة تنتهج استراتيجيّة مختلطة. فإنّ مفسّرات Lisp منظّمةٌ عمومًا بحيث تستطيع الإجراءات المفسَّرة والإجراءات المصرَّفة أن تنداي بعضها بعضًا. وهذا يمكّن المبرمجَ من تصريف الأجزاء من البرنامج التي يُفترض أنّها صُحِّحت، فيحصُل بذلك على ميزة كفاءة التصريف، مع الاحتفاظ بنمط التنفيذ التفسيريّ للأجزاء التي هي في تطوّرٍ تفاعليٍّ وتصحيح. وفي <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.7</a>، بعد أن نكون قد نفّذنا المصرِّف، سنُظهر كيف نوفّق بينه وبين مفسّرنا لإنتاج نظام تطويرٍ متكاملٍ يجمع المفسّر والمصرِّف.</p>
+<h4>استعراض المصرِّف</h4>
+<p>إنّ مصرّفنا يشبه مفسّرنا إلى حدٍّ كبير، في بنيته وفي الوظيفة التي يؤدّيها. ووفقًا لذلك، فإنّ الآليّات التي يستخدمها المصرِّف لتحليل التعابير ستشبه تلك التي يستخدمها المفسّر. وبالإضافة إلى ذلك، ولتسهيل التوفيق بين الشيفرة المصرَّفة والشيفرة المفسَّرة، سنُصمّم المصرِّف ليُنتج شيفرةً تلتزم بالأعراف ذاتها في استخدام المسجّلات التي يلتزم بها المفسّر: فتُحفظ البيئة في المسجّل <code>env</code>، وتُتراكم قوائم المعطيات في <code>argl</code>، ويكون الإجراء المطلوب تطبيقه في <code>proc</code>، وتُعيد الإجراءات أجوبتها في <code>val</code>، ويُحفظ الموضع الذي ينبغي أن يعود إليه الإجراء في <code>continue</code>. وبصورةٍ عامّة، يُترجم المصرِّف برنامجًا مصدريًّا إلى برنامجٍ هدفٍ يؤدّي - في الجوهري - عمليّات المسجّل ذاتها التي كان المفسّر سيؤدّيها في تقييم البرنامج المصدريّ ذاته.</p>
+<p>وهذا الوصف يقترح استراتيجيّة لتنفيذ مصرِّفٍ أوّليّ: نجتاز التعبير بالطريقة ذاتها التي يجتازها المفسّر. وحين نصادف تعليمة مسجّلٍ كان المفسّر سيؤدّيها في تقييم التعبير، فإنّنا لا ننفّذ التعليمة بل نُراكمها في تسلسلٍ بدلًا من ذلك. وتسلسل التعليمات الناتج سيكون شيفرة الهدف. وتأمّل ميزة كفاءة التصريف على التفسير. ففي كلّ مرّةٍ يُقيّم فيها المفسّر تعبيرًا - <code>(f 84 96)</code> مثلًا - فإنّه يؤدّي عمل تصنيف التعبير (باكتشاف أنّ هذا تطبيق إجراء) واختبار نهاية قائمة العوامل (باكتشاف أنّ هناك عاملين). أمّا مع مصرِّف، فإنّ التعبير يُحلَّل مرّةً واحدةً فقط، حين يُنتَج تسلسل التعليمات في زمن التصريف. وشيفرة الهدف التي يُنتجها المصرِّف تحتوي فقط على التعليمات التي تُقيّم المشغّل والعاملين، وتبني قائمة المعطيات، وتُطبّق الإجراء (في <code>proc</code>) على المعطيات (في <code>argl</code>).</p>
+<p>وهذا هو النوع ذاته من التحسين الذي نفّذناه في المقيّم المحلِّل الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>. لكن ثمّة فرصًا أخرى لاكتساب الكفاءة في الشيفرة المصرَّفة. فبينما يعمل المفسّر، فإنّه يتبع عمليّةً يجب أن تكون قابلة للتطبيق على أيّ تعبيرٍ في اللغة. وبالمقابل، فإنّ مقطعًا معيّنًا من الشيفرة المصرَّفة يُقصد به تنفيذ تعبيرٍ خاصّ بعينه. وهذا قد يُحدث فرقًا كبيرًا، في استخدام المكدّس لحفظ المسجّلات مثلًا. فحين يُقيّم المفسّر تعبيرًا، ينبغي أن يكون مستعدًّا لأيّ طارئ. وقبل تقييم تعبيرٍ جزئيّ، يحفظ المفسّر جميع المسجّلات التي ستكون لازمةً لاحقًا، لأنّ التعبير الجزئيّ قد يتطلّب تقييمًا اعتباطيًّا. أمّا المصرِّف، من جهةٍ أخرى، فيستطيع استثمار بنية التعبير الخاصّ الذي يعالجه ليُنتج شيفرةً تتجنّب عمليّات المكدّس غير الضروريّة.</p>
+<p>وبوصفه مثالًا على ذلك، تأمّل التركيب <code>(f 84 96)</code>. فقبل أن يُقيّم المفسّر مشغّل التركيب، فإنّه يتهيّأ لهذا التقييم بحفظ المسجّلات التي تحتوي العوامل والبيئة، والتي ستكون قيمُها لازمةً لاحقًا. ثم يُقيّم المفسّر المشغّل ليحصل على النتيجة في <code>val</code>، ويستعيد المسجّلات المحفوظة، وأخيرًا ينقل النتيجة من <code>val</code> إلى <code>proc</code>. لكنّنا في التعبير الخاصّ الذي نتعامل معه، المشغّل هو الرمز <code>f</code>، الذي يُنجَز تقييمه بعمليّة الآلة <code>lookup-variable-value</code>، وهي لا تُغيّر أيّ مسجّل. والمصرِّف الذي ننفّذه في هذا القسم سيستفيد من هذه الحقيقة ويُنتج شيفرةً تُقيّم المشغّل باستخدام التعليمة</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> proc 
+        (<span class="hljs-name">op</span> lookup-variable-value)
+        (<span class="hljs-name">const</span> f)
+        (<span class="hljs-name">reg</span> env))
+</code></pre>
+<p>وهذه الشيفرة لا تتجنّب الحفظ والاستعادة غير الضروريّين فحسب، بل تُسند أيضًا نتيجة البحث مباشرةً إلى <code>proc</code>، بخلاف المفسّر الذي كان سيستخرج النتيجة في <code>val</code> ثم ينقلها إلى <code>proc</code>.</p>
+<p>ويستطيع المصرِّف أيضًا تحسين الوصول إلى البيئة. فإنّه بعد تحليل الشيفرة، يستطيع المصرِّف - في حالاتٍ كثيرةٍ - أن يعرف في أيّ إطارٍ سيقع متغيّرٌ خاصّ، وأن يصل إلى ذلك الإطار مباشرةً، بدلًا من إجراء بحث <code>lookup-variable-value</code>. وسنناقش كيف ننفّذ وصول المتغيّرات هذا في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.6</a>. لكنّنا، حتّى ذلك الحين، سنركّز على نوع تحسينات المسجّلات والمكدّس الموصوف أعلاه. ثمّة تحسيناتٌ أخرى كثيرةٌ يستطيع المصرِّف أداءها، كترميز العمليّات الأوّليّة «سطرًا» بدلًا من استخدام آليّة <code>apply</code> عامّة (انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.38</a>)؛ لكنّنا لن نُشدّد على هذه هنا. أمّا هدفنا الرئيسيّ في هذا القسم فهو توضيح عمليّة التصريف في سياقٍ مبسّطٍ (لكنه لا يزال مثيرًا للاهتمام).</p>
+<h4>5.5.1 بنية المصرِّف</h4>
+<p>لقد عدّلنا في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a> مفسّرنا البعديّ الأصليّ لفصل التحليل عن التنفيذ. فقد حلّلنا كلّ تعبيرٍ لنُنتج إجراء تنفيذٍ يأخذ بيئةً كمعطىً ويؤدّي العمليّات المطلوبة. وفي مصرّفنا، سنجري التحليل ذاته في الجوهري. لكنّنا، بدلًا من إنتاج إجراءات تنفيذٍ، سنُنتج تسلسلاتٍ من التعليمات التي ستُشغَّل بآلة مسجّلاتنا.</p>
+<p>والإجراء <code>compile</code> هو التوزيع الأعلى مستوىً في المصرِّف. وهو يقابل الإجراء <code>eval</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>، والإجراء <code>analyze</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e7">4.1.7</a>، ونقطة دخول <code>eval-dispatch</code> في المقيّم ذي المتحكّم الصريح الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1">5.4.1</a>. وإنّ المصرِّف - كالمفسّرات - يستخدم إجراءات صياغة التعبير المعرَّفة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2">4.1.2</a>.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> ويُجري <code>compile</code> تحليل حالاتٍ على النوع الصياغيّ للتعبير المطلوب تصريفه. فلكلّ نوعٍ من التعابير، يوزّع إلى <em>مولّد شيفرةٍ (code generator)</em> متخصّص:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile</span> exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">self-evaluating?</span> exp)
+         (<span class="hljs-name">compile-self-evaluating</span> 
+          exp target linkage))
+        ((<span class="hljs-name">quoted?</span> exp) 
+         (<span class="hljs-name">compile-quoted</span> exp target linkage))
+        ((<span class="hljs-name">variable?</span> exp)
+         (<span class="hljs-name">compile-variable</span> 
+          exp target linkage))
+        ((<span class="hljs-name">assignment?</span> exp)
+         (<span class="hljs-name">compile-assignment</span>
+          exp target linkage))
+        ((<span class="hljs-name">definition?</span> exp)
+         (<span class="hljs-name">compile-definition</span>
+          exp target linkage))
+        ((<span class="hljs-name">if?</span> exp)
+         (<span class="hljs-name">compile-if</span> exp target linkage))
+        ((<span class="hljs-name">lambda?</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)
+         (<span class="hljs-name">compile-lambda</span> exp target linkage))
+        ((<span class="hljs-name">begin?</span> exp)
+         (<span class="hljs-name">compile-sequence</span> 
+          (<span class="hljs-name">begin-actions</span> exp) target linkage))
+        ((<span class="hljs-name">cond?</span> exp) 
+         (<span class="hljs-name">compile</span> 
+          (<span class="hljs-name">cond-&gt;if</span> exp) target linkage))
+        ((<span class="hljs-name">application?</span> exp)
+         (<span class="hljs-name">compile-application</span> 
+          exp target linkage))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown expression type: 
+                 COMPILE&quot;</span> 
+                exp))))
+</code></pre>
+<h4>الأهداف والروابط</h4>
+<p>إنّ <code>compile</code> ومولّدات الشيفرة التي ينديها يأخذان - بالإضافة إلى التعبير المطلوب تصريفه - معطيين. هناك <em>هدف (target)</em>، يُحدّد المسجّل الذي ينبغي أن تُعيد فيه الشيفرة المصرَّفة قيمة التعبير. وهناك أيضًا <em>واصف ربط (linkage descriptor)</em>، يصف كيف ينبغي أن تسير الشيفرة الناتجة عن تصريف التعبير بعد أن تُتمّ تنفيذها. ويستطيع واصف الربط أن يُلزم الشيفرة بأداء واحدةٍ من الأمور الثلاثة الآتية:</p>
+<ul>
+<li>المواصلة عند التعليمة التالية في التسلسل (وهذا ما يُحدّده واصف الربط <code>next</code>)،</li>
+<li>العودة من الإجراء قيد التصريف (وهذا ما يُحدّده واصف الربط <code>return</code>)، أو</li>
+<li>القفز إلى نقطة دخولٍ مُسمّاة (وهذا ما يُحدّده استخدام التسمية المُعيّنة واصفًا للربط).</li>
+</ul>
+<p>فمثلًا، ينبغي لتصريف التعبير <code>5</code> (الذي يُقيّم ذاتيًّا) بهدفٍ هو المسجّل <code>val</code> وبربطٍ هو <code>next</code> أن يُنتج التعليمة</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">5</span>))
+</code></pre>
+<p>وينبغي لتصريف التعبير ذاته بربطٍ هو <code>return</code> أن يُنتج التعليمات</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">5</span>))
+(<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>في الحالة الأولى، سيستمرّ التنفيذ بالتعليمة التالية في التسلسل. وفي الحالة الثانية، سنعود من نداء إجراء. وفي كلتي الحالتين، ستُوضع قيمة التعبير في مسجّل الهدف <code>val</code>.</p>
+<h4>تسلسلات التعليمات واستخدام المكدّس</h4>
+<p>يُعيد كلّ مولّد شيفرةٍ <em>تسلسل تعليمات (instruction sequence)</em> يحتوي شيفرة الهدف التي ولّدها للتعبير. أمّا توليد الشيفرة لتعبيرٍ مركّبٍ فيُنجَز بدمج مُخرَج مولّدات شيفرةٍ أبسط للتعابير المكوّنة، تمامًا كما يُنجَز تقييم تعبيرٍ مركّبٍ بتقييم التعابير المكوّنة له.</p>
+<p>إنّ أبسط طريقةٍ لدمج تسلسلات التعليمات هو إجراءٌ يُسمّى <code>append-instruction-sequences</code>. وهو يأخذ كمعطيات أيّ عددٍ من تسلسلات التعليمات التي يُنفَّذ بالتعاقب؛ فإنّه يُلحق بعضها ببعض ويُعيد التسلسل المدمَج. أي أنّّه، إذا كان <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ s e q_{1} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ s e q_{2} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> تسلسلَي تعليمات، فإنّ تقييم</p>
+<pre><code class="language-scheme">(<span class="hljs-name">append-instruction-sequences</span> ⟨seq₁⟩ ⟨seq₂⟩)
+</code></pre>
+<p>يُنتج التسلسل</p>
+<pre><code class="language-scheme">⟨seq₁⟩
+⟨seq₂⟩
+</code></pre>
+<p>كلّما قد تحتاج المسجّلات إلى الحفظ، تستخدم مولّدات الشيفرة في المصرِّف <code>preserving</code>، وهي طريقة أكثر دقّةً لدمج تسلسلات التعليمات. و<code>preserving</code> تأخذ ثلاثة معطيات: مجموعةً من المسجّلات وتسلسلي تعليمات يُنفَّذان بالتعاقب. وهي تُلحق التسلسلين بعضهما ببعض بحيث تُحفظ محتويات كلّ مسجّلٍ في المجموعة على امتداد تنفيذ التسلسل الأوّل، إذا كان ذلك لازمًا لتنفيذ التسلسل الثاني. أي أنّّه، إذا عدّل التسلسل الأوّل المسجّل وكان التسلسل الثاني يحتاج فعلًا إلى محتويات المسجّل الأصليّة، فإنّ <code>preserving</code> تلفّ <code>save</code> و<code>restore</code> للمسجّل حول التسلسل الأوّل قبل إلحاق التسلسلين. وإلّا، فإنّ <code>preserving</code> تُعيد تسلسلات التعليمات الملحوقة فحسب. وبذلك، فإنّ <code>(preserving (list ⟨reg₁⟩ ⟨reg₂⟩) ⟨seg₁⟩ ⟨seg₂⟩)</code> مثلًا يُنتج واحدًا من تسلسلات التعليمات الأربعة الآتية، بحسب كيفيّة استخدام <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ s e q_{1} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ s e q_{2} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> لـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ r e g_{1} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ r e g_{2} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> : <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">(</mo><mi>s</mi><mi>a</mi><mi>v</mi><mi>e</mi><mo stretchy="false">(</mo><mi>s</mi><mi>a</mi><mi>v</mi><mi>e</mi><mo stretchy="false">(</mo><mi>s</mi><mi>a</mi><mi>v</mi><mi>e</mi><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>s</mi><mi>a</mi><mi>v</mi><mi>e</mi><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">(</mo><mi>r</mi><mi>e</mi><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">(</mo><mi>r</mi><mi>e</mi><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">(</mo><mi>r</mi><mi>e</mi><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>1</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mi>r</mi><mi>e</mi><mi>s</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>e</mi><mo stretchy="false">⟨</mo><mi>r</mi><mi>e</mi><msub><mi>g</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">)</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo><mo stretchy="false">⟨</mo><mi>s</mi><mi>e</mi><msub><mi>q</mi><mn>2</mn></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ s e q_{1} ⟩ (save (save (save ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (save ⟨ r e g_{1} ⟩ ) ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ ⟨ s e q_{1} ⟩ (restore (restore (restore ⟨ r e g_{1} ⟩ ) ⟨ r e g_{1} ⟩ ) ⟨ r e g_{2} ⟩ ) (restore ⟨ r e g_{2} ⟩ ) ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩ ⟨ s e q_{2} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">(</span><span class="mord mathnormal">s</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">es</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">es</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">e</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">es</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">e</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">es</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">e</span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">e</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩)</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span><span class="mopen">⟨</span><span class="mord mathnormal">se</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0359em;">q</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3011em;"><span style="top:-2.55em;margin-left:-0.0359em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span></p>
+<p>إنّ استخدام <code>preserving</code> لدمج تسلسلات التعليمات يجعل المصرِّف يتجنّب عمليّات المكدّس غير الضروريّة. وهذا يعزل أيضًا تفاصيل ما إذا كان توليد تعليمات <code>save</code> و<code>restore</code> لازمًا أم لا داخل الإجراء <code>preserving</code>، فاصلًا إيّاها عن الهموم الناشئة عن كتابة كلّ مولّد شيفرةٍ فرديّ. فإنّه لا تُنتج فعليًّا أيّ تعليمة <code>save</code> أو <code>restore</code> صراحةً من قِبَل مولّدات الشيفرة.</p>
+<p>من حيث المبدأ، كان بإمكاننا تمثيل تسلسل تعليماتٍ كقائمةٍ من التعليمات. وعندئذٍ يستطيع <code>append-instruction-sequences</code> دمج تسلسلات التعليمات بأداء <code>append</code> عاديّ على القوائم. لكنّ <code>preserving</code> سيصير عندئذٍ عمليّةً معقّدة، لأنّه سيتعيّن عليها تحليل كلّ تسلسل تعليماتٍ لتحديد كيفيّة استخدام التسلسل لمسجّلاته. و<code>preserving</code> سيكون غير كفؤٍ فضلًا عن كونه معقّدًا، لأنّه سيتعيّن عليه تحليل كلّ واحدٍ من معطياته التي هي تسلسلات تعليمات، حتّى وإن كانت هذه التسلسلات قد بُنيت بدورها بنداءاتٍ إلى <code>preserving</code>، وفي هذه الحالة تكون أجزاؤها قد حُلِّلت سابقًا. ولكي نتجنّب مثل هذا التحليل المتكرّر، سنربط بكلّ تسلسل تعليماتٍ بعض المعلومات حول استخدامه للمسجّلات. وحين نبني تسلسل تعليماتٍ أساسيًّا، سنُوفّر هذه المعلومات صراحةً، والإجراءات التي تدمج تسلسلات التعليمات ستستخرج معلومات استخدام المسجّلات للتسلسل المدمَج من المعلومات المرتبطة بالتسلسلات المكوّنة.</p>
+<p>سيحتوي تسلسل التعليمات على ثلاثة أجزاء من المعلومات:</p>
+<ul>
+<li>مجموعة المسجّلات التي يجب تهيئتها قبل تنفيذ التعليمات في التسلسل (يُقال عن هذه المسجّلات أنّ التسلسل <em>يحتاج</em> إليها)،</li>
+<li>مجموعة المسجّلات التي تُعدّل قيمها التعليمات في التسلسل، و</li>
+<li>التعليمات الفعليّة (المسمّاة أيضًا <em>العبارات</em>) في التسلسل.</li>
+</ul>
+<p>وسنمثّل تسلسل التعليمات كقائمةٍ من أجزائه الثلاثة. وباني تسلسلات التعليمات هو إذن</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-instruction-sequence</span> 
+         needs modifies statements)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> needs modifies statements))
+</code></pre>
+<p>فمثلًا، تسلسل التعليمتين الذي يبحث عن قيمة المتغيّر <code>x</code> في البيئة الحاليّة، ويسند النتيجة إلى <code>val</code>، ثم يرجع، يتطلّب أن يكون المسجّلان <code>env</code> و<code>continue</code> قد هُيّئا، ويعدّل المسجّل <code>val</code>. وبذلك، سيُبنى هذا التسلسل على النحو الآتي</p>
+<pre><code class="language-scheme">(<span class="hljs-name">make-instruction-sequence</span>
+ &#x27;(env continue)
+ &#x27;(val)
+ &#x27;((assign val
+           (op lookup-variable-value)
+           (const x)
+           (reg env))
+   (goto (reg continue))))
+</code></pre>
+<p>ونحتاج أحيانًا إلى بناء تسلسل تعليماتٍ بلا عبارات:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">empty-instruction-sequence</span>)
+  (<span class="hljs-name">make-instruction-sequence</span> &#x27;() &#x27;() &#x27;()))
+</code></pre>
+<p>الإجراءات الخاصة بدمج تسلسلات التعليمات موضّحة في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.4</a>.</p>
+<p><strong>التمرين 5.31:</strong> في تقييم تطبيق إجراءٍ، يحفظ مُقيِّم التحكّم الصريح دائمًا المسجّل <code>env</code> ويعيده حول تقييم المشغّل، ويحفظ <code>env</code> ويعيده حول تقييم كلّ عاملٍ باستثناء الأخير، ويحفظ <code>argl</code> ويعيده حول تقييم كلّ عامل، ويحفظ <code>proc</code> ويعيده حول تقييم تسلسل العوامل. فبالنسبة لكلّ تركيبةٍ من التركيبات الآتية، قُل أيّ عمليّات <code>save</code> و<code>restore</code> هذه زائدةٌ عن الحاجة وبإمكانها بالتالي أن تُحذف بواسطة آليّة <code>preserving</code> في المصرِّف:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">f</span> <span class="hljs-symbol">&#x27;x</span> <span class="hljs-symbol">&#x27;y</span>)
+((<span class="hljs-name">f</span>) <span class="hljs-symbol">&#x27;x</span> <span class="hljs-symbol">&#x27;y</span>)
+(<span class="hljs-name">f</span> (<span class="hljs-name">g</span> <span class="hljs-symbol">&#x27;x</span>) y)
+(<span class="hljs-name">f</span> (<span class="hljs-name">g</span> <span class="hljs-symbol">&#x27;x</span>) <span class="hljs-symbol">&#x27;y</span>)
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.32:</strong> باستخدام آليّة <code>preserving</code>، سيتجنّب المصرِّف حفظ <code>env</code> وإعادته حول تقييم مشغّل تركيبةٍ في الحالة التي يكون فيها المشغّل رمزًا. وبإمكاننا أيضًا أن نُدمج تحسيناتٍ كهذه في المُقيِّم. ففي الحقيقة، إنّ مُقيِّم التحكّم الصريح الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4">5.4</a> يؤدّي تحسينًا مشابهًا بالفعل، وذلك بمعاملة التركيبات التي لا عوامل لها كحالةٍ خاصّة. وسّع مُقيِّم التحكّم الصريح ليتعرّف على التركيبات التي مشغّلها رمز كصنفٍ منفصلٍ من التعابير، وليستثمر هذه الحقيقة في تقييم مثل هذه التعابير.</p>
+<blockquote>
+<p>تقترح أليسا پي. هاكر أنه بتوسيع المُقيِّم ليتعرّف على المزيد من الحالات الخاصّة فأكثر، فبوسعنا أن نُدرج جميع تحسينات المصرِّف، وأنّ هذا من شأنه أن يُزيل مزيّة التصريف برمّتها. فما رأيك في هذه الفكرة؟</p>
+</blockquote>
+</blockquote>
+<h4>5.5.2 تصريف التعابير</h4>
+<p>في هذا القسم والقسم التالي نُنفّذ مولّدات الشيفرة التي يُوزّع إليها الإجراء <code>compile</code>.</p>
+<h4>تصريف شيفرة الوصل</h4>
+<p>بصورةٍ عامّة، ستنتهي مخرجات كلّ مولّد شيفرةٍ بتعليماتٍ - تُولَّدها الإجراء <code>compile-linkage</code> - تُنفّذ الوصل المطلوب. فإن كان الوصل هو <code>return</code> فيجب أن نُولّد التعليمة <code>(goto (reg continue))</code>. وهذا يحتاج المسجّل <code>continue</code> ولا يعدّل أيّ مسجّلات. فإن كان الوصل هو <code>next</code>، فنحن لا نحتاج إلى إضافة أيّ تعليمات. وإلّا، فالوصل عنوانٌ (label)، ونُولّد <code>goto</code> إلى ذلك العنوان، وهو تعليمةٌ لا تحتاج ولا تعدّل أيّ مسجّلات.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-linkage</span> linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;return</span>)
+         (<span class="hljs-name">make-instruction-sequence</span> 
+          &#x27;(continue)
+          &#x27;()
+          &#x27;((goto (reg continue)))))
+        ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;next</span>)
+         (<span class="hljs-name">empty-instruction-sequence</span>))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name">make-instruction-sequence</span> &#x27;() &#x27;()
+          \`((goto (label ,linkage)))))))
+</code></pre>
+<p>تُلحَق شيفرة الوصل بتسلسل تعليماتٍ بواسطة <code>preserving</code> للمسجّل <code>continue</code>، إذ إنّ وصل <code>return</code> سيحتاج المسجّل <code>continue</code>: فإن كان تسلسل التعليمات المعطى يُعدّل <code>continue</code> وشيفرة الوصل تحتاجه، فسيُحفظ <code>continue</code> ويُستعاد.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">end-with-linkage</span> 
+         linkage instruction-sequence)
+  (<span class="hljs-name">preserving</span> &#x27;(continue)
+   instruction-sequence
+   (<span class="hljs-name">compile-linkage</span> linkage)))
+</code></pre>
+<h4>تصريف التعابير البسيطة</h4>
+<p>مولّدات الشيفرة الخاصّة بالتعابير التي تُقيّم ذاتيًّا والاقتباسات والمتغيّرات تبني تسلسلات تعليماتٍ تُسنِد القيمة المطلوبة إلى المسجّل الهدف ثم تواصل بالطريقة التي يُحدّدها واصف الوصل.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-self-evaluating</span> 
+         exp target linkage)
+  (<span class="hljs-name">end-with-linkage</span>
+   linkage (<span class="hljs-name">make-instruction-sequence</span> 
+            &#x27;()
+            (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+            \`((assign ,target (const ,exp))))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-quoted</span> exp target linkage)
+  (<span class="hljs-name">end-with-linkage</span>
+   linkage
+   (<span class="hljs-name">make-instruction-sequence</span>
+    &#x27;()
+    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+    \`((assign 
+       ,target
+       (const ,(text-of-quotation exp)))))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-variable</span>
+         exp target linkage)
+  (<span class="hljs-name">end-with-linkage</span> 
+   linkage
+   (<span class="hljs-name">make-instruction-sequence</span> 
+    &#x27;(env)
+    (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+    \`((assign ,target
+              (op lookup-variable-value)
+              (const ,exp)
+              (reg env))))))
+</code></pre>
+<p>جميع تعليمات الإسناد هذه تُعدّل المسجّل الهدف، وتلك التي تبحث عن قيمة متغيّر تحتاج المسجّل <code>env</code>.</p>
+<p>وتُعالَج الإحلالات والتعريفات إلى حدٍّ كبيرٍ كما تُعالَج في المفسّر. فنحن نُولّد تعاوديًّا شيفرةً تحتسب القيمة التي ستُسنَد إلى المتغيّر، ونُلحق بها تسلسلًا من تعليمتين يُعيّن المتغيّر فعلًا أو يُعرّفه ويُسنِد قيمة التعبير كلّه (الرمز <code>ok</code>) إلى المسجّل الهدف. والتصريف التعاوديّ له هدفٌ هو <code>val</code> ووصلٌ هو <code>next</code> حتّى تضع الشيفرة نتيجتها في <code>val</code> وتواصل بالشيفرة المُلحَقة بعدها. أمّا الإلحاق فيُجرى مع حفظ <code>env</code>، إذ إنّ البيئة لازمة لتعيين المتغيّر أو تعريفه، وقد تكون شيفرة قيمة المتغيّر تصريفَ تعبيرٍ مركّب قد يُعدّل المسجّلات بطرائق اعتباطيّة.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-assignment</span> 
+         exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">assignment-variable</span> exp))
+        (<span class="hljs-name">get-value-code</span>
+         (<span class="hljs-name">compile</span> (<span class="hljs-name">assignment-value</span> exp) 
+                  <span class="hljs-symbol">&#x27;val</span>
+                  <span class="hljs-symbol">&#x27;next</span>)))
+    (<span class="hljs-name">end-with-linkage</span> 
+     linkage
+     (<span class="hljs-name">preserving</span> 
+      &#x27;(env)
+      get-value-code
+      (<span class="hljs-name">make-instruction-sequence</span>
+       &#x27;(env val)
+       (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+       \`((perform (op set-variable-value!)
+                  (const ,var)
+                  (reg val)
+                  (reg env))
+         (assign ,target (const ok))))))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-definition</span> 
+         exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">definition-variable</span> exp))
+        (<span class="hljs-name">get-value-code</span>
+         (<span class="hljs-name">compile</span> (<span class="hljs-name">definition-value</span> exp)
+                  <span class="hljs-symbol">&#x27;val</span>
+                  <span class="hljs-symbol">&#x27;next</span>)))
+    (<span class="hljs-name">end-with-linkage</span>
+     linkage
+     (<span class="hljs-name">preserving</span> 
+      &#x27;(env)
+      get-value-code
+      (<span class="hljs-name">make-instruction-sequence</span>
+       &#x27;(env val)
+       (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+       \`((perform (op define-variable!)
+                  (const ,var)
+                  (reg val)
+                  (reg env))
+         (assign ,target (const ok))))))))
+</code></pre>
+<p>التسلسل المُلحَق المكوّن من تعليمتين يحتاج <code>env</code> و<code>val</code> ويُعدّل الهدف. ولاحِظ أنّنا مع أنّنا نحفظ <code>env</code> من أجل هذا التسلسل، فإنّا لا نحفظ <code>val</code>، لأنّ <code>get-value-code</code> مُصمَّمٌ لوضع نتيجته في <code>val</code> صراحةً لاستخدام هذا التسلسل لها. (في الحقيقة، لو حفظنا <code>val</code>، لكان لدينا عِلّة، لأنّ هذا من شأنه أن يُسبّب استعادة المحتويات السابقة لـ<code>val</code> مباشرةً بعد تشغيل <code>get-value-code</code>.)</p>
+<h4>تصريف التعابير الشرطيّة</h4>
+<p>شيفرة تعبير <code>if</code> المُصَرَّف بهدفٍ ووصلٍ معطيين لها الصيغة الآتية</p>
+<pre><code class="language-scheme">⟨compilation of predicate, 
+ target val, linkage next⟩
+ (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> false?) (<span class="hljs-name">reg</span> val))
+ (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> false-branch))
+true-branch
+ ⟨compilation of consequent with given 
+  target and given linkage or after-if⟩
+false-branch
+ ⟨compilation of alternative 
+  with given target and linkage⟩
+after-if
+</code></pre>
+<p>ولتوليد هذه الشيفرة، نُصَرِّف المسيّم والنتيجة والبديل، وندمج الشيفرة الناتجة مع تعليماتٍ لاختبار نتيجة المسيّم ومع عناوينَ حديثةِ التوليد لوسم الفرع الصحيح والفرع الخاطئ ونهاية التعبير الشرطيّ.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> وفي هذا الترتيب للشيفرة، يجب أن نتفرّع متجاوزين الفرع الصحيح إذا كان الاختبار خاطئًا. والتعقيد الطفيف الوحيد هو في كيفيّة التعامل مع وصلة الفرع الصحيح. فإن كان وصلة التعبير الشرطيّ هو <code>return</code> أو عنوانًا، فإنّ الفرعين الصحيح والخاطئ سيستخدمان الوصل عينه. فإن كان الوصل هو <code>next</code>، فإنّ الفرع الصحيح ينتهي بقفزةٍ متجاوزةً شيفرة الفرع الخاطئ إلى العنوان عند نهاية التعبير الشرطيّ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-if</span> exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">t-branch</span> (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;true-branch</span>))
+        (<span class="hljs-name">f-branch</span> (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;false-branch</span>))
+        (<span class="hljs-name">after-if</span> (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;after-if</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">consequent-linkage</span>
+           (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;next</span>) 
+               after-if
+               linkage)))
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">p-code</span> 
+             (<span class="hljs-name">compile</span> (<span class="hljs-name">if-predicate</span> exp)
+                      <span class="hljs-symbol">&#x27;val</span>
+                      <span class="hljs-symbol">&#x27;next</span>))
+            (<span class="hljs-name">c-code</span>
+             (<span class="hljs-name">compile</span> (<span class="hljs-name">if-consequent</span> exp) 
+                      target 
+                      consequent-linkage))
+            (<span class="hljs-name">a-code</span>
+             (<span class="hljs-name">compile</span> (<span class="hljs-name">if-alternative</span> exp)
+                      target
+                      linkage)))
+        (<span class="hljs-name">preserving</span> 
+         &#x27;(env continue)
+         p-code
+         (<span class="hljs-name">append-instruction-sequences</span>
+          (<span class="hljs-name">make-instruction-sequence</span> 
+           &#x27;(val) 
+           &#x27;()
+           \`((test (op false?) (reg val))
+             (branch (label ,f-branch))))
+          (<span class="hljs-name">parallel-instruction-sequences</span>
+           (<span class="hljs-name">append-instruction-sequences</span> 
+            t-branch c-code)
+           (<span class="hljs-name">append-instruction-sequences</span>
+            f-branch a-code))
+          after-if))))))
+</code></pre>
+<p>يُحفظ <code>env</code> حول شيفرة المسيّم لأنّ الفرعين الصحيح والخاطئ قد يحتاجانه، ويُحفظ <code>continue</code> لأنّ شيفرة الوصل في هذين الفرعين قد تحتاجه. وشيفرة الفرعين الصحيح والخاطئ (اللذين لا يُنفّذان تسلسليًّا) تُلحَق باستخدام مُدَمِّجٍ خاصّ هو <code>parallel-instruction-sequences</code> الموصوف في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.4</a>.</p>
+<p>ولاحِظ أنّ <code>cond</code> تعبيرٌ مشتقّ، فكلّ ما يلزم المصرِّف ليتعامل معه هو أن يُطبّق المحوّل <code>cond-&gt;if</code> (من <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2">4.1.2</a>) ثم يُصَرِّف تعبير <code>if</code> الناتج.</p>
+<h4>تصريف التسلسلات</h4>
+<p>إنّ تصريف التسلسلات (الواردة في أجسام الإجراءات أو في تعابير <code>begin</code> الصريحة) يوازي تقييمها. فيُصَرَّف كلّ تعبيرٍ من التسلسل - التعبير الأخير بالوصل المحدَّد للتسلسل، والتعبيرات الأخرى بوصل <code>next</code> (لتنفيذ بقيّة التسلسل). وتُلحَق تسلسلات التعليمات الخاصّة بالتعابير المنفردة لتكوين تسلسل تعليماتٍ واحد، بحيث يُحفظ <code>env</code> (اللازم لبقيّة التسلسل) و<code>continue</code> (الذي قد يكون لازما للوصل عند نهاية التسلسل).</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-sequence</span> seq target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">last-exp?</span> seq)
+      (<span class="hljs-name">compile</span> (<span class="hljs-name">first-exp</span> seq) target linkage)
+      (<span class="hljs-name">preserving</span> &#x27;(env continue)
+       (<span class="hljs-name">compile</span> (<span class="hljs-name">first-exp</span> seq) target <span class="hljs-symbol">&#x27;next</span>)
+       (<span class="hljs-name">compile-sequence</span> (<span class="hljs-name">rest-exps</span> seq)
+                         target
+                         linkage))))
+</code></pre>
+<h4>تصريف تعابير <code>lambda</code></h4>
+<p>إنّ تعابير <code>lambda</code> تُنشئ الإجراءات. ويجب أن تكون الشيفرة الهدف لتعبير <code>lambda</code> على الصيغة الآتية</p>
+<pre><code class="language-scheme">⟨construct procedure object 
+ and assign it to target register⟩
+⟨linkage⟩
+</code></pre>
+<p>وحين نُصَرِّف تعبير <code>lambda</code>، نُولّد أيضًا الشيفرة الخاصّة بجسم الإجراء. فعلى الرغم من أنّ الجسم لن يُنفَّذ وقت بناء الإجراء، فمن الملائم إدراجه في الشيفرة الهدف مباشرةً بعد شيفرة <code>lambda</code>. فإن كان وصلة تعبير <code>lambda</code> عنوانًا أو <code>return</code>، فهذا حسن. لكن إن كان الوصل هو <code>next</code>، فسنحتاج إلى التجاوز حول شيفرة جسم الإجراء باستخدام وصلةٍ تقفز إلى عنوانٍ يُدرج بعد الجسم. وبذلك، تكون الشيفرة الهدف على الصيغة الآتية</p>
+<pre><code class="language-scheme">⟨construct procedure object 
+ and assign it to target register⟩
+ ⟨code for given linkage⟩ or 
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> after-lambda))
+ ⟨compilation of procedure body⟩
+after-lambda
+</code></pre>
+<p>يُولّد <code>compile-lambda</code> شيفرة بناء كائن الإجراء متبوعةً بشيفرة جسم الإجراء. وسيُبنى كائن الإجراء في وقت التشغيل بدمج البيئة الحاليّة (البيئة عند نقطة التعريف) مع نقطة الدخول إلى جسم الإجراء المُصَرَّف (وهو عنوانٌ حديث التوليد).<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-lambda</span> exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">proc-entry</span> 
+         (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;entry</span>))
+        (<span class="hljs-name">after-lambda</span> 
+         (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;after-lambda</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">lambda-linkage</span>
+           (if (eq? linkage &#x27;next)
+               after-lambda
+               linkage)))
+      (<span class="hljs-name">append-instruction-sequences</span>
+       (<span class="hljs-name">tack-on-instruction-sequence</span>
+        (<span class="hljs-name">end-with-linkage</span> 
+         lambda-linkage
+         (<span class="hljs-name">make-instruction-sequence</span> 
+          &#x27;(env)
+          (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+          \`((assign 
+             ,target
+             (op make-compiled-procedure)
+             (label ,proc-entry)
+             (reg env)))))
+        (<span class="hljs-name">compile-lambda-body</span> exp proc-entry))
+       after-lambda))))
+</code></pre>
+<p>يستخدم <code>compile-lambda</code> المُدَمِّج الخاصّ <code>tack-on-instruction-sequence</code> بدلًا من <code>append-instruction-sequences</code> (<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.4</a>) لإلحاق جسم الإجراء بشيفرة تعبير <code>lambda</code>، لأنّ الجسم ليس جزءًا من تسلسل التعليمات الذي سيُنفَّذ عند الدخول إلى التسلسل المدمج؛ بل هو في التسلسل فقط لأنّ ذلك كان موضعًا ملائمًا لوضع الجسم فيه.</p>
+<p>يُعمّر <code>compile-lambda-body</code> شيفرة جسم الإجراء. فتبدأ هذه الشيفرة بعنوانٍ لنقطة الدخول. ثمّ تأتي تعليماتٌ ستُسبّب انتقال بيئة التقييم في وقت التشغيل إلى البيئة الصحيحة لتقييم جسم الإجراء - أي بيئةُ تعريف الإجراء، ممدودةً لتشمل ربط الوسائط الشكليّة بالمعطيات التي يُدعى بها الإجراء. وبعد هذا تأتي شيفرة تسلسل التعابير الذي يؤلّف جسم الإجراء. ويُصَرَّف التسلسل بوصل <code>return</code> وهدف <code>val</code> حتّى ينتهي بالرجوع من الإجراء ونتيجة الإجراء في <code>val</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-lambda-body</span> exp proc-entry)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">formals</span> (<span class="hljs-name">lambda-parameters</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)))
+    (<span class="hljs-name">append-instruction-sequences</span>
+     (<span class="hljs-name">make-instruction-sequence</span> 
+      &#x27;(env proc argl)
+      &#x27;(env)
+      \`(,proc-entry
+        (assign env 
+                (op compiled-procedure-env)
+                (reg proc))
+        (assign env
+                (op extend-environment)
+                (const ,formals)
+                (reg argl)
+                (reg env))))
+     (<span class="hljs-name">compile-sequence</span> (<span class="hljs-name">lambda-body</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)
+                       <span class="hljs-symbol">&#x27;val</span>
+                       <span class="hljs-symbol">&#x27;return</span>))))
+</code></pre>
+<h4>5.5.3 تصريف التركيبات</h4>
+<p>إنّ جوهر عمليّة التصريف هو تصريف تطبيقات الإجراءات. وشيفرة تركيبةٍ مُصَرَّفة بهدفٍ ووصلٍ معطيين لها الصيغة الآتية</p>
+<pre><code class="language-scheme">⟨compilation of operator, 
+ target proc, linkage next⟩
+⟨evaluate operands and construct 
+ argument list in argl⟩
+⟨compilation of procedure call 
+ with given target and linkage⟩
+</code></pre>
+<p>قد يلزم حفظ المسجّلات <code>env</code> و<code>proc</code> و<code>argl</code> وإعادتها خلال تقييم المشغّل والعوامل. ولاحِظ أنّ هذا هو الموضع الوحيد في المصرِّف الذي يُحدَّد فيه هدفٌ غير <code>val</code>.</p>
+<p>تُولَّد الشيفرة المطلوبة بواسطة <code>compile-application</code>. فهذا يُصَرِّف تعاوديًّا المشغّل، لإنتاج شيفرةٍ تضع الإجراء المطلوب تطبيقه في <code>proc</code>، ويُصَرِّف العوامل، لإنتاج شيفرةٍ تُقيّم عوامل التطبيق المنفردة. وتُدمَج تسلسلات التعليمات الخاصّة بالعوامل (بواسطة <code>construct-arglist</code>) مع شيفرةٍ تبني قائمة المعطيات في <code>argl</code>، وتُدمَج شيفرة قائمة المعطيات الناتجة مع شيفرة الإجراء ومع الشيفرة التي تؤدّي نداء الإجراء (والتي يُنتجها <code>compile-procedure-call</code>). وعند إلحاق تسلسلات الشيفرة، يجب حفظ المسجّل <code>env</code> حول تقييم المشغّل (إذ إنّ تقييم المشغّل قد يُعدّل <code>env</code>، الذي سيكون لازمًا لتقييم العوامل)، ويجب حفظ المسجّل <code>proc</code> حول بناء قائمة المعطيات (إذ إنّ تقييم العوامل قد يُعدّل <code>proc</code>، الذي سيكون لازمًا لتطبيق الإجراء الفعليّ). ويجب حفظ <code>continue</code> على مدى ذلك كلّه أيضًا، إذ إنّه لازم للوصل في نداء الإجراء.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-application</span> 
+         exp target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">proc-code</span> 
+         (<span class="hljs-name">compile</span> (<span class="hljs-name">operator</span> exp) <span class="hljs-symbol">&#x27;proc</span> <span class="hljs-symbol">&#x27;next</span>))
+        (<span class="hljs-name">operand-codes</span>
+         (<span class="hljs-name"><span class="hljs-built_in">map</span></span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (operand)
+                (<span class="hljs-name">compile</span> operand <span class="hljs-symbol">&#x27;val</span> <span class="hljs-symbol">&#x27;next</span>))
+              (<span class="hljs-name">operands</span> exp))))
+    (<span class="hljs-name">preserving</span> 
+     &#x27;(env continue)
+     proc-code
+     (<span class="hljs-name">preserving</span> 
+      &#x27;(proc continue)
+      (<span class="hljs-name">construct-arglist</span> operand-codes)
+      (<span class="hljs-name">compile-procedure-call</span> 
+       target
+       linkage)))))
+</code></pre>
+<p>ستُقيّم شيفرة بناء قائمة المعطيات كلّ عاملٍ إلى <code>val</code> ثم تعمل <code>cons</code> لتلك القيمة على قائمة المعطيات المتراكمة في <code>argl</code>. وبما أنّنا نعمل <code>cons</code> للمعطيات على <code>argl</code> تسلسليًّا، فيجب أن نبدأ بالمعطى الأخير وننتهي بالأوّل، حتّى تظهر المعطيات في القائمة الناتجة مرتّبةً من الأوّل إلى الأخير. وبدلًا من إهدار تعليمةٍ بتهيئة <code>argl</code> إلى القائمة الخالية للإعداد لهذا التسلسل من التقييمات، نجعل أوّل تسلسل شيفرةٍ يبني <code>argl</code> الأوّليّة. وبذلك، فإنّ الصيغة العامّة لبناء قائمة المعطيات هي كالآتي:</p>
+<pre><code class="language-scheme">⟨compilation of last operand, targeted to val⟩
+(<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+⟨compilation of next operand, targeted to val⟩
+(<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+…
+⟨compilation of first operand, targeted to val⟩
+(<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+</code></pre>
+<p>يجب حفظ <code>argl</code> حول تقييم كلّ عاملٍ باستثناء الأوّل (حتّى لا تُفقد المعطيات المتراكمة حتّى الآن)، ويجب حفظ <code>env</code> حول تقييم كلّ عاملٍ باستثناء الأخير (لاستخدامه في تقييمات العوامل التالية).</p>
+<p>إنّ تصريف شيفرة المعطيات هذه شاقٌّ بعض الشيء، بسبب المعاملة الخاصّة لأوّل عاملٍ يُقيَّم والحاجة إلى حفظ <code>argl</code> و<code>env</code> في مواضع مختلفة. ويأخذ الإجراء <code>construct-arglist</code> كمعطياتٍ الشيفرة التي تُقيّم العوامل المنفردة. فإن لم تكن هناك عواملٌ إطلاقًا، فهو يُخرج التعليمة الآتية ببساطةٍ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> argl (<span class="hljs-name">const</span> ()))
+</code></pre>
+<p>وإلّا، فإنّ <code>construct-arglist</code> يُنشئ شيفرةً تُهيّئ <code>argl</code> بالمعطى الأخير، ويلحق بها شيفرةً تُقيّم بقيّة المعطيات وتُضمّها إلى <code>argl</code> تتابعًا. ولكي نعالج المعطيات من الأخير إلى الأوّل، يجب أن نعكس قائمة تسلسلات شيفرة العوامل عن الترتيب الذي يُوفّره <code>compile-application</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">construct-arglist</span> operand-codes)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">operand-codes</span> 
+         (<span class="hljs-name"><span class="hljs-built_in">reverse</span></span> operand-codes)))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> operand-codes)
+        (<span class="hljs-name">make-instruction-sequence</span> 
+         &#x27;() 
+         &#x27;(argl)
+         &#x27;((assign argl (const ()))))
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">code-to-get-last-arg</span>
+               (<span class="hljs-name">append-instruction-sequences</span>
+                (<span class="hljs-name"><span class="hljs-built_in">car</span></span> operand-codes)
+                (<span class="hljs-name">make-instruction-sequence</span> 
+                 &#x27;(val)
+                 &#x27;(argl)
+                 &#x27;((assign argl
+                           (op list)
+                           (reg val)))))))
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> operand-codes))
+              code-to-get-last-arg
+              (<span class="hljs-name">preserving</span> 
+               &#x27;(env)
+               code-to-get-last-arg
+               (<span class="hljs-name">code-to-get-rest-args</span>
+                (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> operand-codes))))))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">code-to-get-rest-args</span> operand-codes)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">code-for-next-arg</span>
+         (<span class="hljs-name">preserving</span> 
+          &#x27;(argl)
+          (<span class="hljs-name"><span class="hljs-built_in">car</span></span> operand-codes)
+          (<span class="hljs-name">make-instruction-sequence</span> 
+           &#x27;(val argl)
+           &#x27;(argl)
+           &#x27;((assign argl
+                     (op cons)
+                     (reg val)
+                     (reg argl)))))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> operand-codes))
+        code-for-next-arg
+        (<span class="hljs-name">preserving</span> 
+         &#x27;(env)
+         code-for-next-arg
+         (<span class="hljs-name">code-to-get-rest-args</span> 
+          (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> operand-codes))))))
+</code></pre>
+<h4>تطبيق الإجراءات</h4>
+<p>وبعد تقييم عناصر تركيبةٍ، يجب أن تُطبّق الشيفرة المُصَرَّفة الإجراءَ الموجود في <code>proc</code> على المعطيات الموجودة في <code>argl</code>. وإنّ الشيفرة تُجري التوزيع عينه أساسًا كما يُجريه الإجراء <code>apply</code> في المُقيِّم الحلقيّ الوسيط (metacircular evaluator) الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> أو نقطة الدخول <code>apply-dispatch</code> في مُقيِّم التحكّم الصريح الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1">5.4.1</a>. فهي تفحص ما إذا كان الإجراء المطلوب تطبيقه إجراءً أوّليًّا أم إجراءً مُصَرَّفًا. فبالنسبة للإجراء الأوّليّ، فهي تستخدم <code>apply-primitive-procedure</code>؛ وسنرى قريبًا كيف تتعامل مع الإجراءات المُصَرَّفة. وشيفرة تطبيق الإجراء لها الصيغة الآتية:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+ (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch))
+compiled-branch
+ ⟨code to apply compiled procedure 
+  with given target and appropriate linkage⟩
+primitive-branch
+ (<span class="hljs-name">assign</span> ⟨target⟩
+         (<span class="hljs-name">op</span> apply-primitive-procedure)
+         (<span class="hljs-name">reg</span> proc)
+         (<span class="hljs-name">reg</span> argl))
+ ⟨linkage⟩
+after-call
+</code></pre>
+<p>لاحِظ أنّ الفرع المُصَرَّف يجب أن يتجاوز الفرع الأوّليّ. وبناءً على ذلك، فإن كان وصلة نداء الإجراء الأصليّ هو <code>next</code>، فيجب أن يستخدم الفرع المركّب وصلةً تقفز إلى عنوانٍ يُدرج بعد الفرع الأوّليّ. (وهذا شبيه بالوصل المستخدم للفرع الصحيح في <code>compile-if</code>.)</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-procedure-call</span>
+         target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">primitive-branch</span> 
+         (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;primitive-branch</span>))
+        (<span class="hljs-name">compiled-branch</span> 
+         (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;compiled-branch</span>))
+        (<span class="hljs-name">after-call</span>
+         (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;after-call</span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">compiled-linkage</span>
+           (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;next</span>)
+               after-call
+               linkage)))
+      (<span class="hljs-name">append-instruction-sequences</span>
+       (<span class="hljs-name">make-instruction-sequence</span> 
+        &#x27;(proc)
+        &#x27;()
+        \`((test 
+           (op primitive-procedure?)
+           (reg proc))
+          (branch 
+           (label ,primitive-branch))))
+       (<span class="hljs-name">parallel-instruction-sequences</span>
+        (<span class="hljs-name">append-instruction-sequences</span>
+         compiled-branch
+         (<span class="hljs-name">compile-proc-appl</span> 
+          target
+          compiled-linkage))
+        (<span class="hljs-name">append-instruction-sequences</span>
+         primitive-branch
+         (<span class="hljs-name">end-with-linkage</span>
+          linkage
+          (<span class="hljs-name">make-instruction-sequence</span>
+           &#x27;(proc argl)
+           (<span class="hljs-name"><span class="hljs-built_in">list</span></span> target)
+           \`((assign 
+              ,target
+              (op apply-primitive-procedure)
+              (reg proc)
+              (reg argl)))))))
+       after-call))))
+</code></pre>
+<p>الفرعان الأوّليّ والمركّب، كالفرعين الصحيح والخاطئ في <code>compile-if</code>، يُلحَقان باستخدام <code>parallel-instruction-sequences</code> بدلًا من <code>append-instruction-sequences</code> الاعتياديّ، لأنّهما لن يُنفَّذا تسلسليًّا.</p>
+<h4>تطبيق الإجراءات المصرَّفة</h4>
+<p>الشيفرة التي تتولّى تطبيق الإجراءات هي أدقّ أجزاء المصرِّف، مع أنّ متسلسلات التعليمات التي تُنتجها قصيرةٌ جدًّا. فالإجراء المصرَّف (كما يبنيه <code>compile-lambda</code>) له نقطةُ دخولٍ، وهي عنوانٌ يُعرّف موضع بداية شيفرة الإجراء. والشيفرة عند نقطة الدخول هذه تحسب نتيجةً في <code>val</code> وتعود بتنفيذ التعليمة <code>(goto (reg continue))</code>. وهكذا، فقد نتوقّع أن تكون الشيفرة الخاصّة بتطبيق إجراءٍ مصرَّفٍ (التي سيُنتجها <code>compile-proc-appl</code>) بهدفٍ ووصلةٍ معطيّين على هذه الصورة إذا كانت الوصلة عنوانًا</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> continue 
+        (<span class="hljs-name">label</span> proc-return))
+ (<span class="hljs-name">assign</span> val
+         (<span class="hljs-name">op</span> compiled-procedure-entry)
+         (<span class="hljs-name">reg</span> proc))
+ (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+proc-return
+ (<span class="hljs-name">assign</span> ⟨target⟩ 
+         (<span class="hljs-name">reg</span> val))   <span class="hljs-comment">; included if target is not val</span>
+ (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ⟨linkage⟩))   <span class="hljs-comment">; linkage code</span>
+</code></pre>
+<p>أو على هذه الصورة إذا كانت الوصلة هي <code>return</code>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name">save</span> continue)
+ (<span class="hljs-name">assign</span> continue 
+         (<span class="hljs-name">label</span> proc-return))
+ (<span class="hljs-name">assign</span> val 
+         (<span class="hljs-name">op</span> compiled-procedure-entry)
+         (<span class="hljs-name">reg</span> proc))
+ (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+proc-return
+ (<span class="hljs-name">assign</span> ⟨target⟩
+         (<span class="hljs-name">reg</span> val))   <span class="hljs-comment">; included if target is not val</span>
+ (<span class="hljs-name">restore</span> continue)
+ (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))   <span class="hljs-comment">; linkage code</span>
+</code></pre>
+<p>تُهيِّئ هذه الشيفرة <code>continue</code> بحيث يعود الإجراء إلى عنوانٍ اسمه <code>proc-return</code> وتقفز إلى نقطة دخول الإجراء. والشيفرة عند <code>proc-return</code> تنقل نتيجة الإجراء من <code>val</code> إلى المسجّل الهدف (إن لزم الأمر) ثم تقفز إلى الموضع الذي تُحدّده الوصلة. (فالوصلة تكون دائمًا <code>return</code> أو عنوانًا، لأنّ <code>compile-procedure-call</code> يستبدل وصلة <code>next</code> المخصّصة للفرع المركّب بعنوانٍ اسمه <code>after-call</code>.)</p>
+<p>في الحقيقة، إذا لم يكن الهدف هو <code>val</code>، فهذه هي بالضبط الشيفرة التي سيُنتجها مصرّفنا.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> غير أنّ الهدف عادةً هو <code>val</code> (والمرّة الوحيدة التي يُحدّد فيها المصرِّف مسجّلًا مختلفًا هي عندما يكون الهدف تقييمَ مشغّلٍ في <code>proc</code>)، ولذلك تُوضع نتيجة الإجراء مباشرةً في المسجّل الهدف ولا حاجة إلى العودة إلى موضعٍ خاصٍّ ينسخها. وبدلًا من ذلك، نبسّط الشيفرة بتهيئة <code>continue</code> بحيث «يعود» الإجراء مباشرةً إلى الموضع الذي تُحدّده وصلة المُنادِي:</p>
+<pre><code class="language-scheme">⟨set up continue for linkage⟩
+(<span class="hljs-name">assign</span> val 
+        (<span class="hljs-name">op</span> compiled-procedure-entry)
+        (<span class="hljs-name">reg</span> proc))
+(<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+</code></pre>
+<p>إذا كانت الوصلة عنوانًا، نُهيِّئ <code>continue</code> بحيث يعود الإجراء إلى ذلك العنوان. (أي أنّ <code>(goto (reg continue))</code> الذي يُنهي به الإجراء عمله يصبح مكافئًا للـ<code>(goto (label ⟨linkage⟩))</code> عند <code>proc-return</code> أعلاه.)</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> continue 
+        (<span class="hljs-name">label</span> ⟨linkage⟩))
+(<span class="hljs-name">assign</span> val
+        (<span class="hljs-name">op</span> compiled-procedure-entry)
+        (<span class="hljs-name">reg</span> proc))
+(<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+</code></pre>
+<p>إذا كانت الوصلة هي <code>return</code>، فلا نحتاج إلى تهيئة <code>continue</code> إطلاقًا: فهو يحمل الموضع المطلوب أصلًا. (أي أنّ <code>(goto (reg continue))</code> الذي يُنهي به الإجراء عمله ينتقل مباشرةً إلى الموضع الذي كان <code>(goto (reg continue))</code> عند <code>proc-return</code> سينتقل إليه.)</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val
+        (<span class="hljs-name">op</span> compiled-procedure-entry)
+        (<span class="hljs-name">reg</span> proc))
+(<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+</code></pre>
+<p>وبهذا التنفيذ للوصلة <code>return</code>، يُنتج المصرِّف شيفرةً تعاوديّةً ذيليّةً. فإنّ نداء إجراءٍ كخطوةٍ أخيرةٍ في جسم الإجراء يؤدّي نقلًا مباشرًا، دون حفظ أيّ معلوماتٍ في المكدس.</p>
+<p>أمّا لو كنّا قد تعاملنا مع حالة نداء إجراءٍ بوصلةٍ <code>return</code> وهدفٍ هو <code>val</code> كما عُرض أعلاه لهدفٍ ليس <code>val</code>، لدمّرنا التعاود الذيليّ. فسيظلّ نظامنا يُعطي القيمة ذاتها لأيّ تعبيرٍ. لكنّنا كنّا، في كلّ مرّةٍ ننادي فيها إجراءً، سنحفظ <code>continue</code> ونعود بعد النداء للتراجع عن الحفظ (عديم الفائدة). وهذه الحفظات الإضافيّة ستتراكم أثناء عشٍّ من نداءات الإجراءات.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<p>يُنتج <code>compile-proc-appl</code> شيفرة تطبيق الإجراءات أعلاه بدرس أربع حالات، تبعًا لما إذا كان الهدف للنداء هو <code>val</code> ولما إذا كانت الوصلة هي <code>return</code>. ولاحِظ أنّ متسلسلات التعليمات مُعلَنةٌ بأنّها تعدّل جميع المسجّلات، إذ إنّ تنفيذ جسم الإجراء قد يغيّر المسجّلات بطرائق اعتباطيّة.<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup> ولاحِظ أيضًا أنّ متسلسلة الشيفرة للحالة ذات الهدف <code>val</code> والوصلة <code>return</code> مُعلَنةٌ باحتياجها إلى <code>continue</code>: فعلى الرغم من أنّ <code>continue</code> غير مستخدمٍ صراحةً في متسلسلة التعليمتين، ينبغي أن نتيقّن من أنّ <code>continue</code> سيحمل القيمة الصحيحة عندما ندخل الإجراء المصرَّف.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-proc-appl</span> target linkage)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> target <span class="hljs-symbol">&#x27;val</span>)
+              (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;return</span>)))
+         (<span class="hljs-name">make-instruction-sequence</span> 
+          &#x27;(proc)
+          all-regs
+          \`((assign continue (label ,linkage))
+            (assign 
+             val 
+             (op compiled-procedure-entry)
+             (reg proc))
+            (goto (reg val)))))
+        ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> target <span class="hljs-symbol">&#x27;val</span>))
+              (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;return</span>)))
+         (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">proc-return</span> 
+                (<span class="hljs-name">make-label</span> <span class="hljs-symbol">&#x27;proc-return</span>)))
+           (<span class="hljs-name">make-instruction-sequence</span> 
+            &#x27;(proc)
+            all-regs
+            \`((assign continue 
+                      (label ,proc-return))
+              (assign 
+               val 
+               (op compiled-procedure-entry)
+               (reg proc))
+              (goto (reg val))
+              ,proc-return
+              (assign ,target (reg val))
+              (goto (label ,linkage))))))
+        ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> target <span class="hljs-symbol">&#x27;val</span>)
+              (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;return</span>))
+         (<span class="hljs-name">make-instruction-sequence</span> 
+          &#x27;(proc continue) 
+          all-regs
+          &#x27;((assign 
+             val 
+             (op compiled-procedure-entry)
+             (reg proc))
+            (goto (reg val)))))
+        ((<span class="hljs-name"><span class="hljs-built_in">and</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> target <span class="hljs-symbol">&#x27;val</span>))
+              (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> linkage <span class="hljs-symbol">&#x27;return</span>))
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;return linkage, 
+                 target not val: COMPILE&quot;</span>
+                target))))
+</code></pre>
+<h4>5.5.4 دمج متسلسلات التعليمات</h4>
+<p>يصف هذا القسم تفاصيل كيفيّة تمثيل متسلسلات التعليمات ودمجها. فتذكّر من <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">5.5.1</a> أنّ متسلسلة التعليمات تُمثَّل بقائمةٍ من المسجّلات المطلوبة، والمسجّلات المعدَّلة، والتعليمات الفعليّة. وسنعتبر أيضًا العنوان (رمز) حالةً منحطّةً من متسلسلة التعليمات، لا تحتاج ولا تعدّل أيّ مسجّلات. ولتحديد المسجّلات المطلوبة والمعدَّلة بواسطة متسلسلات التعليمات نستخدم المحدِّدات</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">registers-needed</span> s)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> s) &#x27;() (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">registers-modified</span> s)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> s) &#x27;() (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> s)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">statements</span> s)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> s) (<span class="hljs-name"><span class="hljs-built_in">list</span></span> s) (<span class="hljs-name">caddr</span> s)))
+</code></pre>
+<p>ولتحديد ما إذا كانت متسلسلةٌ معطاةٌ تحتاج مسجّلًا معطىً أو تعدّله نستخدم المُسَيِّمات</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">needs-register?</span> seq reg)
+  (<span class="hljs-name"><span class="hljs-built_in">memq</span></span> reg (<span class="hljs-name">registers-needed</span> seq)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">modifies-register?</span> seq reg)
+  (<span class="hljs-name"><span class="hljs-built_in">memq</span></span> reg (<span class="hljs-name">registers-modified</span> seq)))
+</code></pre>
+<p>بدلالة هذه المُسَيِّمات والمحدِّدات، نستطيع تنفيذ مُجمِّعات متسلسلات التعليمات المتنوّعة المستخدمة في أرجاء المصرِّف.</p>
+<p>المُجمِّع الأساسيّ هو <code>append-instruction-sequences</code>. فهو يأخذ كمعطياتٍ عددًا اعتباطيًّا من متسلسلات التعليمات التي ستُنفَّذ متسلسلةً ويُعيد متسلسلة تعليماتٍ بياناتُها هي بيانات جميع المتسلسلات ملحقةً بعضها ببعض. والنقطة الدقيقة هي تحديد المسجّلات التي تحتاجها المتسلسلة الناتجة وتعدّلها. فإنّها تعدّل تلك المسجّلات التي تعدّلها أيٌّ من المتسلسلات؛ وتحتاج تلك المسجّلات التي يجب تهيئتها قبل أن تُشغَّل المتسلسلة الأولى (المسجّلات التي تحتاجها المتسلسلة الأولى)، مع تلك المسجّلات التي تحتاجها أيٌّ من المتسلسلات الأخرى والتي لا تُهيَّأ (تُعدَّل) بواسطة المتسلسلات السابقة لها.</p>
+<p>تُلحَق المتسلسلات اثنتين في كلّ مرّةٍ بواسطة <code>append-2-sequences</code>. فهذا يأخذ متسلسلتي تعليماتٍ <code>seq1</code> و<code>seq2</code> ويُعيد متسلسلة التعليمات التي بياناتُها هي بيانات <code>seq1</code> متبوعةً ببيانات <code>seq2</code>، ومسجّلاتها المعدَّلة هي تلك المسجّلات التي تعدّلها إمّا <code>seq1</code> وإمّا <code>seq2</code>، ومسجّلاتها المطلوبة هي المسجّلات التي تحتاجها <code>seq1</code> مع تلك المسجّلات التي تحتاجها <code>seq2</code> والتي لا تعدّلها <code>seq1</code>. (وبدلالة عمليّات المجموعات، مجموعة المسجّلات المطلوبة الجديدة هي اتحاد مجموعة المسجّلات التي تحتاجها <code>seq1</code> مع الفرق بين مجموعة المسجّلات التي تحتاجها <code>seq2</code> والمسجّلات التي تعدّلها <code>seq1</code>.) وهكذا، يُنفَّذ <code>append-instruction-sequences</code> كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">append-instruction-sequences</span> . seqs)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">append-2-sequences</span> seq1 seq2)
+    (<span class="hljs-name">make-instruction-sequence</span>
+     (<span class="hljs-name">list-union</span> 
+      (<span class="hljs-name">registers-needed</span> seq1)
+      (<span class="hljs-name">list-difference</span> 
+       (<span class="hljs-name">registers-needed</span> seq2)
+       (<span class="hljs-name">registers-modified</span> seq1)))
+     (<span class="hljs-name">list-union</span>
+      (<span class="hljs-name">registers-modified</span> seq1)
+      (<span class="hljs-name">registers-modified</span> seq2))
+     (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name">statements</span> seq1)
+             (<span class="hljs-name">statements</span> seq2))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">append-seq-list</span> seqs)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> seqs)
+        (<span class="hljs-name">empty-instruction-sequence</span>)
+        (<span class="hljs-name">append-2-sequences</span> 
+         (<span class="hljs-name"><span class="hljs-built_in">car</span></span> seqs)
+         (<span class="hljs-name">append-seq-list</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> seqs)))))
+  (<span class="hljs-name">append-seq-list</span> seqs))
+</code></pre>
+<p>ويستخدم هذا الإجراء بعض العمليّات البسيطة للتلاعب بمجموعاتٍ ممثَّلةٍ كقوائم، شبيهةً بتمثيل المجموعات (غير المرتّب) الموصوف في <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e3">2.3.3</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">list-union</span> s1 s2)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> s1) s2)
+        ((<span class="hljs-name"><span class="hljs-built_in">memq</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s1) s2)
+         (<span class="hljs-name">list-union</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> s1) s2))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s1)
+               (<span class="hljs-name">list-union</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> s1) s2)))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">list-difference</span> s1 s2)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> s1) &#x27;())
+        ((<span class="hljs-name"><span class="hljs-built_in">memq</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s1) s2)
+         (<span class="hljs-name">list-difference</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> s1) s2))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+         (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> s1)
+               (<span class="hljs-name">list-difference</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> s1)
+                                s2)))))
+</code></pre>
+<p>يأخذ <code>preserving</code>، مُجمِّع متسلسلات التعليمات الرئيسيّ الثاني، قائمةً من المسجّلات <code>regs</code> ومتسلسلتي تعليماتٍ <code>seq1</code> و<code>seq2</code> ستُنفَّذان متسلسلةً. وهو يُعيد متسلسلة تعليماتٍ بياناتُها هي بيانات <code>seq1</code> متبوعةً ببيانات <code>seq2</code>، مع تعليمات <code>save</code> و<code>restore</code> مناسقتين حول <code>seq1</code> لحماية المسجّلات في <code>regs</code> التي تعدّلها <code>seq1</code> لكنّها يحتاجها <code>seq2</code>. ولتحقيق ذلك، ينشئ <code>preserving</code> أوّلًا متسلسلةً تحتوي تعليمات <code>save</code> المطلوبة متبوعةً ببيانات <code>seq1</code> متبوعةً بتعليمات <code>restore</code> المطلوبة. وتحتاج هذه المتسلسلة المسجّلات التي تُحفظ وتُستعاد إضافةً إلى المسجّلات التي تحتاجها <code>seq1</code>، وتعدّل المسجّلات التي تعدّلها <code>seq1</code> عدا تلك التي تُحفظ وتُستعاد. ثُمّ تُلحَق هذه المتسلسلة المُعزَّزة و<code>seq2</code> بالطريقة المعتادة. وينفّذ الإجراء التالي هذه الاستراتيجيّة تعاوديًّا، نازلًا في قائمة المسجّلات الواجب حمايتها:<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">preserving</span> regs seq1 seq2)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> regs)
+      (<span class="hljs-name">append-instruction-sequences</span> seq1 seq2)
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">first-reg</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> regs)))
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">and</span></span> 
+             (<span class="hljs-name">needs-register?</span> seq2 first-reg)
+             (<span class="hljs-name">modifies-register?</span> seq1 
+                                 first-reg))
+            (<span class="hljs-name">preserving</span> 
+             (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> regs)
+             (<span class="hljs-name">make-instruction-sequence</span>
+              (<span class="hljs-name">list-union</span> 
+               (<span class="hljs-name"><span class="hljs-built_in">list</span></span> first-reg)
+               (<span class="hljs-name">registers-needed</span> seq1))
+              (<span class="hljs-name">list-difference</span>
+               (<span class="hljs-name">registers-modified</span> seq1)
+               (<span class="hljs-name"><span class="hljs-built_in">list</span></span> first-reg))
+              (<span class="hljs-name"><span class="hljs-built_in">append</span></span> \`((save ,first-reg))
+                      (<span class="hljs-name">statements</span> seq1)
+                      \`((restore ,first-reg))))
+             seq2)
+            (<span class="hljs-name">preserving</span> 
+             (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> regs)
+             seq1
+             seq2)))))
+</code></pre>
+<p>وهناك مُجمِّع متسلسلاتٍ آخر، هو <code>tack-on-instruction-sequence</code>، تستخدمه <code>compile-lambda</code> لإلحاق جسم إجراءٍ بمتسلسلةٍ أخرى. ولأنّ جسم الإجراء ليس «على الخطّ» ليُنفَّذ كجزءٍ من المتسلسلة المدمجة، فإنّ استخدامه للمسجّلات لا يؤثّر في استخدام المتسلسلة المضيفة له للمسجّلات. ولذلك نتجاهل مجموعتي المسجّلات المطلوبة والمعدَّلة الخاصّتين بجسم الإجراء حين نُلحقه بالمتسلسلة الأخرى.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">tack-on-instruction-sequence</span> 
+         seq body-seq)
+  (<span class="hljs-name">make-instruction-sequence</span>
+   (<span class="hljs-name">registers-needed</span> seq)
+   (<span class="hljs-name">registers-modified</span> seq)
+   (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name">statements</span> seq)
+           (<span class="hljs-name">statements</span> body-seq))))
+</code></pre>
+<p>يستخدم <code>compile-if</code> و<code>compile-procedure-call</code> مُجمِّعًا خاصًّا يُسمّى <code>parallel-instruction-sequences</code> لإلحاق الفرعين البديلين اللذين يليان اختبارًا. فلن يُنفَّذ الفرعان متسلسلين أبدًا؛ ففي أيّ تقييمٍ معيّنٍ للاختبار، يُدخل أحد الفرعين أو الآخر. ولهذا السبب، تظلّ المسجّلات التي يحتاجها الفرع الثاني مطلوبةً بواسطة المتسلسلة المدمجة، حتّى لو عدّلها الفرع الأوّل.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">parallel-instruction-sequences</span> 
+         seq1 seq2)
+  (<span class="hljs-name">make-instruction-sequence</span>
+   (<span class="hljs-name">list-union</span> (<span class="hljs-name">registers-needed</span> seq1)
+               (<span class="hljs-name">registers-needed</span> seq2))
+   (<span class="hljs-name">list-union</span> (<span class="hljs-name">registers-modified</span> seq1)
+               (<span class="hljs-name">registers-modified</span> seq2))
+   (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name">statements</span> seq1)
+           (<span class="hljs-name">statements</span> seq2))))
+</code></pre>
+<h4>5.5.5 مثال على شيفرة مصرَّفة</h4>
+<p>والآن بعد أن رأينا جميع عناصر المصرِّف، دعنا نفحص مثالًا على شيفرةٍ مصرَّفةٍ لنرى كيف تتناسب الأجزاء معًا. فسنُصرّف تعريف إجراء <code>factorial</code> تعاوديٍّ بنداء <code>compile</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">compile</span>
+ &#x27;(define (factorial n)
+    (if (= n <span class="hljs-number">1</span>)
+        <span class="hljs-number">1</span>
+        (* (factorial (- n <span class="hljs-number">1</span>)) n)))
+ <span class="hljs-symbol">&#x27;val</span>
+ <span class="hljs-symbol">&#x27;next</span>)
+</code></pre>
+<p>لقد حدّدنا أنّ قيمة تعبير <code>define</code> ينبغي أن تُوضع في المسجّل <code>val</code>. ولا يهمّنا ما تفعله الشيفرة المصرَّفة بعد تنفيذ <code>define</code>، فاختيارنا <code>next</code> كواصف الوصلة اعتباطيّ.</p>
+<p>يحدّد <code>compile</code> أنّ التعبير تعريفٌ، فينادي <code>compile-definition</code> ليُصرّف شيفرةً تحسب القيمة التي ستُسَنَّد (موجّهةً إلى <code>val</code>)، تليها شيفرةٌ لتنصيب التعريف، تليها شيفرةٌ لوضع قيمة <code>define</code> (وهي الرمز <code>ok</code>) في المسجّل الهدف، تليها أخيرًا شيفرة الوصلة. ويُحتفظ بـ<code>env</code> أثناء احتساب القيمة، لأنّها لازمة لتنصيب التعريف. ولأنّ الوصلة هي <code>next</code>، فلا وجود لشيفرة الوصلة في هذه الحالة. وهكذا يكون الهيكل العظميّ للشيفرة المصرَّفة</p>
+<pre><code class="language-scheme">⟨save env if modified by code to compute value⟩
+  ⟨compilation of definition value, 
+   target val, linkage next⟩
+  ⟨restore env if saved above⟩
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> define-variable!)
+           (<span class="hljs-name">const</span> factorial)
+           (<span class="hljs-name">reg</span> val)
+           (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> ok))
+</code></pre>
+<p>التعبير الذي سيُصرَّف لإنتاج قيمة المتغيّر <code>factorial</code> هو تعبير <code>lambda</code> قيمتُه هي الإجراء الذي يحسب العامليّات. ويتعامل <code>compile</code> مع هذا بنداء <code>compile-lambda</code>، الذي يُصرّف جسم الإجراء، ووسمه كنقطة دخولٍ جديدة، ويُنتج التعليمة التي ستدمج جسم الإجراء عند نقطة الدخول الجديدة مع بيئة وقت التشغيل وتُسند النتيجة إلى <code>val</code>. ثم تقفز المتسلسلة فوق شيفرة الإجراء المصرَّفة، التي تُدرَج عند هذه النقطة. وتبدأ شيفرة الإجراء ذاتها بتمديد بيئة تعريف الإجراء بإطارٍ يربط الوسيط الشكليّ <code>n</code> بمعطى الإجراء. ثم يأتي جسم الإجراء الفعليّ. وبما أنّ هذه الشيفرة الخاصّة بقيمة المتغيّر لا تعدّل المسجّل <code>env</code>، فإنّ تعليمتَي <code>save</code> و<code>restore</code> الاختياريّتين المعروضتين أعلاه لا تُنتَجان. (فشيفرة الإجراء عند <code>entry2</code> لا تُنفَّذ في هذه المرحلة، فاستخدامها لـ<code>env</code> غير ذي صلة.) ولذلك، يصبح الهيكل العظميّ للشيفرة المصرَّفة</p>
+<pre><code class="language-scheme">  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> make-compiled-procedure)
+              (<span class="hljs-name">label</span> entry2)
+              (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> after-lambda1))
+entry<span class="hljs-number">2</span>
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> compiled-procedure-env)
+              (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> extend-environment)
+              (<span class="hljs-name">const</span> (<span class="hljs-name">n</span>))
+              (<span class="hljs-name">reg</span> argl)
+              (<span class="hljs-name">reg</span> env))
+  ⟨compilation of procedure body⟩
+after-lambda<span class="hljs-number">1</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> define-variable!)
+           (<span class="hljs-name">const</span> factorial)
+           (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> ok))
+</code></pre>
+<p>يُصرَّف جسم الإجراء دائمًا (بواسطة <code>compile-lambda-body</code>) كمتسلسلةٍ هدفُها <code>val</code> ووصلتُها <code>return</code>. والمتسلسلة في هذه الحالة تتألّف من تعبير <code>if</code> واحد:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+    <span class="hljs-number">1</span>
+    (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) n))
+</code></pre>
+<p>يُنتج <code>compile-if</code> شيفرةً تحسب المُسَيِّم أوّلًا (موجّهةً إلى <code>val</code>)، ثم تفحص النتيجة وتتفرّع حول الفرع الصحيح إذا كان المُسَيِّم خاطئًا. ويُحتفظ بـ<code>env</code> و<code>continue</code> حول شيفرة المُسَيِّم، إذ قد تكونان لازمين لبقية تعبير <code>if</code>. وبما أنّ تعبير <code>if</code> هو التعبير الأخير (والوحيد) في المتسلسلة المكوّنة لجسم الإجراء، فهدفُه <code>val</code> ووصلتُه <code>return</code>، ولذلك يُصرَّف الفرعان الصحيح والخاطئ كلاهما بهدف <code>val</code> ووصلة <code>return</code>. (أي أنّ قيمة التعبير الشرطيّ، وهي القيمة التي يحسبها أيٌّ من فرعيه، هي قيمة الإجراء.)</p>
+<pre><code class="language-scheme">⟨save continue, env if modified by 
+ predicate and needed by branches⟩
+  ⟨compilation of predicate, 
+   target val, linkage next⟩
+  ⟨restore continue, env if saved above⟩
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> false?) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> false-branch4))
+true-branch<span class="hljs-number">5</span>
+  ⟨compilation of true branch, 
+   target val, linkage return⟩
+false-branch<span class="hljs-number">4</span>
+  ⟨compilation of false branch, 
+   target val, linkage return⟩
+after-if<span class="hljs-number">3</span>
+</code></pre>
+<p>المُسَيِّم <code>(= n 1)</code> هو نداءُ إجراءٍ. وهو يبحث عن المشغّل (الرمز <code>=</code>) ويضع قيمتَه في <code>proc</code>. ثم يجمّع المعطيات <code>1</code> وقيمة <code>n</code> في <code>argl</code>. ثم يختبر ما إذا كان <code>proc</code> يحتوي إجراءً أوّليًّا أو إجراءً مركّبًا، ويُوجّه إلى فرعٍ أوّليٍّ أو فرعٍ مركّبٍ تبعًا لذلك. ويستأنف الفرعان عند العنوان <code>after-call</code>. ومتطلّبات صون المسجّلات حول تقييم المشغّل والعوامل لا تؤدّي إلى حفظ أيّ مسجّلات، لأنّ تلك التقييمات لا تعدّل المسجّلات المعنيّة في هذه الحالة.</p>
+<pre><code class="language-scheme">  (<span class="hljs-name">assign</span> proc (<span class="hljs-name">op</span> lookup-variable-value)
+               (<span class="hljs-name">const</span> =) 
+               (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> lookup-variable-value)
+              (<span class="hljs-name">const</span> n)
+              (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch17))
+compiled-branch<span class="hljs-number">16</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call15))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> compiled-procedure-entry)
+              (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">17</span>
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> apply-primitive-procedure)
+              (<span class="hljs-name">reg</span> proc)
+              (<span class="hljs-name">reg</span> argl))
+after-call<span class="hljs-number">15</span>
+</code></pre>
+<p>يُصرَّف الفرع الصحيح، وهو الثابت 1، (بهدف <code>val</code> ووصلة <code>return</code>) إلى</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+(<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>شيفرة الفرع الخاطئ هي نداء إجراءٍ آخر، الإجراء فيه هو قيمة الرمز <code>*</code>، والمعطيات هي <code>n</code> ونتيجة نداء إجراءٍ آخر (نداء لـ<code>factorial</code>). وكلٌّ من هذه النداءات يُهيِّئ <code>proc</code> و<code>argl</code> وفرعيه الأوّليّ والمركّب الخاصّين به. ويُظهر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">الشكل 5.17</a> التصريف الكامل لتعريف إجراء <code>factorial</code>. ولاحِظ أنّ تعليمتَي <code>save</code> و<code>restore</code> المحتملتين لـ<code>continue</code> و<code>env</code> حول المُسَيِّم، والمبيَّنتين أعلاه، تُنتَجان فعلًا، لأنّ هذين المسجّلين يعدّلهما نداء الإجراء في المُسَيِّم ويحتاجهما نداء الإجراء والوصلة <code>return</code> في الفرعين.</p>
+<p><strong>الشكل 5.17:</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↓</mo></mrow><annotation encoding="application/x-tex">↓</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mrel">↓</span></span></span></span> تصريف تعريف إجراء <code>factorial</code>.</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;; construct the procedure and skip over code</span>
+<span class="hljs-comment">;; for the procedure body</span>
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> make-compiled-procedure) 
+          (<span class="hljs-name">label</span> entry2) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> after-lambda1))
+entry<span class="hljs-number">2</span>     <span class="hljs-comment">; calls to factorial will enter here</span>
+  (<span class="hljs-name">assign</span> env 
+          (<span class="hljs-name">op</span> compiled-procedure-env)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">assign</span> env
+          (<span class="hljs-name">op</span> extend-environment) 
+          (<span class="hljs-name">const</span> (<span class="hljs-name">n</span>)) 
+          (<span class="hljs-name">reg</span> argl) 
+          (<span class="hljs-name">reg</span> env))
+<span class="hljs-comment">;; begin actual procedure body</span>
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">save</span> env)
+<span class="hljs-comment">;; compute (= n 1)</span>
+  (<span class="hljs-name">assign</span> proc 
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> =) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> n) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch17))
+compiled-branch<span class="hljs-number">16</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call15))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">17</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure) 
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+after-call<span class="hljs-number">15</span>   <span class="hljs-comment">; val now contains result of (= n 1)</span>
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> false?) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> false-branch4))
+true-branch<span class="hljs-number">5</span>  <span class="hljs-comment">; return 1</span>
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+
+false-branch<span class="hljs-number">4</span>
+<span class="hljs-comment">;; compute and return (* (factorial (- n 1)) n)</span>
+  (<span class="hljs-name">assign</span> proc 
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> *) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">save</span> proc)   <span class="hljs-comment">; save * procedure</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> n) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">save</span> argl)   <span class="hljs-comment">; save partial argument list for *</span>
+<span class="hljs-comment">;; compute (factorial (- n 1)), </span>
+<span class="hljs-comment">;; which is the other argument for *</span>
+  (<span class="hljs-name">assign</span> proc
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> factorial) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">save</span> proc)  <span class="hljs-comment">; save factorial procedure</span>
+<span class="hljs-comment">;; compute (- n 1), which is the argument for factorial</span>
+  (<span class="hljs-name">assign</span> proc 
+          (<span class="hljs-name">op</span> lookup-variable-value)
+          (<span class="hljs-name">const</span> -) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> n) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch8))
+compiled-branch<span class="hljs-number">7</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call6))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">8</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure) 
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+
+after-call<span class="hljs-number">6</span>   <span class="hljs-comment">; val now contains result of (- n 1)</span>
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">restore</span> proc) <span class="hljs-comment">; restore factorial</span>
+<span class="hljs-comment">;; apply factorial</span>
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch11))
+compiled-branch<span class="hljs-number">10</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call9))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">11</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure) 
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+after-call<span class="hljs-number">9</span>      <span class="hljs-comment">; val now contains result </span>
+                 <span class="hljs-comment">; of (factorial (- n 1))</span>
+  (<span class="hljs-name">restore</span> argl) <span class="hljs-comment">; restore partial argument list for *</span>
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons) (<span class="hljs-name">reg</span> val) (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">restore</span> proc) <span class="hljs-comment">; restore *</span>
+  (<span class="hljs-name">restore</span> continue)
+<span class="hljs-comment">;; apply * and return its value</span>
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch14))
+compiled-branch<span class="hljs-number">13</span>
+<span class="hljs-comment">;; note that a compound procedure here</span>
+<span class="hljs-comment">;; is called tail-recursively</span>
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">14</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure) 
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+after-call<span class="hljs-number">12</span>
+after-if<span class="hljs-number">3</span>
+after-lambda<span class="hljs-number">1</span>
+<span class="hljs-comment">;; assign the procedure to the variable factorial</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> define-variable!) 
+           (<span class="hljs-name">const</span> factorial) 
+           (<span class="hljs-name">reg</span> val) 
+           (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> ok))
+</code></pre>
+<p><strong>التمرين 5.33:</strong> تأمّل التعريف الآتي لإجراءٍ لحساب العامليّ، وهو يختلف اختلافًا طفيفًا عن المعطى أعلاه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial-alt</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+      <span class="hljs-number">1</span>
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> n (<span class="hljs-name">factorial-alt</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)))))
+</code></pre>
+<p>صرّف هذا الإجراء وقارِن الشيفرة الناتجة بتلك التي أُنتجت للإجراء <code>factorial</code>. اشرح أيّ فروقٍ تجدها. فهل ينفّذ أحد البرنامجين بكفاءةٍ أعلى من الآخر؟</p>
+<p><strong>التمرين 5.34:</strong> صرّف إجراء العامليّ التكراريّ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">iter</span> product counter)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&gt;</span></span> counter n)
+        product
+        (<span class="hljs-name">iter</span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> counter product)
+              (<span class="hljs-name"><span class="hljs-built_in">+</span></span> counter <span class="hljs-number">1</span>))))
+  (<span class="hljs-name">iter</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>))
+</code></pre>
+<p>علّم الشيفرة الناتجة، مُبيّنًا الفرق الجوهريّ بين شيفرة النسختين التكراريّة والتعاوديّة من <code>factorial</code>، وهو الفرق الذي يجعل إحدى العمليّتين تبني مساحةً في المكدّس بينما تعمل الأخرى في مساحة مكدّسٍ ثابتة.</p>
+<blockquote>
+<p><strong>التمرين 5.35:</strong> ما التعبير الذي صُرّف لإنتاج الشيفرة الموضّحة في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">الشكل 5.18</a>؟</p>
+</blockquote>
+<p><strong>الشكل 5.18:</strong> <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>↓</mo></mrow><annotation encoding="application/x-tex">↓</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mrel">↓</span></span></span></span> مثالٌ على ناتج المصرِّف. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.35</a>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> make-compiled-procedure) 
+            (<span class="hljs-name">label</span> entry16) 
+            (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> after-lambda15))
+entry<span class="hljs-number">16</span>
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> compiled-procedure-env)
+              (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> extend-environment) 
+              (<span class="hljs-name">const</span> (<span class="hljs-name">x</span>)) 
+              (<span class="hljs-name">reg</span> argl) 
+              (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> proc (<span class="hljs-name">op</span> lookup-variable-value) 
+               (<span class="hljs-name">const</span> +) 
+               (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">save</span> continue) (<span class="hljs-name">save</span> proc) (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">assign</span> proc (<span class="hljs-name">op</span> lookup-variable-value) 
+               (<span class="hljs-name">const</span> g) 
+               (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">save</span> proc)
+  (<span class="hljs-name">assign</span> proc (<span class="hljs-name">op</span> lookup-variable-value) 
+               (<span class="hljs-name">const</span> +) 
+               (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> <span class="hljs-number">2</span>))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> lookup-variable-value)
+              (<span class="hljs-name">const</span> x) 
+              (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> cons)
+               (<span class="hljs-name">reg</span> val)
+               (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?)
+        (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch19))
+compiled-branch<span class="hljs-number">18</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call17))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">19</span>
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> apply-primitive-procedure)
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+after-call<span class="hljs-number">17</span>
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">restore</span> proc)
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?)
+        (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch22))
+compiled-branch<span class="hljs-number">21</span>
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> after-call20))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">22</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure) 
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+after-call<span class="hljs-number">20</span>
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> list) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> lookup-variable-value) 
+          (<span class="hljs-name">const</span> x) 
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> argl
+          (<span class="hljs-name">op</span> cons)
+          (<span class="hljs-name">reg</span> val)
+          (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">restore</span> proc)
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?)
+        (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-branch25))
+compiled-branch<span class="hljs-number">24</span>
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> compiled-procedure-entry)
+              (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+primitive-branch<span class="hljs-number">25</span>
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> apply-primitive-procedure)
+          (<span class="hljs-name">reg</span> proc) 
+          (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+after-call<span class="hljs-number">23</span>
+after-lambda<span class="hljs-number">15</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> define-variable!) 
+           (<span class="hljs-name">const</span> f) 
+           (<span class="hljs-name">reg</span> val) 
+           (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> ok))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.36:</strong> ما ترتيب التقييم الذي يُنتجه مصرِّفنا لعوامل التركيب؟ أهو من اليسار إلى اليمين، أم من اليمين إلى اليسار، أم ترتيبٌ آخر؟ وأين يُحدَّد هذا الترتيب في المصرِّف؟ عدّل المصرّف بحيث يُنتج ترتيب تقييمٍ آخر. (انظر مناقشة ترتيب التقييم للمُقيِّم صريح التحكّم الواردة في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1">5.4.1</a>.) فكيف يؤثّر تغيير ترتيب تقييم العوامل في كفاءة الشيفرة التي تبني قائمة المعطيات؟</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.37:</strong> إحدى طرائق فهم آليّة <code>preserving</code> في المصرِّف - المستخدمة لتحسين استغلال المكدّس - هي رؤية العمليّات الإضافيّة التي كانت ستُولَّد لو لم نستخدم هذه الفكرة. عدّل <code>preserving</code> بحيث تُولَّد عمليّتا <code>save</code> و<code>restore</code> دائمًا. صرّف بعض التعابير البسيطة وحدّد عمليّات المكدّس غير الضروريّة التي تُولَّد. قارِن الشيفرة بتلك التي تُولَّد مع بقاء آليّة <code>preserving</code> على حالها.</p>
+</blockquote>
+<p>مصرِّفنا بارعٌ في تجنّب عمليّات المكدّس غير الضروريّة، لكنّه ليس بارعًا على الإطلاق حين يُصرّف نداءات الإجراءات الأوّليّة للغة من حيث العمليّات الأوّليّة التي تزوّدها الآلة. فتأمّل، مثلًا، كم الشيفرة التي تُصرَّف لاحتساب <code>(+ a 1)</code>: فالشيفرة تُنشئ قائمةَ معطياتٍ في <code>argl</code>، وتضع إجراء الجمع الأوّليّ (الذي تجده بالبحث عن الرمز <code>+</code> في البيئة) في <code>proc</code>، وتختبر ما إذا كان الإجراء أوّليًّا أم مركّبًا. والمصرِّف يُولّد دائمًا شيفرةً لأداء الاختبار، وكذلك شيفرةً للفرعين الأوّليّ والمركّب (ولن يُنفَّذ إلّا أحدهما). ونحن لم نُظهر الجزء من المتحكّم الذي يُنفّذ الأوّليّات، لكنّنا نفترض أنّ هذه التعليمات تستخدم العمليّات الحسابيّة الأوّليّة في مسارات بيانات الآلة. وتأمّل كم الشيفرة الأقلّ التي كانت ستُولَّد لو كان المصرِّف قادرًا على <em>الترميز المباشر (open-coding)</em> للأوّليّات - أي لو كان قادرًا على توليد شيفرةٍ تستخدم عمليّات الآلة الأوّليّة هذه مباشرةً. فقد يُصرَّف التعبير <code>(+ a 1)</code> إلى شيءٍ بسيطٍ كالآتي:<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> lookup-variable-value) 
+            (<span class="hljs-name">const</span> a) 
+            (<span class="hljs-name">reg</span> env))
+(<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> +)
+            (<span class="hljs-name">reg</span> val)
+            (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+</code></pre>
+<p>سنُوسّع في هذا التمرين مصرِّفنا ليدعم الترميز المباشر لأوّليّاتٍ منتقاة. وستُولَّد شيفرةٌ خاصّةٌ لنداءات هذه الإجراءات الأوّليّة بدلًا من شيفرة تطبيق الإجراءات العامّة. ولكي نُسند هذا، سنُعزّز آلتنا بمسجّلي معطياتٍ خاصّين، <code>arg1</code> و<code>arg2</code>. وستأخذ عمليّات الآلة الحسابيّة الأوّليّة معطياتها من <code>arg1</code> و<code>arg2</code>. وقد توضع النتائج في <code>val</code> أو <code>arg1</code> أو <code>arg2</code>.</p>
+<p>ينبغي أن يكون المصرِّف قادرًا على التعرّف على تطبيق أوّليٍّ مُرمَّزٍ مباشرةً في البرنامج المصدريّ. وسنُعزّز التوزيع في الإجراء <code>compile</code> ليُتعرّف على أسماء هذه الأوّليّات بالإضافة إلى الكلمات المحجوزة (الصيغ الخاصّة) التي يتعرّف عليها حاليًّا.<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup> ولكلّ صيغةٍ خاصّةٍ في مصرِّفنا مولّدُ شيفرة. وسنبني في هذا التمرين عائلةً من مولّدات الشيفرة للأوّليّات المُرمَّزة مباشرةً.</p>
+<ol>
+<li>تحتاج الأوّليّات المُرمَّزة مباشرةً - بخلاف الصيغ الخاصّة - جميعًا إلى تقييم عواملها. اكتب مولّد شيفرةٍ <code>spread-arguments</code> لاستخدامه من جميع مولّدات الشيفرة التي تُرمّز مباشرةً. وينبغي لـ<code>spread-arguments</code> أن تأخذ قائمة عواملٍ وتُصرّف العوامل المعطاة موجَّهةً إلى مسجّلات المعطيات المتتالية. ولاحِظ أنّ العامل قد يحتوي نداءً لأوّليٍّ مُرمَّزٍ مباشرةً، ومن ثمّ يتعيّن الحفاظ على مسجّلات المعطيات أثناء تقييم العامل.</li>
+<li>لكلّ من الإجراءات الأوّليّة <code>=</code> و<code>*</code> و<code>-</code> و<code>+</code>، اكتب مولّد شيفرةٍ يأخذ تركيبًا ذي المشغّل المذكور، مع هدفٍ وواصف ربط، ويُنتج شيفرةً تنشر المعطيات في المسجّلات ثم تُداء العمليّة موجَّهةً إلى الهدف المعطى بالربط المعطى. وليس عليك إلّا التعامل مع التعابير ذات العاملين. واجعل <code>compile</code> يُوزّع إلى مولّدات الشيفرة هذه.</li>
+<li>جرّب مصرِّفك الجديد على مثال <code>factorial</code>. قارِن الشيفرة الناتجة بالناتج المُنتَج دون الترميز المباشر.</li>
+<li>وسّع مولّدي الشيفرة الخاصّين بـ<code>+</code> و<code>*</code> بحيث يتمكّنان من التعامل مع تعابيرَ ذات أعدادٍ اعتباطيّةٍ من العوامل. وسيتعيّن تصريف التعبير ذي أكثر من عاملين إلى تسلسلٍ من العمليّات، لكلٍّ منها مدخلان فقط.</li>
+</ol>
+<h4>5.5.6 العنونة المعجميّة</h4>
+<p>إحدى أكثر التحسينات شيوعًا التي تُجريها المصرّفات هي تحسين البحث عن المتغيّرات. فمصرِّفنا، كما نفّذناه حتّى الآن، يُولّد شيفرةً تستخدم عمليّة <code>lookup-variable-value</code> الخاصّة بآلة المُقيِّم. وتبحث هذه العمليّة عن متغيّرٍ بمقارنته بكلّ متغيّرٍ مربوطٍ حاليًّا، مُنتقلةً إطارًا بعد إطارٍ إلى الخارج عبر بيئة وقت التشغيل. وقد يكون هذا البحث مكلفًا إذا كانت الأطر متداخلةً بعمقٍ أو إذا كان المتغيّرات كثيرة. فتأمّل، مثلًا، مسألة البحث عن قيمة <code>x</code> أثناء تقييم التعبير <code>(* x y z)</code> في تطبيق الإجراء الذي يُعيده</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">x</span> <span class="hljs-number">3</span>) (<span class="hljs-name">y</span> <span class="hljs-number">4</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (a b c d e)
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">y</span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> a b x))
+          (<span class="hljs-name">z</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> c d x)))
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> x y z))))
+</code></pre>
+<p>وحيث إنّ تعبير <code>let</code> ليس إلّا سُكّرًا نحويًّا لتركيب <code>lambda</code>، فإنّ هذا التعبير مكافئٌ لـ</p>
+<pre><code class="language-scheme">((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x y)
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (a b c d e)
+     ((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (y z) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> x y z))
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> a b x)
+      (<span class="hljs-name"><span class="hljs-built_in">+</span></span> c d x))))
+ <span class="hljs-number">3</span>
+ <span class="hljs-number">4</span>)
+</code></pre>
+<p>في كلّ مرّةٍ تبحث فيها <code>lookup-variable-value</code> عن <code>x</code>، ينبغي أن تُحدّد أنّ الرمز <code>x</code> ليس <code>eq?</code> بالنسبة إلى <code>y</code> أو <code>z</code> (في الإطار الأوّل)، ولا بالنسبة إلى <code>a</code> أو <code>b</code> أو <code>c</code> أو <code>d</code> أو <code>e</code> (في الإطار الثاني). وسنفترض، في الوقت الحاضر، أنّ برامجنا لا تستخدم <code>define</code> - أي أنّ المتغيّرات لا تُربط إلّا بـ<code>lambda</code>. ولأنّ لغتنا محدودة النطاق معجميًّا، فإنّ بيئة وقت التشغيل لأيّ تعبيرٍ ستكون ذات بنيةٍ تُوازي البنية المعجميّة للبرنامج الذي يظهر فيه التعبير.<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup> وبالتالي، فيستطيع المصرِّف أن يعرف، حين يُحلّل التعبير أعلاه، أنّ المتغيّر <code>x</code> في <code>(* x y z)</code> سيوجد، في كلّ مرّةٍ يُطبَّق فيها الإجراء، على مسافة إطارين من الإطار الحاليّ وسيكون أوّل متغيّرٍ في ذلك الإطار.</p>
+<p>ويمكننا استثمار هذه الحقيقة باختراع نوعٍ جديدٍ من عمليّات البحث عن المتغيّرات، هو <code>lexical-address-lookup</code>، الذي يأخذ بيئةً و<em>عنوانًا معجميًّا</em> يتألّف من عددين: <em>رقم إطار</em>، يُحدّد كم إطارًا ينبغي تجاوزه، و<em>رقم إزاحة</em>، يُحدّد كم متغيّرًا ينبغي تجاوزه في ذلك الإطار. وستُنتج <code>Lexical-address-lookup</code> قيمة المتغيّر المخزّن عند ذلك العنوان المعجميّ نسبةً إلى البيئة الحاليّة. فإذا أضفنا عمليّة <code>lexical-address-lookup</code> إلى آلتنا، أمكننا أن نجعل المصرِّف يُولّد شيفرةً تشير إلى المتغيّرات باستخدام هذه العمليّة بدلًا من <code>lookup-variable-value</code>. وبالمثل، فيمكن لشيفرتنا المصرّفة أن تستخدم عمليّةً جديدةً هي <code>lexical-address-set!</code> بدلًا من <code>set-variable-value!</code>.</p>
+<p>ولتوليد شيفرةٍ كهذه، ينبغي أن يكون المصرِّف قادرًا على تحديد العنوان المعجميّ لمتغيّرٍ يُوشك أن يُصرّف إشارةً إليه. ويعتمد العنوان المعجميّ لمتغيّرٍ في برنامجٍ على موضع المرء في الشيفرة. فتأمّل، مثلًا، في البرنامج الآتي، عنوان <code>x</code> في التعبير <code>⟨</code>e1<code>⟩</code> هو (2, 0) - أي إطاران إلى الخلف وأوّل متغيّرٍ في الإطار. وعند تلك النقطة يكون <code>y</code> عند العنوان (0, 0) و<code>c</code> عند العنوان (1, 2). وفي التعبير <code>⟨</code>e2<code>⟩</code>، يكون <code>x</code> عند (1, 0)، و<code>y</code> عند (1, 1)، و<code>c</code> عند (0, 2).</p>
+<pre><code class="language-scheme">((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x y)
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (a b c d e)
+     ((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (y z) ⟨e1⟩)
+      ⟨e2⟩
+      (<span class="hljs-name"><span class="hljs-built_in">+</span></span> c d x))))
+ <span class="hljs-number">3</span>
+ <span class="hljs-number">4</span>)
+</code></pre>
+<p>إحدى طرائق جعل المصرِّف يُنتج شيفرةً تستخدم العنونة المعجميّة هي المحافظة على بنية بياناتٍ تُسمّى <em>بيئة وقت التصريف</em>. وهي تتابع أيّ المتغيّرات ستكون في أيّ المواضع وفي أيّ الأطر في بيئة وقت التشغيل حين تُنفَّذ عمليّة وصولٍ معيّنةٍ إلى متغيّر. وبيئة وقت التصريف قائمةٌ من الأطر، يحتوي كلٌّ منها على قائمةٍ من المتغيّرات. (ولن تكون هناك بالطبع أيّ قيمٍ مربوطةٍ بالمتغيّرات، إذ إنّ القيم لا تُحتسب في وقت التصريف.) وتصير بيئة وقت التصريف معطىً إضافيًّا لـ<code>compile</code> وتُمرَّر إلى كلّ مولّد شيفرة. ويستخدم نداء <code>compile</code> في المستوى الأعلى بيئةَ وقت تصريفٍ فارغة. وحين يُصرَّف جسم <code>lambda</code>، تُوسّع <code>compile-lambda-body</code> بيئةَ وقت التصريف بإطارٍ يحتوي وسائط الإجراء، بحيث يُصرَّف التسلسل المكوِّن للجسم بتلك البيئة المُوسَّعة. وعند كلّ نقطةٍ في التصريف، تستخدم <code>compile-variable</code> و<code>compile-assignment</code> بيئةَ وقت التصريف لتوليد العناوين المعجميّة المناسبة.</p>
+<p>يصف <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.39</a> إلى <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a> كيف يُتْم هذه المخططات لاستراتيجيّة العنونة المعجميّة بغية إدماج البحث المعجميّ في المصرِّف. ويصف <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.44</a> استخدامًا آخر لبيئة وقت التصريف.</p>
+<blockquote>
+<p><strong>التمرين 5.39:</strong> اكتب إجراءً <code>lexical-address-lookup</code> يُنفّذ عمليّة البحث الجديدة. وينبغي أن يأخذ معطيين - عنوانًا معجميًّا وبيئةَ وقت تشغيل - ويُعيد قيمة المتغيّر المخزّن عند العنوان المعجميّ المحدَّد. وينبغي لـ<code>Lexical-address-lookup</code> أن يُشير إلى خطأٍ إذا كانت قيمة المتغيّر هي الرمز <code>*unassigned*</code>.<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup> واكتب أيضًا إجراءً <code>lexical-address-set!</code> يُنفّذ العمليّة التي تُغيّر قيمة المتغيّر عند عنوانٍ معجميٍّ محدَّد.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.40:</strong> عدّل المصرِّف ليحافظ على بيئة وقت التصريف كما وُصِف أعلاه. أي أضِف معطى بيئةِ وقت تصريفٍ إلى <code>compile</code> وإلى مولّدات الشيفرة المختلفة، ووسّعه في <code>compile-lambda-body</code>.</p>
+</blockquote>
+<p><strong>التمرين 5.41:</strong> اكتب إجراءً <code>find-variable</code> يأخذ متغيّرًا وبيئةَ وقت تصريفٍ كمعطيين ويُعيد العنوان المعجميّ للمتغيّر نسبةً إلى تلك البيئة. فمثلًا، في المقطع البرمجيّ الموضّح أعلاه، تكون بيئة وقت التصريف أثناء تصريف التعبير <code>⟨</code>e1<code>⟩</code> هي <code>((y z) (a b c d e) (x y))</code>. وينبغي لـ<code>Find-variable</code> أن يُنتج</p>
+<pre><code class="language-scheme">(<span class="hljs-name">find-variable</span> 
+ <span class="hljs-symbol">&#x27;c</span> &#x27;((y z) (a b c d e) (x y)))
+(<span class="hljs-name">1</span> <span class="hljs-number">2</span>)
+
+(<span class="hljs-name">find-variable</span> 
+ <span class="hljs-symbol">&#x27;x</span> &#x27;((y z) (a b c d e) (x y)))
+(<span class="hljs-name">2</span> <span class="hljs-number">0</span>)
+
+(<span class="hljs-name">find-variable</span> 
+ <span class="hljs-symbol">&#x27;w</span> &#x27;((y z) (a b c d e) (x y)))
+not-found
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.42:</strong> باستخدام <code>find-variable</code> من <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.41</a>، أعد كتابة <code>compile-variable</code> و<code>compile-assignment</code> ليُخرِجا تعليمات العنوان المعجميّ. وفي الحالات التي تُعيد فيها <code>find-variable</code> القيمة <code>not-found</code> (أي حيث لا يكون المتغيّر في بيئة وقت التصريف)، ينبغي أن تجعل مولّدات الشيفرة تستخدم عمليّات المُقيِّم، كما سبق، للبحث عن الربط. (والمكان الوحيد الذي يمكن أن يكون فيه متغيّرٌ لا يُعثَر عليه في وقت التصريف هو البيئة العامّة، وهي جزءٌ من بيئة وقت التشغيل لكنّها ليست جزءًا من بيئة وقت التصريف.<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup> وبالتالي، فإن شئتَ، أمكنك أن تجعل عمليّات المُقيِّم تنظر مباشرةً في البيئة العامّة، التي يمكن الحصول عليها بالعمليّة <code>(op get-global-environment)</code>، بدلًا من أن تجعلها تبحث في بيئة وقت التشغيل كلّها الموجودة في <code>env</code>.) واختبر المصرِّف المُعدَّل على بعض الحالات البسيطة، كتركيب <code>lambda</code> المتداخل في بداية هذا القسم.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.43:</strong> لقد حاججنا في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6">4.1.6</a> بأنّ التعريفات الداخليّة لبنية الكتل لا ينبغي اعتبارها <code>define</code>s «حقيقيّة». فالأولى أن يُفسَّر جسم الإجراء كما لو كانت المتغيّرات الداخليّة المُعرَّفة تُثبَّت متغيّرات <code>lambda</code> اعتياديّةً تُهيَّأ بقيمها الصحيحة باستخدام <code>set!</code>. وأظهر <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e6">4.1.6</a> و<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e16">التمرين 4.16</a> كيف يُعدَّل المُقيِّم التحاكميّ (metacircular evaluator) لإنجاز هذا بمسح التعريفات الداخليّة وإخراجها. عدّل المصرِّف ليؤدّي التحويل ذاته قبل أن يُصرّف جسم إجراء.</p>
+</blockquote>
+<p><strong>التمرين 5.44:</strong> لقد تركّزنا في هذا القسم على استخدام بيئة وقت التصريف لإنتاج العناوين المعجميّة. لكن ثمّة استخدامات أخرى لبيئات وقت التصريف. فمثلًا، زدنا في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.38</a> كفاءة الشيفرة المصرّفة بترميز الإجراءات الأوّليّة مباشرةً. وقد عامل تنفيذنا أسماء الإجراءات المُرمَّزة مباشرةً معاملة الكلمات المحجوزة. فلو أعاد برنامجٌ ربط اسمٍ كهذا، لظلّت الآليّة الموصوفة في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.38</a> تُرمّزه مباشرةً كأوّليٍّ، متجاهلةً الربط الجديد. فتأمّل، مثلًا، الإجراء</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (+ * a b x y)
+  (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> a x) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> b y)))
+</code></pre>
+<p>الذي يحسب تركيبةً خطّيّةً من <code>x</code> و<code>y</code>. فقد ندعوه بمعطيات <code>+matrix</code> و<code>*matrix</code> وأربع مصفوفات، لكن المصرِّف المُرمِّز مباشرةً كان سيظلّ يُرمّز الـ<code>+</code> والـ<code>*</code> في <code>(+ (* a x) (* b y))</code> مباشرةً كأوّليَّي <code>+</code> و<code>*</code>. عدّل المصرِّف المُرمِّز مباشرةً ليستشير بيئة وقت التصريف بغية تصريف الشيفرة الصحيحة للتعابير التي تشمل أسماء الإجراءات الأوّليّة. (وستعمل الشيفرة صحيحةً ما دام البرنامج لا يُعرّف هذه الأسماء بـ<code>define</code> أو <code>set!</code>.)</p>
+<h4>5.5.7 ربط الشيفرة المصرّفة بالمُقيِّم</h4>
+<p>لم نشرح بعد كيف تُحمَّل الشيفرة المصرّفة في آلة المُقيِّم ولا كيف تُشغَّل. وسنفترض أنّ آلة المُقيِّم صريحة التحكّم قد عُرِّفت كما في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4">5.4.4</a>، مع العمليّات الإضافيّة المحدَّدة في <a href="#Footnote-323">الحاشية 323</a>. وسنُنفّذ إجراءً <code>compile-and-go</code> يُصرّف تعبير Scheme، ويُحمّل الشيفرة الهدفيّة الناتجة في آلة المُقيِّم، ويجعل الآلة تُشغّل الشيفرة في البيئة العامّة للمُقيِّم، وتطبع النتيجة، وتدخل حلقة المقود (driver loop) الخاصّة بالمُقيِّم. وسنُعدّل المُقيِّم أيضًا حتّى تستطيع التعابير المُفسَّرة أن تنادي الإجراءات المصرّفة كما تنادي المُفسَّرة. وبوسعنا حينئذٍ أن نضع إجراءً مصرّفًا في الآلة وأن نستخدم المُقيِّم لندائه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">compile-and-go</span>
+ &#x27;(define (factorial n)
+    (if (= n <span class="hljs-number">1</span>)
+        <span class="hljs-number">1</span>
+        (* (factorial (- n <span class="hljs-number">1</span>)) n))))
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name">factorial</span> <span class="hljs-number">5</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+<span class="hljs-number">120</span>
+</code></pre>
+<p>وليتمكّن المُقيِّم من التعامل مع الإجراءات المصرّفة (لتقييم نداء <code>factorial</code> أعلاه، مثلًا)، يتعيّن علينا تغيير الشيفرة عند <code>apply-dispatch</code> (<a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e1">5.4.1</a>) بحيث تتعرّف على الإجراءات المصرّفة (بوصفها متميّزةً عن الإجراءات المركّبة أو الأوّليّة) وتنقل التحكّم مباشرةً إلى نقطة دخول الشيفرة المصرّفة:<sup class="footnote-ref"><a href="#fn16" id="fnref16">[16]</a></sup></p>
+<pre><code class="language-scheme">apply-dispatch
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-apply))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> compound-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> compound-apply))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> compiled-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> compiled-apply))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> unknown-procedure-type))
+
+compiled-apply
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> compiled-procedure-entry)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+</code></pre>
+<p>لاحِظ استعادة <code>continue</code> عند <code>compiled-apply</code>. وتذكّر أنّ المُقيِّم رُتّب بحيث تكون الاستمراريّة في قمّة المكدّس عند <code>apply-dispatch</code>. أمّا نقطة دخول الشيفرة المصرّفة، من جهةٍ أخرى، فتتوقّع أن تكون الاستمراريّة في <code>continue</code>، ومن ثمّ يتعيّن استعادة <code>continue</code> قبل تنفيذ الشيفرة المصرّفة.</p>
+<p>وليُتاح لنا تشغيل بعض الشيفرة المصرّفة حين نُشغّل آلة المُقيِّم، نُضيف تعليمة <code>branch</code> في بداية آلة المُقيِّم، تجعل الآلة تنتقل إلى نقطة دخولٍ جديدة إذا كان مسجّل <code>flag</code> مضبوطًا.<sup class="footnote-ref"><a href="#fn17" id="fnref17">[17]</a></sup></p>
+<pre><code class="language-scheme"><span class="hljs-comment">;; branches if flag is set:</span>
+(<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> external-entry)) 
+read-eval-print-loop
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> initialize-stack))
+  …
+</code></pre>
+<p>تفترض <code>External-entry</code> أنّ الآلة تُشغَّل و<code>val</code> يحتوي موقع تسلسل تعليماتٍ يضع نتيجةً في <code>val</code> وينتهي بـ<code>(goto (reg continue))</code>. فالانطلاق من نقطة الدخول هذه يقفز إلى الموقع الذي يُعيّنه <code>val</code>، لكنّه يُسند أوّلًا <code>continue</code> بحيث يعود التنفيذ إلى <code>print-result</code>، الذي يطبع القيمة في <code>val</code> ثم يذهب إلى بداية حلقة القراءة والتقييم والطباعة الخاصّة بالمُقيِّم.<sup class="footnote-ref"><a href="#fn18" id="fnref18">[18]</a></sup></p>
+<pre><code class="language-scheme">external-entry
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> initialize-stack))
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> get-global-environment))
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> print-result))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> val))
+</code></pre>
+<p>والآن يمكننا استخدام الإجراء الآتي لتصريف تعريف إجراءٍ وتنفيذ الشيفرة المصرّفة وتشغيل حلقة القراءة والتقييم والطباعة حتّى نتمكّن من تجربة الإجراء. ولأنّنا نريد للشيفرة المصرّفة أن تعود إلى الموقع في <code>continue</code> بنتيجتها في <code>val</code>، فإنّنا نُصرّف التعبير بهدفٍ هو <code>val</code> وربطٍ هو <code>return</code>. وَلِكي نحوّل الشيفرة الهدفيّة التي يُنتجها المصرِّف إلى تعليماتٍ قابلةٍ للتنفيذ على آلة مسجّلات المُقيِّم، فإنّنا نستخدم الإجراء <code>assemble</code> من محاكي آلة المسجّلات (<a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e2">5.2.2</a>). ثم نُهيّئ مسجّل <code>val</code> ليشير إلى قائمة التعليمات، ونضبط <code>flag</code> بحيث يذهب المُقيِّم إلى <code>external-entry</code>، ونُشغّل المُقيِّم.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compile-and-go</span> expression)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">instructions</span>
+         (<span class="hljs-name">assemble</span> 
+          (<span class="hljs-name">statements</span>
+           (<span class="hljs-name">compile</span> 
+            expression <span class="hljs-symbol">&#x27;val</span> <span class="hljs-symbol">&#x27;return</span>))
+          eceval)))
+    (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> the-global-environment
+          (<span class="hljs-name">setup-environment</span>))
+    (<span class="hljs-name">set-register-contents!</span> 
+     eceval <span class="hljs-symbol">&#x27;val</span> instructions)
+    (<span class="hljs-name">set-register-contents!</span> 
+     eceval <span class="hljs-symbol">&#x27;flag</span> true)
+    (<span class="hljs-name">start</span> eceval)))
+</code></pre>
+<p>وإذا كنّا قد أعددنا مراقبة المكدّس، كما في نهاية <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4">5.4.4</a>، فأمكننا فحص استغلال المكدّس في الشيفرة المصرّفة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name">compile-and-go</span>
+ &#x27;(define (factorial n)
+    (if (= n <span class="hljs-number">1</span>)
+        <span class="hljs-number">1</span>
+        (* (factorial (- n <span class="hljs-number">1</span>)) n))))
+(<span class="hljs-name">total-pushes</span> = <span class="hljs-number">0</span>, maximum-depth = <span class="hljs-number">0</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name">factorial</span> <span class="hljs-number">5</span>)
+(<span class="hljs-name">total-pushes</span> = <span class="hljs-number">31</span>, maximum-depth = <span class="hljs-number">14</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+<span class="hljs-number">120</span>
+</code></pre>
+<p>قارِن هذا المثال بتقييم <code>(factorial 5)</code> باستخدام النسخة المُفسَّرة من الإجراء ذاته، الموضّحة في نهاية <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4_002e4">5.4.4</a>. فقد احتاجت النسخة المُفسَّرة 144 مدفعةً وعمقَ مكدّسٍ أقصاه 28. وهذا يُبيّن التحسين الناتج عن استراتيجيّة التصريف لدينا.</p>
+<h4>التفسير والتصريف</h4>
+<p>بالبرامج الواردة في هذا القسم، يمكننا الآن أن نُجرّب استراتيجيّي التنفيذ البديلتين المتمثّلتين في التفسير والتصريف.<sup class="footnote-ref"><a href="#fn19" id="fnref19">[19]</a></sup> فالمفسّر يرفع الآلة إلى مستوى برنامج المستخدم؛ أمّا المصرِّف فيخفض برنامج المستخدم إلى مستوى لغة الآلة. ويمكننا اعتبار لغة Scheme (أو أيّ لغة برمجةٍ) عائلةً متماسكةً من التجريدات القائمة على لغة الآلة. والمفسّرات حسنةٌ للتطوير التفاعليّ للبرامج ولتنقيحها، لأنّ خطوات تنفيذ البرنامج مُنظَّمةٌ من حيث هذه التجريدات، ومن ثمّ فهي أكثر وضوحًا للمبرمج. والشيفرة المصرّفة قادرةٌ على التنفيذ أسرعَ، لأنّ خطوات تنفيذ البرنامج مُنظَّمةٌ من حيث لغة الآلة، ولأنّ المصرِّف حرٌّ في إجراء تحسيناتٍ تتجاوز التجريدات ذات المستوى الأعلى.<sup class="footnote-ref"><a href="#fn20" id="fnref20">[20]</a></sup></p>
+<p>وتؤدّي بديلتا التفسير والتصريف أيضًا إلى استراتيجيّاتٍ مختلفةٍ لنقل اللغات إلى حواسيب جديدة. فافترض أنّنا نرغب في تنفيذ Lisp على آلةٍ جديدة. فإحدى الاستراتيجيّات هي الانطلاق بالمُقيِّم صريح التحكّم الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4">5.4</a> وترجمة تعليماته إلى تعليماتٍ للآلة الجديدة. واستراتيجيّةٌ مختلفة هي الانطلاق بالمصرِّف وتغيير مولّدات الشيفرة بحيث تُولّد شيفرةً للآلة الجديدة. والاستراتيجيّة الثانية تسمح لنا بتشغيل أيّ برنامج Lisp على الآلة الجديدة بتصريفه أوّلًا بالمصرِّف العامل على نظام Lisp الأصليّ لدينا، وربطه بنسخةٍ مصرّفةٍ من مكتبة وقت التشغيل.<sup class="footnote-ref"><a href="#fn21" id="fnref21">[21]</a></sup> والأفضل من ذلك، أنّنا نستطيع تصريف المصرِّف نفسه، وتشغيل هذا الأخير على الآلة الجديدة لتصريف برامج Lisp أخرى.<sup class="footnote-ref"><a href="#fn22" id="fnref22">[22]</a></sup> أو نستطيع تصريف أحد مفسّري <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a> لإنتاج مفسّرٍ يعمل على الآلة الجديدة.</p>
+<blockquote>
+<p><strong>التمرين 5.45:</strong> بمقارنة عمليّات المكدّس التي تستخدمها الشيفرة المصرّفة بتلك التي يستخدمها المُقيِّم للاحتساب ذاته، نستطيع تحديد المدى الذي يُحسّن به المصرِّف استغلال المكدّس، سواءً في السرعة (بتقليل العدد الكلّيّ لعمليّات المكدّس) أو في المكان (بتقليل عمق المكدّس الأقصى). ومقارنة هذا الاستغلال المُحسَّن بأداء آلةٍ خاصّةٍ للاحتساب ذاته تُعطي إشارةً ما عن جودة المصرِّف. فقد طُلب منك في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e27">التمرين 5.27</a> أن تُحدّد، كدالّةٍ في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> ، عدد المدفعات وعمق المكدّس الأقصى اللذين يحتاجهما المُقيِّم لاحتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> باستخدام إجراء العامليّ التعاوديّ المعطى أعلاه. وطُلب منك في <a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#Exercise-5_002e14">التمرين 5.14</a> أن تُجري القياسات ذاتها لآلة العامليّ الخاصّة الموضّحة في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e11">الشكل 5.11</a>. وأدِر الآن التحليل ذاته باستخدام إجراء <code>factorial</code> المصرّف.</p>
+<blockquote>
+<p>خُذ نسبة عدد المدفعات في النسخة المصرّفة إلى عدد المدفعات في النسخة المُفسَّرة، وافعل المثل لعمق المكدّس الأقصى. وحيث إنّ عدد العمليّات وعمق المكدّس المستخدمين لاحتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> خطّيان في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> ، فينبغي أن تقترب هذه النسب من ثوابتَ كلّما كَبُرَت <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . فما هذه الثوابت؟ وبالمثل، أوجد نسب استغلال المكدّس في الآلة الخاصّة إلى الاستغلال في النسخة المُفسَّرة. وقارِن نسب الخاصّة مقابل المُفسَّرة بنسب المصرّفة مقابل المُفسَّرة. وستجد أنّ الآلة الخاصّة أفضلُ أداءً بكثيرٍ من الشيفرة المصرّفة، إذ ينبغي أن تكون شيفرة المتحكّم المصمّمة يدويًّا أفضلَ بكثيرٍ مما يُنتجه مصرِّفنا العامّ البدائيّ. فهل تستطيع اقتراح تحسيناتٍ على المصرِّف تُعينه على توليد شيفرةٍ تُقارِب في أدائها النسخة المصمّمة يدويًّا؟</p>
+</blockquote>
+</blockquote>
+<p><strong>التمرين 5.46:</strong> أدِر تحليلًا مثل التحليل الوارد في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.45</a> لتحديد فعّاليّة تصريف إجراء فيبوناتشي التعاوديّ الشجريّ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">fib</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&lt;</span></span> n <span class="hljs-number">2</span>)
+      n
+      (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">2</span>)))))
+</code></pre>
+<p>مقابل فعّاليّة استخدام آلة فيبوناتشي الخاصّة الواردة في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#Figure-5_002e12">الشكل 5.12</a>. (ولقياس الأداء المُفسَّر، انظر <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#Exercise-5_002e29">التمرين 5.29</a>.) فبالنسبة إلى فيبوناتشي، فإنّ المورد الزمنيّ المستخدم ليس خطّيًّا في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo separator="true">;</mo></mrow><annotation encoding="application/x-tex">n ;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">n</span><span class="mpunct">;</span></span></span></span> ومن ثمّ فلن تقترب نسب عمليّات المكدّس من قيمةٍ حدّيّةٍ مستقلّةٍ عن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> .</p>
+<p><strong>التمرين 5.47:</strong> وصف هذا القسم كيف يُعدَّل المُقيِّم صريح التحكّم حتّى تستطيع الشيفرة المُفسَّرة أن تنادي إجراءاتٍ مصرّفة. أُظهر كيف يُعدَّل المصرِّف حتّى تستطيع الإجراءات المصرّفة أن تنادي، ليس الإجراءات الأوّليّة والمصرّفة فحسب، بل الإجراءات المُفسَّرة أيضًا. وهذا يتطلّب تعديل <code>compile-procedure-call</code> لمعالجة حالة الإجراءات المركّبة (المُفسَّرة). وتأكّد من معالجة جميع توليفات <code>target</code> و<code>linkage</code> ذاتها كما في <code>compile-proc-appl</code>. ولأداء تطبيق الإجراء فعليًّا، تحتاج الشيفرة إلى القفز إلى نقطة دخول <code>compound-apply</code> في المُقيِّم. ولا يمكن الإشارة إلى هذا العنوان مباشرةً في الشيفرة الهدفيّة (إذ إنّ المُجمِّع يشترط أن تكون جميع العناوين التي تشير إليها الشيفرة التي يُجمّعها معرَّفةً هناك)، ومن ثمّ سنُضيف مسجّلًا يُسمّى <code>compapp</code> إلى آلة المُقيِّم لحفظ نقطة الدخول هذه، ونُضيف تعليمةً لتهيئته:</p>
+<pre><code class="language-scheme">  (<span class="hljs-name">assign</span> compapp (<span class="hljs-name">label</span> compound-apply))
+  <span class="hljs-comment">;; branches if flag is set:</span>
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> external-entry))
+read-eval-print-loop …
+</code></pre>
+<p>ولاختبار شيفرتك، ابدأ بتعريف إجراءٍ <code>f</code> ينادي إجراءً <code>g</code>. واستخدم <code>compile-and-go</code> لتصريف تعريف <code>f</code> وتشغيل المُقيِّم. ثم، بالكتابة على المُقيِّم، عرّف <code>g</code> وحاول نداء <code>f</code>.</p>
+<p><strong>التمرين 5.48:</strong> إنّ واجهة <code>compile-and-go</code> المُنفَّذة في هذا القسم حرجةُ التعامل، إذ لا يمكن نداء المصرِّف إلّا مرّةً واحدةً (عند تشغيل آلة المُقيِّم). عزّز واجهة المصرِّف-المفسّر بتوفير أوّليٍّ <code>compile-and-run</code> يمكن نداؤه من داخل المُقيِّم صريح التحكّم على النحو الآتي:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name">compile-and-run</span>
+ &#x27;(define (factorial n)
+    (if (= n <span class="hljs-number">1</span>)
+        <span class="hljs-number">1</span>
+        (* (factorial (- n <span class="hljs-number">1</span>)) n))))
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name">factorial</span> <span class="hljs-number">5</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+<span class="hljs-number">120</span>
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.49:</strong> كبديلٍ عن استخدام حلقة القراءة والتقييم والطباعة الخاصّة بالمُقيِّم صريح التحكّم، صمّم آلة مسجّلاتٍ تُداء حلقة قراءة-تصريف-تنفيذ-طباعة. أي أنّ الآلة ينبغي أن تُشغّل حلقةً تقرأ تعبيرًا، وتُصرّفه، وتُجمّع الشيفرة الناتجة وتنفّذها، وتطبع النتيجة. وهذا سهلُ التشغيل في تهيئتنا المُحاكاة، إذ يمكننا ترتيب أمر نداء الإجراءين <code>compile</code> و<code>assemble</code> بوصفهما «عمليّتَي آلة مسجّلات».</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.50:</strong> استخدم المصرِّف لتصريف المُقيِّم التحاكميّ (metacircular evaluator) الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a> وتشغيل هذا البرنامج باستخدام محاكي آلة المسجّلات. (ولتصريف أكثر من تعريفٍ في المرّة الواحدة، يمكنك حزم التعريفات في <code>begin</code>.) وسيعمل المفسّر الناتج ببطءٍ شديدٍ بسبب مستويات التفسير المتعدّدة، لكنّ جعل جميع التفاصيل تعمل تمرينٌ مفيدٌ للغاية.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.51:</strong> طوّر تنفيذًا بدائيًّا لـScheme في لغة C (أو لغة أخرى منخفضة المستوى من اختيارك) بترجمة المُقيِّم صريح التحكّم الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4">5.4</a> إلى C. ولكي تُشغّل هذه الشيفرة، ستحتاج أيضًا إلى تزويد روتينات تخصيص تخزينٍ مناسبةٍ ودعمٍ آخر لوقت التشغيل.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.52:</strong> كنقيضٍ لـ<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.51</a>، عدّل المصرّف ليُصرِّف إجراءات Scheme إلى سلاسل من تعليمات C. صرِّف المُقيِّم الحلقيّ الوسيط (metacircular evaluator) الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a> لتُنتج مفسّرًا لـ Scheme مكتوبًا بلغة C.</p>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>هذا بيانٌ نظريّ. فنحن لا ندّعي أنّ مسارات البيانات الخاصّة بالمُقيّم مجموعةٌ مناسبةٌ أو فعّالةٌ بشكلٍ خاصّ لتكون مسارات حاسوبٍ عامّ الغرض. فهي مثلًا غير جيّدةٍ لتنفيذ حسابات النقاط العائمة عالية الأداء أو الحسابات التي تتلاعب بكثافةٍ بمتجهات البتّات. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>في الواقع، بوسع الآلة التي تُشغّل الشيفرة المصرّفة أن تكون أبسط من آلة المفسّر، لأنّنا لن نستخدم المسجّلين <code>exp</code> و<code>unev</code>. فقد كان المفسّر يستخدمهما للاحتفاظ بقطعٍ من التعابير غير المُقيَّمة. أمّا مع المصرّف، فهذه التعابير تُبنى في الشيفرة المصرّفة التي ستُشغّلها آلة المسجّلات. ولغير هذا السبب، لا نحتاج إلى عمليّات الآلة التي تتعامل مع صياغة التعابير. لكنّ الشيفرة المصرّفة ستستخدم بعض عمليّات آلةٍ إضافيّة (لتمثيل كائنات الإجراءات المصرّفة) لم تظهر في آلة المُقيّم ذي المتحكّم الصريح. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>لكن لاحظ أنّ مصرّفنا برنامج Scheme، وأنّ إجراءات الصياغة التي يستخدمها للتلاعب بالتعابير هي إجراءات Scheme الفعليّة المستخدمة مع المُقيّم الحلقيّ الوسيط. أمّا في المُقيّم ذي المتحكّم الصريح، فقد افترضنا أنّ عمليّات صياغةٍ مكافئةً متاحةٌ كعمليّاتٍ لآلة المسجّلات. (وبالطبع، عندما حاكينا آلة المسجّلات في Scheme، استخدمنا إجراءات Scheme الفعليّة في محاكاة آلة المسجّلات خاصّتنا.) <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>يستخدم هذا الإجراء ميزةً من Lisp تُسمّى <em>الاقتباس الخلفيّ (backquote)</em> (أو <em>شبه الاقتباس (quasiquote)</em>) وهي مفيدةٌ لبناء القوائم. فتسبيق قائمةٍ برمز الاقتباس الخلفيّ أشبه باقتباسها، إلّا أنّ أيّ شيءٍ في القائمة يُعلَّم بفاصلةٍ يُقيَّم. فمثلًا، إذا كانت قيمة <code>linkage</code> هي الرمز <code>branch25</code>، فإنّ التعبير <code>scheme \`((goto (label ,linkage))) </code> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>لا يمكننا ببساطةٍ استخدام الأسماء <code>true-branch</code> و<code>false-branch</code> و<code>after-if</code> كما وردت أعلاه، لأنّ البرنامج قد يحوي أكثر من <code>if</code> واحد. فالمصرّف يستخدم الإجراء <code>make-label</code> لتوليد الأسماء. و<code>Make-label</code> يأخذ رمزًا كمعطىً ويُعيد رمزًا جديدًا يبدأ بالرمز المعطى. فمثلًا، كانت نداءات <code>(make-label 'a)</code> المتتالية تُعيد <code>a1</code> و<code>a2</code> وهكذا. ويمكن تنفيذ <code>Make-label</code> على نحوٍ يشبه توليد أسماء المتغيّرات الفريدة في لغة الاستعلام، كما يلي: <code>scheme (define label-counter 0) (define (new-label-number) (set! label-counter (+ 1 label-counter)) label-counter) (define (make-label name) (string-&gt;symbol (string-append (symbol-&gt;string name) (number-&gt;string (new-label-number))))) </code> <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>نحتاج إلى عمليّات آلةٍ لتنفيذ بنية بياناتٍ لتمثيل الإجراءات المصرّفة، تقابل البنيّة الخاصّة بالإجراءات المركّبة الموصوفة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a>: <code>scheme (define (make-compiled-procedure entry env) (list 'compiled-procedure entry env)) (define (compiled-procedure? proc) (tagged-list? proc 'compiled-procedure)) (define (compiled-procedure-entry c-proc) (cadr c-proc)) (define (compiled-procedure-env c-proc) (caddr c-proc)) </code> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>في الحقيقة، نُشير إلى خطأٍ عندما لا يكون الهدف <code>val</code> والوصلة <code>return</code>، إذ إنّ المكان الوحيد الذي نطلب فيه وصلات <code>return</code> هو تصريف الإجراءات، واصطلاحنا أنّ الإجراءات تُعيد قيمها في <code>val</code>. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>قد يبدو جعلُ مصرّفٍ يُنتج شيفرةً تعاوديّةً ذيليًّا فكرةً مباشرة. لكنّ معظم مصرّفات اللغات الشائعة، ومنها C وPascal، لا تفعل ذلك، ولذلك لا تستطيع هذه اللغات تمثيل العمليّات التكراريّة بالنداء الإجرائيّ وحده. وتكمُن صعوبة التعاوب الذيلي في هذه اللغات في أنّ تنفيذها تستخدم المكدس لتخزين معطيات الإجراءات ومتغيّراتها المحليّة فضلًا عن عناوين العودة. أمّا تنفيذات Scheme الموضحة في هذا الكتاب فتخزّن المعطيات والمتغيّرات في ذاكرةٍ تُجمَّع كانقالًا. والسبب في استخدام المكدس للمتغيّرات والمعطيات هو تفادي الحاجة إلى جمع القمامة في لغاتٍ لما كانت تتطلّبه لولا ذلك، ويُعتقد عمومًا أنّه أكفّ. وتستطيع مصرّفات Lisp المتطوّرة، في الواقع، استخدام المكدس للمعطيات دون أن تُفسد التعاوب الذيليّ. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1990">هانسون 1990</a> لوصفٍ له.) ثمّة جدلٌ أيضًا حول ما إذا كان تخصيص المكدس أكفّ فعلًا من جمع القمامة في المقام الأوّل، لكنّ التفاصيل يبدو أنّها مرتهنةٌ بدقائق دقيقة في بنية الحاسوب. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Appel-1987">آبل 1987</a> و<a href="https://sarabander.github.io/sicp/html/References.xhtml#Miller-and-Rozas-1994">ميلر وروزاس 1994</a> لرأيين متعارضين في هذه المسألة.) <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>المتغيّر <code>all-regs</code> مربوطٌ بأسماء كلّ المسجّلات: <code>scheme (define all-regs '(env proc val argl continue)) </code> <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>لاحظ أنّ <code>preserving</code> ينادي <code>append</code> بثلاثة معطيات. ومع أنّ تعريف <code>append</code> المعروض في هذا الكتاب لا يقبل إلّا معطيين، فإنّ Scheme يوفّر قياسيًّا إجراء <code>append</code> يأخذ عددًا اعتباطيًّا من المعطيات. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>لقد استخدمنا الرمز <code>+</code> نفسه هنا للدلالة على كلٍّ من إجراء لغة المصدر وعمليّة الآلة. وبشكلٍ عام، لن توجد مقابلةٌ واحدٌ بواحدٍ بين أوّليّات لغة المصدر وأوّليّات الآلة. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>جعل الأوّليّات كلماتٍ محجوزة هو فكرةٌ سيّئةٌ عمومًا، إذ لا يستطيع المستخدم حينها إعادة ربط هذه الأسماء بإجراءاتٍ مختلفة. والأسوأ من ذلك، أنّ إضافة كلماتٍ محجوزةً إلى مصرّفٍ قيد الاستخدام ستجعل البرامج الموجودة التي تُعرِّف إجراءاتٍ بهذه الأسماء تتوقّف عن العمل. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.44</a> لأفكارٍ عن كيفيّة تجنّب هذه المشكلة. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>لا يصحّ هذا إذا سمحنا بتعريفاتٍ داخليّة، إلّا إذا استخرجناه بالمسح. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>هذا هو التعديل المطلوب على البحث عن المتغيّرات إذا نُفّذت طريقة الاستخراج لإزالة التعريفات الداخليّة (<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>). وسنحتاج إلى إزالة هذه التعريفات لكي تعمل العنونة المعجميّة. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn15" class="footnote-item"><p>لا يمكن استخدام العناوين المعجميّة للوصول إلى المتغيّرات في البيئة العامّة، لأنّ هذه الأسماء يمكن تعريفها وإعادة تعريفها تفاعليًّا في أيّ وقت. فمع استخراج التعريفات الداخليّة، كما في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.43</a>، تكون التعريفات الوحيدة التي يراها المصرّف هي التعريفات على المستوى الأعلى، وهي التي تعمل على البيئة العامّة. ولا يتسبّب تصريف تعريفٍ في إدخال الاسم المعرَّف في بيئة وقت التصريف. <a href="#fnref15" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn16" class="footnote-item"><p>وبالطبع، الإجراءات المصرّفة كالإجراءات المُفسَّرة مركّبةٌ (غير أوّليّة). واتّفاقًا مع المصطلحات المستخدمة في المُقيّم ذي المتحكّم الصريح، سنستخدم في هذا القسم «مركّب» بمعنى مُفسَّر (مقابلًا لمصرَّف). <a href="#fnref16" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn17" class="footnote-item"><p>وحيث إنّ آلة المُقيّم تبدأ الآن بـ<code>branch</code>، ينبغي لنا دائمًا تهيئة المسجّل <code>flag</code> قبل تشغيل آلة المُقيّم. ولتشغيل الآلة على حلقة القراءة-التقييم-الطباعة المعتادة، كان بوسعنا استخدام <code>scheme (define (start-eceval) (set! the-global-environment (setup-environment)) (set-register-contents! eceval 'flag false) (start eceval)) </code> <a href="#fnref17" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn18" class="footnote-item"><p>وبما أنّ الإجراء المصرّف كائنٌ قد يحاول النظام طباعته، نُعدّل أيضًا عمليّة طباعة النظام <code>user-print</code> (الواردة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>) حتّى لا تحاول طباعة مكوّنات الإجراء المصرّف: <code>scheme (define (user-print object) (cond ((compound-procedure? object) (display (list 'compound-procedure (procedure-parameters object) (procedure-body object) '))) ((compiled-procedure? object) (display ')) (else (display object)))) </code> <a href="#fnref18" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn19" class="footnote-item"><p>وبوسعنا أن نفعل أفضل من ذلك بتمديد المصرّف للسماح للشيفرة المصرّفة بنداء الإجراءات المُفسَّرة. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-5/">التمرين 5.47</a>. <a href="#fnref19" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn20" class="footnote-item"><p>مستقلًّا عن استراتيجيّة التنفيذ، نتحمّل عبئًا إضافيًّا كبيرًا إذا أصرَرنا على كشف الأخطاء التي تقع أثناء تنفيذ برنامج المستخدم والإشارة إليها، بدلًا من السّماح لها بإسقاط النظام أو إنتاج إجابات خاطئة. فمثلًا، يمكن كشف مرجع مصفوفةٍ خارج الحدود بالتحقّق من صلاحيّة المرجع قبل إجرائه. غير أنّ عبء التحقّق قد يبلغ أضعاف كلفة مرجع المصفوفة نفسه، وعلى المبرمج أن يوزن بين السرعة والأمان في تحديد مدى رغبته في مثل هذا التحقّق. وينبغي لمصرّفٍ جيّدٍ أن يكون قادرًا على إنتاج شيفرةٍ تتضمّن مثل هذه التحقّقات، وأن يتجنّب التحقّقات الزائدة، وأن يسمح للمبرمجين بالتحكّم في مدى فحوص الأخطاء ونوعها في الشيفرة المصرّفة. أمّا مصرّفات اللغات الشائعة، مثل C وC++، فلا تُدخل إلّا القليل جدًّا من عمليّات التحقّق من الأخطاء في الشيفرة العاملة، حتّى تجري الأمور بأسرع ما يمكن. ونتيجةً لذلك، يقع على عاتق المبرمجين تدبير التحقّق من الأخطاء صراحةً. ومؤسفٌ أنّ الناس يغفلون عن ذلك كثيرًا، حتّى في التطبيقات الحرجة حيث لا يكون هناك قيدٌ على السرعة. فبرامجهم تعيش حياةً سريعةً وخطرة. فمثلًا، استغلّت «الدودة» (Worm) الشهيرة التي شلّت الإنترنت عام 1988 فشل نظام التشغيل UNIX(tm) في التحقّق من أنّ مخزَن الإدخال قد فاض في عفريت finger. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Spafford-1989">سبافورد 1989</a>.) <a href="#fnref20" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn21" class="footnote-item"><p>وبالطبع، مع كلٍّ من استراتيجيّة التفسير واستراتيجيّة التصريف، يتحتّم علينا أيضًا أن نُنفّذ للآلة الجديدة تخصيص التخزين، والإدخال والإخراج، وكلّ العمليّات المتنوّعة التي أخذناها كـ«أوّليّات» في مناقشتنا للمُقيّم والمصرّف. وإحدى استراتيجيّات تقليل العمل هنا هي كتابة أكبر عددٍ ممكن من هذه العمليّات في Lisp ثمّ تصريفها للآلة الجديدة. وفي النهاية، يندرج كلّ شيءٍ في نواةٍ صغيرة (مثل جمع القمامة وآليّة تطبيق أوّليّات الآلة الفعليّة) تُكتب يدويًّا للآلة الجديدة. <a href="#fnref21" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn22" class="footnote-item"><p>تؤدّي هذه الاستراتيجيّة إلى اختباراتٍ ممتعةٍ لصحّة المصرّف، مثل التحقّق ممّا إذا كان تصريف برنامجٍ على الآلة الجديدة، باستخدام المصرّف المصرَّف، مطابقًا لتصريف البرنامج على نظام Lisp الأصليّ. وتتبّع مصدر الفروقات أمرٌ ممتعٌ لكنّه مُحبطٌ غالبًا، لأنّ النتائج حسّاسةٌ للغاية حتّى لأدقّ التفاصيل. <a href="#fnref22" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,o={book:s,chapter:a,chapterTitle:n,slug:"5-5",title:e,headings:l,html:p};export{s as book,a as chapter,n as chapterTitle,o as default,l as headings,p as html,c as slug,e as title};

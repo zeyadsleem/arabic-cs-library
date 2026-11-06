@@ -1,0 +1,980 @@
+const s="sicp",a="c4-metalinguistic-abstraction",n="التجريد فوق اللغوي",e="index",l="التجريد فوق اللغوي",p=[{depth:3,id:"41-المقيم-التعاكسي",text:"4.1 المُقيّم التعاكسيّ"}],c=`<blockquote>
+<p>… إنّ السحر في الكلمات: أبرا كدابرا، وافتح يا سمسم، وغيرها — لكنّ الكلمات السحريّة في حكايةٍ لا تكون سحريّةً في الحكاية التالية. والسحر الحقيقيّ هو أن تفهم أيّ الكلمات تنفع، ومتى، ولأيّ شيء؛ والخدعة هي أن تتعلّم الخدعة. … وهذه الكلمات مصنوعةٌ من حروف أبجديتنا: عشراتٌ قليلةٌ من التعرّجات التي نستطيع رسمها بالقلم. هذا هو المفتاح! والكنز أيضًا، إن استطعنا الحصول عليه بأيدينا! إنّه كأنّ — كأنّ مفتاح الكنز <em>هو</em> الكنز! — جون بارث، كيميرا</p>
+</blockquote>
+<p>لقد رأينا في دراستنا لتصميم البرامج أنّ المبرمجين الخبيرين يضبطون تعقيد تصاميمهم بالتقنيّات العامّة ذاتها التي يستخدمها مصمّمو جميع النظم المعقّدة. فهم يجمعون العناصر الأوّليّة لتكوين كائناتٍ مركّبة، ويجرّدون الكائنات المركّبة لتكوين وحدات بناءٍ على مستوى أعلى، ويحفظون وحدانيّة تصاميمهم بتبنّي نظراتٍ واسعة النطاق مناسبةٍ لبنية النظام. ولتوضيح هذه التقنيّات، استخدمنا Lisp لغةً لوصف العمليّات ولبناء كائنات البيانات الحسابيّة والعمليّات لنمذجة الظواهر المعقّدة في العالم الواقعيّ. غير أنّنا، في مواجهتنا مسائل متزايدة التعقيد، سنجد أنّ Lisp — أو أيّ لغة برمجةٍ ثابتةٍ في الحقيقة — غير كافيةٍ لحاجاتنا. فيجب أن نلجأ باستمرارٍ إلى لغاتٍ جديدةٍ كي نُعبّر عن أفكارنا بفعّيّةٍ أكبر. وإرساء لغاتٍ جديدةٍ استراتيجيّةٌ قويّةٌ لضبط التعقيد في التصميم الهندسيّ؛ فيمكننا غالبًا أن نعزّز قدرتنا على التعامل مع مسألةٍ معقّدةٍ بتبنّي لغةٍ جديدةٍ تمكّننا من وصف المسألة (ومن ثمّ التفكير فيها) بطريقةٍ مختلفة، باستخدام أوّليّاتٍ ووسائل تركيبٍ ووسائل تجريدٍ تصلح خصوصًا للمسألة المطروحة.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p>البرمجة مكسوّةٌ بجموحٍ كبيرٍ من اللغات. فهناك لغات مادّيّة، كاللغات الآليّة لأجهزة حاسوبٍ معيّنة. وهذه اللغات تعنى بتمثيل البيانات والتحكّم من حيث بتّات التخزين الفرديّة وتعليمات الآلة الأوّليّة. ومبرمج اللغة الآليّة يعنى باستخدام العتاد المعطى لإقامة نظمٍ وأدواتٍ لتنفيذ الاحتسابات محدودة الموارد بكفاءة. واللغات العالية المستوى، المُقامة على أساسٍ من اللغة الآليّة، تُخفي الهموم المتعلّقة بتمثيل البيانات على أنّه مجموعاتٌ من البتّات وتمثيل البرامج على أنّه تتابعاتٌ من التعليمات الأوّليّة. وهذه اللغات لها وسائل تركيبٍ وتجريد، كتعريف الإجراءات، تصلح للتنظيم الأوسع نطاقًا للنُظم.</p>
+<p><em>التجريد فوق اللغوي (metalinguistic abstraction)</em> — إرساء لغاتٍ جديدةٍ — يلعب دورًا مهمًّا في جميع فروع التصميم الهندسيّ. وهو مهمٌّ بشكلٍ خاصٍّ في البرمجة الحاسوبيّة، لأنّه في البرمجة لا نستطيع صياغة لغاتٍ جديدةٍ فحسب، بل نستطيع أيضًا تنفيذ هذه اللغات ببناء مُقيّمات. و<em>المُقيِّم (evaluator)</em> (أو <em>المفسّر (interpreter)</em>) للغة برمجةٍ ما هو إجراءٌ يؤدّي، حين يُطبَّق على تعبيرٍ من اللغة، الأفعال المطلوبة لتقييم ذلك التعبير.</p>
+<p>ولا مبالغة في اعتبار هذه أهمّ فكرةٍ في البرمجة:</p>
+<blockquote>
+<p>إنّ المُقيِّم، الذي يحدّد معنى التعابير في لغة برمجةٍ ما، هو بمثابة برنامجٍ آخر.</p>
+</blockquote>
+<p>وإدراك هذه النقطة يغيّر صورنا عن أنفسنا بوصفنا مبرمجين. فنحن نأتي لأن نرى أنفسنا مصمّمين للغات، لا مستخدمين للغاتٍ يصمّمها الآخرين فحسب.</p>
+<p>في الحقيقة، فإنّا نستطيع اعتبار أيّ برنامجٍ تقريبًا مُقيّمًا لغةٍ ما. فإنّ نظام معالجة كثيرات الحدود الوارد في <a href="https://sarabander.github.io/sicp/html/2_002e5.xhtml#g_t2_002e5_002e3">2.5.3</a> يجسّد قواعد الحساب على كثيرات الحدود وينفّذها من حيث عمليّاتٍ على بياناتٍ مبنيّةٍ على القوائم. فإذا زُدنا هذا النظام إجراءاتٍ لقراءة تعابير كثيرات الحدود وطبعها، صار لدينا لبّ لغةٍ خاصّةٍ بالأغراض الخاصّة للتعامل مع مسائل الرياضيّات الرمزيّة. ومحاكي المنطق الرقميّ الوارد في <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e4">3.3.4</a> وناشر القيود الوارد في <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e5">3.3.5</a> لغتان مشروعتان بحقّ، لكلٍّ منهما أوّليّاتها ووسائل تركيبها ووسائل تجريدها الخاصّة بها. ورؤيةً من هذا المنظور، تتّحد تقنيّة التعامل مع النُظم الحاسوبيّة واسعة النطاق مع تقنيّة بناء لغات حاسوبيّةٍ جديدة، ويصبح علم الحاسوب نفسه لا أكثر (ولا أقلّ) من انضباط بناء اللغات الوصفيّة الملائمة.</p>
+<p>نبدأ الآن جولةً في التقنيّة التي تُرسى بها اللغات من حيث لغاتٍ أخرى. وسنستخدم في هذا الفصل Lisp أساسًا، منفّذين المُقيّمات كإجراءات Lisp. وLisp تصلح خصوصًا لهذه المهمّة، بسبب قدرتها على تمثيل التعابير الرمزيّة والتلاعب بها. وسنخطو الخطوة الأولى في فهم كيف تُنفَّذ اللغات ببناء مُقيّمٍ لـLisp نفسها. واللغة التي ينفّذها مُقيّمنا ستكون مجموعةً جزئيّةً من لهجة Scheme من Lisp التي نستخدمها في هذا الكتاب. ورغم أنّ المُقيّم الموصوف في هذا الفصل مكتوبٌ للهجة Lisp معيّنة، فإنّه يحتوي البنية الأساسيّة لمُقيّم أيّ لغةٍ موجّهةٍ بالتعبيرات ومصمَّمةٍ لكتابة البرامج لآلةٍ تسلسليّة. (في الحقيقة، تحتوي معظم معالجات اللغات في أعماقها على مُقيّم Lisp صغير.) وقد بُسِّط المُقيّم لأغراض التوضيح والمناقشة، وحُذفت بعض الخصائص التي يكون من المهمّ تضمينها في نظام Lisp ذي جودةٍ إنتاجيّة. ومع ذلك، فإنّ هذا المُقيّم البسيط كافٍ لتنفيذ معظم البرامج في هذا الكتاب.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<p>إحدى المزايا المهمّة لجعل المُقيّم متاحًا بوصفه برنامج Lisp هي أنّنا نستطيع تنفيذ قواعد تقييمٍ بديلةٍ بوصفها على أنّها تعديلاتٌ على برنامج المُقيّم. وأحد المواضع التي نستطيع فيها استخدام هذه القوّة على نحوٍ مفيدٍ هو كسب تحكّمٍ إضافيٍّ في الطرق التي تجسّد بها النماذج الحسابيّة مفهوم الزمن، الذي كان محوريًّا للنقاش في <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a>. فهناك، خفّفنا من بعض تعقيدات الحالة والإحلال باستخدام المجاري لفصل تمثيل الزمن في العالم عن الزمن في الحاسوب. وسنغيّر في <a href="https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2">4.2</a> اللغة الأساسيّة لتوفير نهجٍ أكثر أناقة، وذلك بتعديل المُقيّم ليوفّر <em>التقييم بالترتيب الاعتياديّ (normal-order evaluation)</em>.</p>
+<p>يُنفّذ القسم <a href="https://sarabander.github.io/sicp/html/4_002e3.xhtml#g_t4_002e3">4.3</a> تغييرًا لغويًّا أكثر طموحًا، تصبح بموجبه التعابير متعدّدةَ القيم، لا ذاتَ قيمةٍ واحدةٍ فحسب. وفي لغة <em>الحوسبة غير الحتميّة (nondeterministic computing)</em> هذه، من الطبيعيّ التعبير عن عمليّاتٍ تولّد جميع القيم الممكنة للتعبيرات ثمّ تبحث عن القيم التي تُحقّق قيودًا معيّنة. ومن حيث نماذج الاحتساب والزمن، يشبه هذا أن يتشعّب الزمن إلى مجموعةٍ من «المستقبلات الممكنة» ثمّ يُبحث عن الخطوط الزمنيّة المناسبة. وباستخدام مُقيّمنا غير الحتميّ، فإنّ تتبّع القيم المتعدّدة وإجراء عمليّات البحث يُتعامل معهما تلقائيًّا بآليّة اللغة الأساسيّة.</p>
+<p>نُنفّذ في <a href="https://sarabander.github.io/sicp/html/4_002e4.xhtml#g_t4_002e4">4.4</a> لغة <em>برمجة منطقيّة (logic programming)</em> تُعبَّر فيها المعرفة من حيث العلاقات، لا من حيث الاحتسابات ذات المداخل والمخارج. ورغم أنّ هذا يجعل اللغة مختلفةً اختلافًا جذريًّا عن Lisp، أو عن أيّ لغةٍ تقليديّةٍ في الحقيقة، فإنّا سنرى أنّ مُقيّم البرمجة المنطقيّة يتشارك البنية الأساسيّة لمُقيّم Lisp.</p>
+<h3 id="41-المقيم-التعاكسي">4.1 المُقيّم التعاكسيّ</h3>
+<p>سيكون مُقيّمنا لـLisp منفَّذًا بوصفه برنامج Lisp. وقد يبدو الأمر دورانيًّا — التفكير في تقييم برامج Lisp باستخدام مُقيّمٍ هو نفسه منفَّذٌ بـLisp. غير أنّ التقييم عمليّةٌ، فلذا فإنّ وصف عمليّة التقييم باستخدام Lisp أمرٌ ملائم، وهي التي هي أداتنا لوصف العمليّات في النهاية.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> ويُقال عن المُقيّم المكتوب باللغة ذاتها التي يقيّمها إنّه <em>تعاكسيّ (metacircular)</em>.</p>
+<p>والمُقيّم التعاكسيّ هو في جوهره صياغةٌ بـScheme لنموذج البيئة للتقييم الموصوف في <a href="https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2">3.2</a>. وأذكّر أنّ النموذج له جزءان أساسيّان:</p>
+<ol>
+<li>ولتقييم تركيبةٍ (تعبيرٌ مركّبٌ غيرُ صيغةٍ خاصّة)، قيّم التعابير الجزئيّة ثمّ طبّق قيمة التعبير الجزئيّ للمشغّل على قيم التعابير الجزئيّة للعوامل.</li>
+<li>ولتطبيق إجراءٍ مركّبٍ على مجموعةٍ من المعطيات، قيّم جسم الإجراء في بيئةٍ جديدة. ولتكوين هذه البيئة، وسّع جزء البيئة من كائن الإجراء بإطارٍ تُربط فيه الوسائط الشكليّة للإجراء بالمعطيات التي يُطبَّق عليها الإجراء.</li>
+</ol>
+<p>يصف هذان العصران جوهر عمليّة التقييم، دورةً أساسيّةً تُختزل فيها التعابير المطلوب تقييمها في بيئاتٍ إلى إجراءاتٍ تُطبَّق على معطيات، تُختزل بدورها إلى تعابير جديدةٍ تُقيَّم في بيئاتٍ جديدة، وهكذا، حتّى ننزل إلى رموزَ تُبحث قيمُها في البيئة، وإلى إجراءاتٍ أوّليّةٍ تُطبَّق مباشرةً (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">الشكل 4.1</a>).<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> وستتجسّد دورة التقييم هذه بتفاعل الإجراءين الحرجيّين في المُقيّم، وهما <code>eval</code> و<code>apply</code>، الموصوفين في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.1</a> (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">الشكل 4.1</a>).</p>
+<p><img src="/arabic-cs-library/images/sicp/c4-metalinguistic-abstraction-0-Fig4.1a.std.webp" alt=""></p>
+<p><strong>الشكل 4.1:</strong> تكشف دورة <code>eval</code>-<code>apply</code> عن جوهر لغة الحاسوب.</p>
+<p>سيعتمد تنفيذ المُقيّم على إجراءاتٍ تُعرّف <em>الصياغة (syntax)</em> للتعبيرات المطلوب تقييمها. وسنستخدم تجريد البيانات لجعل المُقيّم مستقلًّا عن تمثيل اللغة. فإنّا، مثلًا، بدلًا من الالتزام بخيارٍ يقضي بأنّ الإحلال يُُمثَّل بقائمةٍ تبدأ بالرمز <code>set!</code> نستخدم مُسَيِّمًا مجرّدًا <code>assignment?</code> لاختبار الإحلال، ونستخدم محدِّدين مجرّدين <code>assignment-variable</code> و<code>assignment-value</code> للنفاذ إلى أجزاء الإحلال. وسيُوصف تنفيذ التعابير بالتفصيل في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.2</a>. وهناك أيضًا عمليّات، موصوفةٌ في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.3</a>، تُحدّد تمثيل الإجراءات والبيئات. فإنّ <code>make-procedure</code> مثلًا يبني الإجراءات المركّبة، و<code>lookup-variable-value</code> ينفذ إلى قيم المتغيّرات، و<code>apply-primitive-procedure</code> يطبّق إجراءً أوّليًّا على قائمةٍ معطاةٍ من المعطيات.</p>
+<h4>4.1.1 لبّ المُقيّم</h4>
+<p>يمكن وصف عمليّة التقييم على أنّها تفاعلٌ بين إجراءين: <code>eval</code> و<code>apply</code>.</p>
+<h4>التقييم (eval)</h4>
+<p>يأخذ <code>eval</code> تعبيرًا وبيئةً كمعطيين. وهو يُصنّف التعبير ويوجّه تقييمه. و<code>eval</code> مبنيٌّ على هيئة تحليل حالاتٍ للنوع الصياغيّ للتعبير المطلوب تقييمه. ولكي نحفظ الإجراء عامًّا، نُعبّر عن تحديد نوع التعبير تجريدًا، دون التزامٍ بأيّ تمثيلٍ معيّنٍ لأنواع التعبيرات المختلفة. ولكلّ نوعٍ من التعبيرات مُسَيِّمٌ يختبره ووسيلةٌ مجرّدةٌ لتحديد أجزائه. وهذه <em>الصياغة المجرّدة (abstract syntax)</em> تجعل من السهل رؤية كيف نستطيع تغيير صياغة اللغة باستخدام المُقيّم نفسه، لكن مع مجموعةٍ مختلفةٍ من إجراءات الصياغة.</p>
+<p><strong>التعابير الأوّليّة</strong></p>
+<ul>
+<li>فبالنسبة للتعابير ذاتيّة التقييم، كالأعداد، يُعيد <code>eval</code> التعبير نفسه.</li>
+<li>ويجب على <code>eval</code> البحث عن المتغيّرات في البيئة لإيجاد قيمها.</li>
+</ul>
+<p><strong>الصيغ الخاصّة</strong></p>
+<ul>
+<li>فبالنسبة للتعابير المُقتبسة، يُعيد <code>eval</code> التعبير الذي كان مُقتبَسًا.</li>
+<li>والإحلال إلى متغيّر (أو تعريفه) يجب أن يستدعي <code>eval</code> تعاوديًّا لحساب القيمة الجديدة التي تُربط بالمتغيّر. ويجب تعديل البيئة لتغيير (أو إنشاء) ربط المتغيّر.</li>
+<li>وتعبير <code>if</code> يتطلّب معالجةً خاصّةً لأجزائه، بحيث يُقيَّم الناتج إذا كان المُسَيِّم صحيحًا، ويُقيَّم البديل خلافًا لذلك.</li>
+<li>وتعبير <code>lambda</code> يجب أن يُحوَّل إلى إجراءٍ قابلٍ للتطبيق بحزم الوسائط والجسم اللذين يُحدّدهما تعبير <code>lambda</code> مع بيئة التقييم معًا.</li>
+<li>وتعبير <code>begin</code> يتطلّب تقييم تتابع تعابيره بالترتيب الذي تظهر به.</li>
+<li>وتحليل الحالات (<code>cond</code>) يُحوَّل إلى عشٍّ من تعابير <code>if</code> ثمّ يُقيَّم.</li>
+</ul>
+<p><strong>التركيبات</strong></p>
+<ul>
+<li>وبالنسبة لتطبيق إجراءٍ، يجب على <code>eval</code> تقييم جزء المشغّل وعوامل التركيبة تعاوديًّا. والإجراء والمعطيات الناتجان يُمرَّران إلى <code>apply</code>، الذي يتعامل مع تطبيق الإجراء الفعليّ.</li>
+</ul>
+<p>وها هو تعريف <code>eval</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> exp env)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">self-evaluating?</span> exp) 
+         exp)
+        ((<span class="hljs-name">variable?</span> exp) 
+         (<span class="hljs-name">lookup-variable-value</span> exp env))
+        ((<span class="hljs-name">quoted?</span> exp) 
+         (<span class="hljs-name">text-of-quotation</span> exp))
+        ((<span class="hljs-name">assignment?</span> exp) 
+         (<span class="hljs-name">eval-assignment</span> exp env))
+        ((<span class="hljs-name">definition?</span> exp) 
+         (<span class="hljs-name">eval-definition</span> exp env))
+        ((<span class="hljs-name">if?</span> exp) 
+         (<span class="hljs-name">eval-if</span> exp env))
+        ((<span class="hljs-name">lambda?</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)
+         (<span class="hljs-name">make-procedure</span> 
+          (<span class="hljs-name">lambda-parameters</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)
+          (<span class="hljs-name">lambda-body</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>)
+          env))
+        ((<span class="hljs-name">begin?</span> exp)
+         (<span class="hljs-name">eval-sequence</span> 
+          (<span class="hljs-name">begin-actions</span> exp) 
+          env))
+        ((<span class="hljs-name">cond?</span> exp) 
+         (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">cond-&gt;if</span> exp) env))
+        ((<span class="hljs-name">application?</span> exp)
+         (<span class="hljs-name"><span class="hljs-built_in">apply</span></span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">operator</span> exp) env)
+                (<span class="hljs-name">list-of-values</span> 
+                 (<span class="hljs-name">operands</span> exp) 
+                 env)))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown expression 
+                 type: EVAL&quot;</span> exp))))
+</code></pre>
+<p>وللتّوضيح، نُفّذ <code>eval</code> على هيئة تحليل حالاتٍ باستخدام <code>cond</code>. وعيب هذا أنّ إجراءنا يتعامل مع أنواعٍ قليلةٍ فقط من التعابير القابلة للتمييز، ولا يمكن تعريف أنواعٍ جديدةٍ دون تعديل تعريف <code>eval</code>. وفي معظم تنفيذات Lisp، يُجرى التوجيه بحسب نوع التعبير بأسلوبٍ موجَّهٍ بالبيانات. وهذا يسمح للمستخدم بإضافة أنواعٍ جديدةٍ من التعابير يستطيع <code>eval</code> تمييزها، دون تعديل تعريف <code>eval</code> نفسه. (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.3</a>.)</p>
+<h4>التطبيق (apply)</h4>
+<p>يأخذ <code>apply</code> معطيين، إجراءً وقائمةً من المعطيات التي يجب أن يُطبَّق عليها الإجراء. و<code>apply</code> يُصنّف الإجراءات إلى نوعين: فهو يستدعي <code>apply-primitive-procedure</code> لتطبيق الأوّليّات؛ ويطبّق الإجراءات المركّبة بتقييم التعابير التي تكوّن جسم الإجراء تِباعًا. وتُبنى البيئة لتقييم جسم إجراءٍ مركّبٍ بتوسيع البيئة الأساسيّة التي يحملها الإجراء لتضمّ إطارًا يربط وسائط الإجراء بالمعطيات التي سيُطبَّق عليها الإجراء. وها هو تعريف <code>apply</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">apply</span></span> procedure arguments)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">primitive-procedure?</span> procedure)
+         (<span class="hljs-name">apply-primitive-procedure</span> 
+          procedure 
+          arguments))
+        ((<span class="hljs-name">compound-procedure?</span> procedure)
+         (<span class="hljs-name">eval-sequence</span>
+           (<span class="hljs-name">procedure-body</span> procedure)
+           (<span class="hljs-name">extend-environment</span>
+             (<span class="hljs-name">procedure-parameters</span> 
+              procedure)
+             arguments
+             (<span class="hljs-name">procedure-environment</span> 
+              procedure))))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown procedure 
+                 type: APPLY&quot;</span> 
+                procedure))))
+</code></pre>
+<h4>معطيات الإجراء</h4>
+<p>حين يعالج <code>eval</code> تطبيق إجراءٍ، فإنّه يستخدم <code>list-of-values</code> لإنتاج قائمة المعطيات التي سيُطبَّق عليها الإجراء. و<code>list-of-values</code> تأخذ عوامل التركيبة معطىً واحدًا. وهي تُقيّم كلّ عاملٍ وتُعيد قائمة القيم المقابلة:<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">list-of-values</span> exps env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">no-operands?</span> exps)
+      &#x27;()
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">first-operand</span> exps) env)
+            (<span class="hljs-name">list-of-values</span> 
+             (<span class="hljs-name">rest-operands</span> exps) 
+             env))))
+</code></pre>
+<h4>التعابير الشرطيّة</h4>
+<p>يُقيّم <code>eval-if</code> جزء المُسَيِّم من تعبير <code>if</code> في البيئة المعطاة. فإن كانت النتيجة صحيحة، قيّم <code>eval-if</code> الناتج، ويُقيّم البديل خلافًا ذلك:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-if</span> exp env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">true?</span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">if-predicate</span> exp) env))
+      (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">if-consequent</span> exp) env)
+      (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">if-alternative</span> exp) env)))
+</code></pre>
+<p>يُبرز استخدام <code>true?</code> في <code>eval-if</code> مسألة الصلة بين لغةٍ منفَّذةٍ ولغة تنفيذٍ. فـ<code>if-predicate</code> يُقيَّم في اللغة التي يجري تنفيذها، لذا يُنتج قيمةً في تلك اللغة. ومُسَيِّم المفسّر <code>true?</code> يترجم تلك القيمة إلى قيمةٍ يمكن اختبارها بـ<code>if</code> في لغة التنفيذ: فإنّ تمثيل الصّحاح في المُقيّم التعاكسيّ قد لا يكون هو نفسه تمثيله في Scheme الأساسيّة.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<h4>التتابعات</h4>
+<p>إنّ <code>eval-sequence</code> يُستخدم من <code>apply</code> لتقييم تتابع التعابير في جسم الإجراء، ومن <code>eval</code> لتقييم تتابع التعابير في تعبير <code>begin</code>. وهو يأخذ تتابع تعابيرٍ وبيئةً كمعطيين، ويُقيّم التعابير بالترتيب الذي تقع به. والقيمة المُعادة هي قيمة التعبير الأخير.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-sequence</span> exps env)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">last-exp?</span> exps) 
+         (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">first-exp</span> exps) env))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+         (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">first-exp</span> exps) env)
+         (<span class="hljs-name">eval-sequence</span> (<span class="hljs-name">rest-exps</span> exps) 
+                        env))))
+</code></pre>
+<h4>الإحلالات والتعريفات</h4>
+<p>يتعامل الإجراء التالي مع الإحلالات إلى المتغيّرات. فهو يستدعي <code>eval</code> لإيجاد القيمة التي سيُحَلّ محلًّا، وينقل المتغيّر والقيمة الناتجة إلى <code>set-variable-value!</code> ليُثبَّتا في البيئة المعيَّنة.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-assignment</span> exp env)
+  (<span class="hljs-name">set-variable-value!</span> 
+   (<span class="hljs-name">assignment-variable</span> exp)
+   (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">assignment-value</span> exp) env)
+   env)
+  <span class="hljs-symbol">&#x27;ok</span>)
+</code></pre>
+<p>وتُعالَج تعريفات المتغيّرات بالطريقة ذاتها.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-definition</span> exp env)
+  (<span class="hljs-name">define-variable!</span> 
+    (<span class="hljs-name">definition-variable</span> exp)
+    (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">definition-value</span> exp) env)
+    env)
+  <span class="hljs-symbol">&#x27;ok</span>)
+</code></pre>
+<p>اخترنا هنا إعادة الرمز <code>ok</code> قيمةً للإحلال أو للتعريف.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<blockquote>
+<p><strong>التمرين 4.1:</strong> لاحِظ أنّنا لا نستطيع معرفة ما إذا كان المُقيّم التعاكسيّ يقيّم العوامل من اليسار إلى اليمين أم من اليمين إلى اليسار. فإنّ ترتيب تقييمه موروثٌ من Lisp الأساسيّة: فإن قُيّمت المعطيات الممرَّرة إلى <code>cons</code> في <code>list-of-values</code> من اليسار إلى اليمين، قيّم <code>list-of-values</code> العوامل من اليسار إلى اليمين؛ وإن قُيّمت معطيات <code>cons</code> من اليمين إلى اليسار، قيّم <code>list-of-values</code> العوامل من اليمين إلى اليسار. اكتب نسخةً من <code>list-of-values</code> تُقيّم العوامل من اليسار إلى اليمين بصرف النظر عن ترتيب التقييم في Lisp الأساسيّة. واكتب أيضًا نسخةً من <code>list-of-values</code> تُقيّم العوامل من اليمين إلى اليسار.</p>
+</blockquote>
+<h4>4.1.2 تمثيل التعابير</h4>
+<p>يُشبه المُقيّم برنامج التفاضل الرمزيّ المناقَش في <a href="https://sarabander.github.io/sicp/html/2_002e3.xhtml#g_t2_002e3_002e2">2.3.2</a>. فكلاهما يعمل على تعابير رمزيّة. وفي كلٍّ من البرنامجين، تحديدُ نتيجة العمل على تعبيرٍ مركّبٍ يكون بالعمل تعاوديًّا على أجزاء التعبير ودمج النتائج بطريقةٍ تتوقّف على نوع التعبير. وفي كلٍّ من البرنامجين استخدمنا تجريد البيانات لفصل القواعد العامّة للعمل عن تفاصيل كيفيّة تمثيل التعابير. وفي برنامج التفاضل عنى هذا أنّ إجراء التفاضل نفسه يستطيع التعامل مع التعابير الجبريّة في الصيغة البادئة، أو في الصيغة الواسطة، أو في أيّ صيغةٍ أخرى. وبالنسبة للمُقيّم، فإنّ هذا يعني أنّ صياغة اللغة التي يجري تقييمها تُحدَّد حصرًا بالإجراءات التي تُصنّف التعابير وتستخرج أجزاءها.</p>
+<p>وها هو توصيف صياغة لغتنا:</p>
+<p>والعناصر ذاتيّة التقييم الوحيدة هي الأعداد والسلاسل المحرفيّة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">self-evaluating?</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">number?</span></span> exp) true)
+        ((<span class="hljs-name"><span class="hljs-built_in">string?</span></span> exp) true)
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> false)))
+</code></pre>
+<p>والمتغيّرات يمثّلها الرموز:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">variable?</span> exp) (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> exp))
+</code></pre>
+<p>والتعبيرات المُقتبسة لها الصيغة <code>(quote ⟨text-of-quotation⟩)</code>:<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">quoted?</span> exp)
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;quote</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">text-of-quotation</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+</code></pre>
+<p>يُعرَّف <code>Quoted?</code> من حيث الإجراء <code>tagged-list?</code>، الذي يحدّد القوائم التي تبدأ برمزٍ معيَّن:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">tagged-list?</span> exp tag)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">pair?</span></span> exp)
+      (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> exp) tag)
+      false))
+</code></pre>
+<p>تأخذ الإحلالات الصيغة <code>(set! ⟨var⟩ ⟨value⟩)</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">assignment?</span> exp)
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;set!</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">assignment-variable</span> exp) 
+  (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">assignment-value</span> exp) (<span class="hljs-name">caddr</span> exp))
+</code></pre>
+<p>وللتعريفات الصيغة</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> ⟨var⟩ ⟨value⟩)
+</code></pre>
+<p>أو الصيغة</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">⟨var⟩</span> ⟨param₁⟩ … ⟨paramₙ⟩)
+  ⟨body⟩)
+</code></pre>
+<p>أمّا الصيغة الأخيرة (تعريف الإجراء القياسيّ) فهي سكّرٌ نحويٌّ (syntactic sugar) لِـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> ⟨var⟩
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (⟨param₁⟩ … ⟨paramₙ⟩)
+    ⟨body⟩))
+</code></pre>
+<p>وأمّا إجراءات الصياغة المقابلة فهي الآتية:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">definition?</span> exp)
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;define</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">definition-variable</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+      (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp)
+      (<span class="hljs-name">caadr</span> exp)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">definition-value</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">symbol?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+      (<span class="hljs-name">caddr</span> exp)
+      (<span class="hljs-name">make-lambda</span> 
+       (<span class="hljs-name">cdadr</span> exp)   <span class="hljs-comment">; formal parameters</span>
+       (<span class="hljs-name">cddr</span> exp)))) <span class="hljs-comment">; body</span>
+</code></pre>
+<p>وتعبيرات <code>lambda</code> قوائمٌ تبدأ بالرمز <code>lambda</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lambda?</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>) 
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;lambda</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lambda-parameters</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>) (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lambda-body</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>) (<span class="hljs-name">cddr</span> exp))
+</code></pre>
+<p>ونُوفّر أيضًا بانيًا لتعبيرات <code>lambda</code>، يُستخدم من <code>definition-value</code> الوارد أعلاه:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-lambda</span> parameters body)
+  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-symbol">&#x27;lambda</span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> parameters body)))
+</code></pre>
+<p>وتبدأ التعابير الشرطيّة بـ<code>if</code>، ولها مُسَيِّمٌ ونتيجةٌ وبديلٌ (اختياريّ). فإن لم يكن للتعبير جزءٌ بديلٌ، فإنّنا نُوفّر <code>false</code> بديلًا.<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">if?</span> exp) (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;if</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">if-predicate</span> exp) (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">if-consequent</span> exp) (<span class="hljs-name">caddr</span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">if-alternative</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name">cdddr</span> exp)))
+      (<span class="hljs-name">cadddr</span> exp)
+      <span class="hljs-symbol">&#x27;false</span>))
+</code></pre>
+<p>ونُوفّر أيضًا بانيًا لتعبيرات <code>if</code>، ليُستخدم من <code>cond-&gt;if</code> في تحويل تعابير <code>cond</code> إلى تعابير <code>if</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-if</span> predicate 
+                 consequent 
+                 alternative)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;if</span> 
+        predicate 
+        consequent 
+        alternative))
+</code></pre>
+<p>ويحزم <code>begin</code> تتابع التعابير في تعبيرٍ واحد. ونحن نُدرج عمليّات صياغةٍ على تعابير <code>begin</code> لاستخراج التتابع الفعليّ من تعبير <code>begin</code>، فضلًا عن محدِّداتٍ تُعيد أوّل تعبيرٍ في التتابع وبقيّة تعابيره.<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">begin?</span> exp) 
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;begin</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">begin-actions</span> exp) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">last-exp?</span> seq) (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> seq)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">first-exp</span> seq) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> seq))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">rest-exps</span> seq) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> seq))
+</code></pre>
+<p>ونُدرج أيضًا بانيًا <code>sequence-&gt;exp</code> (لاستخدامه من <code>cond-&gt;if</code>) يحوّل تتابعًا إلى تعبيرٍ واحد، مستخدمًا <code>begin</code> عند الضرورة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">sequence-&gt;exp</span> seq)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> seq) seq)
+        ((<span class="hljs-name">last-exp?</span> seq) (<span class="hljs-name">first-exp</span> seq))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">make-begin</span> seq))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-begin</span> seq) (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-symbol">&#x27;begin</span> seq))
+</code></pre>
+<p>تطبيق الإجراء هو أيّ تعبيرٍ مركّبٍ ليس من أنواع التعابير المذكورة أعلاه. فإنّ <code>car</code> التعبير هو المشغّل، و<code>cdr</code> هو قائمة العوامل:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">application?</span> exp) (<span class="hljs-name"><span class="hljs-built_in">pair?</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">operator</span> exp) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">operands</span> exp) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">no-operands?</span> ops) (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> ops))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">first-operand</span> ops) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> ops))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">rest-operands</span> ops) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> ops))
+</code></pre>
+<h4>التعابير المشتقّة</h4>
+<p>بعض الصيغ الخاصّة في لغتنا يمكن تعريفها بدلالة تعابير تتضمّن صيغًا خاصّةً أخرى، بدلًا من تنفيذها مباشرةً. وأحد الأمثلة على ذلك <code>cond</code>، الذي يمكن تنفيذه كعشٍّ من تعابير <code>if</code>. فمثلًا، يمكننا اختزال مسألة تقييم التعبير</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">&gt;</span></span> x <span class="hljs-number">0</span>) x)
+      ((<span class="hljs-name"><span class="hljs-built_in">=</span></span> x <span class="hljs-number">0</span>) (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-symbol">&#x27;zero</span>) <span class="hljs-number">0</span>)
+      (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> x)))
+</code></pre>
+<p>إلى مسألة تقييم التعبير الآتي الذي يتضمّن تعابير <code>if</code> و<code>begin</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&gt;</span></span> x <span class="hljs-number">0</span>)
+    x
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> x <span class="hljs-number">0</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-symbol">&#x27;zero</span>) <span class="hljs-number">0</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">-</span></span> x)))
+</code></pre>
+<p>إنّ تنفيذ تقييم <code>cond</code> على هذا النحو يُبسّط المُقيّم لأنّه يُنقص عدد الصيغ الخاصّة التي يلزم تحديد عمليّة تقييمها صراحةً.</p>
+<p>نحن نُدرج إجراءات صياغةٍ تستخرج أجزاء تعبير <code>cond</code>، وإجراءًا <code>cond-&gt;if</code> يحوّل تعابير <code>cond</code> إلى تعابير <code>if</code>. ويبدأ تحليل الحالات بـ<code>cond</code> وله قائمةٌ من بنود المسيّم والإجراء. والبند بندُ <code>else</code> إذا كان مُسَيِّمه هو الرمز <code>else</code>.<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond?</span> exp) 
+  (<span class="hljs-name">tagged-list?</span> exp <span class="hljs-symbol">&#x27;cond</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond-clauses</span> exp) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> exp))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond-else-clause?</span> clause)
+  (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> (<span class="hljs-name">cond-predicate</span> clause) <span class="hljs-symbol">&#x27;else</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond-predicate</span> clause) 
+  (<span class="hljs-name"><span class="hljs-built_in">car</span></span> clause))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond-actions</span> clause) 
+  (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> clause))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">cond-&gt;if</span> exp)
+  (<span class="hljs-name">expand-clauses</span> (<span class="hljs-name">cond-clauses</span> exp)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">expand-clauses</span> clauses)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> clauses)
+      <span class="hljs-symbol">&#x27;false</span>     <span class="hljs-comment">; no else clause</span>
+      (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">first</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> clauses))
+            (<span class="hljs-name">rest</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> clauses)))
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">cond-else-clause?</span> first)
+            (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> rest)
+                (<span class="hljs-name">sequence-&gt;exp</span> 
+                 (<span class="hljs-name">cond-actions</span> first))
+                (<span class="hljs-name">error</span> <span class="hljs-string">&quot;ELSE clause isn&#x27;t 
+                        last: COND-&gt;IF&quot;</span>
+                       clauses))
+            (<span class="hljs-name">make-if</span> (<span class="hljs-name">cond-predicate</span> first)
+                     (<span class="hljs-name">sequence-&gt;exp</span> 
+                      (<span class="hljs-name">cond-actions</span> first))
+                     (<span class="hljs-name">expand-clauses</span> 
+                      rest))))))
+</code></pre>
+<p>تُسمّى التعابير (كـ<code>cond</code>) التي نختار تنفيذها بوصفها تحويلاتٍ صياغيّةً <em>التعابير المشتقّة (derived expressions)</em>. وتعبيرات <code>let</code> مشتقّةٌ هي أيضًا (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.6</a>).<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<blockquote>
+<p><strong>التمرين 4.2:</strong> يخطط لويس ريزونر لإعادة ترتيب بنود <code>cond</code> في <code>eval</code> بحيث يظهر بند تطبيقات الإجراءات قبل بند الإحلالات. وهو يُحاجّ أنّ ذلك سيجعل المفسّر أكثر كفاءة: فإنّ البرامج تحتوي عادةً على تطبيقاتَ أكثرَ من الإحلالات والتعريفات وغيرها، وممّا يعني أنّ <code>eval</code> المعدّل سيفحص بنودًا أقلّ عادةً من <code>eval</code> الأصليّ قبل تحديد نوع التعبير. فما الخطأ في خطة لويس؟ (تلميح: ماذا سيفعل مُقيّم لويس بالتعبير <code>(define x 3)</code>؟)</p>
+<blockquote>
+<p>لويس مستاءٌ لأنّ خطته لم تُجْدِ نفعًا. وهو على استعدادٍ لأن يبذل أيّ جهدٍ لجعل مُقيّمه يتعرّف على تطبيقات الإجراءات قبل أن يفحص معظم الأنواع الأخرى من التعابير. ساعده بتغيير صياغة اللغة المقيَّمة بحيث تبدأ تطبيقات الإجراءات بـ<code>call</code>. فمثلًا، بدلًا من <code>(factorial 3)</code> سنكتب الآن <code>(call factorial 3)</code>، وبدلًا من <code>(+ 1 2)</code> سنكتب <code>(call + 1 2)</code>.</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.3:</strong> أعِد كتابة <code>eval</code> بحيث يُجرى التوجيه بحسب نوع التعبير بأسلوبٍ موجَّهٍ بالبيانات. قارن ذلك بإجراء التفاضل الموجَّه بالبيانات الوارد في <a href="https://sarabander.github.io/sicp/html/2_002e4.xhtml#Exercise-2_002e73">التمرين 2.73</a>. (ويجوز لك استخدام <code>car</code> التعبير المركّب بوصفه نوع التعبير، كما يليق بالصياغة المنفّذة في هذا القسم.)</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.4:</strong> تذكّر تعريفات الصيغتين الخاصّتين <code>and</code> و<code>or</code> الواردة في <a href="https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1">الفصل 1</a>: <code>and</code>: تُقيَّم التعابير من اليسار إلى اليمين. فإن قُيِّم أيّ تعبيرٍ إلى القيمة خاطئة، أُعيدت خاطئة؛ ولا تُقيَّم أيّ من التعابير الباقية. فإن قُيِّمت جميع التعابير إلى قيمٍ صحيحة، أُعيدت قيمة التعبير الأخير. فإن لم تكن هناك تعابيرٌ، أُعيدت صحيحة.</p>
+<blockquote>
+<p><code>or</code>: تُقيَّم التعابير من اليسار إلى اليمين. فإن قُيِّم أيّ تعبيرٍ إلى قيمةٍ صحيحة، أُعيدت تلك القيمة؛ ولا تُقيَّم أيّ من التعابير الباقية. فإن قُيِّمت جميع التعابير إلى خاطئة، أو إن لم تكن هناك تعابيرٌ، أُعيدت خاطئة.</p>
+<p>ثبِّت <code>and</code> و<code>or</code> بوصفهما صيغتين خاصّتين جديدتين للمقيّم، بتعريف إجراءات صياغةٍ مناسبةٍ وإجراءَي تقييمٍ <code>eval-and</code> و<code>eval-or</code>. وبدلًا من ذلك، أظهِر كيف يمكن تنفيذ <code>and</code> و<code>or</code> بوصفهما تعبيرين مشتقّين.</p>
+</blockquote>
+</blockquote>
+<p>تسمح Scheme بصياغةٍ إضافيّةٍ لبنود <code>cond</code>، وهي <code>(⟨test⟩ =&gt; ⟨recipient⟩)</code>. فإن قُيِّم <code>⟨</code>الاختبار<code>⟩</code> إلى قيمةٍ صحيحة، قُيِّم <code>⟨</code>المستلم<code>⟩</code>. ويلزم أن تكون قيمته إجراءً بوسيطٍ واحد؛ ثمّ يُستدعى هذا الإجراء على قيمة <code>⟨</code>الاختبار<code>⟩</code>، وتُعاد النتيجة قيمةً لتعبير <code>cond</code>. فمثلًا</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">assoc</span></span> <span class="hljs-symbol">&#x27;b</span> &#x27;((a <span class="hljs-number">1</span>) (b <span class="hljs-number">2</span>))) =&gt; cadr)
+      (<span class="hljs-name"><span class="hljs-built_in">else</span></span> false))
+</code></pre>
+<p>تُعيد 2. عدّل معالجة <code>cond</code> بحيث تدعم هذه الصياغة الممتدّة.</p>
+<p>تعبيرات <code>let</code> تعبيراتٌ مشتقّة، لأنّ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">⟨var₁⟩</span> ⟨exp₁⟩) … (<span class="hljs-name">⟨varₙ⟩</span> ⟨expₙ⟩))
+  ⟨body⟩)
+</code></pre>
+<p>مكافئٌ لِـ</p>
+<pre><code class="language-scheme">((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (⟨var₁⟩ … ⟨varₙ⟩)
+   ⟨body⟩)
+ ⟨exp₁⟩
+ …
+ ⟨expₙ⟩)
+</code></pre>
+<p>نفّذ تحويلًا صياغيًّا <code>let-&gt;combination</code> يُختزل به تقييم تعابير <code>let</code> إلى تقييم تركيباتٍ من النوع الموضّح أعلاه، وأضِف البند المناسب إلى <code>eval</code> ليتعامل مع تعابير <code>let</code>.</p>
+<p>الـ<code>let*</code> شبيهٌ بـ<code>let</code>، إلّا أنّ روابط متغيّرات <code>let*</code> تُنفَّذ تتابعيًّا من اليسار إلى اليمين، وأنّ كلّ ربطٍ يُجرى في بيئةٍ تكون فيها جميع الروابط السابقة مرئيّةً. فمثلًا</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let*</span></span> ((<span class="hljs-name">x</span> <span class="hljs-number">3</span>)
+       (<span class="hljs-name">y</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> x <span class="hljs-number">2</span>))
+       (<span class="hljs-name">z</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> x y <span class="hljs-number">5</span>)))
+  (<span class="hljs-name"><span class="hljs-built_in">*</span></span> x z))
+</code></pre>
+<p>فإنّه يُعيد 39. اشرح كيف يمكن إعادة كتابة تعبير <code>let*</code> مجموعةً من تعابير <code>let</code> متداخلة، واكتب إجراءً <code>let*-&gt;nested-lets</code> يُجرِي هذا التحويل. فإن كنّا قد نفّذنا <code>let</code> بالفعل (<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.6</a>) وأردنا توسيع المقيّم ليتعامل مع <code>let*</code>، فهل يكفي إضافةُ بندٍ إلى <code>eval</code> يكون فعله</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">let*-&gt;nested-lets</span> exp) env)
+</code></pre>
+<p>أم يلزمنا أن نوسّع <code>let*</code> صراحةً بدلالة تعابيرَ غير مشتقّة؟</p>
+<p><strong>التمرين 4.8:</strong> الـ<code>let</code> المسمّى (named let) صيغةٌ بديلةٌ من <code>let</code> له الشكل</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ⟨var⟩ ⟨bindings⟩ ⟨body⟩)
+</code></pre>
+<p>أمّا <code>⟨</code>الروابط<code>⟩</code> و<code>⟨</code>الجسم<code>⟩</code> فهما كما في <code>let</code> الاعتياديّ، إلّا أنّ <code>⟨</code>المتغيّر<code>⟩</code> يُقيَّد داخل <code>⟨</code>الجسم<code>⟩</code> بإجراءٍ جسمه هو <code>⟨</code>الجسم<code>⟩</code> ووسائطه الشكليّة هي المتغيّرات الواردة في <code>⟨</code>الروابط<code>⟩</code>. وبذلك، يمكن للمرء أن ينفّذ <code>⟨</code>الجسم<code>⟩</code> مرّاتٍ متعدّدةً بنداء الإجراء المسمّى <code>⟨</code>المتغيّر<code>⟩</code>. فعلى سبيل المثال، يمكن إعادة كتابة إجراء فيبوناتشي التكراريّ (<a href="https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2">1.2.2</a>) بـ<code>let</code> المسمّى كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">fib</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> fib-iter ((<span class="hljs-name">a</span> <span class="hljs-number">1</span>) (<span class="hljs-name">b</span> <span class="hljs-number">0</span>) (<span class="hljs-name">count</span> n))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> count <span class="hljs-number">0</span>)
+        b
+        (<span class="hljs-name">fib-iter</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> a b) 
+                  a 
+                  (<span class="hljs-name"><span class="hljs-built_in">-</span></span> count <span class="hljs-number">1</span>)))))
+</code></pre>
+<p>عدّل <code>let-&gt;combination</code> الوارد في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.6</a> ليدعم <code>let</code> المسمّى أيضًا.</p>
+<blockquote>
+<p><strong>التمرين 4.9:</strong> تدعم لغاتٌ كثيرةٌ أصنافًا متنوّعةً من بنى التكرار، كـ<code>do</code> و<code>for</code> و<code>while</code> و<code>until</code>. وفي Scheme، يمكن التعبير عن العمليّات التكراريّة بدلالة نداءات إجراءاتٍ اعتياديّة، لذا فإنّ بنى التكرار الخاصّة لا تُقدّم أيّ مكسبٍ جوهريّ في القوّة الحسابيّة. ومن جهةٍ أخرى، فإنّ مثل هذه البنى ملائمةٌ غالبًا. صمّم بعض بنى التكرار، وأعطِ أمثلةً على استخدامها، وبيّن كيف يمكن تنفيذها تعابيرَ مشتقّة.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.10:</strong> باستخدامنا تجريد البيانات، استطعنا كتابة إجراء <code>eval</code> مستقلًّا عن الصياغة الخاصّة للغة التي ستُقيَّم. ولتوضيح هذا، صمّم ونفّذ صياغةً جديدةً لـScheme بتعديل الإجراءات الواردة في هذا القسم، دون تغيير <code>eval</code> أو <code>apply</code>.</p>
+</blockquote>
+<h4>4.1.3 بنيات بيانات المقيّم</h4>
+<p>فضلًا عن تحديد الصياغة الخارجيّة للتعابير، يلزم أن يحدّد تنفيذ المقيّم أيضًا بنيات البيانات التي يتلاعب بها المقيّم داخليًّا، كجزءٍ من تنفيذ البرنامج، كتمثيل الإجراءات والبيئات وتمثيل الصحيح والخاطئ.</p>
+<h4>اختبار المُسَيِّمات</h4>
+<p>وأمّا في التعابير الشرطيّة، فنحن نقبل بوصفها صحيحةً أيّ شيءٍ ليس هو الكائن <code>false</code> الصريح.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">true?</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> x false)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">false?</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> x false))
+</code></pre>
+<h4>تمثيل الإجراءات</h4>
+<p>ولكي نتعامل مع الإجراءات الأوّليّة، نفترض أنّ الإجراءات الآتية متاحةٌ لدينا:</p>
+<ul>
+<li>يُطبّق <code>(apply-primitive-procedure ⟨proc⟩ ⟨args⟩)</code> الإجراء الأوّليّ المعطى على قيم المعطيات الواردة في القائمة <code>⟨</code>args<code>⟩</code> ويُعيد نتيجة التطبيق.</li>
+<li>يختبر <code>(primitive-procedure? ⟨proc⟩)</code> ما إذا كان <code>⟨</code>proc<code>⟩</code> إجراءً أوّليًّا.</li>
+</ul>
+<p>وتوصف هذه الآليّات للتعامل مع الأوّليّات بتوسّعٍ أكثر في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.4</a>.</p>
+<p>وتُبنى الإجراءات المركّبة من الوسائط الشكليّة وأجساد الإجراءات والبيئات باستخدام البانيّ <code>make-procedure</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-procedure</span> parameters body env)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;procedure</span> parameters body env))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">compound-procedure?</span> p)
+  (<span class="hljs-name">tagged-list?</span> p <span class="hljs-symbol">&#x27;procedure</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">procedure-parameters</span> p) (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> p))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">procedure-body</span> p) (<span class="hljs-name">caddr</span> p))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">procedure-environment</span> p) (<span class="hljs-name">cadddr</span> p))
+</code></pre>
+<h4>العمليّات على البيئات</h4>
+<p>يحتاج المقيّم إلى عمليّاتٍ للتلاعب بالبيئات. فكما هو موضّح في <a href="https://sarabander.github.io/sicp/html/3_002e2.xhtml#g_t3_002e2">3.2</a>، البيئة تسلسلٌ من الإطارات، حيث كلّ إطارٍ جدولٌ من الروابط التي تربط المتغيّرات بقيمها المقابلة. ونحن نستخدم العمليّات الآتية للتلاعب بالبيئات:</p>
+<ul>
+<li>تُعيد <code>(lookup-variable-value ⟨var⟩ ⟨env⟩)</code> القيمة المربوطة بالرمز <code>⟨</code>var<code>⟩</code> في البيئة <code>⟨</code>env<code>⟩</code>، أو تشير إلى خطأٍ إذا كان المتغيّر غير مقيَّد.</li>
+<li>تُعيد <code>(extend-environment ⟨variables⟩ ⟨values⟩ ⟨base-env⟩)</code> بيئةً جديدةً، تتألّف من إطارٍ جديدٍ تُربط فيه الرموز الواردة في القائمة <code>⟨</code>variables<code>⟩</code> بالعناصر المقابلة في القائمة <code>⟨</code>values<code>⟩</code>، حيث البيئة المحيطة هي البيئة <code>⟨</code>base-env<code>⟩</code>.</li>
+<li>تُضيف <code>(define-variable! ⟨var⟩ ⟨value⟩ ⟨env⟩)</code> إلى أوّل إطارٍ في البيئة <code>⟨</code>env<code>⟩</code> ربطًا جديدًا يربط المتغيّر <code>⟨</code>var<code>⟩</code> بالقيمة <code>⟨</code>value<code>⟩</code>.</li>
+<li>تُغيّر <code>(set-variable-value! ⟨var⟩ ⟨value⟩ ⟨env⟩)</code> ربط المتغيّر <code>⟨</code>var<code>⟩</code> في البيئة <code>⟨</code>env<code>⟩</code> بحيث يصبح المتغيّر مقيَّدًا الآن بالقيمة <code>⟨</code>value<code>⟩</code>، أو تشير إلى خطأٍ إذا كان المتغيّر غير مقيَّد.</li>
+</ul>
+<p>ولتنفيذ هذه العمليّات نُمثّل البيئة قائمةً من الإطارات. والبيئة المحيطة ببيئةٍ ما هي <code>cdr</code> القائمة. والبيئة الخالية هي ببساطةٍ القائمة الخالية.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">enclosing-environment</span> env) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> env))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">first-frame</span> env) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> env))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-empty-environment &#x27;())
+</code></pre>
+<p>ويُمثَّل كلّ إطارٍ من إطارات البيئة بزوجٍ من القوائم: قائمة المتغيّرات المقيَّدة في ذلك الإطار وقائمة القيم المرتبطة بها.<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">make-frame</span> variables values)
+  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> variables values))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">frame-variables</span> frame) (<span class="hljs-name"><span class="hljs-built_in">car</span></span> frame))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">frame-values</span> frame) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> frame))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">add-binding-to-frame!</span> var val frame)
+  (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> frame (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> var (<span class="hljs-name"><span class="hljs-built_in">car</span></span> frame)))
+  (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> frame (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> val (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> frame))))
+</code></pre>
+<p>ولتوسيع بيئةٍ بإطارٍ جديدٍ يربط المتغيّرات بقيم، نصنع إطارًا متألّفًا من قائمة المتغيّرات وقائمة القيم، ونُضيفه إلى البيئة. ونشير إلى خطأٍ إذا كان عدد المتغيّرات لا يطابق عدد القيم.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">extend-environment</span> vars vals base-env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> (<span class="hljs-name"><span class="hljs-built_in">length</span></span> vars) (<span class="hljs-name"><span class="hljs-built_in">length</span></span> vals))
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">make-frame</span> vars vals) base-env)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&lt;</span></span> (<span class="hljs-name"><span class="hljs-built_in">length</span></span> vars) (<span class="hljs-name"><span class="hljs-built_in">length</span></span> vals))
+          (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Too many arguments supplied&quot;</span> 
+                 vars 
+                 vals)
+          (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Too few arguments supplied&quot;</span> 
+                 vars 
+                 vals))))
+</code></pre>
+<p>وللنفاذ إلى متغيّرٍ في بيئةٍ، نمسح قائمة المتغيّرات في الإطار الأوّل. فإن نجد المتغيّر المطلوب، نُعِد العنصر المقابل في قائمة القيم. فإن لم نجد المتغيّر في الإطار الحاليّ، نبحث في البيئة المحيطة، وهكذا. فإن بلغنا البيئة الخالية، نشير إلى خطأ «متغيّر غير مقيَّد».</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">lookup-variable-value</span> var env)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">env-loop</span> env)
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">scan</span> vars vals)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> vars)
+             (<span class="hljs-name">env-loop</span> 
+              (<span class="hljs-name">enclosing-environment</span> env)))
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> var (<span class="hljs-name"><span class="hljs-built_in">car</span></span> vars))
+             (<span class="hljs-name"><span class="hljs-built_in">car</span></span> vals))
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">scan</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vars) 
+                        (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vals)))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> env the-empty-environment)
+        (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unbound variable&quot;</span> var)
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">frame</span> (<span class="hljs-name">first-frame</span> env)))
+          (<span class="hljs-name">scan</span> (<span class="hljs-name">frame-variables</span> frame)
+                (<span class="hljs-name">frame-values</span> frame)))))
+  (<span class="hljs-name">env-loop</span> env))
+</code></pre>
+<p>ولضبط متغيّرٍ على قيمةٍ جديدةٍ في بيئةٍ محدَّدةٍ، نبحث عن المتغيّر، تمامًا كما في <code>lookup-variable-value</code>، ونُغيّر القيمة المقابلة حين نجده.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">set-variable-value!</span> var val env)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">env-loop</span> env)
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">scan</span> vars vals)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> vars)
+             (<span class="hljs-name">env-loop</span> 
+              (<span class="hljs-name">enclosing-environment</span> env)))
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> var (<span class="hljs-name"><span class="hljs-built_in">car</span></span> vars))
+             (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> vals val))
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">scan</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vars) 
+                        (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vals)))))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> env the-empty-environment)
+        (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unbound variable: SET!&quot;</span> var)
+        (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">frame</span> (<span class="hljs-name">first-frame</span> env)))
+          (<span class="hljs-name">scan</span> (<span class="hljs-name">frame-variables</span> frame)
+                (<span class="hljs-name">frame-values</span> frame)))))
+  (<span class="hljs-name">env-loop</span> env))
+</code></pre>
+<p>ولتقييد متغيّرٍ، نبحث في الإطار الأوّل عن ربطٍ للمتغيّر، ونُغيّر الربط إذا كان موجودًا (تمامًا كما في <code>set-variable-value!</code>). فإن لم يوجد ربطٌ كهذا، نُضيف واحدًا إلى الإطار الأوّل.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">define-variable!</span> var val env)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">frame</span> (<span class="hljs-name">first-frame</span> env)))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">scan</span> vars vals)
+      (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> vars)
+             (<span class="hljs-name">add-binding-to-frame!</span> 
+              var val frame))
+            ((<span class="hljs-name"><span class="hljs-built_in">eq?</span></span> var (<span class="hljs-name"><span class="hljs-built_in">car</span></span> vars))
+             (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> vals val))
+            (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">scan</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vars) 
+                        (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> vals)))))
+    (<span class="hljs-name">scan</span> (<span class="hljs-name">frame-variables</span> frame)
+          (<span class="hljs-name">frame-values</span> frame))))
+</code></pre>
+<p>إنّ الطريقة الموصوفة هنا ليست إلّا واحدةً من طرائق متعدّدةٍ معقولةٍ لتمثيل البيئات. وبما أنّنا استخدمنا تجريد البيانات لعزل بقيّة المقيّم عن اختيار التمثيل التفصيليّ، فبوسعنا تغيير تمثيل البيئة إن أردنا. (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.11</a>.) ففي نظام Lisp ذي جودةٍ إنتاجيّة، يكون لسرعة عمليّات البيئة في المقيّم - وخاصّةً عمليّة النفاذ إلى المتغيّرات - أثرٌ كبيرٌ في أداء النظام. والتمثيل الموصوف هنا، على الرغم من بساطته المفاهيميّة، غير كفؤٍ ولا يُستخدم عادةً في نظامٍ إنتاجيّ.<sup class="footnote-ref"><a href="#fn15" id="fnref15">[15]</a></sup></p>
+<blockquote>
+<p><strong>التمرين 4.11:</strong> بدلًا من تمثيل الإطار بزوجٍ من القوائم، نستطيع تمثيله قائمةً من الروابط، حيث كلّ رابطٍ زوجٌ من الاسم والقيمة. أعِد كتابة عمليّات البيئة لتستخدم هذا التمثيل البديل.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.12:</strong> يمكن التعبير عن الإجراءات <code>define-variable!</code> و<code>set-variable-value!</code> و<code>lookup-variable-value</code> بدلالة إجراءاتٍ أكثر تجريدًا لاجتياز بنية البيئة. عرّف تجريداتٍ تُلخّص الأنماط المشتركة، وأعِد تعريف الإجراءات الثلاثة بدلالة هذه التجريدات.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.13:</strong> تسمح لنا Scheme بإنشاء روابط جديدة للمتغيّرات بواسطة <code>define</code>، لكنّها لا توفّر أيّ وسيلةٍ للتخلّص من الروابط. نفّذ للمقيّم صيغةً خاصّةً <code>make-unbound!</code> تُزيل ربط رمزٍ معطىً من البيئة التي يُقيَّم فيها تعبير <code>make-unbound!</code>. وهذه المسألة غير محدَّدةٍ تمامًا. فعلى سبيل المثال، هل ينبغي لنا أن نُزيل الربط الواقع في الإطار الأوّل من البيئة فقط؟ أكمل التحديد وبرّر أيّ خياراتٍ تتّخذها.</p>
+</blockquote>
+<h4>4.1.4 تشغيل المقيّم بوصفه برنامجًا</h4>
+<p>بفضل المقيّم، صار بين أيدينا وصفٌ (مُعبَّرٌ عنه بـLisp) للعمليّة التي تُقيَّم بها تعابير Lisp. وإحدى مزايا التعبير عن المقيّم بوصفه برنامجًا أنّ بوسعنا تشغيل البرنامج. وهذا يُعطينا - ونحن نعمل داخل Lisp - نموذجًا عاملًا لكيفيّة تقييم Lisp ذاتها للتعابير. ويمكن أن يخدم هذا بوصفه إطارًا للتجريب بقواعد التقييم، كما سنفعل لاحقًا في هذا الفصل.</p>
+<p>يُردّ برنامج المقيّم التعابير في آخر الأمر إلى تطبيق الإجراءات الأوّليّة. لذلك، فإنّ كلّ ما يلزمنا لتشغيل المقيّم هو خلق آليّةٍ تستدعي نظام Lisp الكامن لتحاكي تطبيق الإجراءات الأوّليّة.</p>
+<p>ينبغي أن يكون هناك ربطٌ لكلّ اسم إجراءٍ أوّليّ، حتّى إذا قيّم <code>eval</code> مشغّل تطبيقٍ لأوّليّةٍ، يجد كائنًا ليمرّره إلى <code>apply</code>. وهكذا، نُقيم بيئةً عامّةً تربط كائناتٍ فريدةً بأسماء الإجراءات الأوّليّة التي يمكن أن تظهر في التعابير التي سنُقيّمها. وتتضمّن البيئة العامّة أيضًا روابط للرمزين <code>true</code> و<code>false</code>، حتّى يمكن استخدامهما متغيّرين في التعابير التي ستُقيَّم.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">setup-environment</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">initial-env</span>
+         (<span class="hljs-name">extend-environment</span> 
+          (<span class="hljs-name">primitive-procedure-names</span>)
+          (<span class="hljs-name">primitive-procedure-objects</span>)
+          the-empty-environment)))
+    (<span class="hljs-name">define-variable!</span> <span class="hljs-symbol">&#x27;true</span> true initial-env)
+    (<span class="hljs-name">define-variable!</span> <span class="hljs-symbol">&#x27;false</span> false initial-env)
+    initial-env))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-global-environment 
+  (<span class="hljs-name">setup-environment</span>))
+</code></pre>
+<p>لا يهمّ كيف نُمثّل كائنات الإجراءات الأوّليّة، ما دام <code>apply</code> قادرًا على تمييزها وتطبيقها باستخدام الإجراءين <code>primitive-procedure?</code> و<code>apply-primitive-procedure</code>. وقد اخترنا تمثيل الإجراء الأوّليّ قائمةً تبدأ بالرمز <code>primitive</code> وتحتوي إجراءً في Lisp الكامنة يُنفّذ ذلك الأوّليّ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">primitive-procedure?</span> proc)
+  (<span class="hljs-name">tagged-list?</span> proc <span class="hljs-symbol">&#x27;primitive</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">primitive-implementation</span> proc) 
+  (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> proc))
+</code></pre>
+<p>وسيحصل <code>setup-environment</code> على أسماء الأوّليّات وإجراءات التنفيذ من قائمة:<sup class="footnote-ref"><a href="#fn16" id="fnref16">[16]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> primitive-procedures
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;car</span> car)
+        (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;cdr</span> cdr)
+        (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;cons</span> cons)
+        (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;null?</span> null?)
+        ⟨more primitives⟩ ))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">primitive-procedure-names</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">map</span></span> car primitive-procedures))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">primitive-procedure-objects</span>)
+  (<span class="hljs-name"><span class="hljs-built_in">map</span></span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (proc) 
+         (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;primitive</span> (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> proc)))
+       primitive-procedures))
+</code></pre>
+<p>ولتطبيق إجراءٍ أوّليّ، نُطبّق ببساطةٍ إجراء التنفيذ على المعطيات، باستخدام نظام Lisp الكامن:<sup class="footnote-ref"><a href="#fn17" id="fnref17">[17]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">apply-primitive-procedure</span> proc args)
+  (<span class="hljs-name">apply-in-underlying-scheme</span>
+   (<span class="hljs-name">primitive-implementation</span> proc) args))
+</code></pre>
+<p>ولتسهيل تشغيل المقيّم الدائريّ (metacircular evaluator)، نُوفّر <em>حلقة قيادة (driver loop)</em> تحاكي حلقة القراءة والتقييم والطباعة (read-eval-print loop) في نظام Lisp الكامن. فهي تطبع <em>طلبًا (prompt)</em>، وتقرأ تعبيرَ إدخالٍ، وتُقيّم هذا التعبير في البيئة العامّة، وتطبع النتيجة. ونحن نُسبق كلّ نتيجةٍ مطبوعةٍ <em>بطلب إخراج (output prompt)</em> حتّى نُميّز قيمة التعبير عن أيّ مخرجاتٍ أخرى قد تُطبَع.<sup class="footnote-ref"><a href="#fn18" id="fnref18">[18]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> input-prompt  <span class="hljs-string">&quot;;;; M-Eval input:&quot;</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> output-prompt <span class="hljs-string">&quot;;;; M-Eval value:&quot;</span>)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">driver-loop</span>)
+  (<span class="hljs-name">prompt-for-input</span> input-prompt)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">input</span> (<span class="hljs-name"><span class="hljs-built_in">read</span></span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">output</span> 
+           (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> input 
+                 the-global-environment)))
+      (<span class="hljs-name">announce-output</span> output-prompt)
+      (<span class="hljs-name">user-print</span> output)))
+  (<span class="hljs-name">driver-loop</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">prompt-for-input</span> string)
+  (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>) (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>) 
+  (<span class="hljs-name"><span class="hljs-built_in">display</span></span> string) (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">announce-output</span> string)
+  (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>) (<span class="hljs-name"><span class="hljs-built_in">display</span></span> string) (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>))
+</code></pre>
+<p>نستخدم إجراء طبعٍ خاصّ، <code>user-print</code>، لتجنّب طبع جزء البيئة من إجراءٍ مركّب، الذي قد يكون قائمةً طويلةً جدًّا (أو قد يحتوي حتّى دورات).</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">user-print</span> object)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">compound-procedure?</span> object)
+      (<span class="hljs-name"><span class="hljs-built_in">display</span></span> 
+       (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;compound-procedure</span>
+             (<span class="hljs-name">procedure-parameters</span> object)
+             (<span class="hljs-name">procedure-body</span> object)
+             <span class="hljs-symbol">&#x27;&lt;procedure-env&gt;</span>))
+      (<span class="hljs-name"><span class="hljs-built_in">display</span></span> object)))
+</code></pre>
+<p>والآن، فإنّ كلّ ما يلزمنا لتشغيل المقيّم هو تهيئة البيئة العامّة وبدء حلقة القيادة. وإليك تفاعلًا نموذجيًّا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-global-environment 
+  (<span class="hljs-name">setup-environment</span>))
+
+(<span class="hljs-name">driver-loop</span>)
+
+<span class="hljs-comment">;;; M-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">append</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> x)
+      y
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> x) (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x) y))))
+
+<span class="hljs-comment">;;; M-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; M-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">append</span></span> &#x27;(a b c) &#x27;(d e f))
+
+<span class="hljs-comment">;;; M-Eval value:</span>
+(<span class="hljs-name">a</span> b c d e f)
+</code></pre>
+<blockquote>
+<p><strong>التمرين 4.14:</strong> تُجرّب إيفا لو أتور ولويس ريزونر المقيّم الدائريّ كلٌّ منهما على حدة. تكتب إيفا تعريف <code>map</code>، وتُشغّل بعض البرامج الاختباريّة التي تستخدمه. وهي تعمل حسنًا. أمّا لويس، فعلى النقيض، فقد ثبّت نسخة النظام من <code>map</code> بوصفها أوّليّةً للمقيّم الدائريّ. وحين يُجرّبه، تسوء الأمور بدرجةٍ فظيعة. اشرح لماذا يفشل <code>map</code> عند لويس مع أنّه يعمل عند إيفا.</p>
+</blockquote>
+<h4>4.1.5 البيانات بوصفها برامج</h4>
+<p>عند التفكير في برنامج Lisp يُقيّم تعابير Lisp، قد يكون التشبيه مفيدًا. فأحدُ وجهات النظر التشغيليّة في معنى البرنامج أنّ البرنامج وصفٌ لآلةٍ مجرّدةٍ (كبيرةٌ إلى حدّ اللانهائية ربّما). فعلى سبيل المثال، تأمّل البرنامج المألوف لحساب العامليّات:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+      <span class="hljs-number">1</span>
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) n)))
+</code></pre>
+<p>يمكننا اعتبار هذا البرنامج وصفًا لآلةٍ تحتوي أجزاءً تُنقّص وتضرب وتختبر المساواة، إلى جانب مفتاحٍ ثنائيّ الموضع وآلة عامليّاتٍ أخرى. (وآلة العامليّات لا نهائيّةٌ لأنّها تحتوي آلة عامليّاتٍ أخرى داخلها.) و<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">الشكل 4.2</a> مخطّط انسيابيّ لآلة العامليّات، يُظهر كيف تُوصَل الأجزاء بعضها ببعض.</p>
+<p><img src="/arabic-cs-library/images/sicp/c4-metalinguistic-abstraction-1-Fig4.2a.std.webp" alt=""></p>
+<p><strong>الشكل 4.2:</strong> برنامج العامليّات، منظورًا إليه بوصفه آلةً مجرّدة.</p>
+<p>وبطريقةٍ مماثلة، نستطيع اعتبار المقيّم آلةً خاصّةً جدًّا تأخذ وصفَ آلةٍ إدخالًا. وبإعطائها هذا الإدخال، يُهيّئ المقيّم نفسه ليحاكي الآلة الموصوفة. فعلى سبيل المثال، إذا زوّدنا مقيّمنا بتعريف <code>factorial</code>، كما هو موضّح في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">الشكل 4.3</a>، فسيصير المقيّم قادرًا على حساب العامليّات.</p>
+<p><img src="/arabic-cs-library/images/sicp/c4-metalinguistic-abstraction-2-Fig4.3.std.webp" alt=""></p>
+<p><strong>الشكل 4.3:</strong> المقيّم يحاكي آلة العامليّات.</p>
+<p>من هذا المنظور، يتبيّن أنّ مقيّمنا <em>آلةٌ عامّة (universal machine)</em>. فهو يُحاكي آلاتٍ أخرى حين تُوصَف هذه الآلات ببرامج Lisp.<sup class="footnote-ref"><a href="#fn19" id="fnref19">[19]</a></sup> وهذا مدهش. فحاوِل أن تتخيّل مقيّمًا مماثلاً للدوائر الكهربائيّة. سيكون هذا دائرةً تأخذ إشارةً تُرمّز مخططات دائرةٍ أخرى، كالمرشّح مثلًا، إدخالًا. فبإعطائها هذا الإدخال، سيتصرّف مقيّم الدوائر بسلوك المرشّح ذي الوصف نفسه. ومثل هذه الدائرة الكهربائيّة العامّة مركّبةٌ إلى حدّ لا يكاد يُتصوّر. ومن الجدير بالدهشة أنّ مقيّم البرامج برنامجٌ بسيطٌ إلى حدٍّ ما.<sup class="footnote-ref"><a href="#fn20" id="fnref20">[20]</a></sup></p>
+<p>وجانبٌ آخر مدهش في المقيّم أنّه يعمل بوصفه جسرًا بين كائنات البيانات التي تتلاعب بها لغة البرمجة لدينا ولغة البرمجة ذاتها. فتخيّل أنّ برنامج المقيّم (المنفّذ بـLisp) يعمل، وأنّ مستخدمًا يكتب تعابير للمقيّم ويراقب النتائج. فمن منظور المستخدم، تعبيرُ إدخالٍ كـ<code>(* x x)</code> هو تعبيرٌ في لغة البرمجة، ينبغي للمقيّم أن ينفّذه. وأمّا من منظور المقيّم، فالتعبير ليس إلّا قائمةً (في هذه الحالة، قائمةً من ثلاثة رموز: <code>*</code> و<code>x</code> و<code>x</code>) يُتلاعب بها وفقًا لمجموعةٍ محدَّدةٍ بدقّةٍ من القواعد.</p>
+<p>وكون برامج المستخدم بياناتِ المقيّم لا يلزم أن يكون مصدرًا للالتباس. ففي الحقيقة، يكون إهمال هذا التمييز ملائمًا أحيانًا، ومنح المستخدم القدرة على تقييم كائن بيانات صراحةً بوصفه تعبير Lisp، وذلك بجعل <code>eval</code> متاحًا للاستخدام في البرامج. فلهجات Lisp كثيرةٌ تُوفّر إجراء <code>eval</code> أوّليًّا يأخذ تعبيرًا وبيئةً معطيين ويُقيّم التعبير نسبةً إلى البيئة.<sup class="footnote-ref"><a href="#fn21" id="fnref21">[21]</a></sup> وهكذا،</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">eval</span></span> &#x27;(* <span class="hljs-number">5</span> <span class="hljs-number">5</span>) user-initial-environment)
+</code></pre>
+<p>و</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-symbol">&#x27;*</span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-number">5</span> <span class="hljs-number">5</span>)) 
+      user-initial-environment)
+</code></pre>
+<p>فكلاهما سيُعيد 25.<sup class="footnote-ref"><a href="#fn22" id="fnref22">[22]</a></sup></p>
+<p><strong>التمرين 4.15:</strong> إذا أُعطي إجراءٌ ذو وسيطٍ واحدٍ <code>p</code> وكائنٌ <code>a</code>، فإنّه يُقال إنّ <code>p</code> «يتوقّف» على <code>a</code> إذا أعاد تقييم التعبير <code>(p a)</code> قيمةً (بخلاف الانتهاء برسالة خطأٍ أو الدوران إلى الأبد). أظهر أنّ من المحال كتابة إجراءٍ <code>halts?</code> يحسم بصورةٍ صحيحةٍ ما إذا كان <code>p</code> يتوقّف على <code>a</code> لأيّ إجراءٍ <code>p</code> وأيّ كائنٍ <code>a</code>. واستخدم الاستدلال الآتي: لو كان لديك إجراءٌ <code>halts?</code> كهذا، لأمكنك تنفيذ البرنامج الآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">run-forever</span>)
+  (<span class="hljs-name">run-forever</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">try</span> p)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">halts?</span> p p)
+      (<span class="hljs-name">run-forever</span>)
+      <span class="hljs-symbol">&#x27;halted</span>))
+</code></pre>
+<p>والآن، تأمّل تقييم التعبير <code>(try try)</code> وأظهر أنّ أيّ نتيجةٍ ممكنةٍ (سواءً التوقّف أو الدوران إلى الأبد) تُخالف السلوك المقصود من <code>halts?</code>.<sup class="footnote-ref"><a href="#fn23" id="fnref23">[23]</a></sup></p>
+<h4>4.1.6 التعريفات الداخليّة</h4>
+<p>يُنفّذ نموذج البيئة للتقييم ومقيّمنا الدائريّ التعريفات بالتسلسل، موسِعَين إطار البيئة تعريفًا واحدًا في كلّ مرّة. وهذا ملائمٌ بوجهٍ خاصّ لتطوير البرامج التفاعليّ، حيث يلزم المبرمجَ أن يمزج بحرّيّةٍ بين تطبيق الإجراءات وبين تعريف إجراءاتٍ جديدة. غير أنّنا، إذا فكّرنا بعنايةٍ في التعريفات الداخليّة المستخدمة لتنفيذ البنية الكتليّة (المُقدَّمة في <a href="https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1_002e8">1.1.8</a>)، سنجد أنّ توسيع البيئة اسمًا باسمٍ قد لا يكون أفضلَ وسيلةٍ لتقييد المتغيّرات المحلّيّة.</p>
+<p>تأمّل إجراءً له تعريفاتٌ داخليّة، كالآتي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> n)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+        true
+        (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span> n)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+        false
+        (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))
+  ⟨rest of body of f⟩)
+</code></pre>
+<p>وقصدنا هنا أنّ الاسم <code>odd?</code> في جسم الإجراء <code>even?</code> ينبغي أن يُشير إلى الإجراء <code>odd?</code> المُعرَّف بعد <code>even?</code>. ونطاق الاسم <code>odd?</code> هو جسم <code>f</code> كلّه، لا القسم من جسم <code>f</code> الذي يبدأ من الموضع الذي يقع فيه <code>define</code> الخاصّ بـ<code>odd?</code> فحسب. ففي الحقيقة، حين نعتبر أنّ <code>odd?</code> مُعرَّفٌ بدوره بدلالة <code>even?</code> - بحيث إنّ <code>even?</code> و<code>odd?</code> إجراءان تعاوديّان متبادلان - نرى أنّ التفسير المرضيّ الوحيد للتعريفين <code>define</code> هو اعتبارهما كأنّ الاسمين <code>even?</code> و<code>odd?</code> يُضافان إلى البيئة تزامنًا. وبصورةٍ أعمّ، في البنية الكتليّة، نطاق الاسم المحلّيّ هو جسم الإجراء كلّه الذي يُقيَّم فيه <code>define</code>.</p>
+<p>وقد صف أنّ مفسّرنا سيُقيّم نداءات <code>f</code> بصورةٍ صحيحة، لكن لسببٍ «عرضيّ»: وذلك بأنّ تعريفات الإجراءات الداخليّة تأتي أوّلًا، فلن تُقيَّم أيّ نداءاتٍ لهذه الإجراءات حتّى تُعرَّف جميعها. ومن ثمّ، سيكون <code>odd?</code> قد عُرِّف بحين تُنفَّذ <code>even?</code>. في الواقع، وستُعطي آليّة التقييم التسلسليّ لدينا النتيجة ذاتها التي تُعطيها آليّةٌ تُنفّذ التعريف المتزامن مباشرةً، لأيّ إجراءٍ تأتي فيه التعريفات الداخليّة أوّلًا في الجسم، وحيث لا يستخدم تقييم تعابير قيم المتغيّرات المُعرَّفة أيًّا من المتغيّرات المُعرَّفة فعلًا. (ولمثالٍ على إجراءٍ لا يتّبع هذه القيود، بحيث لا يكون التعريف التسلسليّ مكافئًا للتعريف المتزامن، انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.19</a>.)<sup class="footnote-ref"><a href="#fn24" id="fnref24">[24]</a></sup></p>
+<p>ثمّة، مع ذلك، طريقةٌ بسيطةٌ لمعاملة التعريفات بحيث يكون للأسماء المُعرَّفة داخليًّا نطاقٌ متزامنٌ حقًّا - وذلك ببساطةٍ بإنشاء جميع المتغيّرات المحلّيّة التي ستكون في البيئة الحاليّة قبل تقييم أيّ من تعابير القيم. وإحدى وسائل فعل ذلك هي التحويل الصياغيّ على تعابير <code>lambda</code>. فقبل تقييم جسم تعبير <code>lambda</code>، نمسح ونُزيل جميع التعريفات الداخليّة في الجسم. وسيُنشأ المتغيّرات المُعرَّفة داخليًّا بـ<code>let</code> ثمّ تُضبط على قيمها بالإحلال. فعلى سبيل المثال، الإجراء</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> <span class="hljs-name">⟨vars⟩</span>
+  (define u ⟨e1⟩)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> v ⟨e2⟩)
+  ⟨e3⟩)
+</code></pre>
+<p>سيُحوَّل إلى</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> <span class="hljs-name">⟨vars⟩</span>
+  (let ((u &#x27;*unassigned*)
+        (<span class="hljs-name">v</span> <span class="hljs-symbol">&#x27;*unassigned*</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> u ⟨e1⟩)
+    (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> v ⟨e2⟩)
+    ⟨e<span class="hljs-number">3</span>⟩))
+</code></pre>
+<p>حيث <code>*unassigned*</code> رمزٌ خاصّ يجعل النفاذ إلى متغيّرٍ يُشير إلى خطأٍ إذا حُول استخدام قيمة المتغيّر الذي لم يُحلَّ بعد.</p>
+<p>وتُبيّن <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.18</a> استراتيجيّةً بديلةً لمسح التعريفات الداخليّة. وبخلاف التحويل الموضّح أعلاه، فإنّ هذا التحويل يفرض القيد القائل إنّه يمكن تقييم قيم المتغيّرات المُعرَّفة دون استخدام أيّ من قيم المتغيّرات.<sup class="footnote-ref"><a href="#fn25" id="fnref25">[25]</a></sup></p>
+<blockquote>
+<p><strong>التمرين 4.16:</strong> في هذا التمرين نُنفّذ الطريقة الموصوفة للتوّ لتفسير التعريفات الداخليّة. ونفترض أنّ المقيّم يدعم <code>let</code> (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.6</a>). عدّل <code>lookup-variable-value</code> (<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.3</a>) ليُشير إلى خطأٍ إذا كانت القيمة التي يجدها هي الرمز <code>*unassigned*</code>.</p>
+<blockquote>
+<p>اكتب إجراءً <code>scan-out-defines</code> يأخذ جسم إجراءٍ ويُعيد جسمًا مكافئًا له لا يحتوي تعريفاتٍ داخليّةً، بإجراء التحويل الموصوف أعلاه.
+ثبّت <code>scan-out-defines</code> في المفسّر، إمّا في <code>make-procedure</code> وإمّا في <code>procedure-body</code> (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.3</a>). فأيّ الموضعين أفضل؟ ولماذا؟</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 4.17:</strong> ارسم مخطّطات للبيئة السائدة عند تقييم التعبير <code>⟨</code>e3<code>⟩</code> في الإجراء الوارد في النصّ، مقارنًا كيف ستُنظَّم حين تُفسَّر التعريفات تسلسليًّا وكيف ستُنظَّم إذا مُسِحَت التعريفات كما هو موضّح. فلماذا هناك إطارٌ إضافيّ في البرنامج المحوَّل؟ واشرح لماذا لا يمكن لهذا الفرق في بنية البيئة أن يُحدِث فرقًا في سلوك برنامجٍ صحيحٍ أبدًا. وصمّم طريقةً تجعل المفسّر يُنفّذ قاعدة النطاق «المتزامن» للتعريفات الداخليّة دون بناء الإطار الإضافيّ.</p>
+</blockquote>
+<p><strong>التمرين 4.18:</strong> تأمّل استراتيجيّةً بديلةً لمسح التعريفات تُترجم المثال الوارد في النصّ إلى</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> <span class="hljs-name">⟨vars⟩</span>
+  (let ((u &#x27;*unassigned*)
+        (<span class="hljs-name">v</span> <span class="hljs-symbol">&#x27;*unassigned*</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">a</span> ⟨e1⟩)
+          (<span class="hljs-name">b</span> ⟨e2⟩))
+      (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> u a)
+      (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> v b))
+    ⟨e<span class="hljs-number">3</span>⟩))
+</code></pre>
+<p>ويهدف <code>a</code> و<code>b</code> هنا إلى تمثيل أسماء متغيّراتٍ جديدة، يخلقها المفسّر، لا تظهر في برنامج المستخدم. وتأمّل الإجراء <code>solve</code> الوارد في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4">3.5.4</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">solve</span> f y0 dt)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> y (<span class="hljs-name">integral</span> (<span class="hljs-name"><span class="hljs-built_in">delay</span></span> dy) y0 dt))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> dy (<span class="hljs-name">stream-map</span> f y))
+  y)
+</code></pre>
+<p>فهل يعمل هذا الإجراء إذا مُسِحَت التعريفات الداخليّة كما هو موضّح في هذا التمرين؟ وماذا لو مُسِحَت كما هو موضّح في النصّ؟ اشرح.</p>
+<p><strong>التمرين 4.19:</strong> يختلف بن بِتدل وأليسا ب. هاكر وإيفا لو أتور في النتيجة المرغوبة لتقييم التعبير</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">a</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> x)
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> b (<span class="hljs-name"><span class="hljs-built_in">+</span></span> a x))
+    (<span class="hljs-name"><span class="hljs-built_in">define</span></span> a <span class="hljs-number">5</span>)
+    (<span class="hljs-name"><span class="hljs-built_in">+</span></span> a b))
+  (<span class="hljs-name">f</span> <span class="hljs-number">10</span>))
+</code></pre>
+<p>يؤكّد بن أنّ النتيجة ينبغي أن تُحصَل باستخدام القاعدة التسلسليّة لـ<code>define</code>: إذ يُعرَّف <code>b</code> بأنّه 11، ثمّ يُعرَّف <code>a</code> بأنّه 5، فالنتيجة 16. وتاعتراض أليسا أنّ التعاوب المتبادل يتطلّب قاعدة النطاق المتزامن للتعريفات الإجرائيّة الداخليّة، وأنّه من غير المعقول معاملة أسماء الإجراءات معاملةً مختلفةً عن الأسماء الأخرى. وبالتالي، فهي تُؤيّد الآليّة المنفّذة في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.16</a>. وهذا سيؤدّي إلى أنّ <code>a</code> غير مُحلًّ حين يُحتسب قيمة <code>b</code>. ومن ثمّ، ففي رأي أليسا ينبغي للإجراء أن يُنتج خطأً. وإلى إيفا رأيٌ ثالث. فهي تقول إنّه إذا كان المقصود من تعريفي <code>a</code> و<code>b</code> أن يكونا متزامنين حقًّا، فينبغي استخدام القيمة 5 لـ<code>a</code> في تقييم <code>b</code>. ومن ثمّ، ففي رأي إيفا ينبغي أن يكون <code>a</code> هو 5 و<code>b</code> هو 15، وأن تكون النتيجة 20. فأيّ هذه الآراء تؤيّده (إن أُيّد أيٌّ منها)؟ وهل تستطيع ابتكار طريقةٍ لتنفيذ التعريفات الداخليّة بحيث تتصرف كما تفضّل إيفا؟<sup class="footnote-ref"><a href="#fn26" id="fnref26">[26]</a></sup></p>
+<p><strong>التمرين 4.20:</strong> لأنّ التعريفات الداخليّة تبدو تسلسليّة لكنّها متزامنةٌ في الحقيقة، يفضّل بعض الناس تجنّبها كلّيًّا، واستخدام الصيغة الخاصّة <code>letrec</code> بدلًا منها. و<code>letrec</code> تُشبه <code>let</code>، فليس من المفاجئ أنّ المتغيّرات التي تربطها مربوطةٌ تزامنًا وأنّ نطاق كلٍّ منها هو النطاق ذاته. ويمكن كتابة الإجراء النموذجيّ <code>f</code> أعلاه دون تعريفاتٍ داخليّة، ولكن بالمعنى ذاته تمامًا، كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">letrec</span></span>
+      ((<span class="hljs-name"><span class="hljs-built_in">even?</span></span>
+        (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (n)
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+              true
+              (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)))))
+       (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span>
+        (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (n)
+          (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+              false
+              (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))))
+    ⟨rest of body of f⟩))
+</code></pre>
+<p>تعبيرات <code>Letrec</code>، التي لها الصيغة</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">letrec</span></span> ((<span class="hljs-name">⟨var₁⟩</span> ⟨exp₁⟩) … (<span class="hljs-name">⟨varₙ⟩</span> ⟨expₙ⟩))
+  ⟨body⟩)
+</code></pre>
+<p>هي تنويعٌ على <code>let</code> تُقيَّم فيه التعابير <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>e</mi><mi>x</mi><msub><mi>p</mi><mi>k</mi></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ e x p_{k} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal">e</span><span class="mord mathnormal">x</span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> التي تُوفّر القيم الأوّليّة للمتغيّرات <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">⟨</mo><mi>v</mi><mi>a</mi><msub><mi>r</mi><mi>k</mi></msub><mo stretchy="false">⟩</mo></mrow><annotation encoding="application/x-tex">⟨ v a r_{k} ⟩</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">⟨</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.3361em;"><span style="top:-2.55em;margin-left:-0.0278em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right:0.0315em;">k</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">⟩</span></span></span></span> في بيئةٍ تتضمّن جميع روابط <code>letrec</code>. وهذا يسمح بالتعاود في الروابط، كالتعاود المتبادل بين <code>even?</code> و<code>odd?</code> في المثال أعلاه، أو بتقييم عامليّ العدد 10 بـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">letrec</span></span>
+    ((<span class="hljs-name">fact</span>
+      (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (n)
+        (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+            <span class="hljs-number">1</span>
+            (<span class="hljs-name"><span class="hljs-built_in">*</span></span> n (<span class="hljs-name">fact</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)))))))
+  (<span class="hljs-name">fact</span> <span class="hljs-number">10</span>))
+</code></pre>
+<ol>
+<li>نفّذ <code>letrec</code> بوصفه تعبيرًا مشتقًّا، بتحويل تعبير <code>letrec</code> إلى تعبير <code>let</code> كما هو موضّحٌ في النصّ أعلاه أو في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.18</a>. أي أنّه ينبغي إنشاء متغيّرات <code>letrec</code> بـ<code>let</code> ثم إسناد قيمها إليها بـ<code>set!</code>.</li>
+<li>لويس ريزونر في حيرةٍ من كلّ هذه الضجّة حول التعريفات الداخليّة. فكما يرى الأمر، إن كنت لا تحبّ استخدام <code>define</code> داخل إجراءٍ، فيمكنك استخدام <code>let</code> فحسب. أوضح ما هو الفضفاض في استدلاله برسم مخطّط بيئةٍ يُظهر البيئة التي يُقيَّم فيها <code>⟨</code>بقية جسم <code>f\`\`⟩</code> أثناء تقييم التعبير <code>(f 5)</code>، إذ عُرِّف <code>f</code> كما في هذا التمرين. وارسم مخطّط بيئةٍ للتقييم ذاته، لكن باستخدام <code>let</code> بدلًا من <code>letrec</code> في تعريف <code>f</code>.</li>
+</ol>
+<p><strong>التمرين 4.21:</strong> من المدهون أنّ حدس لويس في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.20</a> صحيح. فمن الممكن فعلًا تحديد إجراءاتٍ متعاودةٍ دون استخدام <code>letrec</code> (أو حتّى <code>define</code>)، مع أنّ طريقة إنجاز هذا أدقّ بكثيرٍ ممّا تصوّره لويس. والتعبير التالي يحتسب عامليّ العدد 10 بتطبيق إجراء عامليّ متعاود:<sup class="footnote-ref"><a href="#fn27" id="fnref27">[27]</a></sup></p>
+<pre><code class="language-scheme">((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (n)
+   ((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (fact) (<span class="hljs-name">fact</span> fact n))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (ft k)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> k <span class="hljs-number">1</span>)
+          <span class="hljs-number">1</span>
+          (<span class="hljs-name"><span class="hljs-built_in">*</span></span> k (<span class="hljs-name">ft</span> ft (<span class="hljs-name"><span class="hljs-built_in">-</span></span> k <span class="hljs-number">1</span>)))))))
+ <span class="hljs-number">10</span>)
+</code></pre>
+<p>تحقّق (بتقييم التعبير) من أنّ هذا يحتسب العامليّات فعلًا. وابتكر تعبيرًا مماثلًا لاحتساب أعداد فيبوناتشي. وتأمّل الإجراء التالي، الذي يتضمّن تعريفاتٍ داخليّةً متعاودةً متبادلةً:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> n)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+        true
+        (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">odd?</span></span> n)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+        false
+        (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))
+  (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> x))
+</code></pre>
+<p>املأ التعابير الناقصة لإتمام تعريفٍ بديلٍ لـ<code>f</code> لا يستخدم تعريفاتٍ داخليّةً ولا <code>letrec</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> x)
+  ((<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (even? odd?)
+     (<span class="hljs-name"><span class="hljs-built_in">even?</span></span> even? odd? x))
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (ev? od? n)
+     (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>) 
+         true 
+         (<span class="hljs-name">od?</span> ⟨??⟩ ⟨??⟩ ⟨??⟩)))
+   (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (ev? od? n)
+     (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>) 
+         false 
+         (<span class="hljs-name">ev?</span> ⟨??⟩ ⟨??⟩ ⟨??⟩)))))
+</code></pre>
+<h4>4.1.7 فصل تحليل الصياغة عن التنفيذ</h4>
+<p>المقيّم المنفّذ أعلاه بسيط، لكنه غير كفؤٍ على الإطلاق، لأنّ تحليل صياغة التعابير متشابكٌ مع تنفيذها. لذا فإذا نُفّذ برنامجٌ مرّاتٍ كثيرة، تُحلَّل صياغته مرّاتٍ كثيرة. فتأمّل، مثلًا، تقييم <code>(factorial 4)</code> باستخدام تعريف <code>factorial</code> التالي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+      <span class="hljs-number">1</span>
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) n)))
+</code></pre>
+<p>في كلّ مرّةٍ يُنادى فيها <code>factorial</code>، ينبغي للمقيّم أن يحدّد أنّ الجسم تعبير <code>if</code> وأن يستخرج المسيّم. وحينئذٍ فقط يستطيع تقييم المسيّم والتصرّف بحسب قيمته. وفي كلّ مرّةٍ يقيّم فيها التعبير <code>(* (factorial (- n 1)) n)</code>، أو التعبيران الجزئيّان <code>(factorial (- n 1))</code> و<code>(- n 1)</code>، ينبغي للمقيّم أن يُجري تحليل الحالات في <code>eval</code> لتحديد أنّ التعبير تطبيق، وأن يستخرج مشغّله وعوامله. وهذا التحليل مكلف. وأداؤه مُكرَّرًا مُهدر.</p>
+<p>يمكننا تحويل المقيّم ليكون أكفأَ بشكلٍ ملحوظٍ بترتيب الأمور بحيث لا يُجرى تحليل الصياغة إلّا مرّةً واحدة.<sup class="footnote-ref"><a href="#fn28" id="fnref28">[28]</a></sup> فنحن نقسّم <code>eval</code> - الذي يأخذ تعبيرًا وبيئةً - إلى جزأين. والإجراء <code>analyze</code> يأخذ التعبير وحده، فيُجري تحليل الصياغة ويُعيد إجراءً جديدًا، هو <em>إجراء التنفيذ (execution procedure)</em>، الذي يغلّف العمل الواجب أداؤه في تنفيذ التعبير المحلَّل. وإجراء التنفيذ يأخذ بيئةً كمعطىً ويُكمل التقييم. وهذا يوفّر عملًا لأنّ <code>analyze</code> سيُنادى مرّةً واحدةً فقط على تعبيرٍ، بينما قد يُنادى إجراء التنفيذ مرّاتٍ كثيرة.</p>
+<p>وبالفصل بين التحليل والتنفيذ، يصبح <code>eval</code> الآن</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> exp env) ((<span class="hljs-name">analyze</span> exp) env))
+</code></pre>
+<p>إنّ نتيجة نداء <code>analyze</code> هي إجراء التنفيذ الواجب تطبيقه على البيئة. والإجراء <code>analyze</code> هو تحليل الحالات ذاته الذي يؤدّيه <code>eval</code> الأصليّ الوارد في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.1</a>، إلّا أنّ الإجراءات التي نُوزّع إليها تؤدّي التحليل فحسب، لا التقييم الكامل:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">self-evaluating?</span> exp)
+         (<span class="hljs-name">analyze-self-evaluating</span> exp))
+        ((<span class="hljs-name">quoted?</span> exp) 
+         (<span class="hljs-name">analyze-quoted</span> exp))
+        ((<span class="hljs-name">variable?</span> exp) 
+         (<span class="hljs-name">analyze-variable</span> exp))
+        ((<span class="hljs-name">assignment?</span> exp) 
+         (<span class="hljs-name">analyze-assignment</span> exp))
+        ((<span class="hljs-name">definition?</span> exp) 
+         (<span class="hljs-name">analyze-definition</span> exp))
+        ((<span class="hljs-name">if?</span> exp) 
+         (<span class="hljs-name">analyze-if</span> exp))
+        ((<span class="hljs-name">lambda?</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>) 
+         (<span class="hljs-name">analyze-lambda</span> exp))
+        ((<span class="hljs-name">begin?</span> exp) 
+         (<span class="hljs-name">analyze-sequence</span> 
+          (<span class="hljs-name">begin-actions</span> exp)))
+        ((<span class="hljs-name">cond?</span> exp) 
+         (<span class="hljs-name">analyze</span> (<span class="hljs-name">cond-&gt;if</span> exp)))
+        ((<span class="hljs-name">application?</span> exp) 
+         (<span class="hljs-name">analyze-application</span> exp))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span>
+         (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown expression 
+                 type: ANALYZE&quot;</span> 
+                exp))))
+</code></pre>
+<p>وها هو أبسط إجراءات تحليل الصياغة، وهو الذي يتعامل مع التعابير ذاتيّة التقييم. وهو يُعيد إجراء تنفيذٍ يتجاهل معطاه البيئيّ ويُعيد التعبير فحسب:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-self-evaluating</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) exp))
+</code></pre>
+<p>وبالنسبة لتعبيرٍ مُقتبَس، فيمكننا أن نكسب قليلًا من الكفاءة باستخراج نصّ الاقتباس مرّةً واحدةً فقط، في مرحلة التحليل، بدلًا من مرحلة التنفيذ.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-quoted</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">qval</span> (<span class="hljs-name">text-of-quotation</span> exp)))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) qval)))
+</code></pre>
+<p>أمّا البحث عن قيمة متغيّرٍ فينبغي أن يظلّ يجري في مرحلة التنفيذ، لأنّ ذلك يعتمد على معرفة البيئة.<sup class="footnote-ref"><a href="#fn29" id="fnref29">[29]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-variable</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) 
+    (<span class="hljs-name">lookup-variable-value</span> exp env)))
+</code></pre>
+<p>وينبغي لـ<code>analyze-assignment</code> أن يؤجّل إسناد المتغيّر فعلًا حتّى التنفيذ، حين تكون البيئة قد قُدّمت. لكنّ حقيقة أنّ تعبير <code>assignment-value</code> يمكن تحليله (تعاوديًّا) أثناء التحليل هي مكسبٌ كبيرٌ في الكفاءة، لأنّ تعبير <code>assignment-value</code> سيُحلَّل الآن مرّةً واحدةً فقط. والشيء ذاته يصدق على التعريفات.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-assignment</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">assignment-variable</span> exp))
+        (<span class="hljs-name">vproc</span> (<span class="hljs-name">analyze</span> 
+                (<span class="hljs-name">assignment-value</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env)
+      (<span class="hljs-name">set-variable-value!</span> 
+       var (<span class="hljs-name">vproc</span> env) env)
+      <span class="hljs-symbol">&#x27;ok</span>)))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-definition</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">var</span> (<span class="hljs-name">definition-variable</span> exp))
+        (<span class="hljs-name">vproc</span> (<span class="hljs-name">analyze</span> 
+                (<span class="hljs-name">definition-value</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env)
+      (<span class="hljs-name">define-variable!</span> var (<span class="hljs-name">vproc</span> env) env)
+      <span class="hljs-symbol">&#x27;ok</span>)))
+</code></pre>
+<p>وبالنسبة لتعبيرات <code>if</code>، نستخرج المسيّم والناتج والبديل ونحلّلها في وقت التحليل.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-if</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">pproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-predicate</span> exp)))
+        (<span class="hljs-name">cproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-consequent</span> exp)))
+        (<span class="hljs-name">aproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">if-alternative</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env)
+      (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">true?</span> (<span class="hljs-name">pproc</span> env))
+          (<span class="hljs-name">cproc</span> env)
+          (<span class="hljs-name">aproc</span> env)))))
+</code></pre>
+<p>ويُحقّق تحليل تعبير <code>lambda</code> مكسبًا كبيرًا في الكفاءة أيضًا: فنحن نحلّل جسم <code>lambda</code> مرّةً واحدةً فقط، مع أنّ الإجراءات الناتجة عن تقييم <code>lambda</code> قد تُطبَّق مرّاتٍ كثيرة.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-lambda</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">vars</span> (<span class="hljs-name">lambda-parameters</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>))
+        (<span class="hljs-name">bproc</span> (<span class="hljs-name">analyze-sequence</span> 
+                (<span class="hljs-name">lambda-body</span> <span class="hljs-name"><span class="hljs-built_in">exp</span></span>))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) 
+      (<span class="hljs-name">make-procedure</span> vars bproc env))))
+</code></pre>
+<p>أمّا تحليل تسلسل تعابير (كما في <code>begin</code> أو جسم تعبير <code>lambda</code>) فهو أكثر تعقيدًا.<sup class="footnote-ref"><a href="#fn30" id="fnref30">[30]</a></sup> فكلّ تعبيرٍ في التسلسل يُحلَّل، مُنتجًا إجراء تنفيذ. وهذه الإجراءات تُدمج لإنتاج إجراء تنفيذٍ يأخذ بيئةً كمعطىً وينادي كلّ إجراء تنفيذٍ منفردٍ، بالبيئة معطىً له، تتاليًّا.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-sequence</span> exps)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">sequentially</span> proc1 proc2)
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) (<span class="hljs-name">proc1</span> env) (<span class="hljs-name">proc2</span> env)))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">loop</span> first-proc rest-procs)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> rest-procs)
+        first-proc
+        (<span class="hljs-name">loop</span> (<span class="hljs-name">sequentially</span> first-proc 
+                            (<span class="hljs-name"><span class="hljs-built_in">car</span></span> rest-procs))
+              (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> rest-procs))))
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">procs</span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze exps)))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> procs)
+        (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Empty sequence: ANALYZE&quot;</span>))
+    (<span class="hljs-name">loop</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> procs) (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> procs))))
+</code></pre>
+<p>ولتحليل تطبيق، نُحلّل المشغّل والعوامل ونبني إجراء تنفيذٍ ينادي إجراء تنفيذ المشغّل (للحصول على الإجراء الفعليّ الواجب تطبيقه) وإجراءات تنفيذ العوامل (للحصول على المعطيات الفعليّة). ثمّ نُمرّر هذه إلى <code>execute-application</code>، وهو نظير <code>apply</code> في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.1</a>. ويختلف <code>execute-application</code> عن <code>apply</code> في أنّ جسم الإجراء المركّب قد حُلِّل بالفعل، فلا حاجة إلى مزيدٍ من التحليل. وبدلًا من ذلك، ننادي إجراء تنفيذ الجسم على البيئة الممتدّة فحسب.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-application</span> exp)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">fproc</span> (<span class="hljs-name">analyze</span> (<span class="hljs-name">operator</span> exp)))
+        (<span class="hljs-name">aprocs</span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze (<span class="hljs-name">operands</span> exp))))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env)
+      (<span class="hljs-name">execute-application</span> 
+       (<span class="hljs-name">fproc</span> env)
+       (<span class="hljs-name"><span class="hljs-built_in">map</span></span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (aproc) (<span class="hljs-name">aproc</span> env))
+            aprocs)))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">execute-application</span> proc args)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">primitive-procedure?</span> proc)
+         (<span class="hljs-name">apply-primitive-procedure</span> proc args))
+        ((<span class="hljs-name">compound-procedure?</span> proc)
+         ((<span class="hljs-name">procedure-body</span> proc)
+          (<span class="hljs-name">extend-environment</span> 
+           (<span class="hljs-name">procedure-parameters</span> proc)
+           args
+           (<span class="hljs-name">procedure-environment</span> proc))))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown procedure type: 
+                      EXECUTE-APPLICATION&quot;</span>
+                     proc))))
+</code></pre>
+<p>ويستخدم مقيّمنا الجديد بنى البيانات ذاتها وإجراءات الصياغة وإجراءات دعم وقت التشغيل الواردة في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.2</a>، و<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.3</a>، و<a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.4</a>.</p>
+<blockquote>
+<p><strong>التمرين 4.22:</strong> وسّع المقيّم الوارد في هذا القسم ليدعم الصيغة الخاصّة <code>let</code>. (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">التمرين 4.6</a>.)</p>
+</blockquote>
+<p><strong>التمرين 4.23:</strong> أليسا ب. هاكر لا تفهم لماذا يلزم أن يكون <code>analyze-sequence</code> بهذا التعقيد. فجميع إجراءات التحليل الأخرى تحويلاتٌ مباشرةٌ لإجراءات التقييم المقابلة (أو بنود <code>eval</code>) في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/index/">4.1.1</a>. وقد توقّعت أن يكون <code>analyze-sequence</code> على هذه الصورة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">analyze-sequence</span> exps)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">execute-sequence</span> procs env)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> procs)) 
+           ((<span class="hljs-name"><span class="hljs-built_in">car</span></span> procs) env))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> ((<span class="hljs-name"><span class="hljs-built_in">car</span></span> procs) env)
+                (<span class="hljs-name">execute-sequence</span> 
+                 (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> procs) env))))
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">procs</span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> analyze exps)))
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> procs)
+        (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Empty sequence: 
+                ANALYZE&quot;</span>))
+    (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (env) 
+      (<span class="hljs-name">execute-sequence</span> procs env))))
+</code></pre>
+<p>تشرح إيفا لو أتور لأليسا أنّ النسخة الواردة في النصّ تؤدّي المزيد من عمل تقييم التسلسل في وقت التحليل. فأمّا إجراء تنفيذ التسلسل عند أليسا، فبدلًا من أن تكون نداءات إجراءات التنفيذ المنفردة مدمجةً فيه، فإنّه يتنقّل بين الإجراءات ليناديها بالترتيب: في واقع الأمر، مع أنّ التعابير المنفردة في التسلسل قد حُلِّلَت، فإنّ التسلسل ذاته لم يُحلَّل.</p>
+<p>قارن بين النسختين من <code>analyze-sequence</code>. فتأمّل، مثلًا، الحالة الشائعة (النموذجيّة في أجسام الإجراءات) التي يكون التسلسل فيها تعبيرًا واحدًا فحسب. فأيّ عمل سيؤدّيه إجراء التنفيذ الذي يُنتجه برنامج أليسا؟ وماذا عن إجراء التنفيذ الذي يُنتجه البرنامج الوارد في النصّ أعلاه؟ وكيف تقارن النسختان بالنسبة لتسلسلٍ من تعبيرين؟</p>
+<blockquote>
+<p><strong>التمرين 4.24:</strong> صمّم ونفّذ بعض التجارب لمقارنة سرعة المقيّم الحَلْقيّ المُحيط (metacircular evaluator) الأصليّ بالنسخة الواردة في هذا القسم. واستخدم نتائجك لتقدير نسبة الوقت التي يُقضى في التحليل مقابل التنفيذ بالنسبة لمختلف الإجراءات.</p>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>هذا الافتراض يُخفي جانبًا كبيرًا من التعقيد. فعادةً ما يُخصَّص جزءٌ كبيرٌ من تنفيذ نظام Lisp لجعل عمليّتي القراءة والطباعة تعملان. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>قد يُقال إنّنا لسنا بحاجةٍ إلى حفظ <code>n</code> القديمة؛ إذ يمكننا، بعد إنقاصها وحلّ المسألة الفرعيّة، أن نزيدها ببساطةٍ فنستعيد القيمة القديمة. ومع أنّ هذه الاستراتيجيّة تنجح مع المضروب (factorial)، فإنّها لا تنجح عمومًا، لأنّ القيمة القديمة لمسجّلٍ لا يمكن دائمًا استخلاصها من القيمة الجديدة. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>سنرى في <a href="https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3">5.3</a> كيف نُنفّذ المكدس باستخدام عمليّاتٍ أوّليّةٍ أكثر. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>استخدام إجراء <code>receive</code> هنا طريقةٌ لجعل <code>extract-labels</code> يُعيد فعليًّا قيمتين—<code>labels</code> و<code>insts</code>—دون أن نُشكّل صراحةً بنية بيانات مركّبةٍ للاحتفاظ بهما. ثمّة تنفيذٌ بديل يُعيد زوجًا صريحًا من القيم، وهو <code>scheme (define (extract-labels text) (if (null? text) (cons '() '()) (let ((result (extract-labels (cdr text)))) (let ((insts (car result)) (labels (cdr result))) (let ((next-inst (car text))) (if (symbol? next-inst) (cons insts (cons (make-label-entry next-inst insts) labels)) (cons (cons (make-instruction next-inst) insts) labels))))))) </code> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>كان بوسعنا تمثيل الذاكرة كقوائمَ من العناصر. لكن زمن الوصول لم يكن ليكون حينها مستقلًّا عن الفهرس، إذ إنّ الوصول إلى العنصر رقم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> في قائمةٍ يتطلّب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> عمليّة <code>cdr</code>. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>تكاملًا، ينبغي أن نُحدّد عمليّة <code>make-vector</code> تبني المتجهات. لكن في التطبيق الحاضر سنستخدم المتجهات فقط لنمذجة تقسيماتٍ ثابتةٍ من ذاكرة الحاسوب. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>هذه هي الفكرة عينها الخاصةّ بـ«البيانات الموسومة (tagged data)» التي أوردناها في <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a> للتعامل مع العمليّات العامّة. لكن هنا تُدرَج أنواع البيانات في مستوى الآلة الأوّليّ بدلًا من بنائها باستخدام القوائم. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>يمكن ترميز معلومات النوع بطرائق متنوّعة، حسب تفاصيل الآلة التي سيُنفّذ عليها نظام Lisp. وستعتمد كفاءة تنفيذ برامج Lisp بقوةٍ على مدى حكمة هذا الخيار، لكن من الصعب صياغة قواعد تصميمٍ عامّةٍ للخيارات الجيّدة. وأبسط طريقةٍ لتنفيذ المؤشّرات الموسومة بالنوع هي تخصيص مجموعةٍ ثابتةٍ من البتّات في كلّ مؤشّرٍ لتكون <em>حقل النوع</em> الذي يُرمز نوع البيانات. وتشمل الأسئلة المهمّة الواجب تناولها عند تصميم مثل هذا التمثيل ما يلي: كم بتّةٍ للنوع تلزم؟ وما الحجم الذي يجب أن تبلغه مؤشرات المتجهات؟ ومدى كفاءة استخدام تعليمات الآلة الأوّليّة في التلاعب بحقول نوع المؤشرات؟ وتُوصف الآلات التي تتضمّن عتادًا خاصًّا للتعامل الفعّال مع حقول النوع بأنّها <em>ذات بنيةٍ موسومة (tagged architectures)</em>. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>يحدّد هذا القصد في تمثيل الأعداد ما إذا كان يمكن استخدام <code>eq?</code>، الذي يختبر تساوي المؤشرات، لاختبار تساوي الأعداد. فإذا احتوى المؤشّر على العدد نفسه، كانت للأعداد المتساوية المؤشّر نفسه. أمّا إذا احتوى المؤشّر على فهرس موضعٍ يُخزَّن فيه العدد، فلن يكون مضمونًا أن تكون للمتساوي من الأعداد مؤشرات متساوية إلّا إذا حرصنا على ألّا نخزّن العدد نفسه في أكثر من موضعٍ واحد. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>هذا أشبه بكتابة عددٍ كتسلسلٍ من الأرقام، إلّا أنّ كلّ «رقم» هنا عددٌ يتراوح بين الصفر وأكبر عددٍ يمكن تخزينه في مؤشّرٍ واحد. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>ثمّة طرق أخرى لإيجاد مواضع تخزينٍ حرّة. فيمكننا مثلًا ربط كلّ الأزواج غير المستخدمة بعضها ببعض في <em>قائمةٍ حرّة (free list)</em>. إنّ مواضعنا الحرّة متتالية (وبالتالي يمكن الوصول إليها بزيادة مؤشّرٍ) لأنّنا نستخدم جامع قمامةٍ ضاغطًا، كما سنرى في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.2</a>. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>هذا هو في الجوهر تنفيذ <code>cons</code> بدلالة <code>set-car!</code> و<code>set-cdr!</code>، على النحو الموصوف في <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1">3.3.1</a>. والعمليّة <code>get-new-pair</code> المستخدمة في ذلك التنفيذ تُنجَز هنا بواسطة المؤشّر <code>free</code>. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>قد لا يبقى هذا صحيحًا في المستقبل، لأنّ الذاكرات قد تكبر حدًّا يستحيل معه نفاد الذاكرة الحرّة في عمر الحاسوب. ففي السنة نحو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> ميكروثانية، فلو أنّنا نُنشئ <code>cons</code> مرّةً كلّ ميكروثانية، لأضحى يلزمنا نحو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> خليّةٍ من الذاكرة لبناء آلةٍ تعمل ثلاثين سنةً دون أن تنفد ذاكرتها. وتبدو هذه الكميّة من الذاكرة سخيفةً بمعايير اليوم، لكنّها ليست مستحيلةً فيزيائيًّا. ومن جهةٍ أخرى، تصبح المعالجات أسرع فأسرع، وقد يضمّ حاسوب المستقبل أعدادًا كبيرةً من المعالجات تعمل على التوازي على ذاكرةٍ واحدة، فقد يصبح ممكنًا استهلاك الذاكرة أسرع بكثيرٍ ممّا افترضناه. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>نفترض هنا أنّ المكدس ممثَّلٌ كقائمةٍ على النحو الموضح في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.1</a>، بحيث تكون عناصر المكدس قابلةً للوصول عبر المؤشّر الكائن في مسجّل المكدس. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn15" class="footnote-item"><p>ابتكر هذه الفكرة مينسكي ونفّذها أوّل مرّة، كجزءٍ من تنفيذ Lisp على آلة PDP-1 في مختبر أبحاث الإلكترونيات في MIT. وطوّرها <a href="https://sarabander.github.io/sicp/html/References.xhtml#Fenichel-and-Yochelson-_00281969_0029">فينيتشيل ويوكيلسون (1969)</a> لاستخدامها في تنفيذ Lisp الخاصّ بنظام المشاركة الزمنيّة Multics. ثمّ طور <a href="https://sarabander.github.io/sicp/html/References.xhtml#Baker-_00281978_0029">بايكر (1978)</a> نسخةً «في الزمن الحقيقي» من الطريقة، لا تتطلّب وقوف الاحتساب أثناء جمع القمامة. وامتدّت فكرة بايكر على يد هيويت وليبرمان ومون (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Lieberman-and-Hewitt-1983">ليبرمان وهيويت 1983</a>) لتستفيد من أنّ بعض البنى أكثر تقلّبًا وبعضها الآخر أكثر ديمومة. وثمّة تقنيّة أخرى شائعة لجمع القمامة هي طريقة <em>الكي والمسح (mark-sweep)</em>. وتتمثّل في تقفّي كلّ البنى القابلة للوصول من مسجّلات الآلة ووسم كلّ زوجٍ نصل إليه. ثمّ نمسح الذاكرة كلّها، وكلّ موضعٍ غير موسومٍ «يُكنس» كانقالًا للقمامة ويُتاح لإعادة الاستخدام. ويمكن العثور على مناقشةٍ كاملةٍ لطريقة الكي والمسح في <a href="https://sarabander.github.io/sicp/html/References.xhtml#Allen-1978">ألين 1978</a>. أمّا خوارزميّة مينسكي-فينيتشيل-يوكيلسون فهي الخوارزميّة السائدة في الأنظمة كبيرة الذاكرة، لأنّها لا تفحص إلّا الجزء المفيد من الذاكرة. وهذا بخلاف الكي والمسح، حيث ينبغي لمرحلة الكنس أن تفحص الذاكرة كلّها. وميزةٌ ثانية لطريقة التوقّف والنسخ أنّها جامع قمامةٍ <em>ضاغط (compacting)</em>. أي أنّ البيانات المفيدة ستنُقل في نهاية مرحلة جمع القمامة إلى مواضع ذاكرةٍ متتالية، مع ضغط كلّ الأزواج النفاية خارجها. وقد يكون هذا اعتبارًا بالغ الأهميّة للأداء في الآلات ذات الذاكرة الافتراضيّة، حيث قد يتطلّب الوصول إلى عناوين ذاكرةٍ متباعدةٍ بعيدًا عمليّاتِ تبديل صفحاتٍ إضافيّة. <a href="#fnref15" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn16" class="footnote-item"><p>لا تتضمّن قائمة المسجّلات هذه المسجّلات التي يستخدمها نظام تخصيص التخزين—<code>root</code> و<code>the-cars</code> و<code>the-cdrs</code> وغيرها من المسجّلات التي ستُعرَّف في هذا القسم. <a href="#fnref16" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn17" class="footnote-item"><p>اصطلح على مصطلح <em>القلب المكسور (broken heart)</em> ديفيد كريسي، الذي كتب جامع قمامةٍ للغة MDL، وهي لهجةٌ من Lisp طُوّرت في MIT في أوائل سبعينيّات القرن العشرين. <a href="#fnref17" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn18" class="footnote-item"><p>يستخدم جامع القمامة المُسَيِّم منخفض المستوى <code>pointer-to-pair?</code> بدلًا من عمليّة بنية القوائم <code>pair?</code>، لأنّه قد توجد في نظامٍ حقيقيّ أمورٌ شتّى تُعامَل معاملة الأزواج لأغراض جمع القمامة. ففي نظامٍ من أنظمة Scheme مطابق لمعيار IEEE، مثلًا، قد يُنفّذ كائن الإجراء كنوعٍ خاصّ من «الزوج» لا يحقّقه المسيّم <code>pair?</code>. ولأغراض المحاكاة، يمكن تنفيذ <code>pointer-to-pair?</code> بدلالة <code>pair?</code>. <a href="#fnref18" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn19" class="footnote-item"><p>انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Batali-et-al_002e-1982">باتالي وآخرون 1982</a> لمزيدٍ من المعلومات عن الرقاقة وعن الطريقة التي صُمّمت بها. <a href="#fnref19" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn20" class="footnote-item"><p>في متحكّمنا، يُكتب التوزيع كسلسلةٍ من تعليمتَي <code>test</code> و<code>branch</code>. وبدلًا من ذلك، كان في الإمكان كتابته بأسلوبٍ موجَّهٍ بالبيانات (وكذلك سيكون الأمر في نظامٍ حقيقيّ على الأرجح) لتجنّب الحاجة إلى إجراء اختباراتٍ متسلسلةٍ وتسهيل تعريف أنواع تعبيراتٍ جديدة. ومن المرجّح أنّ آلةً مصمّمةً لتشغيل Lisp تتضمّن تعليمة <code>dispatch-on-type</code> تُنفّذ مثل هذه التوزيعات الموجَّهة بالبيانات بكفاءة. <a href="#fnref20" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn21" class="footnote-item"><p>هذه نقطة مهمّةٌ وإنّما خفيّةٌ في ترجمة الخوارزميّات من لغةٍ إجرائيّة، مثل Lisp، إلى لغة آلات المسجّلات. فبدلًا من حفظ ما يلزم فقط، كان بوسعنا حفظ كلّ المسجّلات (عدا <code>val</code>) قبل كلّ نداءٍ تعاوديّ. ويُسمّى هذا نظامَ المكدس المؤطَّر. وهذا ينجح، لكنّه قد يحفظ مسجّلاتٍ أكثر من اللازم؛ وقد يكون هذا اعتبارًا مهمًّا في نظامٍ تكون فيه عمليّات المكدس مكلفة. كما أنّ حفظ مسجّلاتٍ لن تُحتاج محتوياتها لاحقًا قد يُبقي بياناتٍ لا فائدة منها كان يمكن جمعها كانقالًا، فتتفرّغ مساحتها لإعادة الاستخدام. <a href="#fnref21" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn22" class="footnote-item"><p>نضيف إلى إجراءات بنية البيانات الخاصّة بالمُقيّم الواردة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a> الإجراءَين التاليين للتلاعب بقوائم المعطيات: <code>scheme (define (empty-arglist) '()) (define (adjoin-arg arg arglist) (append arglist (list arg))) </code> <a href="#fnref22" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn23" class="footnote-item"><p>يُعرَف تحسين معاملة المُعامل الأخير معاملةً خاصّةً باسم <em>التعاوب الذيلي في evlis</em> (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Wand-1980">واند 1980</a>). وكان بوسعنا أن نكون أكفأ قليلًا في حلقة تقييم المعطيات لو جعلنا تقييم المُعامل الأوّل حالةً خاصّةً أيضًا. وهو ما كان سيسمح لنا بتأجيل تهيئة <code>argl</code> حتّى بعد تقييم المُعامل الأوّل، تفاديًا لحفظ <code>argl</code> في هذه الحالة. والمصرّف الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5">5.5</a> يُجري هذا التحسين. (قارن بإجراء <code>construct-arglist</code> الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e3">5.5.3</a>.) <a href="#fnref23" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn24" class="footnote-item"><p>يحدّد ترتيب تقييم المُعاملات في المُقيّم الحلقيّ الوسيط بترتيب تقييم معطيات <code>cons</code> في الإجراء <code>list-of-values</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> (انظر <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e1">التمرين 4.1</a>). <a href="#fnref24" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn25" class="footnote-item"><p>رأينا في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1">5.1</a> كيف نُنفّذ عمليّةً كهذه بآلة مسجّلاتٍ لا مكدس لها؛ إذ كانت حالة العمليّة تُخزَّن في مجموعةٍ ثابتةٍ من المسجّلات. <a href="#fnref25" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn26" class="footnote-item"><p>هذا التنفيذ للتعاوب الذيلي في <code>ev-sequence</code> نوعٌ من تقنيّة تحسينٍ معروفةٍ يستخدمها كثيرٌ من المصرّفات. فعند تصريف إجراءٍ ينتهي بنداء إجراء، يمكن استبدال النداء بقفزةٍ إلى نقطة دخول الإجراء المندىّ. وبناء هذه الاستراتيجيّة في المفسّر، كما فعلنا في هذا القسم، يُوفّر التحسين بصورةٍ موحّدةٍ في اللغة كلّها. <a href="#fnref26" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn27" class="footnote-item"><p>يمكننا تعريف <code>no-more-exps?</code> كما يلي: <code>scheme (define (no-more-exps? seq) (null? seq)) </code> <a href="#fnref27" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn28" class="footnote-item"><p>هذا ليس غشًّا حقًّا. ففي تنفيذٍ فعليٍّ مبنيٍّ من الصفر، كنّا سنستخدم مُقيّمنا ذا المتحكّم الصريح لتفسير برنامج Scheme يُجري تحويلاتٍ على مستوى المصدر، مثل <code>cond-&gt;if</code>، في مرحلة صياغةٍ تجري قبل التنفيذ. <a href="#fnref28" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn29" class="footnote-item"><p>نفترض هنا أنّ <code>read</code> ومختلف عمليّات الطباعة متاحةٌ كعمليّات آلةٍ أوّليّة، وهذا مفيدٌ لمحاكاتنا، لكنّه غير واقعيّ إطلاقًا في الممارسة. فهذه في الحقيقة عمليّات شديدة التعقيد. وفي الممارسة، كانت ستُنفّذ باستخدام عمليّات إدخالٍ وإخراجٍ منخفضة المستوى، مثل نقل محارف مفردةٍ إلى جهازٍ ومنه. ولدعم عمليّة <code>get-global-environment</code> نُعرّف <code>scheme (define the-global-environment (setup-environment)) (define (get-global-environment) the-global-environment) </code> <a href="#fnref29" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn30" class="footnote-item"><p>ثمّة أخطاء أخرى نودّ أن يتعامل معها المفسّر، لكنّها ليست بهذه البساطة. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.30</a>. <a href="#fnref30" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,i={book:s,chapter:a,chapterTitle:n,slug:e,title:l,headings:p,html:c};export{s as book,a as chapter,n as chapterTitle,i as default,p as headings,c as html,e as slug,l as title};

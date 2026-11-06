@@ -1,0 +1,493 @@
+const s="sicp",a="c5-computing-with-register-machines",n="الحوسبة بآلات المسجّلات",t="5-4",e="5.4 المقيّم ذو التحكّم الصريح",p=[{depth:3,id:"54-المقيم-ذو-التحكم-الصريح",text:"5.4 المقيّم ذو التحكّم الصريح"}],l=`<h3 id="54-المقيم-ذو-التحكم-الصريح">5.4 المقيّم ذو التحكّم الصريح</h3>
+<p>رأينا في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1">5.1</a> كيف نحوّل برامج Scheme بسيطةً إلى أوصاف آلات مسجّلات. وسنُجري هذا التحويل الآن على برنامجٍ أكثر تعقيدًا، وهو المقيّم الاستعادي الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>–<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>، الذي يُظهر كيف يمكن وصف سلوك مفسّر Scheme من حيث الإجراءين <code>eval</code> و<code>apply</code>. أمّا <em>المقيّم ذو التحكّم الصريح</em> (explicit-control evaluator) الذي نُطوّره في هذا القسم فيُظهر كيف يمكن وصف آليّات نداء الإجراءات وتمرير المعطيات الأساسيّة المستخدمة في عمليّة التقييم من حيث عمليّاتٍ على المسجّلات والمكدّس. وبالإضافة إلى ذلك، يمكن للمقيّم ذي التحكّم الصريح أن يخدم بوصفه تنفيذًا لمفسّر Scheme، مكتوبًا بلغةٍ تشبه تشابهًا شديدًا لغة الآلة الأصليّة للحواسيب التقليديّة. ويمكن تنفيذ المقيّم بواسطة محاكي آلة المسجّلات الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2">5.2</a>. وبديلًا عن ذلك، يمكن استخدامه نقطةَ بدءٍ لبناء تنفيذٍ بلغة الآلة لمقيّم Scheme، أو حتّى آلةٍ خاصّةٍ الغرض لتقييم تعابير Scheme. ويُظهر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">الشكل 5.16</a> تنفيذًا ماديًّا من هذا القبيل: رقاقة سيليكونيّة تعمل بوصفها مقيّمًا لـScheme. وقد بدأ مصمّمو الرقاقة بمواصفات مسار البيانات والمتحكّم لآلة مسجّلاتٍ تشبه المقيّم الموصوف في هذا القسم، واستخدموا برامج أتمتة التصميم لبناء تخطيط الدارة المتكاملة.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
+<p><img src="/arabic-cs-library/images/sicp/c5-computing-with-register-machines-0-chip.std.webp" alt=""></p>
+<p><strong>الشكل 5.16:</strong> تنفيذ لمقيّم Scheme برقاقة سيليكونيّة.</p>
+<h4>المسجّلات والعمليّات</h4>
+<p>عند تصميم المقيّم ذي التحكّم الصريح، ينبغي أن نُحدّد العمليّات التي ستُستخدم في آلة المسجّلات خاصّتنا. وقد وصفنا المقيّم الاستعادي من حيث صياغة مجرّدة، باستخدام إجراءاتٍ مثل <code>quoted?</code> و<code>make-procedure</code>. وعند تنفيذ آلة المسجّلات، كان بوسعنا توسيع هذه الإجراءات إلى سلاسلَ من عمليّات ذاكرة بنية القوائم الأوّليّة، وتنفيذ هذه العمليّات على آلة المسجّلات خاصّتنا. غير أنّ ذلك كان سيجعل مقيّمنا طويلًا جدًّا، بحيث تُحجب البنية الأساسيّة بالتفاصيل. ولإيضاح العرض، سنُدرج كعمليّاتٍ أوّليّةٍ لآلة المسجّلات إجراءات الصياغة المعطاة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2">4.1.2</a> وإجراءات تمثيل البيئات وغيرها من بيانات وقت التشغيل المعطاة في القسمين <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a> و<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>. وحتى نُحدّد تحديدًا تامًّا مقيّمًا يُمكن برمجته بلغة آليّةٍ منخفضة المستوى أو تنفيذه عتاديًّا، كنا سنستبدل هذه العمليّات بعمليّاتٍ أكثر أوّليّة، باستخدام تنفيذ بنية القوائم الذي وصفناه في <a href="https://sarabander.github.io/sicp/html/5_002e3.xhtml#g_t5_002e3">5.3</a>.</p>
+<p>تتألّف آلة مسجّلات مقيّم Scheme خاصّتنا من مكدّس وسبعة مسجّلات: <code>exp</code> و<code>env</code> و<code>val</code> و<code>continue</code> و<code>proc</code> و<code>argl</code> و<code>unev</code>. ويُستخدم <code>exp</code> في الاحتفاظ بالتعبير المطلوب تقييمه، ويحتوي <code>env</code> على البيئة التي ستُجرى فيها عمليّة التقييم. وعند نهاية تقييمٍ، يحتوي <code>val</code> على القيمة المتحصّلة من تقييم التعبير في البيئة المعيَّنة. ويُستخدم المسجّل <code>continue</code> لاستيفاء التعاود، كما هو موضّح في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1_002e4">5.1.4</a>. (يحتاج المقيّم إلى نداء نفسه تعاوديًّا، إذ إنّ تقييم تعبيرٍ يتطلّب تقييم تعابيره الجزئيّة.) وتُستخدم المسجّلات <code>proc</code> و<code>argl</code> و<code>unev</code> في تقييم التركيبات.</p>
+<p>لن نُقدّم مخطّط مسار بياناتٍ يُظهر كيف تُوصَل مسجّلات المقيّم وعمليّاته، كما أنّنا لن نُعطي القائمة التامّة لعمليّات الآلة. فهذه مستبطَنةٌ في متحكّم المقيّم، الذي سيُعرَض بتفصيلٍ.</p>
+<h4>5.4.1 قلب المقيّم ذي التحكّم الصريح</h4>
+<p>العنصر المركزيّ في المقيّم هو سلسلة التعليمات التي تبدأ عند <code>eval-dispatch</code>. وهي تقابل الإجراء <code>eval</code> في المقيّم الاستعادي الموصوف في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>. وحين يبدأ المتحكّم عند <code>eval-dispatch</code>، فهو يقيّم التعبير الذي يُحدّده <code>exp</code> في البيئة التي يُحدّدها <code>env</code>. وحين يكتمل التقييم، يذهب المتحكّم إلى نقطة الدخول المخزّنة في <code>continue</code>، ويحتفظ المسجّل <code>val</code> بقيمة التعبير. ومثلما في <code>eval</code> الاستعادي، فإنّ بنية <code>eval-dispatch</code> هي تحليل حالاتٍ على النوع الصياغيّ للتعبير المطلوب تقييمه.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup></p>
+<pre><code class="language-scheme">eval-dispatch
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> self-evaluating?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-self-eval))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> variable?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-variable))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> quoted?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-quoted))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> assignment?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-assignment))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> definition?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-definition))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> if?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-if))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> lambda?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-lambda))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> begin?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-begin))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> application?) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-application))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> unknown-expression-type))
+</code></pre>
+<h4>تقييم التعابير البسيطة</h4>
+<p>الأعداد والمقاطع النصّيّة (وهي ذاتيّة التقييم)، والمتغيّرات، والاقتباسات، وتعبيرات <code>lambda</code> ليس لها تعابير جزئيّةٌ يُراد تقييمها. وبالنسبة لها، يضع المقيّم القيمة الصحيحة في المسجّل <code>val</code> ببساطة ويواصل التنفيذ عند نقطة الدخول التي يُحدّدها <code>continue</code>. ويُؤدّى تقييم التعابير البسيطة بشيفرة المتحكّم الآتية:</p>
+<pre><code class="language-scheme">ev-self-eval
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+ev-variable
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> lookup-variable-value)
+          (<span class="hljs-name">reg</span> exp)
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+ev-quoted
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">op</span> text-of-quotation)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+ev-lambda
+  (<span class="hljs-name">assign</span> unev
+          (<span class="hljs-name">op</span> lambda-parameters)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">assign</span> exp 
+          (<span class="hljs-name">op</span> lambda-body)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">assign</span> val 
+          (<span class="hljs-name">op</span> make-procedure)
+          (<span class="hljs-name">reg</span> unev)
+          (<span class="hljs-name">reg</span> exp)
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>لاحِظ كيف يستخدم <code>ev-lambda</code> المسجّلين <code>unev</code> و<code>exp</code> للاحتفاظ بوسائط تعبير lambda وجسمه، حتّى يمكن تمريرهما إلى العمليّة <code>make-procedure</code>، إلى جانب البيئة الموجودة في <code>env</code>.</p>
+<h4>تقييم تطبيقات الإجراءات</h4>
+<p>يُحدَّد تطبيق الإجراء بتركيبةٍ تحتوي على مشغّلٍ وعوامل. والمشغّل تعبيرٌ جزئيّ قيمته إجراء، والعوامل تعابير جزئيّةٌ قيمُها هي المعطيات التي ينبغي تطبيق الإجراء عليها. ويعالج <code>eval</code> الاستعادي التطبيقات بنداء نفسه تعاوديًّا لتقييم كلّ عنصرٍ من التركيبة، ثم بتمرير النتائج إلى <code>apply</code> الذي يؤدّي تطبيق الإجراء الفعليّ. ويفعل المقيّم ذو التحكّم الصريح الأمر ذاته؛ وهذه النداءات التعاوديّة تُنفَّذ بتعليمات <code>goto</code>، إلى جانب استخدام المكدّس لحفظ المسجّلات التي ستُستعاد بعد عودة النداء التعاوديّ. وقبل كلّ نداءٍ، سنحرص على تحديد المسجّلات التي ينبغي حفظها (لأنّ قيمها ستكون لازمةً لاحقًا).<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></p>
+<p>نبدأ تقييم تطبيقٍ بتقييم المشغّل لإنتاج إجراءٍ سيُطبَّق لاحقًا على العوامل المقيَّمة. ولتقييم المشغّل، ننقله إلى المسجّل <code>exp</code> ونذهب إلى <code>eval-dispatch</code>. والبيئة الموجودة في المسجّل <code>env</code> هي البيئة الصحيحة لتقييم المشغّل بالفعل. غير أنّنا نحفظ <code>env</code> لأنّنا سنحتاجها لاحقًا لتقييم العوامل. ونستخرج العوامل أيضًا في <code>unev</code> ونحفظ ذلك على المكدّس. ونُعِدّ <code>continue</code> بحيث يستأنف <code>eval-dispatch</code> عند <code>ev-appl-did-operator</code> بعد تقييم المشغّل. ومع ذلك، نحفظ أوّلًا القيمة القديمة لـ<code>continue</code>، التي تُبيّن للمتحكّم أين يواصل بعد التطبيق.</p>
+<pre><code class="language-scheme">ev-application
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">assign</span> unev (<span class="hljs-name">op</span> operands) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> unev)
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> operator) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">assign</span>
+   continue (<span class="hljs-name">label</span> ev-appl-did-operator))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+</code></pre>
+<p>وعند العودة من تقييم التعبير الجزئيّ المشغّل، نمضي إلى تقييم عوامل التركيبة وإلى تجميع المعطيات الناتجة في قائمةٍ محفوظةٍ في <code>argl</code>. ونُعيد أوّلًا العوامل غير المقيَّمة والبيئة. ونهيّئ <code>argl</code> إلى قائمةٍ خالية. ثم نُسنِد إلى المسجّل <code>proc</code> الإجراء الذي أنتجه تقييم المشغّل. فإن لم تكن ثمّة عوامل، ننتقل مباشرةً إلى <code>apply-dispatch</code>. وإلّا نحفظ <code>proc</code> على المكدّس ونبدأ حلقة تقييم المعطيات:<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></p>
+<pre><code class="language-scheme">ev-appl-did-operator
+  (<span class="hljs-name">restore</span> unev)             <span class="hljs-comment">; the operands</span>
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">assign</span> argl (<span class="hljs-name">op</span> empty-arglist))
+  (<span class="hljs-name">assign</span> proc (<span class="hljs-name">reg</span> val))    <span class="hljs-comment">; the operator</span>
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> no-operands?) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> apply-dispatch))
+  (<span class="hljs-name">save</span> proc)
+</code></pre>
+<p>تقيّم كلّ دورةٍ من حلقة تقييم المعطيات عاملًا من القائمة الموجودة في <code>unev</code> وتُجمّع النتيجة في <code>argl</code>. ولتقييم عاملٍ، نضعه في المسجّل <code>exp</code> ونذهب إلى <code>eval-dispatch</code>، بعد إعداد <code>continue</code> حتّى يستأنف التنفيذ في مرحلة تجميع المعطيات. لكنّنا نحفظ أوّلًا المعطيات المُجمَّعة حتّى الآن (المحفوظة في <code>argl</code>)، والبيئة (المحفوظة في <code>env</code>)، والعوامل الباقية المطلوب تقييمها (المحفوظة في <code>unev</code>). وتُعالَج حالةٌ خاصّةٌ لتقييم العامل الأخير، وذلك عند <code>ev-appl-last-arg</code>.</p>
+<pre><code class="language-scheme">ev-appl-operand-loop
+  (<span class="hljs-name">save</span> argl)
+  (<span class="hljs-name">assign</span> exp
+          (<span class="hljs-name">op</span> first-operand)
+          (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> last-operand?) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-appl-last-arg))
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">save</span> unev)
+  (<span class="hljs-name">assign</span> continue 
+          (<span class="hljs-name">label</span> ev-appl-accumulate-arg))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+</code></pre>
+<p>وحين يُقيَّم عاملٌ، تُجمّع القيمة في القائمة المحفوظة في <code>argl</code>. ثم يُحذَف العامل من قائمة العوامل غير المقيَّمة في <code>unev</code>، ويستمرّ تقييم المعطيات.</p>
+<pre><code class="language-scheme">ev-appl-accumulate-arg
+  (<span class="hljs-name">restore</span> unev)
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> argl)
+  (<span class="hljs-name">assign</span> argl 
+          (<span class="hljs-name">op</span> adjoin-arg)
+          (<span class="hljs-name">reg</span> val)
+          (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">assign</span> unev
+          (<span class="hljs-name">op</span> rest-operands)
+          (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ev-appl-operand-loop))
+</code></pre>
+<p>يُعالَج تقييم المعطى الأخير معالجةً مختلفة. فلا حاجةَ إلى حفظ البيئة أو قائمة العوامل غير المقيَّمة قبل الانتقال إلى <code>eval-dispatch</code>، إذ لن تكونا مطلوبتين بعد تقييم العامل الأخير. وبناءً عليه، نعود من التقييم إلى نقطة دخولٍ خاصّةٍ هي <code>ev-appl-accum-last-arg</code>، التي تستعيد قائمة المعطيات، وتُجمّع المعطى الجديد، وتستعيد الإجراء المحفوظ، وتنطلق لأداء التطبيق.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></p>
+<pre><code class="language-scheme">ev-appl-last-arg
+  (<span class="hljs-name">assign</span> continue 
+          (<span class="hljs-name">label</span> ev-appl-accum-last-arg))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+ev-appl-accum-last-arg
+  (<span class="hljs-name">restore</span> argl)
+  (<span class="hljs-name">assign</span> argl 
+          (<span class="hljs-name">op</span> adjoin-arg)
+          (<span class="hljs-name">reg</span> val)
+          (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">restore</span> proc)
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> apply-dispatch))
+</code></pre>
+<p>تُحدّد تفاصيل حلقة تقييم المعطيات الترتيب الذي يقيّم به المفسّر عوامل التركيبة (مثلًا، من اليسار إلى اليمين أو من اليمين إلى اليسار — انظر <a href="https://sarabander.github.io/sicp/html/3_002e1.xhtml#Exercise-3_002e8">التمرين 3.8</a>). وهذا الترتيب غير محدَّدٍ في المقيّم الاستعادي، الذي يرث بنية تحكّمه من Scheme الأساس الذي نُفّذ فيه.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup> وبما أنّ المحدِّد <code>first-operand</code> (المستخدم في <code>ev-appl-operand-loop</code> لاستخراج العوامل المتعاقبة من <code>unev</code>) مُنفَّذ بـ<code>car</code> وأنّ المحدِّد <code>rest-operands</code> مُنفَّذ بـ<code>cdr</code>، فإنّ المقيّم ذا التحكّم الصريح سيقيّم عوامل التركيبة بترتيبٍ من اليسار إلى اليمين.</p>
+<h4>تطبيق الإجراءات</h4>
+<p>تقابل نقطة الدخول <code>apply-dispatch</code> الإجراء <code>apply</code> في المقيّم الاستعادي. وحين نصل إلى <code>apply-dispatch</code>، يحتوي المسجّل <code>proc</code> على الإجراء المطلوب تطبيقه، ويحتوي <code>argl</code> على قائمة المعطيات المقيَّمة التي ينبغي تطبيقه عليها. وقيمة <code>continue</code> المحفوظة (المُمرَّرة أصلًا إلى <code>eval-dispatch</code> والمحفوظة عند <code>ev-application</code>)، وهي التي تُبيّن أين نعود بنتيجة تطبيق الإجراء، موجودةٌ على المكدّس. وحين يكتمل التطبيق، يُحوِّل المتحكّم إلى نقطة الدخول التي تُحدّدها <code>continue</code> المحفوظة، مع نتيجة التطبيق في <code>val</code>. ومثلما في <code>apply</code> الاستعادي، ثمّة حالتان ينبغي النظر فيهما. فالإجراء المطلوب تطبيقه إمّا أن يكون أوّليًّا وإمّا أن يكون إجراءً مركّبًا.</p>
+<pre><code class="language-scheme">apply-dispatch
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> primitive-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> primitive-apply))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> compound-procedure?) (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> compound-apply))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> unknown-procedure-type))
+</code></pre>
+<p>نفترض أنّ كلّ أوّليّةٍ مُنفَّذةٌ بحيث تحصل على معطياتها من <code>argl</code> وتضع نتيجتها في <code>val</code>. وحتى نُحدّد كيف تتناول الآلة الأوّليّات، سيتعيّن علينا أن نُقدّم سلسلةً من تعليمات المتحكّم لتنفيذ كلّ أوّليّةٍ وأن نُرتّب لـ<code>primitive-apply</code> أن يُوزّع إلى تعليمات الأوّليّة التي يُحدّدها محتوى <code>proc</code>. وبما أنّنا مهتمّون ببنية عمليّة التقييم أكثر من اهتمامنا بتفاصيل الأوّليّات، فسنستخدم بدلًا من ذلك عمليّة <code>apply-primitive-procedure</code> التي تُطبّق الإجراء الموجود في <code>proc</code> على المعطيات في <code>argl</code>. وبغرض محاكاة المقيّم بواسطة المحاكي الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2">5.2</a>، نستخدم الإجراء <code>apply-primitive-procedure</code> الذي يستدعي نظام Scheme الأساس لأداء التطبيق، تمامًا كما فعلنا مع المقيّم الاستعادي في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>. وبعد احتساب قيمة التطبيق الأوّليّ، نستعيد <code>continue</code> ونذهب إلى نقطة الدخول المعيَّنة.</p>
+<pre><code class="language-scheme">primitive-apply
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">op</span> apply-primitive-procedure)
+              (<span class="hljs-name">reg</span> proc)
+              (<span class="hljs-name">reg</span> argl))
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>ولتطبيق إجراءٍ مركّب، نمضي تمامًا كما فعلنا مع المقيّم الاستعادي. فنبني إطارًا يربط وسائط الإجراء بالمعطيات، ونستخدم هذا الإطار لتوسيع البيئة التي يحملها الإجراء، ونُقيّم في هذه البيئة المُوسَّعة سلسلة التعابير التي تكوّن جسم الإجراء. ويتولّى <code>ev-sequence</code>، الموصوف أدناه في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4.2</a>، تقييم السلسلة.</p>
+<pre><code class="language-scheme">compound-apply
+  (<span class="hljs-name">assign</span> unev 
+          (<span class="hljs-name">op</span> procedure-parameters)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">assign</span> env
+          (<span class="hljs-name">op</span> procedure-environment)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">assign</span> env
+          (<span class="hljs-name">op</span> extend-environment)
+          (<span class="hljs-name">reg</span> unev)
+          (<span class="hljs-name">reg</span> argl)
+          (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> unev
+          (<span class="hljs-name">op</span> procedure-body)
+          (<span class="hljs-name">reg</span> proc))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ev-sequence))
+</code></pre>
+<p>إنّ <code>compound-apply</code> هو الموضع الوحيد في المفسّر الذي يُسنَد فيه إلى المسجّل <code>env</code> قيمةٌ جديدةٌ إطلاقًا. ومثلما في المقيّم الاستعادي، تُبنى البيئة الجديدة من البيئة التي يحملها الإجراء، إلى جانب قائمة المعطيات وقائمة المتغيّرات المقابلة لها التي ستُربط.</p>
+<h4>5.4.2 تقييم التسلسل والتعاود الذيلي</h4>
+<p>الجزء من المقيّم ذي التحكّم الصريح عند <code>ev-sequence</code> يقابل إجراء <code>eval-sequence</code> في المقيّم الاستعادي. وهو يعالج سلاسل التعابير في أجساد الإجراءات أو في تعابير <code>begin</code> الصريحة.</p>
+<p>تُقيَّم تعابير <code>begin</code> الصريحة بوضع سلسلة التعابير المطلوب تقييمها في <code>unev</code>، وحفظ <code>continue</code> على المكدّس، والقفز إلى <code>ev-sequence</code>.</p>
+<pre><code class="language-scheme">ev-begin
+  (<span class="hljs-name">assign</span> unev
+          (<span class="hljs-name">op</span> begin-actions)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ev-sequence))
+</code></pre>
+<p>وتُعالَج السلاسل الضمنيّة في أجساد الإجراءات بالقفز إلى <code>ev-sequence</code> من <code>compound-apply</code>، وعندها يكون <code>continue</code> موجودًا بالفعل على المكدّس، بعد أن حُفظ عند <code>ev-application</code>.</p>
+<p>تُشكّل المدخلان عند <code>ev-sequence</code> و<code>ev-sequence-continue</code> حلقةً تُقيّم كلّ تعبيرٍ في السلسلة تباعًا. وتُحفظ قائمة التعابير غير المقيَّمة في <code>unev</code>. وقبل تقييم كلّ تعبيرٍ، نتحقّق مما إذا كانت ثمّة تعابيرُ إضافيّةٌ تبقّى تقييمها في السلسلة. فإن كان الأمر كذلك، نحفظ بقيّة التعابير غير المقيَّمة (المحفوظة في <code>unev</code>) والبيئة التي ينبغي تقييمها فيها (المحفوظة في <code>env</code>) ونستدعي <code>eval-dispatch</code> لتقييم التعبير. وتُستعاد المسجّلان المحفوظان عند العودة من هذا التقييم، عند <code>ev-sequence-continue</code>.</p>
+<p>أمّا التعبير الأخير في السلسلة فيُعالَج معالجةً مختلفة، عند نقطة الدخول <code>ev-sequence-last-exp</code>. وبما أنّ لا تعابيرَ أخرى تبقّى تقييمها بعد هذا التعبير، فلا حاجةَ إلى حفظ <code>unev</code> أو <code>env</code> قبل الانتقال إلى <code>eval-dispatch</code>. وقيمة السلسلة كلّها هي قيمة التعبير الأخير، فإنّه بعد تقييم التعبير الأخير لا يبقى شيءٌ يُفعَل إلّا المواصلة عند نقطة الدخول المحفوظة حاليًّا على المكدّس (والتي حفظها <code>ev-application</code> أو <code>ev-begin</code>.) وبدلًا من إعداد <code>continue</code> بحيث يعود <code>eval-dispatch</code> إلى هنا ثمّ استعادة <code>continue</code> من المكدّس والمواصلة عند نقطة الدخول تلك، نستعيد <code>continue</code> من المكدّس قبل الانتقال إلى <code>eval-dispatch</code>، حتّى يواصل <code>eval-dispatch</code> عند نقطة الدخول تلك بعد تقييم التعبير.</p>
+<pre><code class="language-scheme">ev-sequence
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> first-exp) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> last-exp?) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-sequence-last-exp))
+  (<span class="hljs-name">save</span> unev)
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">assign</span> continue
+          (<span class="hljs-name">label</span> ev-sequence-continue))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+ev-sequence-continue
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> unev)
+  (<span class="hljs-name">assign</span> unev
+          (<span class="hljs-name">op</span> rest-exps)
+          (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ev-sequence))
+ev-sequence-last-exp
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+</code></pre>
+<h4>التعاوب الذيلي</h4>
+<p>قلنا في <a href="https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1">الفصل 1</a> إنّ العمليّة التي يصفها إجراءٌ مثل</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">sqrt-iter</span> guess x)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">good-enough?</span> guess x)
+      guess
+      (<span class="hljs-name">sqrt-iter</span> (<span class="hljs-name">improve</span> guess x) x)))
+</code></pre>
+<p>عمليّةٌ تكراريّة. فرغم أنّ الإجراء تعاوديّ صياغيًّا (معرَّفٌ من حيث ذاته)، فإنّه ليس ضروريًّا منطقيًّا أن يحفظ المُقيّم معلوماتٍ عند الانتقال من نداءٍ إلى <code>sqrt-iter</code> إلى النداء التالي.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> ويُسمّى المُقيّم القادر على تنفيذ إجراءٍ مثل <code>sqrt-iter</code> دون أن يتطلّب مساحةً متزايدةً مع استمرار الإجراء في نداء ذاته <em>مُقيّمًا تعاوديًّا ذيليًّا (tail-recursive)</em>. أمّا تنفيذ المقيّم البعديّ الوارد في <a href="https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4">الفصل 4</a> فلا يحدّد ما إذا كان المقيّم تعاوديًّا ذيليًّا، لأنّ ذلك المقيّم يرث آليّة حفظ الحالة من Scheme الأساس. غير أنّنا مع مقيّم ذي المتحكّم الصريح نستطيع تتبّع عمليّة التقييم لنرى متى تُسبّب نداءات الإجراءات تراكمًا صافيًّا للمعلومات على المكدّس.</p>
+<p>إنّ مقيّمنا تعاوديّ الذيلي، لأنّه لتقييم التعبير الأخير في تسلسلٍ ننتقل انتقالًا مباشرًا إلى <code>eval-dispatch</code> دون حفظ أيّ معلومات على المكدّس. وبذلك، فإنّ تقييم التعبير الأخير في تسلسلٍ - حتى لو كان نداء إجراءٍ (كما في <code>sqrt-iter</code>، حيث ينتهي تعبير <code>if</code>، وهو التعبير الأخير في جسم الإجراء، إلى نداءٍ لـ<code>sqrt-iter</code>) - لن يُسبّب تراكم أيّ معلومات على المكدّس.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<p>لو أنّنا لم نفكّر في الاستفادة من كون حفظ المعلومات غير ضروريّ في هذه الحالة، لكان ممكناً أن ننفّذ <code>eval-sequence</code> بمعاملة جميع تعابير التسلسل معاملةً واحدة - حفظ المسجّلات، وتقييم التعبير، والعودة لاستعادة المسجّلات، وتكرار ذلك حتّى يُقيَّم جميع التعبيرات:<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup></p>
+<pre><code class="language-scheme">ev-sequence
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> no-more-exps?) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-sequence-end))
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> first-exp) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">save</span> unev)
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">assign</span> continue
+          (<span class="hljs-name">label</span> ev-sequence-continue))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+ev-sequence-continue
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> unev)
+  (<span class="hljs-name">assign</span> unev (<span class="hljs-name">op</span> rest-exps) (<span class="hljs-name">reg</span> unev))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> ev-sequence))
+ev-sequence-end
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>قد يبدو هذا تغييرًا طفيفًا في شيفرتنا السابقة لتقييم التسلسل: الفرق الوحيد هو أنّنا نمرّ بدورة الحفظ والاستعادة للتعبير الأخير في تسلسلٍ كما نمرّ بها لسواه. وسيظلّ المفسّر يُعطي القيمة نفسها لأيّ تعبير. لكنّ هذا التغيير قاتل بالنسبة للتنفيذ التعاوديّ الذيلي، لأنّنا نضطرّ الآن إلى العودة بعد تقييم التعبير الأخير في تسلسلٍ لكي نتراجع عن عمليّات حفظ المسجّلات (العقيمة). وهذه الحفظات الإضافيّة ستتراكم في عُشّ نداءات الإجراءات. ونتيجةً لذلك، فإنّ عمليّاتٍ مثل <code>sqrt-iter</code> ستتطلّب مساحةً متناسبةً مع عدد التكرارات بدلًا من مساحةٍ ثابتة. وهذا فرقٌ قد تكون أهمّيته كبيرة. فإنّه، مع التعاوب الذيلي، يمكن التعبير عن حلقةٍ لا نهائيّة باستخدام آليّة نداء الإجراءات وحدها:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">count</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>)
+  (<span class="hljs-name"><span class="hljs-built_in">display</span></span> n)
+  (<span class="hljs-name">count</span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> n <span class="hljs-number">1</span>)))
+</code></pre>
+<p>وبدون التعاوب الذيلي، فإنّ إجراءً كهذا سيستنفد مكدّسه في النهاية، ولو أردنا التعبير عن تكرارٍ حقيقيّ لتطلّب ذلك آليّة تحكّمٍ أخرى غير نداء الإجراءات.</p>
+<h4>5.4.3 التعابير الشرطيّة، والإحلالات، والتعريفات</h4>
+<p>كما هو الحال في المقيّم البعديّ، فإنّ الصيغ الخاصّة تُعالَج بتقييم مقاطع من التعبير انتخابًا. فبالنسبة لتعبير <code>if</code>، يجب أن نُقيّم مُسَيِّمه ونقرّر، بالاستناد إلى قيمة المسيّم، هل نُقيّم التالي أم البديل.</p>
+<p>وقبل تقييم المسيّم، نحفظ تعبير <code>if</code> ذاته حتّى نتمكّن لاحقًا من استخراج التالي أو البديل. ونحفظ أيضًا البيئة، التي سنحتاج إليها لاحقًا لتقييم التالي أو البديل، ونحفظ <code>continue</code>، التي سنحتاج إليها لاحقًا للعودة إلى تقييم التعبير المنتظر لقيمة <code>if</code>.</p>
+<pre><code class="language-scheme">ev-if
+  (<span class="hljs-name">save</span> exp)   <span class="hljs-comment">; save expression for later</span>
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> ev-if-decide))
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> if-predicate) (<span class="hljs-name">reg</span> exp))
+  <span class="hljs-comment">; evaluate the predicate:</span>
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+</code></pre>
+<p>حين نعود من تقييم المسيّم، نختبر ما إذا كانت قيمته صحيحة أم خاطئة، ووِفقًا للنتيجة نضع التالي أو البديل في <code>exp</code> قبل الانتقال إلى <code>eval-dispatch</code>. ولاحِظ أنّ استعادة <code>env</code> و<code>continue</code> هنا تُهيّئ <code>eval-dispatch</code> ليكون البيئة الصحيحة وأن يواصل في الموضع الصائب لاستلام قيمة تعبير <code>if</code>.</p>
+<pre><code class="language-scheme">ev-if-decide
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> exp)
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> true?) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> ev-if-consequent))
+ev-if-alternative
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> if-alternative) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+ev-if-consequent
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> if-consequent) (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+</code></pre>
+<h4>الإحلالات والتعريفات</h4>
+<p>تُعالَج الإحلالات بـ<code>ev-assignment</code>، الذي يُبلَغ من <code>eval-dispatch</code> وتعبير الإحلال موضوعٌ في <code>exp</code>. والشيفرة عند <code>ev-assignment</code> تُقيّم أوّلًا جزء القيمة من التعبير ثم تُثبّت القيمة الجديدة في البيئة. وتُفترض إتاحة <code>set-variable-value!</code> كعمليّة آلة.</p>
+<pre><code class="language-scheme">ev-assignment
+  (<span class="hljs-name">assign</span> unev 
+          (<span class="hljs-name">op</span> assignment-variable)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> unev)   <span class="hljs-comment">; save variable for later</span>
+  (<span class="hljs-name">assign</span> exp
+          (<span class="hljs-name">op</span> assignment-value)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">assign</span> continue
+          (<span class="hljs-name">label</span> ev-assignment-1))
+  <span class="hljs-comment">; evaluate the assignment value:</span>
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))  
+ev-assignment<span class="hljs-number">-1</span>
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> unev)
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> set-variable-value!)
+           (<span class="hljs-name">reg</span> unev)
+           (<span class="hljs-name">reg</span> val)
+           (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val
+          (<span class="hljs-name">const</span> ok))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<p>أمّا التعريفات فتُعالَج بطريقةٍ مماثلة:</p>
+<pre><code class="language-scheme">ev-definition
+  (<span class="hljs-name">assign</span> unev 
+          (<span class="hljs-name">op</span> definition-variable)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> unev)   <span class="hljs-comment">; save variable for later</span>
+  (<span class="hljs-name">assign</span> exp 
+          (<span class="hljs-name">op</span> definition-value)
+          (<span class="hljs-name">reg</span> exp))
+  (<span class="hljs-name">save</span> env)
+  (<span class="hljs-name">save</span> continue)
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> ev-definition-1))
+  <span class="hljs-comment">; evaluate the definition value:</span>
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))  
+ev-definition<span class="hljs-number">-1</span>
+  (<span class="hljs-name">restore</span> continue)
+  (<span class="hljs-name">restore</span> env)
+  (<span class="hljs-name">restore</span> unev)
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> define-variable!)
+           (<span class="hljs-name">reg</span> unev)
+           (<span class="hljs-name">reg</span> val)
+           (<span class="hljs-name">reg</span> env))
+  (<span class="hljs-name">assign</span> val (<span class="hljs-name">const</span> ok))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> continue))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.23:</strong> وسّع المقيّم ليعامل التعابير المشتقّة مثل <code>cond</code> و<code>let</code> وما أشبه ذلك (<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e2">4.1.2</a>). ويجوز لك «الغشّ» والافتراض أنّ محوّلات الصياغة مثل <code>cond-&gt;if</code> متاحةٌ كعمليّات آلة.<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.24:</strong> نفّذ <code>cond</code> كصيغةٍ خاصّةٍ أوّليّةٍ جديدة دون اختزالها إلى <code>if</code>. وسيتعيّن عليك بناء حلقةٍ تختبر مسيّمات بنود <code>cond</code> المتتالية حتّى تجد صحيحًا منها، ثم استخدام <code>ev-sequence</code> لتقييم أفعال البند.</p>
+</blockquote>
+<blockquote>
+<p><strong>التمرين 5.25:</strong> عدّل المقيّم بحيث يستخدم التقييم بالترتيب الاعتيادي، استنادًا إلى المقيّم المتأخّر الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e2.xhtml#g_t4_002e2">4.2</a>.</p>
+</blockquote>
+<h4>5.4.4 تشغيل المقيّم</h4>
+<p>مع تنفيذ المقيّم ذي المتحكّم الصريح نصل إلى نهاية تطوّرٍ بدأ في <a href="https://sarabander.github.io/sicp/html/Chapter-1.xhtml#Chapter-1">الفصل 1</a>، استكشفنا فيه نماذج متعاقبةً في الدقّة لعمليّة التقييم. فقد بدأنا بنموذج الاستبدال غير الرسميّ نسبيًّا، ثم وسّعنا هذا في <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a> إلى نموذج البيئة، الذي مكّننا من التعامل مع الحالة والتغيير. وفي المقيّم البعديّ الوارد في <a href="https://sarabander.github.io/sicp/html/Chapter-4.xhtml#Chapter-4">الفصل 4</a>، استخدمنا Scheme ذاتها لغةً نجعل بها بنية البيئة المبنية أثناء تقييم تعبيرٍ أكثر وضوحًا. والآن، ومع آلات المسجّلات، ألقينا نظرةً قريبةً على آليّات المقيّم في إدارة التخزين، وتمرير المعطيات، والتحكّم. وعند كلّ مستوى جديد من الوصف، اضطررنا إلى إثارة قضايا وحلّ غموضٍ لم يكن ظاهرًا في المعاملة السابقة الأقلّ دقّة للتقييم. ولكي نفهم سلوك المقيّم ذي المتحكّم الصريح، نستطيع محاكاته ومراقبة أدائه.</p>
+<p>وسنُثبّت حلقة قيادةٍ في آلة المقيّم لدينا. وهذه تؤدّي دور الإجراء <code>driver-loop</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>. وسيطبع المقيّم - تكراريًّا - حافزًا، ويقرأ تعبيرًا، ويُقيّمه بالانتقال إلى <code>eval-dispatch</code>، ويطبع النتيجة. والتعليمات الآتية تُشكّل بداية تسلسل متحكّم المقيّم ذي المتحكّم الصريح:<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<pre><code class="language-scheme">read-eval-print-loop
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> initialize-stack))
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> prompt-for-input)
+           (<span class="hljs-name">const</span> <span class="hljs-string">&quot;;;; EC-Eval input:&quot;</span>))
+  (<span class="hljs-name">assign</span> exp (<span class="hljs-name">op</span> read))
+  (<span class="hljs-name">assign</span> env (<span class="hljs-name">op</span> get-global-environment))
+  (<span class="hljs-name">assign</span> continue (<span class="hljs-name">label</span> print-result))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> eval-dispatch))
+print-result
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> announce-output)
+           (<span class="hljs-name">const</span> <span class="hljs-string">&quot;;;; EC-Eval value:&quot;</span>))
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> user-print) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> read-eval-print-loop))
+</code></pre>
+<p>حين نصادف خطأً في إجراءٍ (كـ«خطأ نوع إجراء غير معروف» المُشار إليه عند <code>apply-dispatch</code>)، نطبع رسالة خطأٍ ونعود إلى حلقة القيادة.<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup></p>
+<pre><code class="language-scheme">unknown-expression-type
+  (<span class="hljs-name">assign</span> 
+   val
+   (<span class="hljs-name">const</span> unknown-expression-type-error))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> signal-error))
+unknown-procedure-type
+  <span class="hljs-comment">; clean up stack (from apply-dispatch):</span>
+  (<span class="hljs-name">restore</span> continue)    
+  (<span class="hljs-name">assign</span> 
+   val
+   (<span class="hljs-name">const</span> unknown-procedure-type-error))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> signal-error))
+signal-error
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> user-print) (<span class="hljs-name">reg</span> val))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> read-eval-print-loop))
+</code></pre>
+<p>ولأغراض المحاكاة، نُهيّئ المكدّس في كلّ مرورٍ بحلقة القيادة، إذ قد لا يكون فارغًا بعد أن يقاطع خطأٌ (كمتغيّرٍ غير معرَّف) تقييمًا.<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup></p>
+<p>إذا جمعنا جميع مقاطع الشيفرة المقدَّمة في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4.1</a>–<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4.4</a>، نستطيع إنشاء نموذج آلة مقيّمٍ نستطيع تشغيله باستخدام محاكي آلات المسجّلات الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2">5.2</a>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> eceval
+  (<span class="hljs-name">make-machine</span>
+   &#x27;(exp env val proc argl continue unev)
+   eceval-operations
+   &#x27;(read-eval-print-loop
+     ⟨entire machine controller 
+      as given above⟩)))
+</code></pre>
+<p>ينبغي أن نُعرّف إجراءات Scheme لمحاكاة العمليّات التي يستخدمها المقيّم كأوّليّات. وهذه هي الإجراءات ذاتها التي استخدمناها للمقيّم البعديّ في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a>، مع الإجراءات الإضافيّة القليلة المعرَّفة في الحواشي على امتداد <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4</a>.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> eceval-operations
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;self-evaluating?</span> 
+              self-evaluating)
+        ⟨complete list of operations 
+         for eceval machine⟩))
+</code></pre>
+<p>وأخيرًا، نستطيع تهيئة البيئة العامّة وتشغيل المقيّم:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-global-environment
+  (<span class="hljs-name">setup-environment</span>))
+
+(<span class="hljs-name">start</span> eceval)
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">append</span></span> x y)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> x)
+      y
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> x) (<span class="hljs-name"><span class="hljs-built_in">append</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> x) y))))
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">append</span></span> &#x27;(a b c) &#x27;(d e f))
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+(<span class="hljs-name">a</span> b c d e f)
+</code></pre>
+<p>وبالطبع، فإنّ تقييم التعابير بهذه الطريقة سيستغرق وقتًا أطول بكثيرٍ ممّا لو كنا قد كتبناها مباشرةً في Scheme، وذلك بسبب مستويات المحاكاة المتعدّدة المتداخلة. فإنّ تعابيرنا تُقيَّم بآلة المقيّم ذي المتحكّم الصريح، وهي بدورها محاكاةٌ ببرنامج Scheme، وهو ذاته مُقيَّمٌ بمفسّر Scheme.</p>
+<h4>مراقبة أداء المقيّم</h4>
+<p>قد تكون المحاكاة أداةً قويّةً لتوجيه تنفيذ المقيّمات. فالمحاكاة تُسهّل - لا استكشاف متغيّرات تصميم آلة المسجّلات فحسب، بل وأيضًا مراقبة أداء المقيّم المحاكى. فإنّ أحد العوامل المهمّة في الأداء هو مدى كفاءة المقيّم في استخدامه المكدّس. ونستطيع ملاحظة عدد عمليّات المكدّس اللازمة لتقييم تعابير مختلفة بتعريف آلة مسجّلات المقيّم باستخدام نسخة المحاكي التي تجمع إحصائيّات حول استخدام المكدّس (<a href="https://sarabander.github.io/sicp/html/5_002e2.xhtml#g_t5_002e2_002e4">5.2.4</a>)، وبإضافة تعليمةٍ عند نقطة دخول <code>print-result</code> في المقيّم لطباعة الإحصائيّات:</p>
+<pre><code class="language-scheme">print-result
+  <span class="hljs-comment">; added instruction:</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> print-stack-statistics))
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> announce-output)
+           (<span class="hljs-name">const</span> <span class="hljs-string">&quot;;;; EC-Eval value:&quot;</span>))
+  … <span class="hljs-comment">; same as before</span>
+</code></pre>
+<p>أمّا تفاعلاتنا مع المقيّم الآن فتصير على النحو الآتي:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>) <span class="hljs-number">1</span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) n)))
+(<span class="hljs-name">total-pushes</span> = <span class="hljs-number">3</span>, maximum-depth = <span class="hljs-number">3</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; EC-Eval input:</span>
+(<span class="hljs-name">factorial</span> <span class="hljs-number">5</span>)
+(<span class="hljs-name">total-pushes</span> = <span class="hljs-number">144</span>, maximum-depth = <span class="hljs-number">28</span>)
+
+<span class="hljs-comment">;;; EC-Eval value:</span>
+<span class="hljs-number">120</span>
+</code></pre>
+<p>لاحِظ أنّ حلقة القيادة في المقيّم تُعيد تهيئة المكدّس في بداية كلّ تفاعل، حتّى تكون الإحصائيّات المطبوعة مُحيلةً فقط على عمليّات المكدّس المستخدمة في تقييم التعبير السابق.</p>
+<p><strong>التمرين 5.26:</strong> استخدم المكدّس المراقَب لاستكشاف خاصّيّة التعاوب الذيليّ في المقيّم (<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4.2</a>). شغّل المقيّم وعرّف إجراء <code>factorial</code> التكراريّ الوارد في <a href="https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e1">1.2.1</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">iter</span> product counter)
+    (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&gt;</span></span> counter n)
+        product
+        (<span class="hljs-name">iter</span> (<span class="hljs-name"><span class="hljs-built_in">*</span></span> counter product)
+              (<span class="hljs-name"><span class="hljs-built_in">+</span></span> counter <span class="hljs-number">1</span>))))
+  (<span class="hljs-name">iter</span> <span class="hljs-number">1</span> <span class="hljs-number">1</span>))
+</code></pre>
+<p>شغّل الإجراء ببعض القيم الصغيرة لـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . وسجّل أقصى عمقٍ للمكدّس وعدد الدفعات اللازمة لاحتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> لكلّ واحدةٍ من هذه القيم.</p>
+<ol>
+<li>ستجد أنّ أقصى عمقٍ لازمٍ لتقييم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> مستقلٌّ عن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . فما هو ذلك العمق؟</li>
+<li>استخرج من بياناتك صيغةً بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> للعدد الإجماليّ لعمليّات الدفع المستخدمة في تقييم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> لأيّ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n ≥ 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> . ولاحِظ أنّ عدد العمليّات المستخدمة دالّةٌ خطّيّةٌ في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> وهو محدَّدٌ بالتالي بثابتين.</li>
+</ol>
+<p><strong>التمرين 5.27:</strong> للمقارنة مع <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.26</a>، استكشف سلوك الإجراء الآتي في احتساب العوامل المضروب تعاوديًّا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+      <span class="hljs-number">1</span>
+      (<span class="hljs-name"><span class="hljs-built_in">*</span></span> (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) n)))
+</code></pre>
+<p>وبتشغيل هذا الإجراء بالمكدّس المراقَب، حدّد - كدالّةٍ في <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> - أقصى عمقٍ للمكدّس والعدد الإجماليّ للدفعات المستخدمة في تقييم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo stretchy="false">!</mo></mrow><annotation encoding="application/x-tex">n !</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">n</span><span class="mclose">!</span></span></span></span> لـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n ≥ 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span> . (وهاتان الدالّتان خطّيّتان أيضًا.) ولخّص تجاربك بملء الجدول الآتي بالتعابير الملائمة بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> : <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mi>a</mi><mi>x</mi><mi>i</mi><mi>m</mi><mi>u</mi><mi>m</mi><mi>N</mi><mi>u</mi><mi>m</mi><mi>b</mi><mi>e</mi><mi>r</mi><mi>o</mi><mi>f</mi><mi>d</mi><mi>e</mi><mi>p</mi><mi>t</mi><mi>h</mi><mi>p</mi><mi>u</mi><mi>s</mi><mi>h</mi><mi>e</mi><mi>s</mi><mi>R</mi><mi>e</mi><mi>c</mi><mi>u</mi><mi>r</mi><mi>s</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi><mi>I</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>a</mi><mi>t</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi>f</mi><mi>a</mi><mi>c</mi><mi>t</mi><mi>o</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi></mrow><annotation encoding="application/x-tex">Maximum Number of depth pushes Recursive factorial Iterative factorial</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.109em;">M</span><span class="mord mathnormal">a</span><span class="mord mathnormal">x</span><span class="mord mathnormal">im</span><span class="mord mathnormal">u</span><span class="mord mathnormal">m</span><span class="mord mathnormal" style="margin-right:0.109em;">N</span><span class="mord mathnormal">u</span><span class="mord mathnormal">mb</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">pt</span><span class="mord mathnormal">h</span><span class="mord mathnormal">p</span><span class="mord mathnormal">u</span><span class="mord mathnormal">s</span><span class="mord mathnormal">h</span><span class="mord mathnormal">es</span><span class="mord mathnormal" style="margin-right:0.0077em;">R</span><span class="mord mathnormal">ec</span><span class="mord mathnormal">u</span><span class="mord mathnormal" style="margin-right:0.0278em;">r</span><span class="mord mathnormal">s</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">ia</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span><span class="mord mathnormal" style="margin-right:0.0785em;">I</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">er</span><span class="mord mathnormal">a</span><span class="mord mathnormal">t</span><span class="mord mathnormal">i</span><span class="mord mathnormal" style="margin-right:0.0359em;">v</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right:0.0278em;">or</span><span class="mord mathnormal">ia</span><span class="mord mathnormal" style="margin-right:0.0197em;">l</span></span></span></span> أمّا أقصى عمقٍ فهو مقياسٌ لمقدار المساحة التي يستخدمها المقيّم في إجراء الاحتساب، أمّا عدد الدفعات فيقارن جيّدًا بالوقت اللازم.</p>
+<blockquote>
+<p><strong>التمرين 5.28:</strong> عدّل تعريف المقيّم بتغيير <code>eval-sequence</code> كما هو موصوفٌ في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">5.4.2</a> بحيث لا يعود المقيّم تعاوديًّا ذيليًّا. وأعد تشغيل تجاربك من <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.26</a> و<a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.27</a> لتُظهر أنّ كلا النسختين من إجراء <code>factorial</code> تتطلّبان الآن مساحةً تنمو خطّيًّا مع معطاهما.</p>
+</blockquote>
+<p><strong>التمرين 5.29:</strong> راقب عمليّات المكدّس في احتساب فيبوناتشي التعاوديّ الشجريّ:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">fib</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">&lt;</span></span> n <span class="hljs-number">2</span>)
+      n
+      (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)) (<span class="hljs-name">fib</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">2</span>)))))
+</code></pre>
+<ol>
+<li>أعطِ صيغةً بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> لأقصى عمقٍ للمكدّس لازمٍ لاحتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>i</mi><mi>b</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Fib ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal">ib</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> لـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n ≥ 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> . تلميح: لقد قلنا في <a href="https://sarabander.github.io/sicp/html/1_002e2.xhtml#g_t1_002e2_002e2">1.2.2</a> إنّ المساحة التي تستخدمها هذه العمليّة تنمو خطّيًّا مع <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> .</li>
+<li>أعطِ صيغةً للعدد الإجماليّ للدفعات المستخدمة في احتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>i</mi><mi>b</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Fib ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal">ib</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> لـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n ≥ 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7719em;vertical-align:-0.136em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">2</span></span></span></span> . ومن المفترض أن تجد أنّ عدد الدفعات (الذي يقارن جيّدًا بالوقت المستخدم) ينمو أسّيًّا مع <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . تلميح: لِنفترض أنّ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> هو عدد الدفعات المستخدمة في احتساب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>i</mi><mi>b</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">Fib ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal">ib</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> . ومن المفترض أن تتمكّن من إثبات وجود صيغةٍ تُعبِّر عن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> بدلالة <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S ( n − 1 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S ( n − 2 )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span> وثابت «عبء» ثابتٍ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> مستقلٍّ عن <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">n</span></span></span></span> . أعطِ تلك الصيغة، وقل ما هو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0315em;">k</span></span></span></span> . ثم أظهر أنّ <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">S ( n )</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.0576em;">S</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span> يمكن التعبير عنه بـ<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>⋅</mo><mi>F</mi><mi>i</mi><mi>b</mi><mo stretchy="false">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a ⋅ Fib ( n + 1 ) + b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4445em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathnormal" style="margin-right:0.1389em;">F</span><span class="mord mathnormal">ib</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> وأعطِ قيمتَي <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span> و<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span> .</li>
+</ol>
+<blockquote>
+<p><strong>التمرين 5.30:</strong> إنّ مقيّمنا يلتقط ويُشير حاليًّا إلى نوعين فقط من الأخطاء - أنواع التعابير غير المعروفة وأنواع الإجراءات غير المعروفة. أمّا الأخطاء الأخرى فتخرج بنا من حلقة القراءة والتقييم والطباعة للمقيّم. وحين نشغّل المقيّم باستخدام محاكي آلات المسجّلات، فإنّ هذه الأخطاء تُلتقط بنظام Scheme الأساس. وهذا يقابل انهيار الحاسوب حين يرتكب برنامج المستخدم خطأً.<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup> وإنّ جعل نظام أخطاءٍ حقيقيّ يعمل مشروعٌ كبير، لكنّ الجهد المبذول لفهم ما يقتضيه الأمر هنا جديرٌ به حقًّا. فالأخطاء التي تقع في عمليّة التقييم، كمحاولة الوصول إلى متغيّرٍ غير مربوط، يمكن التقاطها بتغيير عمليّة البحث بحيث تُعيد شيفرة شرطٍ مميّزة، لا يمكن أن تكون قيمةً ممكنةً لأيّ متغيّر مستخدم. ويستطيع المقيّم اختبار شيفرة الشرط هذه ثم فعل ما يلزم للانتقال إلى <code>signal-error</code>. اعثر على جميع الأماكن في المقيّم حيث يكون مثل هذا التغيير ضروريًّا وأصلحها. وهذا عملٌ كثير.</p>
+<blockquote>
+<p>والأسوأ من ذلك مشكلة معالجة الأخطاء التي تُشير إليها تطبيقات الإجراءات الأوّليّة، كمحاولة القسمة على صفر أو محاولة استخراج <code>car</code> لرمز. ففي نظامٍ مكتوبٍ باحترافٍ وذو جودةٍ عالية، يُفحص كلّ تطبيقٍ أوّليّ من حيث السلامة كجزء من الأوّليّة ذاتها. فإنّ كلّ نداءٍ لـ<code>car</code> مثلًا قد يفحص أوّلًا أنّ المعطى زوج. وإذا لم يكن المعطى زوجًا، فإنّ التطبيق يُعيد شيفرة شرطٍ مميّزةً إلى المقيّم، والذي يُبلّغ عن الفشل بدوره. ونستطيع ترتيب هذا في محاكي آلات المسجّلات بجعل كلّ إجراءٍ أوّليّ يفحص قابليّة التطبيق ويُعيد شيفرة شرطٍ مميّزةً مناسبةً عند الفشل. وحينئذٍ تستطيع الشيفرة <code>primitive-apply</code> في المقيّم فحص شيفرة الشرط والانتقال إلى <code>signal-error</code> إذا لزم الأمر. ابنِ هذه البنية واجعلها تعمل. وهذا مشروعٌ كبير.</p>
+</blockquote>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Batali-et-al_002e-1982">باتالي وآخرون 1982</a> لمزيدٍ من المعلومات عن الرقاقة وعن الطريقة التي صُمّمت بها. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>في متحكّمنا، يُكتب التوزيع كسلسلةٍ من تعليمتَي <code>test</code> و<code>branch</code>. وبدلًا من ذلك، كان في الإمكان كتابته بأسلوبٍ موجَّهٍ بالبيانات (وكذلك سيكون الأمر في نظامٍ حقيقيّ على الأرجح) لتجنّب الحاجة إلى إجراء اختباراتٍ متسلسلةٍ وتسهيل تعريف أنواع تعبيراتٍ جديدة. ومن المرجّح أنّ آلةً مصمّمةً لتشغيل Lisp تتضمّن تعليمة <code>dispatch-on-type</code> تُنفّذ مثل هذه التوزيعات الموجَّهة بالبيانات بكفاءة. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>هذه نقطة مهمّةٌ وإنّما خفيّةٌ في ترجمة الخوارزميّات من لغةٍ إجرائيّة، مثل Lisp، إلى لغة آلات المسجّلات. فبدلًا من حفظ ما يلزم فقط، كان بوسعنا حفظ كلّ المسجّلات (عدا <code>val</code>) قبل كلّ نداءٍ تعاوديّ. ويُسمّى هذا نظامَ المكدس المؤطَّر. وهذا ينجح، لكنّه قد يحفظ مسجّلاتٍ أكثر من اللازم؛ وقد يكون هذا اعتبارًا مهمًّا في نظامٍ تكون فيه عمليّات المكدس مكلفة. كما أنّ حفظ مسجّلاتٍ لن تُحتاج محتوياتها لاحقًا قد يُبقي بياناتٍ لا فائدة منها كان يمكن جمعها كانقالًا، فتتفرّغ مساحتها لإعادة الاستخدام. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>نضيف إلى إجراءات بنية البيانات الخاصّة بالمُقيّم الواردة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a> الإجراءَين التاليين للتلاعب بقوائم المعطيات: <code>scheme (define (empty-arglist) '()) (define (adjoin-arg arg arglist) (append arglist (list arg))) </code> <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>يُعرَف تحسين معاملة المُعامل الأخير معاملةً خاصّةً باسم <em>التعاوب الذيلي في evlis</em> (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Wand-1980">واند 1980</a>). وكان بوسعنا أن نكون أكفأ قليلًا في حلقة تقييم المعطيات لو جعلنا تقييم المُعامل الأوّل حالةً خاصّةً أيضًا. وهو ما كان سيسمح لنا بتأجيل تهيئة <code>argl</code> حتّى بعد تقييم المُعامل الأوّل، تفاديًا لحفظ <code>argl</code> في هذه الحالة. والمصرّف الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5">5.5</a> يُجري هذا التحسين. (قارن بإجراء <code>construct-arglist</code> الوارد في <a href="https://sarabander.github.io/sicp/html/5_002e5.xhtml#g_t5_002e5_002e3">5.5.3</a>.) <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>يحدّد ترتيب تقييم المُعاملات في المُقيّم الحلقيّ الوسيط بترتيب تقييم معطيات <code>cons</code> في الإجراء <code>list-of-values</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> (انظر <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#Exercise-4_002e1">التمرين 4.1</a>). <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>رأينا في <a href="https://sarabander.github.io/sicp/html/5_002e1.xhtml#g_t5_002e1">5.1</a> كيف نُنفّذ عمليّةً كهذه بآلة مسجّلاتٍ لا مكدس لها؛ إذ كانت حالة العمليّة تُخزَّن في مجموعةٍ ثابتةٍ من المسجّلات. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>هذا التنفيذ للتعاوب الذيلي في <code>ev-sequence</code> نوعٌ من تقنيّة تحسينٍ معروفةٍ يستخدمها كثيرٌ من المصرّفات. فعند تصريف إجراءٍ ينتهي بنداء إجراء، يمكن استبدال النداء بقفزةٍ إلى نقطة دخول الإجراء المندىّ. وبناء هذه الاستراتيجيّة في المفسّر، كما فعلنا في هذا القسم، يُوفّر التحسين بصورةٍ موحّدةٍ في اللغة كلّها. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>يمكننا تعريف <code>no-more-exps?</code> كما يلي: <code>scheme (define (no-more-exps? seq) (null? seq)) </code> <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>هذا ليس غشًّا حقًّا. ففي تنفيذٍ فعليٍّ مبنيٍّ من الصفر، كنّا سنستخدم مُقيّمنا ذا المتحكّم الصريح لتفسير برنامج Scheme يُجري تحويلاتٍ على مستوى المصدر، مثل <code>cond-&gt;if</code>، في مرحلة صياغةٍ تجري قبل التنفيذ. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>نفترض هنا أنّ <code>read</code> ومختلف عمليّات الطباعة متاحةٌ كعمليّات آلةٍ أوّليّة، وهذا مفيدٌ لمحاكاتنا، لكنّه غير واقعيّ إطلاقًا في الممارسة. فهذه في الحقيقة عمليّات شديدة التعقيد. وفي الممارسة، كانت ستُنفّذ باستخدام عمليّات إدخالٍ وإخراجٍ منخفضة المستوى، مثل نقل محارف مفردةٍ إلى جهازٍ ومنه. ولدعم عمليّة <code>get-global-environment</code> نُعرّف <code>scheme (define the-global-environment (setup-environment)) (define (get-global-environment) the-global-environment) </code> <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>ثمّة أخطاء أخرى نودّ أن يتعامل معها المفسّر، لكنّها ليست بهذه البساطة. انظر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-4/">التمرين 5.30</a>. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>كان بوسعنا إجراء تهيئة المكدس بعد الأخطاء فقط، لكنّ إجراءها في حلقة المُشغّل سيكون مريحًا لمراقبة أداء المُقيّم، كما سنُبيّن أدناه. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>للأسفّ، هذا هو الحال الطبيعيّ في أنظمة اللغات التقليديّة المبنيّة على المصرّفات، مثل C. ففي UNIX(tm) «يفرغ النظام لبَّه»، وفي DOS/Windows(tm) يصير كسولًا. أمّا Macintosh(tm) فيعرض صورة قنبلةٍ منفجرةٍ ويعرض عليك فرصة إعادة تشغيل الحاسوب—إن كنت محظوظًا. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,c={book:s,chapter:a,chapterTitle:n,slug:"5-4",title:e,headings:p,html:l};export{s as book,a as chapter,n as chapterTitle,c as default,p as headings,l as html,t as slug,e as title};

@@ -1,0 +1,363 @@
+const s="sicp",a="c4-metalinguistic-abstraction",n="التجريد فوق اللغوي",c="4-2",e="4.2 تنويعات على Scheme — التقييم المتأخّر",l=[{depth:3,id:"42-تنويعات-على-scheme-التقييم-المتأخر",text:"4.2 تنويعات على Scheme — التقييم المتأخّر"}],p=`<h3 id="42-تنويعات-على-scheme-التقييم-المتأخر">4.2 تنويعات على Scheme — التقييم المتأخّر</h3>
+<p>والآن، بعد أن أصبح لدينا مقيّمٌ معبَّرٌ عنه كبرنامج Lisp، فبوسعنا أن نجرّب خياراتٍ بديلةً في تصميم اللغات بتعديل المقيّم تعديلًا بسيطًا. فلا ريب في أنّ اللغات الجديدة تُبتكر غالبًا بكتابة مقيّمٍ يضمّن اللغة الجديدة داخل لغةٍ عالية المستوى قائمة. فمثلًا، إذا أردنا مناقشة جانبٍ ما من تعديلٍ مقترحٍ على Lisp مع عضوٍ آخر في مجتمع Lisp، فبوسعنا أن نُزوّده بمقيّمٍ يجسّد التغيير. وبوسع متلقّيه حينئذٍ أن يجرّب المقيّم الجديد وأن يُرسل ملاحظاته في هيئة تعديلاتٍ إضافيّة. فإنّ أساس التنفيذ عالي المستوى لا يجعل اختبار المقيّم وتنقيحه أسهلَ فحسب؛ بل إنّ الضمّ أيضًا يُتيح للمصمّم أن يستعير<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> خصائص من اللغة الأساس، تمامًا كما يستخدم مقيّم Lisp المضمَّن لدينا الأوّليّات وبنية التحكّم من Lisp الأساس. ولا يلزم المصمّم أن يتكلّف عناء بناء تنفيذٍ كاملٍ بلغةٍ منخفضة المستوى أو في عتادٍ إلّا لاحقًا (إن لزم الأمر). وفي هذا القسم والقسم التالي نستكشف بعض التنويعات على Scheme التي توفّر قوّةً تعبيريّةً إضافيّةً كبيرة.</p>
+<h4>4.2.1 الترتيب الاعتياديّ والترتيب التطبيقيّ</h4>
+<p>في <a href="https://sarabander.github.io/sicp/html/1_002e1.xhtml#g_t1_002e1">1.1</a>، حيث بدأنا مناقشتنا لنماذج التقييم، لاحظنا أنّ Scheme لغةٌ <em>تطبيقيّة الترتيب</em>، أي أنّ جميع معطيات إجراءات Scheme تُقيَّم حين يُطبَّق الإجراء. وبالمقابل، فإنّ لغات <em>الترتيب الاعتياديّ</em> تؤخّر تقييم معطيات الإجراءات حتّى تحتاج قيم المعطيات الفعليّة. ويُسمّى تأخير تقييم معطيات الإجراءات حتّى اللحظة الأخيرة الممكنة (كاللحظة التي تتطلّبها عمليّة أوّليّة مثلًا) <em>التقييم المتأخّر (lazy evaluation)</em>.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> وتأمّل الإجراء</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">try</span> a b)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> a <span class="hljs-number">0</span>) <span class="hljs-number">1</span> b))
+</code></pre>
+<p>إنّ تقييم <code>(try 0 (/ 1 0))</code> يُطلق خطأً في Scheme. أمّا مع التقييم المتأخّر، فلن يقع خطأ. وكان تقييم التعبير سيُعيد 1، لأنّ المعطى <code>(/ 1 0)</code> لم يكن ليُقيَّم قطّ.</p>
+<p>ومثالٌ يستثمر التقييم المتأخّر هو تعريف إجراءٍ يُدعى <code>unless</code></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">unless</span></span> condition 
+                usual-value 
+                exceptional-value)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> condition 
+      exceptional-value 
+      usual-value))
+</code></pre>
+<p>يمكن استخدامه في تعابيرَ مثل</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">unless</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> b <span class="hljs-number">0</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">/</span></span> a b)
+        (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> 
+          (<span class="hljs-name"><span class="hljs-built_in">display</span></span> <span class="hljs-string">&quot;exception: returning 0&quot;</span>)
+          <span class="hljs-number">0</span>))
+</code></pre>
+<p>وهذا لن يعمل في لغةٍ تطبيقيّة الترتيب، لأنّ القيمة الاعتياديّة والقيمة الاستثنائيّة ستُقيَّمان كلتاهما قبل نداء <code>unless</code> (قارن <a href="https://sarabander.github.io/sicp/html/1_002e1.xhtml#Exercise-1_002e6">التمرين 1.6</a>). ومن مزايا التقييم المتأخّر أنّ بعض الإجراءات، كـ<code>unless</code>، تستطيع أداء احتسابٍ نافعٍ حتّى لو كان تقييم بعض معطياتها سيُنتج أخطاءً أو لم يكن لينتهي.</p>
+<p>إذا دُخل جسم الإجراء قبل تقييم معطىً ما فإنّا نقول إنّ الإجراء <em>غير صارم (non-strict)</em> في ذلك المعطى. وإذا قُيِّم المعطى قبل الدخول إلى جسم الإجراء فإنّا نقول إنّ الإجراء <em>صارم (strict)</em> في ذلك المعطى.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> ففي لغةٍ تطبيقيّة الترتيب خالصة، تكون جميع الإجراءات صارمةً في كلّ معطى. وفي لغةٍ اعتياديّة الترتيب خالصة، تكون جميع الإجراءات المركّبة غير صارمةٍ في كلّ معطى، وقد تكون الإجراءات الأوّليّة صارمةً أو غير صارمةٍ. وهناك أيضًا لغات (انظر <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-2/">التمرين 4.31</a>) تمنح المبرمجين تحكّمًا مفصّلًا في صرامة الإجراءات التي يُعرّفونها.</p>
+<p>ومثالٌ بليغٌ على إجراءٍ يمكن جعله غير صارمٍ جعلًا نافعًا هو <code>cons</code> (أو، بصورةٍ عامّة، أيّ بانيّ لبنيات البيانات تقريبًا). فبوسع المرء أن يؤدّي احتسابًا نافعًا بدمج العناصر لتكوين بنيات بياناتٍ وبالتشغيل على بنيات البيانات الناتجة، حتّى لو كانت قيم العناصر مجهولة. فمن المنطقيّ تمامًا، مثلًا، احتساب طول قائمةٍ دون معرفة قيم عناصرها المنفردة. وسنستثمر هذه الفكرة في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-2/">4.2.3</a> لتنفيذ مجاري <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a> بوصفها قوائمَ متشكّلةً من أزواج <code>cons</code> غير صارمة.</p>
+<p><strong>التمرين 4.25:</strong> افترض أنّنا (في Scheme التطبيقيّة الترتيب الاعتياديّة) نُعرّف <code>unless</code> كما هو موضّحٌ أعلاه، ثم نُعرّف <code>factorial</code> بدلالة <code>unless</code> كما يلي</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">factorial</span> n)
+  (<span class="hljs-name"><span class="hljs-built_in">unless</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">1</span>)
+          (<span class="hljs-name"><span class="hljs-built_in">*</span></span> n (<span class="hljs-name">factorial</span> (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>)))
+          <span class="hljs-number">1</span>))
+</code></pre>
+<p>فماذا يحدث إذا حاولنا تقييم <code>(factorial 5)</code>؟ وهل ستعمل تعريفاتنا في لغةٍ اعتياديّة الترتيب؟</p>
+<blockquote>
+<p><strong>التمرين 4.26:</strong> يختلف بن بِتدل وأليسا ب. هاكر حول أهمّيّة التقييم المتأخّر لتنفيذ أشياءَ مثل <code>unless</code>. ويشير بن إلى أنّ من الممكن تنفيذ <code>unless</code> بالترتيب التطبيقيّ بوصفه صيغةً خاصّة. وتُجيب أليسا بأنّه لو فُعل ذلك، لصار <code>unless</code> صياغةً فحسب، لا إجراءً يمكن استخدامه بالاشتراك مع الإجراءات ذات الرتبة العليا. فأكمل التفاصيل على جانبي الحجّة. وأُظهر كيف يُنفَّذ <code>unless</code> بوصفه تعبيرًا مشتقًّا (مثل <code>cond</code> أو <code>let</code>)، وأعطِ مثالًا على موقفٍ قد يكون من المفيد فيه توفّر <code>unless</code> بوصفه إجراءً، بدلًا من صيغةٍ خاصّة.</p>
+</blockquote>
+<h4>4.2.2 مفسّرٌ بالتقييم المتأخّر</h4>
+<p>سنُنفّذ في هذا القسم لغةً اعتياديّة الترتيب هي ذاتها Scheme إلّا أنّ الإجراءات المركّبة فيها غير صارمةٍ في كلّ معطى. أمّا الإجراءات الأوّليّة فستظلّ صارمة. وليس من العسير تعديل المقيّم الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> بحيث تتصرّف اللغة التي يُفسّرها على هذا النحو. فإنّ جميع التغييرات المطلوبة تقريبًا تتمركز حول تطبيق الإجراءات.</p>
+<p>والفكرة الأساسيّة هي أنّ المفسّر، عند تطبيق إجراءٍ ما، ينبغي أن يُحدّد أيّ المعطيات ستُقيَّم وأيّها ستُؤخَّر. والمعطيات المؤجَّلة لا تُقيَّم؛ بل تتحوّل إلى كائناتٍ تُسمّى <em>المؤجّلات (thunks)</em>.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> وينبغي للمؤجَّل أن يحتوي المعلومات المطلوبة لإنتاج قيمة المعطى عند الحاجة إليها، كأنّه قُيِّمَ في وقت التطبيق. ومن ثمّ، ينبغي للمؤجَّل أن يحتوي تعبير المعطى والبيئة التي يجري فيها تقييم تطبيق الإجراء.</p>
+<p>ويُسمّى عمليّة تقييم التعبير في مؤجَّلٍ ما <em>الإجبار (forcing)</em>.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> وبصورةٍ عامّة، لن يُجبَر مؤجَّلٌ إلّا عندما تُحتاج قيمته: عندما يُمرَّر إلى إجراءٍ أوّليّ سيستخدم قيمة المؤجَّل؛ وعندما يكون هو قيمة مسيّمٍ في تعبير شرطيّ؛ وعندما يكون هو قيمة مشغّلٍ على وشك أن يُطبَّق بوصفه إجراءً. ومن الخيارات التصميميّة المتاحة لنا أن نُحقّق <em>حفظ النتائج (memoization)</em> للمؤجّلات أم لا، كما فعلنا مع الكائنات المؤجّلة في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1">3.5.1</a>. وبحفظ النتائج، فإنّ المؤجَّل يخزّن القيمة التي تُحتسب أوّل مرّةٍ يُجبَر فيها. والإجبارات اللاحقة تُعيد القيمة المخزّونة فحسب دون تكرار الاحتساب. وسنجعل مفسّرنا يحفظ النتائج، لأنّ ذلك أكفأُ لتطبيقاتٍ كثيرة. غير أنّ هناك اعتباراتٍ خفيّة هنا.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<h4>تعديل المقيّم</h4>
+<p>ويتمثّل الفرق الرئيسيّ بين المقيّم المتأخّر والوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1">4.1</a> في التعامل مع تطبيقات الإجراءات في <code>eval</code> و<code>apply</code>.</p>
+<p>ويصبح بند <code>application?</code> في <code>eval</code></p>
+<pre><code class="language-scheme">((<span class="hljs-name">application?</span> exp)
+ (<span class="hljs-name"><span class="hljs-built_in">apply</span></span> (<span class="hljs-name">actual-value</span> (<span class="hljs-name">operator</span> exp) env)
+        (<span class="hljs-name">operands</span> exp)
+        env))
+</code></pre>
+<p>وهذا هو ذاته تقريبًا بند <code>application?</code> في <code>eval</code> في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>. لكنّنا، من أجل التقييم المتأخّر، ننادي <code>apply</code> بتعبيرات العوامل، بدلًا من المعطيات التي تُنتج بتقييمها. ولأنّنا سنحتاج إلى البيئة لبناء المؤجّلات إذا كانت المعطيات ستُؤخَّر، فعلينا أن نُمرّرها أيضًا. ونحن لا نزال نُقيّم المشغّل، لأنّ <code>apply</code> يحتاج الإجراء الفعليّ الواجب تطبيقه حتّى يتوزّع بحسب نوعه (أوّليّ مقابل مركّب) ويطبّقه.</p>
+<p>وكلّما احتجنا إلى القيمة الفعليّة لتعبيرٍ، فإنّا نستخدم</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">actual-value</span> exp env)
+  (<span class="hljs-name">force-it</span> (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> exp env)))
+</code></pre>
+<p>بدلًا من <code>eval</code> فحسب، حتّى إن كانت قيمة التعبير مؤجَّلًا، فإنّه سيُجبَر.</p>
+<p>وإصدارنا الجديد من <code>apply</code> هو أيضًا ذاته تقريبًا الإصدار الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>. والفرق هو أنّ <code>eval</code> يمرّر تعبيرات عوامل غير مُقيَّمة: فبالنسبة للإجراءات الأوّليّة (التي هي صارمة)، نُقيّم جميع المعطيات قبل تطبيق الإجراء الأوّليّ؛ وبالنسبة للإجراءات المركّبة (التي هي غير صارمة) نؤخّر جميع المعطيات قبل تطبيق الإجراء.</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">apply</span></span> procedure arguments env)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">primitive-procedure?</span> procedure)
+         (<span class="hljs-name">apply-primitive-procedure</span>
+          procedure
+          (<span class="hljs-name">list-of-arg-values</span> 
+           arguments 
+           env)))  <span class="hljs-comment">; changed</span>
+        ((<span class="hljs-name">compound-procedure?</span> procedure)
+         (<span class="hljs-name">eval-sequence</span>
+          (<span class="hljs-name">procedure-body</span> procedure)
+          (<span class="hljs-name">extend-environment</span>
+           (<span class="hljs-name">procedure-parameters</span> procedure)
+           (<span class="hljs-name">list-of-delayed-args</span> 
+            arguments 
+            env)   <span class="hljs-comment">; changed</span>
+           (<span class="hljs-name">procedure-environment</span> procedure))))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name">error</span> <span class="hljs-string">&quot;Unknown procedure 
+                      type: APPLY&quot;</span> 
+                     procedure))))
+</code></pre>
+<p>والإجراءات التي تُعالج المعطيات هي تمامًا مثل <code>list-of-values</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a>، إلّا أنّ <code>list-of-delayed-args</code> يؤخّر المعطيات بدلًا من تقييمها، وأنّ <code>list-of-arg-values</code> يستخدم <code>actual-value</code> بدلًا من <code>eval</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">list-of-arg-values</span> exps env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">no-operands?</span> exps)
+      &#x27;()
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">actual-value</span> 
+             (<span class="hljs-name">first-operand</span> exps) 
+             env)
+            (<span class="hljs-name">list-of-arg-values</span> 
+             (<span class="hljs-name">rest-operands</span> exps)
+             env))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">list-of-delayed-args</span> exps env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">no-operands?</span> exps)
+      &#x27;()
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">delay-it</span> 
+             (<span class="hljs-name">first-operand</span> exps) 
+             env)
+            (<span class="hljs-name">list-of-delayed-args</span> 
+             (<span class="hljs-name">rest-operands</span> exps)
+             env))))
+</code></pre>
+<p>والموضع الآخر الذي ينبغي أن نُغيّر فيه المقيّم هو التعامل مع <code>if</code>، حيث ينبغي لنا أن نستخدم <code>actual-value</code> بدلًا من <code>eval</code> للحصول على قيمة تعبير المسيّم قبل اختبار ما إذا كانت صحيحة أو خاطئة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-if</span> exp env)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">true?</span> (<span class="hljs-name">actual-value</span> (<span class="hljs-name">if-predicate</span> exp) 
+                           env))
+      (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">if-consequent</span> exp) env)
+      (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">if-alternative</span> exp) env)))
+</code></pre>
+<p>وأخيرًا، ينبغي لنا تغيير إجراء <code>driver-loop</code> (<a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e4">4.1.4</a>) لاستخدام <code>actual-value</code> بدلًا من <code>eval</code>، حتّى إن انتقلت قيمةٌ مؤجَّلةٌ إلى حلقة القراءة والتقييم والطباعة، فإنّها ستُجبَر قبل طباعتها. ونحن نغيّر أيضًا المُحفّزات للإشارة إلى أنّ هذا هو المقيّم المتأخّر:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> input-prompt  <span class="hljs-string">&quot;;;; L-Eval input:&quot;</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> output-prompt <span class="hljs-string">&quot;;;; L-Eval value:&quot;</span>)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">driver-loop</span>)
+  (<span class="hljs-name">prompt-for-input</span> input-prompt)
+  (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">input</span> (<span class="hljs-name"><span class="hljs-built_in">read</span></span>)))
+    (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">output</span> (<span class="hljs-name">actual-value</span> 
+                   input 
+                   the-global-environment)))
+      (<span class="hljs-name">announce-output</span> output-prompt)
+      (<span class="hljs-name">user-print</span> output)))
+  (<span class="hljs-name">driver-loop</span>))
+</code></pre>
+<p>وبعد إجراء هذه التغييرات، بوسعنا تشغيل المقيّم واختباره. فإنّ التقييم الناجح لتعبير <code>try</code> المناقَش في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-2/">4.2.1</a> يدلّ على أنّ المفسّر يؤدّي تقييمًا متأخّرًا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> the-global-environment 
+  (<span class="hljs-name">setup-environment</span>))
+
+(<span class="hljs-name">driver-loop</span>)
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">try</span> a b) (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> a <span class="hljs-number">0</span>) <span class="hljs-number">1</span> b))
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+ok
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name">try</span> <span class="hljs-number">0</span> (<span class="hljs-name"><span class="hljs-built_in">/</span></span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>))
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+<span class="hljs-number">1</span>
+</code></pre>
+<h4>تمثيل المؤجّلات</h4>
+<p>وينبغي لمقيّمنا أن يُرتّب لإنشاء المؤجّلات عندما تُطبَّق الإجراءات على معطيات، ولإجبار هذه المؤجّلات لاحقًا. وينبغي للمؤجَّل أن يحزم تعبيرًا مع البيئة، حتّى يمكن إنتاج المعطى لاحقًا. ولإجبار المؤجَّل، نستخرج التعبير والبيئة من المؤجَّل ببساطةٍ ونُقيّم التعبير في البيئة. ونستخدم <code>actual-value</code> بدلًا من <code>eval</code> حتّى إن كانت قيمة التعبير مؤجَّلًا بذاته، فإنّنا سنُجبَر ذلك، وهكذا، حتّى نصل إلى شيءٍ ليس مؤجَّلًا:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">force-it</span> obj)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name">thunk?</span> obj)
+      (<span class="hljs-name">actual-value</span> (<span class="hljs-name">thunk-exp</span> obj) 
+                    (<span class="hljs-name">thunk-env</span> obj))
+      obj))
+</code></pre>
+<p>وإحدى الطرائق السهلة لحزم تعبيرٍ ببيئةٍ هي جعل قائمةٍ تحتوي التعبير والبيئة. وبذلك، نُنشئ مؤجَّلًا كما يلي:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">delay-it</span> exp env)
+  (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-symbol">&#x27;thunk</span> exp env))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">thunk?</span> obj) (<span class="hljs-name">tagged-list?</span> obj <span class="hljs-symbol">&#x27;thunk</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">thunk-exp</span> thunk) (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> thunk))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">thunk-env</span> thunk) (<span class="hljs-name">caddr</span> thunk))
+</code></pre>
+<p>في واقع الأمر، ما نريده لمفسّرنا ليس هذا تمامًا، بل مؤجّلاتٌ حُفِظت نتائجها. وحين يُجبَر مؤجَّلٌ، فإنّا سنُحوّله إلى مؤجَّلٍ مُقيَّمٍ باستبدال التعبير المخزّون بقيمته وتغيير وسم <code>thunk</code> حتّى يمكن التعرّف عليه بوصفه مُقيَّمًا بالفعل.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">evaluated-thunk?</span> obj)
+  (<span class="hljs-name">tagged-list?</span> obj <span class="hljs-symbol">&#x27;evaluated-thunk</span>))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">thunk-value</span> evaluated-thunk) 
+  (<span class="hljs-name"><span class="hljs-built_in">cadr</span></span> evaluated-thunk))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">force-it</span> obj)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">thunk?</span> obj)
+         (<span class="hljs-name"><span class="hljs-built_in">let</span></span> ((<span class="hljs-name">result</span>
+                (<span class="hljs-name">actual-value</span> 
+                 (<span class="hljs-name">thunk-exp</span> obj)
+                 (<span class="hljs-name">thunk-env</span> obj))))
+           (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> obj <span class="hljs-symbol">&#x27;evaluated-thunk</span>)
+           <span class="hljs-comment">;; replace exp with its value:</span>
+           (<span class="hljs-name"><span class="hljs-built_in">set-car!</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> obj) result) 
+           <span class="hljs-comment">;; forget unneeded env:</span>
+           (<span class="hljs-name"><span class="hljs-built_in">set-cdr!</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> obj) &#x27;()) 
+           result))
+        ((<span class="hljs-name">evaluated-thunk?</span> obj)
+         (<span class="hljs-name">thunk-value</span> obj))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> obj)))
+</code></pre>
+<p>لاحِظ أنّ الإجراء <code>delay-it</code> ذاته يعمل مع حفظ النتائج (memoization) ودونه.</p>
+<p><strong>التمرين 4.27:</strong> لنفترض أنّنا أدخلنا التعريفات الآتية إلى المقيّم الكسول:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> count <span class="hljs-number">0</span>)
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">id</span> x) (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> count (<span class="hljs-name"><span class="hljs-built_in">+</span></span> count <span class="hljs-number">1</span>)) x)
+</code></pre>
+<p>أعطِ القيم الناقصة في تسلسل التفاعلات الآتي، ووضّح إجاباتك.<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> w (<span class="hljs-name">id</span> (<span class="hljs-name">id</span> <span class="hljs-number">10</span>)))
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+count
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+⟨response⟩
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+w
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+⟨response⟩
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+count
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+⟨response⟩
+</code></pre>
+<p><strong>التمرين 4.28:</strong> يستخدم <code>eval</code> الإجراء <code>actual-value</code> بدلًا من <code>eval</code> لتقييم المشغّل قبل تمريره إلى <code>apply</code>، بغية إجبار قيمة المشغّل. أعطِ مثالًا يُظهر الحاجة إلى هذا الإجبار.</p>
+<p><strong>التمرين 4.29:</strong> اعرض برنامجًا يتوقّع المرء أن يعمل أبطأَ كثيرًا دون حفظ النتائج مقارنةً به معه. وفكّر أيضًا في التفاعل الآتي، حيث الإجراء <code>id</code> معرَّفٌ كما في <a href="/arabic-cs-library/book/sicp/c4-metalinguistic-abstraction/4-2/">التمرين 4.27</a> و<code>count</code> يبدأ من 0:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">square</span> x) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> x x))
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name">square</span> (<span class="hljs-name">id</span> <span class="hljs-number">10</span>))
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+⟨response⟩
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+count
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+⟨response⟩
+</code></pre>
+<p>أعطِ الإجابتين في الحالتين: حين يحفظ المقيّم النتائج وحين لا يحفظها.</p>
+<p><strong>التمرين 4.30:</strong> سي دي. فيكت، وهو مبرمج C سابق، قلقٌ من أن بعض التأثيرات الجانبيّة قد لا تحدث أبدًا، لأنّ المقيّم الكسول لا يُجبر التعابير في تسلسل. فإنّ قيمة تعبيرٍ في تسلسل غير الأخير لا تُستخدم (والتعبير موجودٌ هناك لأجل أثره فحسب، كالإحلال في متغيّر أو الطباعة)، فلا يمكن أن يكون هناك استخدامٌ لاحقٌ لتلك القيمة (كتمريرها معطىً إلى إجراء أوّليّ، مثلًا) يُسبّب إجبارها. ولهذا يظنّ سي أنّنا حين نُقيّم التسلسلات، ينبغي أن نُجبر جميع التعابير في التسلسل عدا الأخير. وهو يقترح تعديل <code>eval-sequence</code> الوارد في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e1">4.1.1</a> ليستخدم <code>actual-value</code> بدلًا من <code>eval</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">eval-sequence</span> exps env)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name">last-exp?</span> exps) 
+         (<span class="hljs-name"><span class="hljs-built_in">eval</span></span> (<span class="hljs-name">first-exp</span> exps) env))
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+         (<span class="hljs-name">actual-value</span> (<span class="hljs-name">first-exp</span> exps) 
+                       env)
+         (<span class="hljs-name">eval-sequence</span> (<span class="hljs-name">rest-exps</span> exps) 
+                        env))))
+</code></pre>
+<p>يرى بن بِتدل أنّ سي مخطئ. وهو يُري سي الإجراء <code>for-each</code> الموصوف في <a href="https://sarabander.github.io/sicp/html/2_002e2.xhtml#Exercise-2_002e23">التمرين 2.23</a>، الذي يُعطي مثالًا مهمًّا على تسلسلٍ ذي تأثيراتٍ جانبيّة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">for-each</span></span> proc items)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> items)
+      <span class="hljs-symbol">&#x27;done</span>
+      (<span class="hljs-name"><span class="hljs-built_in">begin</span></span> (<span class="hljs-name">proc</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items))
+             (<span class="hljs-name"><span class="hljs-built_in">for-each</span></span> proc 
+                       (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items)))))
+</code></pre>
+<p>وهو يدّعي أنّ المقيّم الوارد في النصّ (مع <code>eval-sequence</code> الأصليّ) يتعامل مع هذا تعاملًا صحيحًا:</p>
+<pre><code class="language-scheme"><span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">for-each</span></span>
+ (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x) (<span class="hljs-name"><span class="hljs-built_in">newline</span></span>) (<span class="hljs-name"><span class="hljs-built_in">display</span></span> x))
+ (<span class="hljs-name"><span class="hljs-built_in">list</span></span> <span class="hljs-number">57</span> <span class="hljs-number">321</span> <span class="hljs-number">88</span>))
+<span class="hljs-number">57</span>
+<span class="hljs-number">321</span>
+<span class="hljs-number">88</span>
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+done
+</code></pre>
+<p>وضّح لماذا بن مُحقّ في ما يقولُه عن سلوك <code>for-each</code>.</p>
+<p>يتّفق سي مع أنّ بن مُحقّ في مثال <code>for-each</code>، لكنّه يقول إنّ ذلك ليس نوع البرنامج الذي كان يفكّر فيه حين اقترح تغييره على <code>eval-sequence</code>. وهو يُعرِّف الإجراءين الآتيين في المقيّم الكسول:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">p1</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> x (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x &#x27;(<span class="hljs-number">2</span>))) x)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">p2</span> x)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">p</span> e) e x)
+  (<span class="hljs-name">p</span> (<span class="hljs-name"><span class="hljs-built_in">set!</span></span> x (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x &#x27;(<span class="hljs-number">2</span>)))))
+</code></pre>
+<p>ما قيمتا <code>(p1 1)</code> و<code>(p2 1)</code> مع <code>eval-sequence</code> الأصليّ؟ وما كانت القيمتان ستكونان مع التغيير الذي اقترحه سي على <code>eval-sequence</code>؟</p>
+<p>ويُشير سي أيضًا إلى أنّ تغيير <code>eval-sequence</code> على النحو الذي يقترحه لا يؤثّر في سلوك المثال الوارد في الجزء (أ). فوضّح لماذا هذا صحيح. وكيف تظنّ أنّ التسلسلات ينبغي أن تُعالَج في المقيّم الكسول؟ فأيّّ نهجٍ ترتاح له: نهج سي، أم النهج الوارد في النصّ، أم نهجٌ آخر؟</p>
+<p><strong>التمرين 4.31:</strong> النهج المتّخذ في هذا القسم غير مريحٍ إلى حدّ ما، لأنّه يُحدث تغييرًا غير متوافق في Scheme. وقد يكون من الأجمل تنفيذ التقييم الكسول بوصفه <em>توسعةً متوافقة صعودًا (upward-compatible extension)</em>، أي بحيث تعمل برامج Scheme العاديّة كما كانت تعمل سابقًا. ويمكننا فعل ذلك بتوسيع صياغة تصريحات الإجراءات للسماح للمستخدم بالتحكّم في تأخير الوسائط أو عدمه. وبينما نحن في ذلك، فلا بأس من أن نمنح المستخدم أيضًا الخيار بين التأخير مع حفظ النتائج ودونه. فمثلًا، التعريف</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">f</span> a (<span class="hljs-name">b</span> lazy) c (<span class="hljs-name">d</span> lazy-memo))
+  …)
+</code></pre>
+<p>سيُعرِّف <code>f</code> بأنّه إجراءٌ من أربعة وسائط، حيث يُقيّم الوسيط الأوّل والثالث حين يُستدعى الإجراء، ويُؤخَّر الوسيط الثاني، ويُؤخَّر الوسيط الرابع ويُحفَظ نتيجته. وبذلك، ستُنتج تعاريف الإجراءات العاديّة السلوك ذاته الذي تُنتجه برامج Scheme العاديّة، بينما ستُنتج إضافة تصريح <code>lazy-memo</code> إلى كلّ وسيطٍ من وسائط كلّ إجراءٍ مركّبٍ سلوك المقيّم الكسول المعرَّف في هذا القسم. وصمّم ونفّذ التغييرات المطلوبة لإنتاج توسعةٍ كهذه على Scheme. وسيلزمك تنفيذ إجراءات صياغةٍ جديدةٍ للتعامل مع الصياغة الجديدة لـ<code>define</code>. وينبغي لك أيضًا أن تُرتّب لما يجعل <code>eval</code> أو <code>apply</code> يحدّد متى تُؤخَّر الوسائط، ويكون إجبارها أو تأخيرها وفقًا لذلك، كما ينبغي أن تُرتّب لما يجعل الإجبار يحفظ النتائج أو لا، بحسب الحالة.</p>
+<h4>4.2.3 المجاري بوصفها قوائم كسولة</h4>
+<p>في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e1">3.5.1</a>، أظهرنا كيف نُنفّذ المجاري بوصفها قوائم مؤخّرة. وقد أدخلنا صيغتين خاصّتين هما <code>delay</code> و<code>cons-stream</code>، وتسمحان لنا ببناء «وعد» بحساب الـ<code>cdr</code> لمجرى، دون الوفاء بذلك الوعد فعلًا إلّا لاحقًا. وكان بإمكاننا استخدام هذه التقنيّة العامّة المتمثّلة في إدخال صيغٍ خاصّةٍ كلّما احتجنا إلى مزيدٍ من التحكّم في عمليّة التقييم، لكنّ ذلك عسير. فأوّلًا، الصيغة الخاصّة ليست كائنًا من الرتبة الأولى (first-class) كالإجراء، فلا نستطيع استخدامها مع الإجراءات من الرتبة العليا.<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup> وفضلًا عن ذلك، فقد أُجبرنا على إنشاء المجاري كنوعٍ جديدٍ من كائنات البيانات شبيهٍ بالقوائم غير مطابقٍ لها، وهذا استدعى منّا إعادة تنفيذ عمليّات قائمةٍ عاديّةٍ كثيرة (<code>map</code>، و<code>append</code>، وما شابه) للاستخدام مع المجاري.</p>
+<p>وبالتقييم الكسول، يمكن أن تكون المجاري والقوائم متطابقة، فلا حاجة إلى صيغٍ خاصّةٍ ولا إلى عمليّاتٍ منفصلةٍ للقوائم والمجاري. وكلّ ما يلزمنا هو ترتيب الأمور بحيث يكون <code>cons</code> غير صارم. وإحدى طرق تحقيق ذلك توسيع المقيّم الكسول للسماح بأوّليّاتٍ غير صارمة، وتنفيذ <code>cons</code> بأحدها. وأمّا الطريقة الأسهل فهي التذكّر (<a href="https://sarabander.github.io/sicp/html/2_002e1.xhtml#g_t2_002e1_002e3">2.1.3</a>) بأنّه لا حاجة جوهريّة إلى تنفيذ <code>cons</code> كإجراءٍ أوّليّ أصلًا. وبدلًا من ذلك، يمكننا تمثيل الأزواج بإجراءات:<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> x y) (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (m) (<span class="hljs-name">m</span> x y)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> z) (<span class="hljs-name">z</span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (p q) p)))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> z) (<span class="hljs-name">z</span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (p q) q)))
+</code></pre>
+<p>وبصدد هذه العمليّات الأساسيّة، فإنّ التعريفات القياسيّة لعمليّات القوائم ستعمل مع القوائم اللاّنهائيّة (المجاري) كما تعمل مع المنتهيّة، ويمكن تنفيذ عمليّات المجاري بوصفها عمليّات قائمة. وهاك بعض الأمثلة:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">list-ref</span></span> items n)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">=</span></span> n <span class="hljs-number">0</span>)
+      (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items)
+      (<span class="hljs-name"><span class="hljs-built_in">list-ref</span></span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items) (<span class="hljs-name"><span class="hljs-built_in">-</span></span> n <span class="hljs-number">1</span>))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name"><span class="hljs-built_in">map</span></span> proc items)
+  (<span class="hljs-name"><span class="hljs-built_in">if</span></span> (<span class="hljs-name"><span class="hljs-built_in">null?</span></span> items)
+      &#x27;()
+      (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name">proc</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> items))
+            (<span class="hljs-name"><span class="hljs-built_in">map</span></span> proc (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> items)))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">scale-list</span> items factor)
+  (<span class="hljs-name"><span class="hljs-built_in">map</span></span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x) (<span class="hljs-name"><span class="hljs-built_in">*</span></span> x factor))
+       items))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">add-lists</span> list1 list2)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> list1) list2)
+        ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> list2) list1)
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> list1) 
+                       (<span class="hljs-name"><span class="hljs-built_in">car</span></span> list2))
+                    (<span class="hljs-name">add-lists</span>
+                     (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> list1) 
+                     (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> list2))))))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> ones (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-number">1</span> ones))
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> integers 
+  (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-number">1</span> (<span class="hljs-name">add-lists</span> ones integers)))
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">list-ref</span></span> integers <span class="hljs-number">17</span>)
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+<span class="hljs-number">18</span>
+</code></pre>
+<p>لاحِظ أنّ هذه القوائم الكسولة أكسلُ حتّى من مجاري <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a>: فالـ<code>car</code> للقائمة، كما الـ<code>cdr</code>، مؤخَّر.<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup> وفي الحقيقة، فإنّ مجرّد الوصول إلى <code>car</code> أو <code>cdr</code> زوجٍ كسولٍ لا يستلزم إجبار قيمة عنصر القائمة. فلن تُجبَر القيمة إلّا حين تحتاج إليها فعلًا—مثلًا للاستخدام معطىً إلى أوّليّة، أو لتُطبَع جوابًا.</p>
+<p>كما تُساعد الأزواج الكسولة في المسألة التي نشأت مع المجاري في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4">3.5.4</a>، حيث وجدنا أنّ صياغة نماذج المجاري لأنظمةٍ ذات حلقاتٍ قد تستدعي منّا أن نُنثّر برامجنا بعمليّات <code>delay</code> صريحة، تتجاوز تلك التي يوفّرها <code>cons-stream</code>. وبالتقييم الكسول، تُؤخَّر جميع الوسائط الممرّرة إلى الإجراءات تأخيرًا منتظمًا. فنستطيع، مثلًا، تنفيذ إجراءاتٍ لتكامل القوائم ولحلّ المعادلات التفاضليّة كما قصدنا أصلًا في <a href="https://sarabander.github.io/sicp/html/3_002e5.xhtml#g_t3_002e5_002e4">3.5.4</a>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">integral</span> integrand initial-value dt)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> int
+    (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> initial-value
+          (<span class="hljs-name">add-lists</span> (<span class="hljs-name">scale-list</span> integrand dt) 
+                     int)))
+  int)
+
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">solve</span> f y0 dt)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> y (<span class="hljs-name">integral</span> dy y0 dt))
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> dy (<span class="hljs-name"><span class="hljs-built_in">map</span></span> f y))
+  y)
+
+<span class="hljs-comment">;;; L-Eval input:</span>
+(<span class="hljs-name"><span class="hljs-built_in">list-ref</span></span> (<span class="hljs-name">solve</span> (<span class="hljs-name"><span class="hljs-built_in">lambda</span></span> (x) x) <span class="hljs-number">1</span> <span class="hljs-number">0.001</span>) <span class="hljs-number">1000</span>)
+
+<span class="hljs-comment">;;; L-Eval value:</span>
+<span class="hljs-number">2.716924</span>
+</code></pre>
+<blockquote>
+<p><strong>التمرين 4.32:</strong> أعطِ بعض الأمثلة التي توضّح الفرق بين مجاري <a href="https://sarabander.github.io/sicp/html/Chapter-3.xhtml#Chapter-3">الفصل 3</a> والقوائم الكسولة «الأكسل» الموصوفة في هذا القسم. فكيف يمكنك استثمار هذا الكسل الإضافيّ؟</p>
+</blockquote>
+<p><strong>التمرين 4.33:</strong> يختبر بن بِتدل تنفيذ القائمة الكسولة المعطى أعلاه بتقييم التعبير</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">car</span></span> &#x27;(a b c))
+</code></pre>
+<p>فإذا بذلك يُنتج خطأً، على غير ما توقّع. وبعد بعض التفكير، يدرك أنّ «القوائم» المتحصّلة من قراءة التعابير المُقتبَسة مختلفةٌ عن القوائم التي تتلاعب بها التعريفات الجديدة لـ<code>cons</code> و<code>car</code> و<code>cdr</code>. فعدّل تعامل المقيّم مع التعابير المُقتبَسة بحيث تُنتج القوائم المُقتبَسة المكتوبة في حلقة المُشغّل قوائم كسولةً حقيقيّة.</p>
+<blockquote>
+<p><strong>التمرين 4.34:</strong> عدّل حلقة المُشغّل للمقيّم بحيث تُطبَع الأزواج الكسولة والقوائم الكسولة على نحوٍ معقول. (فماذا ستفعل حيال القوائم اللاّنهائيّة؟) وقد يلزمك أيضًا تعديل تمثيل الأزواج الكسولة حتّى يتمكّن المقيّم من التعرّف عليها بغرض طبعها.</p>
+</blockquote>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>كان بوسعنا إجراء تهيئة المكدس بعد الأخطاء فقط، لكنّ إجراءها في حلقة المُشغّل سيكون مريحًا لمراقبة أداء المُقيّم، كما سنُبيّن أدناه. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>للأسفّ، هذا هو الحال الطبيعيّ في أنظمة اللغات التقليديّة المبنيّة على المصرّفات، مثل C. ففي UNIX(tm) «يفرغ النظام لبَّه»، وفي DOS/Windows(tm) يصير كسولًا. أمّا Macintosh(tm) فيعرض صورة قنبلةٍ منفجرةٍ ويعرض عليك فرصة إعادة تشغيل الحاسوب—إن كنت محظوظًا. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>هذا بيانٌ نظريّ. فنحن لا ندّعي أنّ مسارات البيانات الخاصّة بالمُقيّم مجموعةٌ مناسبةٌ أو فعّالةٌ بشكلٍ خاصّ لتكون مسارات حاسوبٍ عامّ الغرض. فهي مثلًا غير جيّدةٍ لتنفيذ حسابات النقاط العائمة عالية الأداء أو الحسابات التي تتلاعب بكثافةٍ بمتجهات البتّات. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>في الواقع، بوسع الآلة التي تُشغّل الشيفرة المصرّفة أن تكون أبسط من آلة المفسّر، لأنّنا لن نستخدم المسجّلين <code>exp</code> و<code>unev</code>. فقد كان المفسّر يستخدمهما للاحتفاظ بقطعٍ من التعابير غير المُقيَّمة. أمّا مع المصرّف، فهذه التعابير تُبنى في الشيفرة المصرّفة التي ستُشغّلها آلة المسجّلات. ولغير هذا السبب، لا نحتاج إلى عمليّات الآلة التي تتعامل مع صياغة التعابير. لكنّ الشيفرة المصرّفة ستستخدم بعض عمليّات آلةٍ إضافيّة (لتمثيل كائنات الإجراءات المصرّفة) لم تظهر في آلة المُقيّم ذي المتحكّم الصريح. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>لكن لاحظ أنّ مصرّفنا برنامج Scheme، وأنّ إجراءات الصياغة التي يستخدمها للتلاعب بالتعابير هي إجراءات Scheme الفعليّة المستخدمة مع المُقيّم الحلقيّ الوسيط. أمّا في المُقيّم ذي المتحكّم الصريح، فقد افترضنا أنّ عمليّات صياغةٍ مكافئةً متاحةٌ كعمليّاتٍ لآلة المسجّلات. (وبالطبع، عندما حاكينا آلة المسجّلات في Scheme، استخدمنا إجراءات Scheme الفعليّة في محاكاة آلة المسجّلات خاصّتنا.) <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>يستخدم هذا الإجراء ميزةً من Lisp تُسمّى <em>الاقتباس الخلفيّ (backquote)</em> (أو <em>شبه الاقتباس (quasiquote)</em>) وهي مفيدةٌ لبناء القوائم. فتسبيق قائمةٍ برمز الاقتباس الخلفيّ أشبه باقتباسها، إلّا أنّ أيّ شيءٍ في القائمة يُعلَّم بفاصلةٍ يُقيَّم. فمثلًا، إذا كانت قيمة <code>linkage</code> هي الرمز <code>branch25</code>، فإنّ التعبير <code>scheme \`((goto (label ,linkage))) </code> <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>لا يمكننا ببساطةٍ استخدام الأسماء <code>true-branch</code> و<code>false-branch</code> و<code>after-if</code> كما وردت أعلاه، لأنّ البرنامج قد يحوي أكثر من <code>if</code> واحد. فالمصرّف يستخدم الإجراء <code>make-label</code> لتوليد الأسماء. و<code>Make-label</code> يأخذ رمزًا كمعطىً ويُعيد رمزًا جديدًا يبدأ بالرمز المعطى. فمثلًا، كانت نداءات <code>(make-label 'a)</code> المتتالية تُعيد <code>a1</code> و<code>a2</code> وهكذا. ويمكن تنفيذ <code>Make-label</code> على نحوٍ يشبه توليد أسماء المتغيّرات الفريدة في لغة الاستعلام، كما يلي: <code>scheme (define label-counter 0) (define (new-label-number) (set! label-counter (+ 1 label-counter)) label-counter) (define (make-label name) (string-&gt;symbol (string-append (symbol-&gt;string name) (number-&gt;string (new-label-number))))) </code> <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>نحتاج إلى عمليّات آلةٍ لتنفيذ بنية بياناتٍ لتمثيل الإجراءات المصرّفة، تقابل البنيّة الخاصّة بالإجراءات المركّبة الموصوفة في <a href="https://sarabander.github.io/sicp/html/4_002e1.xhtml#g_t4_002e1_002e3">4.1.3</a>: <code>scheme (define (make-compiled-procedure entry env) (list 'compiled-procedure entry env)) (define (compiled-procedure? proc) (tagged-list? proc 'compiled-procedure)) (define (compiled-procedure-entry c-proc) (cadr c-proc)) (define (compiled-procedure-env c-proc) (caddr c-proc)) </code> <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>في الحقيقة، نُشير إلى خطأٍ عندما لا يكون الهدف <code>val</code> والوصلة <code>return</code>، إذ إنّ المكان الوحيد الذي نطلب فيه وصلات <code>return</code> هو تصريف الإجراءات، واصطلاحنا أنّ الإجراءات تُعيد قيمها في <code>val</code>. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>قد يبدو جعلُ مصرّفٍ يُنتج شيفرةً تعاوديّةً ذيليًّا فكرةً مباشرة. لكنّ معظم مصرّفات اللغات الشائعة، ومنها C وPascal، لا تفعل ذلك، ولذلك لا تستطيع هذه اللغات تمثيل العمليّات التكراريّة بالنداء الإجرائيّ وحده. وتكمُن صعوبة التعاوب الذيلي في هذه اللغات في أنّ تنفيذها تستخدم المكدس لتخزين معطيات الإجراءات ومتغيّراتها المحليّة فضلًا عن عناوين العودة. أمّا تنفيذات Scheme الموضحة في هذا الكتاب فتخزّن المعطيات والمتغيّرات في ذاكرةٍ تُجمَّع كانقالًا. والسبب في استخدام المكدس للمتغيّرات والمعطيات هو تفادي الحاجة إلى جمع القمامة في لغاتٍ لما كانت تتطلّبه لولا ذلك، ويُعتقد عمومًا أنّه أكفّ. وتستطيع مصرّفات Lisp المتطوّرة، في الواقع، استخدام المكدس للمعطيات دون أن تُفسد التعاوب الذيليّ. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Hanson-1990">هانسون 1990</a> لوصفٍ له.) ثمّة جدلٌ أيضًا حول ما إذا كان تخصيص المكدس أكفّ فعلًا من جمع القمامة في المقام الأوّل، لكنّ التفاصيل يبدو أنّها مرتهنةٌ بدقائق دقيقة في بنية الحاسوب. (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Appel-1987">آبل 1987</a> و<a href="https://sarabander.github.io/sicp/html/References.xhtml#Miller-and-Rozas-1994">ميلر وروزاس 1994</a> لرأيين متعارضين في هذه المسألة.) <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>المتغيّر <code>all-regs</code> مربوطٌ بأسماء كلّ المسجّلات: <code>scheme (define all-regs '(env proc val argl continue)) </code> <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+`,t={book:s,chapter:a,chapterTitle:n,slug:"4-2",title:e,headings:l,html:p};export{s as book,a as chapter,n as chapterTitle,t as default,l as headings,p as html,c as slug,e as title};

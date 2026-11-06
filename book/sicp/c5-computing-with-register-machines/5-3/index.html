@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Naskh+Arabic:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme');
+          if (theme === 'dark') {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <link href="../../../../_app/immutable/entry/start.C6hGpua7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/D48GbTL7.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DzHIunnK.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DRD7Fe-q.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/-UyI9lYi.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/entry/app.aeeFG9Oy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/Dp1pzeXC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/ajKRhI4c.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/YPb8p6nC.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/SSUUTvF3.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/0.Dh5PyVQG.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BfckxIoP.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/AHpcJv2x.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BaN5A5Yk.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BKuqSeVd.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BV_SoFfy.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/DNSXVn76.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/nodes/5.CXjS4wCz.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/UvN_Qp53.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/BChmDsSL.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/kf7A_Nuf.js" rel="modulepreload">
+		<link href="../../../../_app/immutable/chunks/TU3WBNBC.js" rel="modulepreload">
+		<!--12qhfyh--><meta name="description" content="ترجمات عربية كاملة لكتب علوم الحاسوب: الخوارزميات وبنى البيانات والأنظمة والشبكات وقواعد البيانات ولغات البرمجة، تُقرأ من المتصفّح."/><!----><!--1s55fxa--><meta name="description" content="5.3 تخصيص التخزين وجمع القمامة — الحوسبة بآلات المسجّلات"/><!----><title>5.3 تخصيص التخزين وجمع القمامة | بنية وتفسير برامج الحاسوب</title>
+		<link href="../../../../_app/immutable/assets/0.Ct6nQQu3.css" rel="stylesheet">
+		<link href="../../../../_app/immutable/assets/5.BaLHMABe.css" rel="stylesheet">
+  </head>
+  <body data-sveltekit-preload-data="hover">
+    <div style="display: contents"><!--[--><!--[0--><!--[--><a class="skip-link" href="#main">الانتقال إلى المحتوى</a> <header class="press-header"><div class="press-header__rule"></div> <div class="container press-header__inner"><a class="press-mark" href="../../../../"><span class="press-mark__name">المكتبة العربية</span> <span class="press-mark__desk">لعلوم الحاسوب</span></a> <form class="header-search" method="get" action="../../../../search" role="search"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"></circle><path d="M15 15l5 5"></path></svg> <input type="search" name="q" placeholder="ابحث في الكتب والأقسام…" value="" aria-label="البحث في المكتبة"/></form> <nav class="press-nav" aria-label="التنقل"><!--[--><a href="../../../../">المكتبة</a><a href="../../../../path">خارطة التعلّم</a><a href="../../../../about">عن المكتبة</a><!--]--> <a href="../../../../search">البحث</a></nav> <button class="press-nav theme-toggle" aria-label="تبديل السمة" title="تبديل السمة"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"></path></svg><!--]--></button> <button class="press-nav press-menu-toggle" aria-label="فتح القائمة" aria-expanded="false"><!--[-1--><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><!--]--></button></div></header> <main id="main"><!--[--><div class="reader-bar"><div class="container reader-bar__inner"><a class="reader-bar__book" href="../../../../book/sicp">بنية وتفسير برامج الحاسوب</a> <span class="reader-bar__chapter">› الحوسبة بآلات المسجّلات</span> <button class="reader-tool contents-toggle svelte-1s55fxa" aria-expanded="false" aria-controls="tour-reader-toc">فهرس الكتاب</button> <span class="reader-bar__spacer"></span> <span class="reader-tool" aria-label="الفصل 6 من 7">6 / 7</span> <button class="reader-tool"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-4-5 4z"></path></svg> احفظ</button> <!--[0--><a class="reader-tool" href="../../../../book/sicp/c5-computing-with-register-machines/5-2">السابق</a><!--]--> <!--[0--><a class="reader-tool" href="../../../../book/sicp/c5-computing-with-register-machines/5-4">التالي</a><!--]--></div> <div class="reader-progress" style="--progress:0"></div></div> <div class="container reader-layout svelte-1s55fxa"><aside id="tour-reader-toc" class="reader-aside svelte-1s55fxa" aria-label="فهرس الكتاب"><button class="reader-tool contents-close svelte-1s55fxa">إغلاق الفهرس</button> <p class="reader-aside__title">فهرس الكتاب</p> <!--[--><h3>مقدّمة الكتاب</h3> <ul><!--[--><li><a href="../../../../book/sicp/c0-frontmatter/index">مقدّمة الكتاب</a></li><li><a href="../../../../book/sicp/c0-frontmatter/taqdimah">تقدمة</a></li><li><a href="../../../../book/sicp/c0-frontmatter/tamhida-2nd">تمهيد للطبعة الثانية</a></li><li><a href="../../../../book/sicp/c0-frontmatter/tamhida-1st">تمهيد للطبعة الأولى</a></li><li><a href="../../../../book/sicp/c0-frontmatter/shukr-taqdir">شكر وتقدير</a></li><!--]--></ul><h3>بناء التجريدات بالإجراءات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/index">بناء التجريدات بالإجراءات</a></li><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/1-2">1.2 الإجراءات والعمليات التي تولّدها</a></li><li><a href="../../../../book/sicp/c1-building-abstractions-with-procedures/1-3">1.3 صياغة التجريدات بإجراءات عليا الرتبة</a></li><!--]--></ul><h3>بناء التجريدات بالبيانات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/index">بناء التجريدات بالبيانات</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-2">2.2 البيانات الهرميّة وخاصّيّة الإغلاق</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-3">2.3 البيانات الرمزيّة</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-4">2.4 تمثيلات متعدّدة للبيانات المجرّدة</a></li><li><a href="../../../../book/sicp/c2-building-abstractions-with-data/2-5">2.5 أنظمة ذات عمليّات عامّة</a></li><!--]--></ul><h3>الوحدانية والكائنات والحالة</h3> <ul><!--[--><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/index">الوحدانية والكائنات والحالة</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-2">3.2 نموذج البيئة للتقييم</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-3">3.3 النمذجة بالبيانات القابلة للتغيير</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-4">3.4 التزامن: الزمن أمرٌ جوهريّ</a></li><li><a href="../../../../book/sicp/c3-modularity-objects-and-state/3-5">3.5 المجاري</a></li><!--]--></ul><h3>التجريد فوق اللغوي</h3> <ul><!--[--><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/index">التجريد فوق اللغوي</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-2">4.2 تنويعات على Scheme — التقييم المتأخّر</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-3">4.3 تنويعات على Scheme — الحوسبة غير الحتميّة</a></li><li><a href="../../../../book/sicp/c4-metalinguistic-abstraction/4-4">4.4 البرمجة المنطقيّة</a></li><!--]--></ul><h3 class="active-chapter">الحوسبة بآلات المسجّلات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c5-computing-with-register-machines/index">الاحتساب بآلات المسجّلات</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-2">5.2 محاكي آلة مسجّلات</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-3" class="active">5.3 تخصيص التخزين وجمع القمامة</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-4">5.4 المقيّم ذو التحكّم الصريح</a></li><li><a href="../../../../book/sicp/c5-computing-with-register-machines/5-5">5.5 التصريف</a></li><!--]--></ul><h3>الملاحق والمصطلحات</h3> <ul><!--[--><li><a href="../../../../book/sicp/c6-backmatter/index">الملاحق والمصطلحات</a></li><li><a href="../../../../book/sicp/c6-backmatter/lista-tamrin">قائمة التمارين</a></li><li><a href="../../../../book/sicp/c6-backmatter/lista-ashkal">قائمة الأشكال</a></li><li><a href="../../../../book/sicp/c6-backmatter/bayanta-nashr">بيانات النشر</a></li><!--]--></ul><!--]--></aside> <article class="reader-sheet svelte-1s55fxa"><h1>5.3 تخصيص التخزين وجمع القمامة</h1> <!--[-1--><!--]--> <!--[-1--><div class="reader-content"><!----><h3 id="53-تخصيص-التخزين-وجمع-القمامة">5.3 تخصيص التخزين وجمع القمامة</h3>
+<p>في القسم <a href="https://sarabander.github.io/sicp/html/5_002e4.xhtml#g_t5_002e4">5.4</a>، سنُظهر كيف نُنفّذ مقيّم Scheme بوصفه آلة مسجّلات. ولتبسيط المناقشة، سنفترض أنّ آلات المسجّلات لدينا يمكن تجهيزها بـ<em>ذاكرةٍ مبنيّةٍ على القوائم (list-structured memory)</em>، تكون فيها العمليّات الأساسيّة للتلاعب ببياناتٍ مبنيّةٍ على القوائم أوّليّةً. وافتراض وجود مثل هذه الذاكرة تجريدٌ مفيدٌ حين يكون المرء مُركّزًا على آليّات التحكّم في مفسّر Scheme، لكنّه لا يعكس نظرةً واقعيّةً عن عمليّات البيانات الأوّليّة الفعليّة للحاسبات المعاصرة. ولكي نحصل على صورةٍ أكملَ عن كيف يعمل نظام Lisp، ينبغي أن نبحث كيف يمكن تمثيل بنية القائمة بطريقةٍ متوافقةٍ مع ذاكرات الحاسوب التقليديّة.</p>
+<p>ثمّة اعتباران في تنفيذ بنية القائمة. أمّا الأوّل فمسألة تمثيلٍ بحتة: كيف نُمثّل بنية «الصندوق والمؤشّر» (box-and-pointer) لأزواج Lisp، باستخدام قدرات التخزين والمعننة وحدها في ذاكرات الحاسوب النموذجيّة. وأمّا الاعتبار الثاني فيتعلّق بإدارة الذاكرة بينما يمضي الاحتساب. ويعتمد عمل نظام Lisp بشكلٍ حرجيٍّ على القدرة على إنشاء كائنات بياناتٍ جديدةٍ باستمرار. وتشمل هذه كائناتٍ تُنشَأ صراحةً بواسطة إجراءات Lisp التي يجري تفسيرها، فضلًا عن بنى يُنشئها المفسّر نفسه، كالبيئات وقوائم المعطيات. وعلى الرغم من أنّ إنشاء كائنات بياناتٍ جديدةٍ باستمرارٍ لن يُشكّل مشكلةً على حاسوبٍ يمتلك مقدارًا غير محدودٍ من الذاكرة سريعة العنونة، فإنّ ذاكرات الحاسوب متوفّرةٌ بأحجامٍ محدودةٍ فقط (للأسف الشديد). ولهذا تُوفّر أنظمة Lisp تسهيلًا لـ<em>التخصيص التلقائيّ للتخزين (automatic storage allocation)</em> دعّمًا لوهم الذاكرة غير المحدودة. وحين لم يَعد كائن بياناتٍ لازماً، تُعاد الذاكرة المُخصَّصة له تلقائيًّا وتُستخدم لبناء كائنات بياناتٍ جديدة. ثمّة تقنيّاتٌ متنوّعةٌ لتوفير مثل هذا التخصيص التلقائيّ للتخزين. وأمّا الطريقة التي سنناقشها في هذا القسم فتُسمّى <em>جمع القمامة (garbage collection)</em>.</p>
+<h4>5.3.1 الذاكرة كمتجهات</h4>
+<p>يمكن النظر إلى ذاكرة الحاسوب التقليديّة بوصفها مصفوفةً من الخزائن الصغيرة، كلٌّ منها يمكن أن يحتوي قطعةً من المعلومات. ولكلّ خزانةٍ صغيرةٍ اسمٌ فريد، يُسمّى <em>عنوانها</em> أو <em>موقعها</em>. وتوفّر نظم الذاكرة النموذجيّة عمليّتَين أوّليّتَين: إحداهما تجلب البيانات المخزّنة في موقعٍ محدَّدٍ، والأخرى تُحلّل بيانات جديدة إلى موقعٍ محدَّدٍ. ويمكن زيادة عناوين الذاكرة لدعم النفاذ المتسلسل إلى مجموعةٍ ما من الخزائن الصغيرة. وبصورةٍ أعمّ، فإنّ عمليّات بياناتٍ مهمّةً كثيرةً تتطلّب أن تُعامَل عناوين الذاكرة كبياناتٍ، يمكن تخزينها في مواقع الذاكرة والتلاعب بها في مسجّلات الآلة. وتمثيل بنية القائمة أحد تطبيقات ما يُعرف بـ<em>حساب العناوين (address arithmetic)</em>.</p>
+<p>ولنمذجة ذاكرة الحاسوب، نستخدم نوعًا جديدًا من بنى البيانات يُسمّى <em>متجهًا (vector)</em>. وتجرّديًّا، المتجه كائن بياناتٍ مركّبٌ يمكن النفاذ إلى عناصره الفرديّة بواسطة فهرس (index) صحيحٍ في مقدارٍ من الزمن مستقلٌّ عن الفهرس.<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> ولكي نوصف عمليّات الذاكرة، نستخدم إجراءَي Scheme أوّليّين للتلاعب بالمتجهات:</p>
+<ul>
+<li>يُعيد <code>(vector-ref ⟨vector⟩ ⟨n⟩)</code> العنصر رقم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">n^{th}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">h</span></span></span></span></span></span></span></span></span></span></span></span> من المتجه.</li>
+<li>يضبط <code>(vector-set! ⟨vector⟩ ⟨n⟩ ⟨value⟩)</code> العنصر رقم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>n</mi><mrow><mi>t</mi><mi>h</mi></mrow></msup></mrow><annotation encoding="application/x-tex">n^{th}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8491em;"></span><span class="mord"><span class="mord mathnormal">n</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8491em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="katex-sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">h</span></span></span></span></span></span></span></span></span></span></span></span> من المتجه على القيمة المعيَّنة.</li>
+</ul>
+<p>فمثلًا، إذا كان <code>v</code> متجهًا، فإنّ <code>(vector-ref v 5)</code> يُحضِر المدخل الخامس في المتجه <code>v</code> و<code>(vector-set! v 5 7)</code> يُغيّر قيمة المدخل الخامس في المتجه <code>v</code> إلى 7.<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> أمّا في ذاكرة الحاسوب، فيمكن تنفيذ هذا النفاذ باستخدام حساب العناوين لدمج <em>عنوانٍ أساس (base address)</em> يُحدّد موقع البداية لمتجهٍ في الذاكرة مع فهرس يُحدّد إزاحة عنصرٍ معيّنٍ من المتجه.</p>
+<h4>تمثيل بيانات Lisp</h4>
+<p>نستطيع استخدام المتجهات لتنفيذ بنى الأزواج الأساسيّة المطلوبة لذاكرةٍ مبنيّةٍ على القوائم (list-structured memory). فلنتخيّل أنّ ذاكرة الحاسوب مقسومةٌ إلى متجهين: <code>the-cars</code> و<code>the-cdrs</code>. وسنمثّل بنية القائمة على النحو الآتي: المؤشّر إلى زوجٍ هو فهرسٌ في المتجهين. و<code>car</code> الزوج هو المدخل في <code>the-cars</code> بالفهرس المعيَّن، و<code>cdr</code> الزوج هو المدخل في <code>the-cdrs</code> بالفهرس المعيَّن. ونحتاج أيضًا إلى تمثيلٍ لكائناتٍ غير الأزواج (كالأعداد والرموز) وإلى طريقةٍ لتمييز نوع بياناتٍ عن آخر. ثمّة طرائق كثيرةٌ لإنجاز ذلك، لكنّها جميعًا تُختزل إلى استخدام <em>مؤشّراتٍ معمَّمة النوع (typed pointers)</em>، أي توسيع مفهوم «المؤشّر» ليشمل معلومات عن نوع البيانات.<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup> ويمكّن نوع البيانات النظام من تمييز مؤشّرٍ إلى زوجٍ (وهو يتألّف من نوع البيانات «زوج» وفهرسٍ في متجهي الذاكرة) عن المؤشّرات إلى أنواع البيانات الأخرى (والتي تتألّف من نوع بياناتٍ آخر وممّا يُستخدم لتمثيل بيانات ذلك النوع). ويُعتبر كائنا بياناتٍ متطابقين (<code>eq?</code>) إذا كانت مؤشّراتهما متطابقة.<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup> ويُوضيّح <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">الشكل 5.14</a> استخدام هذه الطريقة لتمثيل القائمة <code>((1 2) 3 4)</code>، التي يُعرَض مخطّط الصندوق والمؤشّر لها أيضًا. ونستخدم بادئاتٍ حرفيّةً للدلالة على معلومات نوع البيانات. وهكذا، يُرمز إلى المؤشّر إلى الزوج ذي الفهرس 5 بـ<code>p5</code>، وتُرمَّز القائمة الخالية بمؤشّر <code>e0</code>، ويُرمز إلى المؤشّر إلى العدد 4 بـ<code>n4</code>. وفي مخطّط الصندوق والمؤشّر، أشرنا أسفل يسار كلّ زوجٍ إلى فهرس المتجه الذي يُحدّد أين تُخزَّن <code>car</code> الزوج و<code>cdr</code> الزوج. والمواقع الخالية في <code>the-cars</code> و<code>the-cdrs</code> قد تحتوي أجزاءً من بنى قوائمَ أخرى (غير ذات أهمّيّةٍ هنا).</p>
+<p><img src="/arabic-cs-library/images/sicp/c5-computing-with-register-machines-0-Fig5.14b.std.webp" alt=""></p>
+<p><strong>الشكل 5.14:</strong> تمثيل القائمة <code>((1 2) 3 4)</code> بمخطّط الصندوق والمؤشّر وبمتجهي الذاكرة.</p>
+<p>وقد يتألّف المؤشّر إلى عددٍ، مثل <code>n4</code>، من نوعٍ يدلّ على بيانات عدديّةٍ إلى جانب التمثيل الفعليّ للعدد 4.<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup> ولكي نتعامل مع الأعداد التي هي كبيرةٌ بحيث لا يمكن تمثيلها في المقدار الثابت من المساحة المُخصَّصة لمؤشّرٍ واحدٍ، فبوسعنا استخدام نوع بياناتٍ مستقلٍّ هو <em>الأعداد الضخمة (bignum)</em>، يكون فيه المؤشّر مُعيِّنًا لقائمةٍ تُخزَّن فيها أجزاء العدد.<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></p>
+<p>وقد يُمثَّل الرمز بمؤشّرٍ معمَّم النوع يُعيِّن تسلسلًا من المحارف التي تشكّل التمثيل المطبوع للرمز. ويُنشَأ هذا التسلسل بواسطة قارئ Lisp حين تُواجَه سلسلة المحارف أوّلَ ما تُواجَه في المُدخَل. وحيث إنّا نُريد أن يُتعرَّف على نسختين من رمزٍ بوصفهما «الرمز ذاته» بواسطة <code>eq?</code>، ونُريد أن يكون <code>eq?</code> اختبارًا بسيطًا لتساوي المؤشّرات، ينبغي أن نضمن أنّ قارئ الرموز، إذا رأى سلسلة المحارف ذاتها مرّتين، سيستخدم المؤشّر ذاته (إلى تسلسل المحارف ذاته) لتمثيل الحدثين. ولكي يُنجز ذلك، يُمسك القارئ جدولًا، يُسمّى تقليديًّا <em>مصفوفة الرموز (obarray)</em>، بجميع الرموز التي واجهها قطّ. وحين يواجه القارئ سلسلة محارفٍ ويكاد يبني رمزًا، يفحص مصفوفة الرموز ليرى هل واجه سلسلة المحارف ذاتها من قبل. فإن لم يكن قد واجهها، يستخدم المحارف لبناء رمزٍ جديد (مؤشّرٌ معمَّم النوع إلى تسلسل محارفٍ جديد) ويُدخل هذا المؤشّر في مصفوفة الرموز. وإن يكون القارئ قد واجه السلسلة من قبل، يُعيد مؤشّر الرمز المخزّون في مصفوفة الرموز. وتُسمّى عمليّة استبدال سلاسل المحارف بمؤشّراتٍ فريدةٍ <em>إدخال الرموز (interning)</em>.</p>
+<h4>تنفيذ عمليّات القائمة الأوّليّة</h4>
+<p>وبالنظر إلى مخطّط التمثيل أعلاه، نستطيع استبدال كلّ عمليّة قائمةٍ «أوّليّة» في آلة المسجّلات بعمليّة متجهٍ أوّليّةٍ أو أكثر. وسنستخدم مسجّلين، <code>the-cars</code> و<code>the-cdrs</code>، لتعيين متجهي الذاكرة، وسنفترض أنّ <code>vector-ref</code> و<code>vector-set!</code> متوفّرتان بوصفهما عمليّتَين أوّليّتَين. ونفترض أيضًا أنّ العمليّات العدديّة على المؤشّرات (كتزييد مؤشّرٍ، أو استخدام مؤشّر زوجٍ لفهرسة متجهٍ، أو جمع عددين) لا تستخدم إلّا جزء الفهرس من المؤشّر المعمَّم النوع.</p>
+<p>فمثلًا، نستطيع جعل آلة مسجّلاتٍ تدعم التعليمات</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> ⟨reg₁⟩ (<span class="hljs-name">op</span> car) (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+(<span class="hljs-name">assign</span> ⟨reg₁⟩ (<span class="hljs-name">op</span> cdr) (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+</code></pre>
+<p>إذا نفّذناها، على الترتيب، كـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> ⟨reg₁⟩ 
+        (<span class="hljs-name">op</span> vector-ref)
+        (<span class="hljs-name">reg</span> the-cars)
+        (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+(<span class="hljs-name">assign</span> ⟨reg₁⟩
+        (<span class="hljs-name">op</span> vector-ref)
+        (<span class="hljs-name">reg</span> the-cdrs)
+        (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+</code></pre>
+<p>أمّا التعليمات</p>
+<pre><code class="language-scheme">(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> set-car!) (<span class="hljs-name">reg</span> ⟨reg₁⟩) (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> set-cdr!) (<span class="hljs-name">reg</span> ⟨reg₁⟩) (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+</code></pre>
+<p>فمنفَّذةٌ كـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+         (<span class="hljs-name">reg</span> the-cars)
+         (<span class="hljs-name">reg</span> ⟨reg₁⟩)
+         (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+         (<span class="hljs-name">reg</span> the-cdrs)
+         (<span class="hljs-name">reg</span> ⟨reg₁⟩)
+         (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+</code></pre>
+<p>أمّا <code>cons</code> فيُؤدّى بتخصيص فهرسٍ غير مستخدمٍ وتخزين معطيّ <code>cons</code> في <code>the-cars</code> و<code>the-cdrs</code> في موضع المتجه المُفهرَس بذلك الفهرس. ونفترض وجود مسجّلٍ خاصٍّ، <code>free</code>، يحمل دائمًا مؤشّر زوجٍ يحتوي الفهرس المتوفّر التالي، وأنّه يمكننا تزييد جزء الفهرس من ذلك المؤشّر لإيجاد الموقع الحرّ التالي.<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup> فمثلًا، التعليمة</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> ⟨reg₁⟩
+        (<span class="hljs-name">op</span> cons)
+        (<span class="hljs-name">reg</span> ⟨reg₂⟩)
+        (<span class="hljs-name">reg</span> ⟨reg₃⟩))
+</code></pre>
+<p>منفَّذةٌ كتسلسل عمليّات المتجه الآتي:<sup class="footnote-ref"><a href="#fn8" id="fnref8">[8]</a></sup></p>
+<pre><code class="language-scheme">(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+         (<span class="hljs-name">reg</span> the-cars)
+         (<span class="hljs-name">reg</span> free)
+         (<span class="hljs-name">reg</span> ⟨reg₂⟩))
+(<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+         (<span class="hljs-name">reg</span> the-cdrs)
+         (<span class="hljs-name">reg</span> free)
+         (<span class="hljs-name">reg</span> ⟨reg₃⟩))
+(<span class="hljs-name">assign</span> ⟨reg₁⟩ (<span class="hljs-name">reg</span> free))
+(<span class="hljs-name">assign</span> free (<span class="hljs-name">op</span> +) (<span class="hljs-name">reg</span> free) (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+</code></pre>
+<p>أمّا عمليّة <code>eq?</code></p>
+<pre><code class="language-scheme">(<span class="hljs-name">op</span> eq?) (<span class="hljs-name">reg</span> ⟨reg₁⟩) (<span class="hljs-name">reg</span> ⟨reg₂⟩)
+</code></pre>
+<p>فتختبر ببساطةٍ تساوي جميع الحقول في المسجّلين، والمسيّمات مثل <code>pair?</code> و<code>null?</code> و<code>symbol?</code> و<code>number?</code> لا تحتاج إلّا إلى فحص حقل النوع.</p>
+<h4>تنفيذ المكدسات</h4>
+<p>وعلى الرغم من أنّ آلات المسجّلات لدينا تستخدم المكدسات، فليس علينا أن نفعل شيئًا خاصًّا هنا، إذ يمكن نمذجة المكدسات من حيث القوائم. فيمكن أن يكون المكدس قائمةً بالقيم المحفوظة، يُشير إليها مسجّلٌ خاصٌّ هو <code>the-stack</code>. وهكذا، يمكن تنفيذ <code>(save ⟨reg⟩)</code> كـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> the-stack 
+        (<span class="hljs-name">op</span> cons)
+        (<span class="hljs-name">reg</span> ⟨reg⟩)
+        (<span class="hljs-name">reg</span> the-stack))
+</code></pre>
+<p>وبالمثل، يمكن تنفيذ <code>(restore ⟨reg⟩)</code> كـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> ⟨reg⟩ (<span class="hljs-name">op</span> car) (<span class="hljs-name">reg</span> the-stack))
+(<span class="hljs-name">assign</span> the-stack (<span class="hljs-name">op</span> cdr) (<span class="hljs-name">reg</span> the-stack))
+</code></pre>
+<p>و<code>(perform (op initialize-stack))</code> يمكن تنفيذه كـ</p>
+<pre><code class="language-scheme">(<span class="hljs-name">assign</span> the-stack (<span class="hljs-name">const</span> ()))
+</code></pre>
+<p>يمكن توسيع هذه العمليّات أكثر بواسطة عمليّات المتجه (vector) المعطاة أعلاه. أمّا في البُنى الحاسوبيّة التقليديّة، فمن المفيدّ عادةً تخصيص المكدّس (stack) متجهًا (vector) منفصلًا. وعندئذٍ يمكن أداء الدفع إلى المكدّس وإخراج القيم منه بزيادة فهرسٍ داخل ذلك المتجه أو إنقاصه.</p>
+<p><strong>التمرين 5.20:</strong> ارسم تمثيل الصناديق والمؤشّرات (box-and-pointer) وتمثيل متجه الذاكرة (memory-vector) (كما في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">الشكل 5.14</a>) لبنية القائمة (list structure) الناتجة عن</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> x (<span class="hljs-name"><span class="hljs-built_in">cons</span></span> <span class="hljs-number">1</span> <span class="hljs-number">2</span>))
+(<span class="hljs-name"><span class="hljs-built_in">define</span></span> y (<span class="hljs-name"><span class="hljs-built_in">list</span></span> x x))
+</code></pre>
+<p>حيث يكون مؤشّر <code>free</code> في البدء عند <code>p1</code>. فما القيمة النهائيّة لـ<code>free</code>؟ وأيّ مؤشّرات تمثّل قيمتَي <code>x</code> و<code>y</code>؟</p>
+<p><strong>التمرين 5.21:</strong> نفّذ آلات مسجّلاتٍ للإجراءات الآتية. وافترض أنّ عمليّات ذاكرة بنية القوائم متاحة كأوّليّاتٍ آليّة.</p>
+<p>نسخة تعاوديّة من <code>count-leaves</code>:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">count-leaves</span> tree)
+  (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> tree) <span class="hljs-number">0</span>)
+        ((<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">pair?</span></span> tree)) <span class="hljs-number">1</span>)
+        (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+         (<span class="hljs-name"><span class="hljs-built_in">+</span></span> (<span class="hljs-name">count-leaves</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> tree))
+            (<span class="hljs-name">count-leaves</span> (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> tree))))))
+</code></pre>
+<p>نسخة تعاوديّة من <code>count-leaves</code> بعدّاد صريح:</p>
+<pre><code class="language-scheme">(<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">count-leaves</span> tree)
+  (<span class="hljs-name"><span class="hljs-built_in">define</span></span> (<span class="hljs-name">count-iter</span> tree n)
+    (<span class="hljs-name"><span class="hljs-built_in">cond</span></span> ((<span class="hljs-name"><span class="hljs-built_in">null?</span></span> tree) n)
+          ((<span class="hljs-name"><span class="hljs-built_in">not</span></span> (<span class="hljs-name"><span class="hljs-built_in">pair?</span></span> tree)) (<span class="hljs-name"><span class="hljs-built_in">+</span></span> n <span class="hljs-number">1</span>))
+          (<span class="hljs-name"><span class="hljs-built_in">else</span></span> 
+           (<span class="hljs-name">count-iter</span> 
+            (<span class="hljs-name"><span class="hljs-built_in">cdr</span></span> tree)
+            (<span class="hljs-name">count-iter</span> (<span class="hljs-name"><span class="hljs-built_in">car</span></span> tree) 
+                        n)))))
+  (<span class="hljs-name">count-iter</span> tree <span class="hljs-number">0</span>))
+</code></pre>
+<blockquote>
+<p><strong>التمرين 5.22:</strong> عرض <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#Exercise-3_002e12">التمرين 3.12</a> الوارد في <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1">3.3.1</a> إجراءَ <code>append</code> الذي يلحق قائمتين لتكوين قائمةٍ جديدة، وإجراءَ <code>append!</code> الذي يدمج قائمتين وصْلهما معًا. صمّم آلة مسجّلاتٍ لتنفيذ كلٍّ من هذين الإجراءين. وافترض أنّ عمليّات ذاكرة بنية القوائم متاحة كعمليّاتٍ أوّليّة.</p>
+</blockquote>
+<h4>5.3.2 الحفاظ على وهم الذاكرة غير المحدودة</h4>
+<p>طريقة التمثيل المُوجَزة في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.1</a> تحلّ مسألة تنفيذ بنية القوائم، شريطةَ أن تكون لدينا ذاكرةٌ غير محدودة. أمّا مع حاسوبٍ حقيقيّ، فسينفدنا في النهاية المكان الحُرّ الذي نُبنى فيه أزواجٌ جديدة.<sup class="footnote-ref"><a href="#fn9" id="fnref9">[9]</a></sup> غير أنّ معظم الأزواج المُولَّدة في احتسابٍ نموذجيٍّ لا تُستخدم إلّا للاحتفاظ بنتائج وسيطة. وبعد الاستفادة من هذه النتائج، لم تعُد الأزواج لازمةً — إنّها <em>قمامة</em> (garbage). فإنّ الاحتساب</p>
+<pre><code class="language-scheme">(<span class="hljs-name">accumulate</span> 
+ + 
+ <span class="hljs-number">0</span>
+ (<span class="hljs-name">filter</span> odd? (<span class="hljs-name">enumerate-interval</span> <span class="hljs-number">0</span> n)))
+</code></pre>
+<p>يبني قائمتين: التعداد ونتيجة ترشيح التعداد. وحين يكتمل التجميع، لم تعُد هاتان القائمتان لازمتين، ويمكن استعادة الذاكرة المخصَّصة. فإن تمكّنّا من جمع كلّ القمامة دوريًّا، وتمخّض ذلك عن إعادة تدوير الذاكرة بالسرعة ذاتها تقريبًا التي نُبنى بها أزواجٌ جديدة، فإنّنا نكون قد حافظنا على وهم وجود ذاكرةٍ غير محدودة.</p>
+<p>وحتى نُعيد تدوير الأزواج، ينبغي أن تكون لدينا طريقةٌ لتحديد الأزواج المخصَّصة غير اللازمة (بمعنى أنّ محتوياتها لم تعُد قادرةً على التأثير في مستقبل الاحتساب). والطريقة التي سنفحصها لإنجاز ذلك تُعرف بـ<em>جمع القمامة</em> (garbage collection). ويقوم جمع القمامة على الملاحظة أنّ الكائنات الوحيدة التي يمكنها التأثير في مستقبل الاحتساب، في أيّ لحظةٍ من تأويل Lisp، هي تلك التي يمكن الوصول إليها بسلسلةٍ من عمليّات <code>car</code> و<code>cdr</code> تبدأ من المؤشّرات الموجودة حاليًّا في مسجّلات الآلة.<sup class="footnote-ref"><a href="#fn10" id="fnref10">[10]</a></sup> ويمكن إعادة تدوير أيّ خليّة ذاكرةٍ غير متاحةٍ على هذا النحو.</p>
+<p>ثمّة طرائق كثيرةٌ لأداء جمع القمامة. والطريقة التي سنفحصها هنا تُسمّى <em>التوقّف والنسخ</em> (stop-and-copy). والفكرة الأساسيّة هي تقسيم الذاكرة إلى نصفين: «ذاكرة العمل» و«الذاكرة الحُرّة». وعندما يبني <code>cons</code> أزواجًا، فإنّه يخصّصها في ذاكرة العمل. وحين تمتلئ ذاكرة العمل، نؤدّي جمع القمامة بتحديد موقع جميع الأزواج المفيدة في ذاكرة العمل ونسخها في مواضعَ متتاليةٍ في الذاكرة الحُرّة. (وتُحدَّد مواقع الأزواج المفيدة بتتبّع جميع مؤشّري <code>car</code> و<code>cdr</code>، بدءًا من مسجّلات الآلة.) وبما أنّنا لا ننسخ القمامة، فسيكون هناك - على الأرجح - ذاكرةٌ حُرّةٌ إضافيّةٌ نستطيع استخدامها لتخصيص أزواجٍ جديدة. فضلًا عن ذلك، لا شيء في ذاكرة العمل لازَمٌ، إذ إنّ جميع الأزواج المفيدة فيها قد نُسخت. وبذلك، فإنّ تبادلنا أدوار ذاكرة العمل والذاكرة الحُرّة يمكنّنا من مواصلة المعالجة؛ وسيُخصَّص الأزواج الجديدة في ذاكرة العمل الجديدة (وهي الذاكرة الحُرّة القديمة). وحين تمتلئ تلك، نستطيع نسخ الأزواج المفيدة إلى الذاكرة الحُرّة الجديدة (وهي ذاكرة العمل القديمة).<sup class="footnote-ref"><a href="#fn11" id="fnref11">[11]</a></sup></p>
+<h4>تنفيذ جامع قمامةٍ بطريقة التوقّف والنسخ</h4>
+<p>نستخدم الآن لغة آلات المسجّلات لوصف خوارزميّة التوقّف والنسخ بتفصيلٍ أكثر. وسنفترض وجود مسجّلٍ يُسمّى <code>root</code> يحتوي مؤشّرًا إلى بنيةٍ تُشير في النهاية إلى جميع البيانات المتاحة. ويمكن ترتيب ذلك بتخزين محتويات جميع مسجّلات الآلة في قائمةٍ مخصَّصةٍ مسبقًا يُشير إليها <code>root</code> قبيل البدء في جمع القمامة.<sup class="footnote-ref"><a href="#fn12" id="fnref12">[12]</a></sup> ونفترض أيضًا أنّه - بالإضافة إلى ذاكرة العمل الحاليّة - ثمّة ذاكرةٌ حُرّةٌ متاحةٌ نستطيع نسخ البيانات المفيدة إليها. وتتألّف ذاكرة العمل الحاليّة من متجهاتٍ عناوينها الأساسيّة في مسجّلين يُسمّيان <code>the-cars</code> و<code>the-cdrs</code>، والذاكرة الحُرّة في مسجّلين يُسمّيان <code>new-cars</code> و<code>new-cdrs</code>.</p>
+<p>يُطلَق جمع القمامة حين نستنفد الخلايا الحُرّة في ذاكرة العمل الحاليّة، أي حين تحاول عمليّة <code>cons</code> زيادة المؤشّر <code>free</code> بما يتجاوز نهاية متجه الذاكرة. وحين يكتمل عمليّة جمع القمامة، سيُشير المؤشّر <code>root</code> إلى داخل الذاكرة الجديدة، وستكون جميع الكائنات المتاحة من <code>root</code> قد نُقلت إلى الذاكرة الجديدة، وسيُحدّد المؤشّر <code>free</code> الموضع التالي في الذاكرة الجديدة حيث يمكن تخصيص زوجٍ جديد. وبالإضافة إلى ذلك، تكون أدوار ذاكرة العمل والذاكرة الجديدة قد تبادلت — وسيُبنى الأزواج الجديدة في الذاكرة الجديدة، بدءًا من الموضع الذي يُحدّده <code>free</code>، وستكون ذاكرة العمل (السابقة) متاحةً بوصفها الذاكرة الجديدة لجمع القمامة التالي. ويُظهر <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">الشكل 5.15</a> ترتيب الذاكرة قبيل جمع القمامة وبعده بلحظة.</p>
+<p><img src="/arabic-cs-library/images/sicp/c5-computing-with-register-machines-1-Fig5.15c.std.webp" alt=""></p>
+<p><strong>الشكل 5.15:</strong> إعادة تشكيل الذاكرة بواسطة عمليّة جمع القمامة.</p>
+<p>تُضبَط حالة عمليّة جمع القمامة بالإبقاء على مؤشّرين: <code>free</code> و<code>scan</code>. ويُهيَّأ هذان المؤشّران ليُشيرا إلى بداية الذاكرة الجديدة. وتبدأ الخوارزميّة بنقل الزوج الذي يُشير إليه <code>root</code> إلى بداية الذاكرة الجديدة. فيُنسخ الزوج، ويُعدَّل المؤشّر <code>root</code> ليُشير إلى الموقع الجديد، وتُزاد قيمة المؤشّر <code>free</code>. وبالإضافة إلى ذلك، يُؤشَّر الموقع القديم للزوج لإظهار أنّ محتوياته قد نُقلت. ويُنجز هذا التأشير على النحو الآتي: في موضع <code>car</code>، نضع وسمًا خاصًّا يُشير إلى أنّ هذا كائنٌ قد نُقل بالفعل. (ويُسمّى مثل هذا الكائن تقليديًّا <em>القلب المكسور</em> (broken heart).)<sup class="footnote-ref"><a href="#fn13" id="fnref13">[13]</a></sup> وفي موضع <code>cdr</code> نضع <em>عنوان إعادة التوجيه</em> (forwarding address) الذي يُشير إلى الموقع الذي نُقل إليه الكائن.</p>
+<p>وبعد نقل الجذر، يدخل جامع القمامة دورته الأساسيّة. وفي كلّ خطوةٍ من الخوارزميّة، يُشير المؤشّر <code>scan</code> (الذي يُشير في البدء إلى الجذر المنقول) إلى زوجٍ نُقل إلى الذاكرة الجديدة لكنّ مؤشّريه <code>car</code> و<code>cdr</code> ما زالا يُشيران إلى كائناتٍ في الذاكرة القديمة. وتُنقل هذه الكائنات كلٌّ منها، وتُزاد قيمة المؤشّر <code>scan</code>. ولنقل كائنٍ (مثلًا الكائن الذي يُحدّده مؤشّر <code>car</code> للزوج الذي نمسحه) نتحقّق مما إذا كان الكائن قد نُقل بالفعل (كما يُبيّنه وجود وسم القلب المكسور في موضع <code>car</code> للكائن). فإن لم يكن الكائن قد نُقل بالفعل، ننسخه إلى الموضع الذي يُحدّده <code>free</code>، ونُحدّث <code>free</code>، ونُنشئ قلبًا مكسورًا في الموقع القديم للكائن، ونُحدّث المؤشّر إلى الكائن (في هذا المثال، مؤشّر <code>car</code> للزوج الذي نمسحه) ليُشير إلى الموقع الجديد. وإن كان الكائن قد نُقل بالفعل، فتُستبدل قيمة عنوان إعادة التوجيه الخاص به (الموجود في موضع <code>cdr</code> من القلب المكسور) بالمؤشّر في الزوج الذي يُمسح. وفي النهاية، ستكون جميع الكائنات المتاحة قد نُقلت ومُسحت، وعندئذٍ يفوق المؤشّر <code>scan</code> المؤشّر <code>free</code> وتنتهي العمليّة.</p>
+<p>يمكننا تحديد خوارزميّة التوقّف والنسخ كسلسلةٍ من التعليمات لآلة مسجّلات. أمّا الخطوة الأساسيّة في نقل كائنٍ فتتمّ بروتينٍ فرعيٍّ يُسمّى <code>relocate-old-result-in-new</code>. ويحصل هذا الروتين الفرعيّ على معطاه، وهو مؤشّرٌ إلى الكائن المطلوب نقله، من مسجّلٍ يُسمّى <code>old</code>. وهو ينقل الكائن المعيَّن (بزيادة <code>free</code> أثناء ذلك)، ويضع مؤشّرًا إلى الكائن المنقول في مسجّلٍ يُسمّى <code>new</code>، ويعود بالتفرّع إلى نقطة الدخول المخزّنة في المسجّل <code>relocate-continue</code>. وللبدء في جمع القمامة، نستدعي هذا الروتين الفرعيّ لنقل مؤشّر <code>root</code>، بعد تهيئة <code>free</code> و<code>scan</code>. وحين يُنجز نقل <code>root</code>، نُنصّب المؤشّر الجديد بوصفه <code>root</code> الجديد وندخل الحلقة الرئيسيّة لجامع القمامة.</p>
+<pre><code class="language-scheme">begin-garbage-collection
+  (<span class="hljs-name">assign</span> free (<span class="hljs-name">const</span> <span class="hljs-number">0</span>))
+  (<span class="hljs-name">assign</span> scan (<span class="hljs-name">const</span> <span class="hljs-number">0</span>))
+  (<span class="hljs-name">assign</span> old (<span class="hljs-name">reg</span> root))
+  (<span class="hljs-name">assign</span> relocate-continue 
+          (<span class="hljs-name">label</span> reassign-root))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> relocate-old-result-in-new))
+reassign-root
+  (<span class="hljs-name">assign</span> root (<span class="hljs-name">reg</span> new))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> gc-loop))
+</code></pre>
+<p>في الحلقة الرئيسيّة لجامع القمامة، ينبغي أن نُحدّد فيما إذا كانت ثمّة كائناتٌ أخرى تبقّى مسحها. ونفعل ذلك باختبار تطابق المؤشّر <code>scan</code> مع المؤشّر <code>free</code>. فإن كان المؤشّران متساويين، فقد نُقلت جميع الكائنات المتاحة، ونتفرّع إلى <code>gc-flip</code> الذي يُرتّب الأمور حتّى نستطيع مواصلة الاحتساب المُقاطَع. وإن كان ثمّة أزواجٌ تبقّى مسحها، نستدعي روتين النقل لنقل <code>car</code> الزوج التالي (بوضع مؤشّر <code>car</code> في <code>old</code>). ويُهيَّأ المسجّل <code>relocate-continue</code> بحيث يعود الروتين الفرعيّ لتحديث مؤشّر <code>car</code>.</p>
+<pre><code class="language-scheme">gc-loop
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> =) (<span class="hljs-name">reg</span> scan) (<span class="hljs-name">reg</span> free))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> gc-flip))
+  (<span class="hljs-name">assign</span> old 
+          (<span class="hljs-name">op</span> vector-ref)
+          (<span class="hljs-name">reg</span> new-cars)
+          (<span class="hljs-name">reg</span> scan))
+  (<span class="hljs-name">assign</span> relocate-continue 
+          (<span class="hljs-name">label</span> update-car))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> relocate-old-result-in-new))
+</code></pre>
+<p>عند <code>update-car</code>، نُعدّل مؤشّر <code>car</code> للزوج الذي يُمسح، ثم نمضي إلى نقل <code>cdr</code> الزوج. ونعود إلى <code>update-cdr</code> حين يُنجز ذلك النقل. وبعد نقل <code>cdr</code> وتحديثه، نكون قد أنينا من مسح ذلك الزوج، فنواصل في الحلقة الرئيسيّة.</p>
+<pre><code class="language-scheme">update-car
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> new-cars)
+           (<span class="hljs-name">reg</span> scan)
+           (<span class="hljs-name">reg</span> new))
+  (<span class="hljs-name">assign</span>  old 
+           (<span class="hljs-name">op</span> vector-ref)
+           (<span class="hljs-name">reg</span> new-cdrs)
+           (<span class="hljs-name">reg</span> scan))
+  (<span class="hljs-name">assign</span>  relocate-continue
+           (<span class="hljs-name">label</span> update-cdr))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> relocate-old-result-in-new))
+update-cdr
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> new-cdrs)
+           (<span class="hljs-name">reg</span> scan)
+           (<span class="hljs-name">reg</span> new))
+  (<span class="hljs-name">assign</span>  scan (<span class="hljs-name">op</span> +) (<span class="hljs-name">reg</span> scan) (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">label</span> gc-loop))
+</code></pre>
+<p>يُنقل الروتين الفرعيّ <code>relocate-old-result-in-new</code> الكائنات على النحو الآتي: فإن كان الكائن المطلوب نقله (الذي يُشير إليه <code>old</code>) ليس زوجًا، نُعيد المؤشّر ذاته إلى الكائن دون تغيير (في <code>new</code>). (فقد نكون مثلًا نمسح زوجًا <code>car</code> هو العدد 4. فإن مثّلنا <code>car</code> بـ<code>n4</code>، كما هو موصوف في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.1</a>، فنريد أن يبقى مؤشّر <code>car</code> «المنقول» هو <code>n4</code>.) وإلّا، ينبغي أن نُجري النقل. فإن احتوى موضع <code>car</code> للزوج المطلوب نقله على وسم القلب المكسور، فالزوج قد نُقل في الحقيقة بالفعل، فنستعيد عنوان إعادة التوجيه (من موضع <code>cdr</code> في القلب المكسور) ونُعيده في <code>new</code>. وإن كان المؤشّر في <code>old</code> يُشير إلى زوجٍ لم يُنقل بعد، ننقل الزوج إلى أوّل خليّة حُرّةٍ في الذاكرة الجديدة (التي يُشير إليها <code>free</code>) ونُنشئ قلبًا مكسورًا بتخزين وسم القلب المكسور وعنوان إعادة التوجيه في الموقع القديم. ويستخدم <code>relocate-old-result-in-new</code> مسجّلًا يُسمّى <code>oldcr</code> للاحتفاظ بـ<code>car</code> أو <code>cdr</code> للكائن الذي يُشير إليه <code>old</code>.<sup class="footnote-ref"><a href="#fn14" id="fnref14">[14]</a></sup></p>
+<pre><code class="language-scheme">relocate-old-result-in-new
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> pointer-to-pair?) (<span class="hljs-name">reg</span> old))
+  (<span class="hljs-name">branch</span> (<span class="hljs-name">label</span> pair))
+  (<span class="hljs-name">assign</span> new (<span class="hljs-name">reg</span> old))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> relocate-continue))
+pair
+  (<span class="hljs-name">assign</span>  oldcr 
+           (<span class="hljs-name">op</span> vector-ref)
+           (<span class="hljs-name">reg</span> the-cars)
+           (<span class="hljs-name">reg</span> old))
+  (<span class="hljs-name">test</span> (<span class="hljs-name">op</span> broken-heart?) (<span class="hljs-name">reg</span> oldcr))
+  (<span class="hljs-name">branch</span>  (<span class="hljs-name">label</span> already-moved))
+  (<span class="hljs-name">assign</span>  new (<span class="hljs-name">reg</span> free)) <span class="hljs-comment">; new location for pair</span>
+  <span class="hljs-comment">;; Update free pointer.</span>
+  (<span class="hljs-name">assign</span> free (<span class="hljs-name">op</span> +) (<span class="hljs-name">reg</span> free) (<span class="hljs-name">const</span> <span class="hljs-number">1</span>))
+  <span class="hljs-comment">;; Copy the car and cdr to new memory.</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> new-cars)
+           (<span class="hljs-name">reg</span> new)
+           (<span class="hljs-name">reg</span> oldcr))
+  (<span class="hljs-name">assign</span>  oldcr 
+           (<span class="hljs-name">op</span> vector-ref)
+           (<span class="hljs-name">reg</span> the-cdrs)
+           (<span class="hljs-name">reg</span> old))
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> new-cdrs)
+           (<span class="hljs-name">reg</span> new)
+           (<span class="hljs-name">reg</span> oldcr))
+  <span class="hljs-comment">;; Construct the broken heart.</span>
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> the-cars)
+           (<span class="hljs-name">reg</span> old)
+           (<span class="hljs-name">const</span> broken-heart))
+  (<span class="hljs-name">perform</span> (<span class="hljs-name">op</span> vector-set!)
+           (<span class="hljs-name">reg</span> the-cdrs)
+           (<span class="hljs-name">reg</span> old)
+           (<span class="hljs-name">reg</span> new))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> relocate-continue))
+already-moved
+  (<span class="hljs-name">assign</span>  new
+           (<span class="hljs-name">op</span> vector-ref)
+           (<span class="hljs-name">reg</span> the-cdrs)
+           (<span class="hljs-name">reg</span> old))
+  (<span class="hljs-name">goto</span> (<span class="hljs-name">reg</span> relocate-continue))
+</code></pre>
+<p>وفي نهاية عمليّة جمع القمامة تمامًا، نبادل دور الذاكرتين القديمة والجديدة بتبادل المؤشّرات: تبادل <code>the-cars</code> مع <code>new-cars</code>، و<code>the-cdrs</code> مع <code>new-cdrs</code>. وسنكون عندئذٍ على استعدادٍ لأداء جمع قمامةٍ آخر في المرّة التالية التي تنفد فيها الذاكرة.</p>
+<pre><code class="language-scheme">gc-flip
+  (<span class="hljs-name">assign</span> temp (<span class="hljs-name">reg</span> the-cdrs))
+  (<span class="hljs-name">assign</span> the-cdrs (<span class="hljs-name">reg</span> new-cdrs))
+  (<span class="hljs-name">assign</span> new-cdrs (<span class="hljs-name">reg</span> temp))
+  (<span class="hljs-name">assign</span> temp (<span class="hljs-name">reg</span> the-cars))
+  (<span class="hljs-name">assign</span> the-cars (<span class="hljs-name">reg</span> new-cars))
+  (<span class="hljs-name">assign</span> new-cars (<span class="hljs-name">reg</span> temp))
+</code></pre>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>كان بوسعنا تمثيل الذاكرة كقوائمَ من العناصر. لكن زمن الوصول لم يكن ليكون حينها مستقلًّا عن الفهرس، إذ إنّ الوصول إلى العنصر رقم <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> في قائمةٍ يتطلّب <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> عمليّة <code>cdr</code>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>تكاملًا، ينبغي أن نُحدّد عمليّة <code>make-vector</code> تبني المتجهات. لكن في التطبيق الحاضر سنستخدم المتجهات فقط لنمذجة تقسيماتٍ ثابتةٍ من ذاكرة الحاسوب. <a href="#fnref2" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn3" class="footnote-item"><p>هذه هي الفكرة عينها الخاصةّ بـ«البيانات الموسومة (tagged data)» التي أوردناها في <a href="https://sarabander.github.io/sicp/html/Chapter-2.xhtml#Chapter-2">الفصل 2</a> للتعامل مع العمليّات العامّة. لكن هنا تُدرَج أنواع البيانات في مستوى الآلة الأوّليّ بدلًا من بنائها باستخدام القوائم. <a href="#fnref3" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn4" class="footnote-item"><p>يمكن ترميز معلومات النوع بطرائق متنوّعة، حسب تفاصيل الآلة التي سيُنفّذ عليها نظام Lisp. وستعتمد كفاءة تنفيذ برامج Lisp بقوةٍ على مدى حكمة هذا الخيار، لكن من الصعب صياغة قواعد تصميمٍ عامّةٍ للخيارات الجيّدة. وأبسط طريقةٍ لتنفيذ المؤشّرات الموسومة بالنوع هي تخصيص مجموعةٍ ثابتةٍ من البتّات في كلّ مؤشّرٍ لتكون <em>حقل النوع</em> الذي يُرمز نوع البيانات. وتشمل الأسئلة المهمّة الواجب تناولها عند تصميم مثل هذا التمثيل ما يلي: كم بتّةٍ للنوع تلزم؟ وما الحجم الذي يجب أن تبلغه مؤشرات المتجهات؟ ومدى كفاءة استخدام تعليمات الآلة الأوّليّة في التلاعب بحقول نوع المؤشرات؟ وتُوصف الآلات التي تتضمّن عتادًا خاصًّا للتعامل الفعّال مع حقول النوع بأنّها <em>ذات بنيةٍ موسومة (tagged architectures)</em>. <a href="#fnref4" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn5" class="footnote-item"><p>يحدّد هذا القصد في تمثيل الأعداد ما إذا كان يمكن استخدام <code>eq?</code>، الذي يختبر تساوي المؤشرات، لاختبار تساوي الأعداد. فإذا احتوى المؤشّر على العدد نفسه، كانت للأعداد المتساوية المؤشّر نفسه. أمّا إذا احتوى المؤشّر على فهرس موضعٍ يُخزَّن فيه العدد، فلن يكون مضمونًا أن تكون للمتساوي من الأعداد مؤشرات متساوية إلّا إذا حرصنا على ألّا نخزّن العدد نفسه في أكثر من موضعٍ واحد. <a href="#fnref5" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn6" class="footnote-item"><p>هذا أشبه بكتابة عددٍ كتسلسلٍ من الأرقام، إلّا أنّ كلّ «رقم» هنا عددٌ يتراوح بين الصفر وأكبر عددٍ يمكن تخزينه في مؤشّرٍ واحد. <a href="#fnref6" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn7" class="footnote-item"><p>ثمّة طرق أخرى لإيجاد مواضع تخزينٍ حرّة. فيمكننا مثلًا ربط كلّ الأزواج غير المستخدمة بعضها ببعض في <em>قائمةٍ حرّة (free list)</em>. إنّ مواضعنا الحرّة متتالية (وبالتالي يمكن الوصول إليها بزيادة مؤشّرٍ) لأنّنا نستخدم جامع قمامةٍ ضاغطًا، كما سنرى في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.2</a>. <a href="#fnref7" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn8" class="footnote-item"><p>هذا هو في الجوهر تنفيذ <code>cons</code> بدلالة <code>set-car!</code> و<code>set-cdr!</code>، على النحو الموصوف في <a href="https://sarabander.github.io/sicp/html/3_002e3.xhtml#g_t3_002e3_002e1">3.3.1</a>. والعمليّة <code>get-new-pair</code> المستخدمة في ذلك التنفيذ تُنجَز هنا بواسطة المؤشّر <code>free</code>. <a href="#fnref8" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn9" class="footnote-item"><p>قد لا يبقى هذا صحيحًا في المستقبل، لأنّ الذاكرات قد تكبر حدًّا يستحيل معه نفاد الذاكرة الحرّة في عمر الحاسوب. ففي السنة نحو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> ميكروثانية، فلو أنّنا نُنشئ <code>cons</code> مرّةً كلّ ميكروثانية، لأضحى يلزمنا نحو <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>f</mi><mi>i</mi><mi>n</mi><mi>e</mi><mi>d</mi></mrow><annotation encoding="application/x-tex">undefined</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord mathnormal">u</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal" style="margin-right:0.1076em;">f</span><span class="mord mathnormal">in</span><span class="mord mathnormal">e</span><span class="mord mathnormal">d</span></span></span></span> خليّةٍ من الذاكرة لبناء آلةٍ تعمل ثلاثين سنةً دون أن تنفد ذاكرتها. وتبدو هذه الكميّة من الذاكرة سخيفةً بمعايير اليوم، لكنّها ليست مستحيلةً فيزيائيًّا. ومن جهةٍ أخرى، تصبح المعالجات أسرع فأسرع، وقد يضمّ حاسوب المستقبل أعدادًا كبيرةً من المعالجات تعمل على التوازي على ذاكرةٍ واحدة، فقد يصبح ممكنًا استهلاك الذاكرة أسرع بكثيرٍ ممّا افترضناه. <a href="#fnref9" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn10" class="footnote-item"><p>نفترض هنا أنّ المكدس ممثَّلٌ كقائمةٍ على النحو الموضح في <a href="/arabic-cs-library/book/sicp/c5-computing-with-register-machines/5-3/">5.3.1</a>، بحيث تكون عناصر المكدس قابلةً للوصول عبر المؤشّر الكائن في مسجّل المكدس. <a href="#fnref10" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn11" class="footnote-item"><p>ابتكر هذه الفكرة مينسكي ونفّذها أوّل مرّة، كجزءٍ من تنفيذ Lisp على آلة PDP-1 في مختبر أبحاث الإلكترونيات في MIT. وطوّرها <a href="https://sarabander.github.io/sicp/html/References.xhtml#Fenichel-and-Yochelson-_00281969_0029">فينيتشيل ويوكيلسون (1969)</a> لاستخدامها في تنفيذ Lisp الخاصّ بنظام المشاركة الزمنيّة Multics. ثمّ طور <a href="https://sarabander.github.io/sicp/html/References.xhtml#Baker-_00281978_0029">بايكر (1978)</a> نسخةً «في الزمن الحقيقي» من الطريقة، لا تتطلّب وقوف الاحتساب أثناء جمع القمامة. وامتدّت فكرة بايكر على يد هيويت وليبرمان ومون (انظر <a href="https://sarabander.github.io/sicp/html/References.xhtml#Lieberman-and-Hewitt-1983">ليبرمان وهيويت 1983</a>) لتستفيد من أنّ بعض البنى أكثر تقلّبًا وبعضها الآخر أكثر ديمومة. وثمّة تقنيّة أخرى شائعة لجمع القمامة هي طريقة <em>الكي والمسح (mark-sweep)</em>. وتتمثّل في تقفّي كلّ البنى القابلة للوصول من مسجّلات الآلة ووسم كلّ زوجٍ نصل إليه. ثمّ نمسح الذاكرة كلّها، وكلّ موضعٍ غير موسومٍ «يُكنس» كانقالًا للقمامة ويُتاح لإعادة الاستخدام. ويمكن العثور على مناقشةٍ كاملةٍ لطريقة الكي والمسح في <a href="https://sarabander.github.io/sicp/html/References.xhtml#Allen-1978">ألين 1978</a>. أمّا خوارزميّة مينسكي-فينيتشيل-يوكيلسون فهي الخوارزميّة السائدة في الأنظمة كبيرة الذاكرة، لأنّها لا تفحص إلّا الجزء المفيد من الذاكرة. وهذا بخلاف الكي والمسح، حيث ينبغي لمرحلة الكنس أن تفحص الذاكرة كلّها. وميزةٌ ثانية لطريقة التوقّف والنسخ أنّها جامع قمامةٍ <em>ضاغط (compacting)</em>. أي أنّ البيانات المفيدة ستنُقل في نهاية مرحلة جمع القمامة إلى مواضع ذاكرةٍ متتالية، مع ضغط كلّ الأزواج النفاية خارجها. وقد يكون هذا اعتبارًا بالغ الأهميّة للأداء في الآلات ذات الذاكرة الافتراضيّة، حيث قد يتطلّب الوصول إلى عناوين ذاكرةٍ متباعدةٍ بعيدًا عمليّاتِ تبديل صفحاتٍ إضافيّة. <a href="#fnref11" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn12" class="footnote-item"><p>لا تتضمّن قائمة المسجّلات هذه المسجّلات التي يستخدمها نظام تخصيص التخزين—<code>root</code> و<code>the-cars</code> و<code>the-cdrs</code> وغيرها من المسجّلات التي ستُعرَّف في هذا القسم. <a href="#fnref12" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn13" class="footnote-item"><p>اصطلح على مصطلح <em>القلب المكسور (broken heart)</em> ديفيد كريسي، الذي كتب جامع قمامةٍ للغة MDL، وهي لهجةٌ من Lisp طُوّرت في MIT في أوائل سبعينيّات القرن العشرين. <a href="#fnref13" class="footnote-backref">↩︎</a></p>
+</li>
+<li id="fn14" class="footnote-item"><p>يستخدم جامع القمامة المُسَيِّم منخفض المستوى <code>pointer-to-pair?</code> بدلًا من عمليّة بنية القوائم <code>pair?</code>، لأنّه قد توجد في نظامٍ حقيقيّ أمورٌ شتّى تُعامَل معاملة الأزواج لأغراض جمع القمامة. ففي نظامٍ من أنظمة Scheme مطابق لمعيار IEEE، مثلًا، قد يُنفّذ كائن الإجراء كنوعٍ خاصّ من «الزوج» لا يحقّقه المسيّم <code>pair?</code>. ولأغراض المحاكاة، يمكن تنفيذ <code>pointer-to-pair?</code> بدلالة <code>pair?</code>. <a href="#fnref14" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+<!----> <!--[-1--><!--]--></div><!--]--> <div class="prev-next"><!--[0--><a href="../../../../book/sicp/c5-computing-with-register-machines/5-2"><span class="prev-next__label">السابق</span> <span class="prev-next__title">5.2 محاكي آلة مسجّلات</span></a><!--]--> <!--[0--><a href="../../../../book/sicp/c5-computing-with-register-machines/5-4"><span class="prev-next__label">التالي</span> <span class="prev-next__title">5.4 المقيّم ذو التحكّم الصريح</span></a><!--]--></div></article></div><!--]--><!----></main> <footer class="press-footer"><div class="container press-footer__inner"><div><p>المكتبة العربية لعلوم الحاسوب — مشروع ترجمة عربية غير رسمي وغير تجاري. جميع الحقوق
+        الفكرية للمؤلفين الأصليين، وكل كتاب يحتفظ بترخيصه الأصلي المذكور في
+        صفحته.</p> <p>المحتوى الأصلي متاح على المواقع والمستودعات المذكورة في كل صفحة كتاب.</p></div> <nav class="press-footer__links" aria-label="روابط التذييل"><a href="../../../../">الكتب</a> <a href="../../../../path">خارطة التعلّم</a> <a href="../../../../search">البحث</a> <a href="../../../../about">عن المكتبة</a></nav></div></footer><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_cvii3e = {
+						base: new URL("../../../..", location).pathname.slice(0, -1),
+						assets: "/arabic-cs-library"
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../../../_app/immutable/entry/start.C6hGpua7.js"),
+						import("../../../../_app/immutable/entry/app.aeeFG9Oy.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

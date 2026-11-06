@@ -1,0 +1,340 @@
+const n="sicp",e="c6-backmatter",i="الملاحق والمصطلحات",a="index",t="الملاحق والمصطلحات",r=[{depth:2,id:"المراجع",text:"المراجع"}],o=`<h2 id="المراجع">المراجع</h2>
+<ol>
+<li>
+<p>هارولد أبيلسون، وأندرو برلين، وجاكوب كاتزنلسون، وويليام مكاليستر، وغييرمو روزاس، وجيرالد جاي سوسمان، وجاك ويزدم. 1992. «The Supercomputer Toolkit: A general framework for special-purpose computing». International Journal of High-Speed Electronics 3(3): 337-361 <a href="http://www.hpl.hp.com/techreports/94/HPL-94-30.html">–›</a></p>
+</li>
+<li>
+<p>جون ألين. 1978. «Anatomy of Lisp». نيويورك: McGraw-Hill.</p>
+</li>
+<li>
+<p>ANSI X3.226-1994. «American National Standard for Information Systems—Programming Language—Common Lisp».</p>
+</li>
+<li>
+<p>أندرو دبليو. آبل. 1987. «Garbage collection can be faster than stack allocation». Information Processing Letters 25(4): 275-279 <a href="https://www.cs.princeton.edu/~appel/papers/45.ps">–›</a></p>
+</li>
+<li>
+<p>جون باكوس. 1978. «Can programming be liberated from the von Neumann style». Communications of the ACM 21(8): 613-641 <a href="http://worrydream.com/refs/Backus-CanProgrammingBeLiberated.pdf">–›</a></p>
+</li>
+<li>
+<p>هنري جي. بيكر الابن. 1978. «List processing in real time on a serial computer». Communications of the ACM 21(4): 280-293 <a href="http://dspace.mit.edu/handle/1721.1/41976">–›</a></p>
+</li>
+<li>
+<p>جون باتالي، ونيل مايل، وهاوارد شروب، وجيرالد جاي سوسمان، ودانييل وايز. 1982. «The Scheme-81 architecture—System and chip». في وقائع MIT Conference on Advanced Research in VLSI, تحرير بول بينفيلد الابن ديدام، ماساتشوستس: Artech House.</p>
+</li>
+<li>
+<p>آلان بورنينغ. 1977. «ThingLab—An object-oriented system for building simulations using constraints». في وقائع 5th International Joint Conference on Artificial Intelligence <a href="http://ijcai.org/Past%20Proceedings/IJCAI-77-VOL1/PDF/085.pdf">–›</a></p>
+</li>
+<li>
+<p>آلان بورودين، وإيان مونرو. 1975. «The Computational Complexity of Algebraic and Numeric Problems». نيويورك: American Elsevier.</p>
+</li>
+<li>
+<p>غريغوري جي. شيتين. 1975. «Randomness and mathematical proof». Scientific American 232(5): 47-52 <a href="https://www.cs.auckland.ac.nz/~chaitin/sciamer.html">–›</a></p>
+</li>
+<li>
+<p>ألونزو تشرتش. 1941. «The Calculi of Lambda-Conversion». برينستون، نيو جيرسي: Princeton University Press.</p>
+</li>
+<li>
+<p>كيث إل. كلارك. 1978. «Negation as failure». في Logic and Data Bases. نيويورك: Plenum Press, ص. 293-322 <a href="http://www.doc.ic.ac.uk/~klc/neg.html">–›</a></p>
+</li>
+<li>
+<p>ويليام كلينغر. 1982. «Nondeterministic call by need is neither lazy nor by name». في وقائع ACM Symposium on Lisp and Functional Programming, ص. 226-234.</p>
+</li>
+<li>
+<p>ويليام كلينغر، وجوناثان ريز. 1991. «Macros that work». في وقائع 1991 ACM Conference on Principles of Programming Languages, ص. 155-162 <a href="http://mumble.net/~jar/pubs/macros_that_work.ps">–›</a></p>
+</li>
+<li>
+<p>أ. كولميرو، وإتش. كانوي، وآر. باسيرو، وبي. روسو. 1973. «Un système de communication homme-machine en français». تقرير تقني، Groupe Intelligence Artificielle, Université d’Aix Marseille, Luminy <a href="http://alain.colmerauer.free.fr/alcol/ArchivesPublications/HommeMachineFr/HoMa.pdf">–›</a></p>
+</li>
+<li>
+<p>توماس كورمن، وتشارلز ليسيرسون، ورونالد ريڤست. 1990. «Introduction to Algorithms». كامبريدج، ماساتشوستس: MIT Press.</p>
+</li>
+<li>
+<p>جون دارلينغتون، وبيتر هندرسون، وديفيد تيرنر. 1982. «Functional Programming and Its Applications». نيويورك: Cambridge University Press.</p>
+</li>
+<li>
+<p>إدسخر دبليو. ديكسترا. 1968a. «The structure of the “THE” multiprogramming system». Communications of the ACM 11(5): 341-346 <a href="http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD196.PDF">–›</a></p>
+</li>
+<li>
+<p>إدسخر دبليو. ديكسترا. 1968b. «Cooperating sequential processes». في Programming Languages, تحرير إف. جينويس. نيويورك: Academic Press, ص. 43-112 <a href="http://www.cs.utexas.edu/users/EWD/ewd01xx/EWD123.PDF">–›</a></p>
+</li>
+<li>
+<p>هاوارد بي. داينزمان. 1968. «Superior Mathematical Puzzles». نيويورك: Simon and Schuster.</p>
+</li>
+<li>
+<p>جوهان دي كلير، وجون دويل، وغاي ستيل، وجيرالد جاي سوسمان. 1977. «AMORD: Explicit control of reasoning». في وقائع ACM Symposium on Artificial Intelligence and Programming Languages, ص. 116-125 <a href="http://dspace.mit.edu/handle/1721.1/5750">–›</a></p>
+</li>
+<li>
+<p>جون دويل. 1979. «A truth maintenance system». Artificial Intelligence 12: 231-272 <a href="http://dspace.mit.edu/handle/1721.1/5733">–›</a></p>
+</li>
+<li>
+<p>إدوارد فيغنباوم، وهاوارد شروب. 1993. «The Japanese National Fifth Generation Project: Introduction, survey, and evaluation». في Future Generation Computer Systems, المجلد 9, ص. 105-117 <a href="https://saltworks.stanford.edu/assets/kv359wz9060.pdf">–›</a></p>
+</li>
+<li>
+<p>مارك فيلي. 1986. «Deux approches à l’implantation du language Scheme». رسالة ماجستير، Université de Montréal <a href="http://www.iro.umontreal.ca/~feeley/papers/FeeleyMSc.pdf">–›</a></p>
+</li>
+<li>
+<p>مارك فيلي وغاي لابالم. 1987. «Using closures for code generation». Journal of Computer Languages 12(1): 47-66 <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.90.6978">–›</a></p>
+</li>
+<li>
+<p>ويليام فيلر. 1957. «An Introduction to Probability Theory and Its Applications, volume 1». نيويورك: John Wiley &amp; Sons.</p>
+</li>
+<li>
+<p>آر. فينيشيل، وجي. يوخيلسون. 1969. «A Lisp garbage collector for virtual memory computer systems». Communications of the ACM 12(11): 611-612 <a href="https://www.cs.purdue.edu/homes/hosking/690M/p611-fenichel.pdf">–›</a></p>
+</li>
+<li>
+<p>روبرت فلويد. 1967. «Nondeterministic algorithms». JACM, 14(4): 636-644 <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.332.36">–›</a></p>
+</li>
+<li>
+<p>كينيث دي. فوربس، وجوهان دي كلير. 1993. «Building Problem Solvers». كامبريدج، ماساتشوستس: MIT Press.</p>
+</li>
+<li>
+<p>دانييل بي. فريدمان، وديفيد إس. وايز. 1976. «CONS should not evaluate its arguments». في Automata, Languages, and Programming: Third International Colloquium, تحرير إس. مايكلسون and آر. ميلنر, ص. 257-284 <a href="https://www.cs.indiana.edu/cgi-bin/techreports/TRNNN.cgi?trnum=TR44">–›</a></p>
+</li>
+<li>
+<p>دانييل بي. فريدمان، وميتشل واند، وكريستوفر تي. هاينز. 1992. «Essentials of Programming Languages». كامبريدج، ماساتشوستس: MIT Press/McGraw-Hill.</p>
+</li>
+<li>
+<p>ريتشارد بي. غابرييل. 1988. «The Why of <em>Y</em>». Lisp Pointers 2(2): 15-25 <a href="http://www.dreamsongs.com/Files/WhyOfY.pdf">–›</a></p>
+</li>
+<li>
+<p>أديل غولدبرغ، وديفيد روبسون. 1983. «Smalltalk-80: The Language and Its Implementation». ريدينغ، ماساتشوستس: Addison-Wesley <a href="http://stephane.ducasse.free.fr/FreeBooks/BlueBook/Bluebook.pdf">–›</a></p>
+</li>
+<li>
+<p>مايكل غوردون، وروبن ميلنر، وكريستوفر وادسوورث. 1979. «Edinburgh LCF». Lecture Notes in Computer Science, المجلد 78. نيويورك: Springer-Verlag.</p>
+</li>
+<li>
+<p>جيم غراي، وأندرياس ريوتر. 1993. «Transaction Processing: Concepts and Models». سان ماتيو، كاليفورنيا: Morgan-Kaufman.</p>
+</li>
+<li>
+<p>كورديل غرين. 1969. «Application of theorem proving to problem solving». في وقائع International Joint Conference on Artificial Intelligence, ص. 219-240 <a href="http://citeseer.ist.psu.edu/viewdoc/summary?doi=10.1.1.81.9820">–›</a></p>
+</li>
+<li>
+<p>كورديل غرين، وبيرترام رافائيل. 1968. «The use of theorem-proving techniques in question-answering systems». في وقائع ACM National Conference, ص. 169-181 <a href="http://www.kestrel.edu/home/people/green/publications/green-raphael.pdf">–›</a></p>
+</li>
+<li>
+<p>مارتن إل. غريس. 1981. «Portable Standard Lisp, a brief overview». Utah Symbolic Computation Group Operating Note 58, University of Utah.</p>
+</li>
+<li>
+<p>جون في. غوتاغ. 1977. «Abstract data types and the development of data structures». Communications of the ACM 20(6): 396-404 <a href="http://www.unc.edu/~stotts/comp723/guttagADT77.pdf">–›</a></p>
+</li>
+<li>
+<p>ريتشارد دبليو. هامينغ. 1980. «Coding and Information Theory». إنجلوود كليفس، نيو جيرسي: Prentice-Hall.</p>
+</li>
+<li>
+<p>كريستوفر بي. هانسون. 1990. «Efficient stack allocation for tail-recursive languages». في وقائع ACM Conference on Lisp and Functional Programming, ص. 106-118 <a href="https://groups.csail.mit.edu/mac/ftpdir/users/cph/links.ps.gz">–›</a></p>
+</li>
+<li>
+<p>كريستوفر بي. هانسون. 1991. «A syntactic closures macro facility». Lisp Pointers, 4(3) <a href="http://groups.csail.mit.edu/mac/ftpdir/scheme-reports/synclo.ps">–›</a></p>
+</li>
+<li>
+<p>غودفري إتش. هاردي. 1921. «Srinivasa Ramanujan». Proceedings of the London Mathematical Society XIX(2)</p>
+</li>
+<li>
+<p>غودفري إتش. هاردي، وإي. إم. رايت. 1960. «An Introduction to the Theory of Numbers». الطبعة الرابعة. نيويورك: Oxford University Press <a href="https://archive.org/details/AnIntroductionToTheTheoryOfNumbers-4thEd-G.h.HardyE.m.Wright">–›</a></p>
+</li>
+<li>
+<p>جي. هافندر. 1968. «Avoiding deadlocks in multi-tasking systems». IBM Systems Journal 7(2): 74-84.</p>
+</li>
+<li>
+<p>أنثوني سي. هيرن. 1969. «Standard Lisp». تقرير تقني AIM-90, Artificial Intelligence Project, Stanford University <a href="http://www.softwarepreservation.org/projects/LISP/stanford/Hearn-StandardLisp-AIM-90.pdf">–›</a></p>
+</li>
+<li>
+<p>بيتر هندرسون. 1980. «Functional Programming: Application and Implementation». إنجلوود كليفس، نيو جيرسي: Prentice-Hall.</p>
+</li>
+<li>
+<p>بيتر هندرسون. 1982. «Functional Geometry». في سجل وقائع 1982 ACM Symposium on Lisp and Functional Programming, ص. 179-187. , <a href="http://pmh-systems.co.uk/phAcademic/papers/funcgeo.pdf">–›</a> <a href="http://eprints.soton.ac.uk/257577/1/funcgeo2.pdf">–›</a></p>
+</li>
+<li>
+<p>كارل إي. هيويت. 1969. «PLANNER: A language for proving theorems in robots». في وقائع International Joint Conference on Artificial Intelligence, ص. 295-301 <a href="http://dspace.mit.edu/handle/1721.1/6171">–›</a></p>
+</li>
+<li>
+<p>كارل إي. هيويت. 1977. «Viewing control structures as patterns of passing messages». Journal of Artificial Intelligence 8(3): 323-364 <a href="http://dspace.mit.edu/handle/1721.1/6272">–›</a></p>
+</li>
+<li>
+<p>سي. إيه. آر. هور. 1972. «Proof of correctness of data representations». Acta Informatica 1(1)</p>
+</li>
+<li>
+<p>أندرو هودجز. 1983. «Alan Turing: The Enigma». نيويورك: Simon and Schuster.</p>
+</li>
+<li>
+<p>دوغلاس آر. هوفستادر. 1979. «Gödel, Escher, Bach: An Eternal Golden Braid». نيويورك: Basic Books.</p>
+</li>
+<li>
+<p>آر. جي. إم. هيوز. 1990. «Why functional programming matters». في Research Topics in Functional Programming, تحرير ديفيد تيرنر. ريدينغ، ماساتشوستس: Addison-Wesley, ص. 17-42 <a href="http://www.cs.kent.ac.uk/people/staff/dat/miranda/whyfp90.pdf">–›</a></p>
+</li>
+<li>
+<p>IEEE Std 1178-1990. 1990. «IEEE Standard for the Scheme Programming Language».</p>
+</li>
+<li>
+<p>بيتر إنغرمان، وإدغار آيرونز، وكيرك ستلي، ووالاس فورزيغ؛ بمساعدة إم. ليند، وهيربرت كانر، وروبرت فلويد. 1960. «THUNKS: A way of compiling procedure statements, with some comments on procedure declarations». مخطوطة غير منشورة. (فضلًا عن تواصل خاص مع والاس فورزيغ.)</p>
+</li>
+<li>
+<p>آن كالدِڤاي. 1990. «Programming: The Derivation of Algorithms». نيويورك: Prentice-Hall.</p>
+</li>
+<li>
+<p>دونالد إي. كنوث. 1973. «Fundamental Algorithms». المجلد 1 من The Art of Computer Programming. الطبعة الثانية. ريدينغ، ماساتشوستس: Addison-Wesley.</p>
+</li>
+<li>
+<p>دونالد إي. كنوث. 1981. «Seminumerical Algorithms». المجلد 2 من The Art of Computer Programming. الطبعة الثانية. ريدينغ، ماساتشوستس: Addison-Wesley.</p>
+</li>
+<li>
+<p>يوجين إدموند كولبيكر الابن. 1986. «Syntactic extensions in the programming language Lisp». أطروحة دكتوراه، Indiana University <a href="http://www.ccs.neu.edu/scheme/pubs/dissertation-kohlbecker.pdf">–›</a></p>
+</li>
+<li>
+<p>ميلوش كونوباسك، وسوندارسان جايارامان. 1984. «The TK!Solver Book: A Guide to Problem-Solving in Science, Engineering, Business, and Education». بركلي، كاليفورنيا: Osborne/McGraw-Hill.</p>
+</li>
+<li>
+<p>روبرت كوالسكي. 1973. «Predicate logic as a programming language». تقرير تقني 70, Department of Computational Logic, School of Artificial Intelligence, University of Edinburgh <a href="http://www.doc.ic.ac.uk/~rak/papers/IFIP%2074.pdf">–›</a></p>
+</li>
+<li>
+<p>روبرت كوالسكي. 1979. «Logic for Problem Solving». نيويورك: North-Holland <a href="http://www.doc.ic.ac.uk/%7Erak/papers/LogicForProblemSolving.pdf">–›</a></p>
+</li>
+<li>
+<p>ليزلي لامبورت. 1978. «Time, clocks, and the ordering of events in a distributed system». Communications of the ACM 21(7): 558-565 <a href="http://research.microsoft.com/en-us/um/people/lamport/pubs/time-clocks.pdf">–›</a></p>
+</li>
+<li>
+<p>باتلر لامبسون، وجي. جي. هورنينغ، وآر. لندن، وجي. جي. ميتشل، وجي. كي. بوبك. 1981. «Report on the programming language Euclid». تقرير تقني، Computer Systems Research Group, University of Toronto <a href="http://www.bitsavers.org/pdf/xerox/parc/techReports/CSL-81-12_Report_On_The_Programming_Language_Euclid.pdf">–›</a></p>
+</li>
+<li>
+<p>بيتر لاندين. 1965. «A correspondence between Algol 60 and Church’s lambda notation: Part I». Communications of the ACM 8(2): 89-101.</p>
+</li>
+<li>
+<p>هنري ليبرمان، وكارل إي. هيويت. 1983. «A real-time garbage collector based on the lifetimes of objects». Communications of the ACM 26(6): 419-429 <a href="http://dspace.mit.edu/handle/1721.1/6335">–›</a></p>
+</li>
+<li>
+<p>باربارا إتش. ليسكوف، وستيفن إن. زيلز. 1975. «Specification techniques for data abstractions». IEEE Transactions on Software Engineering 1(1): 7-19 <a href="http://csg.csail.mit.edu/CSGArchives/memos/Memo-117.pdf">–›</a></p>
+</li>
+<li>
+<p>ديفيد ألين مكاليستر. 1978. «A three-valued truth-maintenance system». Memo 473, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/6296">–›</a></p>
+</li>
+<li>
+<p>ديفيد ألين مكاليستر. 1980. «An outlook on truth maintenance». Memo 551, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/6327">–›</a></p>
+</li>
+<li>
+<p>جون مكارثي. 1960. «Recursive functions of symbolic expressions and their computation by machine». Communications of the ACM 3(4): 184-195 <a href="http://www-formal.stanford.edu/jmc/recursive.pdf">–›</a></p>
+</li>
+<li>
+<p>جون مكارثي. 1963. «A basis for a mathematical theory of computation». في Computer Programming and Formal Systems, تحرير بي. برافورت and دي. هيرشبرغ. North-Holland <a href="http://www-formal.stanford.edu/jmc/basis.html">–›</a></p>
+</li>
+<li>
+<p>جون مكارثي. 1978. «The history of Lisp». في وقائع ACM SIGPLAN Conference on the History of Programming Languages <a href="http://www-formal.stanford.edu/jmc/history/lisp/lisp.html">–›</a></p>
+</li>
+<li>
+<p>جون مكارثي، وبي. دبليو. أبراهامز، ودي. جي. إدواردز، وتي. بي. هارت، وإم. آي. ليفين. 1965. «Lisp 1.5 Programmer’s Manual». الطبعة الثانية. كامبريدج، ماساتشوستس: MIT Press <a href="http://www.softwarepreservation.org/projects/LISP/book/LISP%201.5%20Programmers%20Manual.pdf/view">–›</a></p>
+</li>
+<li>
+<p>درو مكديرموت، وجيرالد جاي سوسمان. 1972. «Conniver reference manual». Memo 259, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/6203">–›</a></p>
+</li>
+<li>
+<p>غاري إل. ميلر. 1976. «Riemann’s Hypothesis and tests for primality». Journal of Computer and System Sciences 13(3): 300-317 <a href="http://www.cs.cmu.edu/~glmiller/Publications/b2hd-Mi76.html">–›</a></p>
+</li>
+<li>
+<p>جيمس إس. ميلر، وغييرمو جي. روزاس. 1994. «Garbage collection is fast, but a stack is faster». Memo 1462, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/6622">–›</a></p>
+</li>
+<li>
+<p>ديفيد مون. 1978. «MacLisp reference manual, Version 0». تقرير تقني، MIT Laboratory for Computer Science <a href="http://www.softwarepreservation.org/projects/LISP/MIT/Moon-MACLISP_Reference_Manual-Apr_08_1974.pdf/view">–›</a></p>
+</li>
+<li>
+<p>ديفيد مون، ودانييل واينرب. 1981. «Lisp machine manual». تقرير تقني، MIT Artificial Intelligence Laboratory <a href="http://www.unlambda.com/lmman/index.html">–›</a></p>
+</li>
+<li>
+<p>جي. إتش. موريس، وإريك شميت، وفيليب وادلر. 1980. «Experience with an applicative string processing language». في وقائع 7th Annual ACM SIGACT/SIGPLAN Symposium on the Principles of Programming Languages.</p>
+</li>
+<li>
+<p>هيوبرت فيليبس. 1934. «The Sphinx Problem Book». لندن: Faber and Faber.</p>
+</li>
+<li>
+<p>كنت بيتمان. 1983. «The revised MacLisp Manual (Saturday evening edition)». تقرير تقني 295, MIT Laboratory for Computer Science <a href="http://maclisp.info/pitmanual">–›</a></p>
+</li>
+<li>
+<p>مايكل أو. رابين. 1980. «Probabilistic algorithm for testing primality». Journal of Number Theory 12: 128-138.</p>
+</li>
+<li>
+<p>إريك ريموند. 1993. «The New Hacker’s Dictionary». الطبعة الثانية. كامبريدج، ماساتشوستس: MIT Press <a href="http://www.catb.org/jargon/">–›</a></p>
+</li>
+<li>
+<p>ميشال رينال. 1986. «Algorithms for Mutual Exclusion». كامبريدج، ماساتشوستس: MIT Press.</p>
+</li>
+<li>
+<p>جوناثان إيه. ريز، ونورمان آي. آدامز الرابع. 1982. «T: A dialect of Lisp or, lambda: The ultimate software tool». في سجل وقائع 1982 ACM Symposium on Lisp and Functional Programming, ص. 114-122 <a href="http://people.csail.mit.edu/riastradh/t/adams82t.pdf">–›</a></p>
+</li>
+<li>
+<p>جوناثان ريز، وويليام كلينغر (محرّران). 1991. «The revised⁴ report on the algorithmic language Scheme». Lisp Pointers, 4(3) <a href="http://people.csail.mit.edu/jaffer/r4rs.pdf">–›</a></p>
+</li>
+<li>
+<p>رونالد ريڤست، وعادي شامير، وليونارد أدليمان. 1977. «A method for obtaining digital signatures and public-key cryptosystems». مذكرة تقنية LCS/TM82, MIT Laboratory for Computer Science <a href="http://people.csail.mit.edu/rivest/Rsapaper.pdf">–›</a></p>
+</li>
+<li>
+<p>جي. إيه. روبنسون. 1965. «A machine-oriented logic based on the resolution principle». Journal of the ACM 12(1): 23.</p>
+</li>
+<li>
+<p>جي. إيه. روبنسون. 1983. «Logic programming—Past, present, and future». New Generation Computing 1: 107-124.</p>
+</li>
+<li>
+<p>يوجين إتش. سبافورد. 1989. «The Internet Worm: Crisis and aftermath». Communications of the ACM 32(6): 678-688 <a href="http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.123.8503&amp;rep=rep1&amp;type=pdf">–›</a></p>
+</li>
+<li>
+<p>غاي لويس ستيل الابن. 1977. «Debunking the “expensive procedure call” myth». في وقائع National Conference of the ACM, ص. 153-62 <a href="http://dspace.mit.edu/handle/1721.1/5753">–›</a></p>
+</li>
+<li>
+<p>غاي لويس ستيل الابن. 1982. «An overview of Common Lisp». في وقائع ACM Symposium on Lisp and Functional Programming, ص. 98-107.</p>
+</li>
+<li>
+<p>غاي لويس ستيل الابن. 1990. «Common Lisp: The Language». الطبعة الثانية. Digital Press <a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/cltl2.html">–›</a></p>
+</li>
+<li>
+<p>غاي لويس ستيل الابن، وجيرالد جاي سوسمان. 1975. «Scheme: An interpreter for the extended lambda calculus». Memo 349, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/5794">–›</a></p>
+</li>
+<li>
+<p>غاي لويس ستيل الابن، ودونالد آر. وودز، ورافائيل إيه. فينكل، ومارك آر. كريسبين، وريتشارد إم. ستالمان، وجيفري إس. غودفيلو. 1983. «The Hacker’s Dictionary». نيويورك: Harper &amp; Row <a href="http://www.dourish.com/goodies/jargon.html">–›</a></p>
+</li>
+<li>
+<p>جوزيف إي. ستوي. 1977. «Denotational Semantics». كامبريدج، ماساتشوستس: MIT Press.</p>
+</li>
+<li>
+<p>جيرالد جاي سوسمان، وريتشارد إم. ستالمان. 1975. «Heuristic techniques in computer-aided circuit analysis». IEEE Transactions on Circuits and Systems CAS-22(11): 857-865 <a href="http://dspace.mit.edu/handle/1721.1/5803">–›</a></p>
+</li>
+<li>
+<p>جيرالد جاي سوسمان، وغاي لويس ستيل الابن. 1980. «Constraints—A language for expressing almost-hierachical descriptions». AI Journal 14: 1-39 <a href="http://dspace.mit.edu/handle/1721.1/6312">–›</a></p>
+</li>
+<li>
+<p>جيرالد جاي سوسمان، وجاك ويزدم. 1992. «Chaotic evolution of the solar system». Science 257: 256-262 <a href="http://groups.csail.mit.edu/mac/users/wisdom/ss-chaos.pdf">–›</a></p>
+</li>
+<li>
+<p>جيرالد جاي سوسمان، وتيري وينوغراد، ويوجين تشارنياك. 1971. «Microplanner reference manual». Memo 203A, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/6184">–›</a></p>
+</li>
+<li>
+<p>إيفان إي. ساذرلاند. 1963. «SKETCHPAD: A man-machine graphical communication system». تقرير تقني 296, MIT Lincoln Laboratory <a href="https://www.cl.cam.ac.uk/techreports/UCAM-CL-TR-574.pdf">–›</a></p>
+</li>
+<li>
+<p>وارن تيتلمان. 1974. «Interlisp reference manual». تقرير تقني، Xerox Palo Alto Research Center <a href="http://www.softwarepreservation.org/projects/LISP/interlisp/Interlisp-Oct_1974.pdf/view">–›</a></p>
+</li>
+<li>
+<p>جيمس دبليو. تاتشر، وإريك جي. واغنر، وجيسي بي. رايت. 1978. «Data type specification: Parameterization and the power of specification techniques». في سجل وقائع Tenth Annual ACM Symposium on Theory of Computing, ص. 119-132.</p>
+</li>
+<li>
+<p>ديفيد تيرنر. 1981. «The future of applicative languages». في وقائع 3rd European Conference on Informatics, Lecture Notes in Computer Science, المجلد 123. نيويورك: Springer-Verlag, ص. 334-348.</p>
+</li>
+<li>
+<p>ميتشل واند. 1980. «Continuation-based program transformation strategies». Journal of the ACM 27(1): 164-180 <a href="http://www.diku.dk/OLD/undervisning/2005e/224/papers/Wand80.pdf">–›</a></p>
+</li>
+<li>
+<p>ريتشارد سي. ووترز. 1979. «A method for analyzing loop programs». IEEE Transactions on Software Engineering 5(3): 237-247.</p>
+</li>
+<li>
+<p>تيري وينوغراد. 1971. «Procedures as a representation for data in a computer program for understanding natural language». تقرير تقني AI TR-17, MIT Artificial Intelligence Laboratory <a href="http://dspace.mit.edu/handle/1721.1/7095">–›</a></p>
+</li>
+<li>
+<p>باتريك وينستون. 1992. «Artificial Intelligence». الطبعة الثالثة. ريدينغ، ماساتشوستس: Addison-Wesley.</p>
+</li>
+<li>
+<p>رامين زابيه، وديفيد مكاليستر، وديفيد شابمان. 1987. «Non-deterministic Lisp with dependency-directed backtracking». AAAI-87, ص. 59-64 <a href="http://www.aaai.org/Papers/AAAI/1987/AAAI87-011.pdf">–›</a></p>
+</li>
+<li>
+<p>ريتشارد زيبيل. 1979. «Probabilistic algorithms for sparse polynomials». أطروحة دكتوراه، Department of Electrical Engineering and Computer Science, MIT.</p>
+</li>
+<li>
+<p>ريتشارد زيبيل. 1993. «Effective Polynomial Computation». بوسطن، ماساتشوستس: Kluwer Academic Publishers.</p>
+</li>
+</ol>
+`,l={book:n,chapter:e,chapterTitle:i,slug:a,title:t,headings:r,html:o};export{n as book,e as chapter,i as chapterTitle,l as default,r as headings,o as html,a as slug,t as title};

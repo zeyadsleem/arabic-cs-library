@@ -1,0 +1,5 @@
+const t="sicp",e="c6-backmatter",a="الملاحق والمصطلحات",n="bayanta-nashr",o="بيانات النشر",c=[{depth:2,id:"بيانات-النشر",text:"بيانات النشر"}],s=`<h2 id="بيانات-النشر">بيانات النشر</h2>
+<p>يظهر على صفحة الغلاف آلية عجلة الكتب التي صمّمها أغوستينو راميلي عام 1588، ويمكن اعتبارها وسيلة مبكّرة للتنقّل التشعّبي. وتستضيف هذه الصورة للنقش جي. إي. جونسون من <a href="http://newgottland.com/2012/02/09/before-the-ereader-there-was-the-wheelreader/ramelli_bookwheel_1032px/">New Gottland</a>.</p>
+<p>والخطوط المستخدمة هي Linux Libertine لنصّ المتن، وLinux Biolinum للعناوين، وكلاهما من تصميم فيليب إتش. بول. أمّا خط الآلة الكاتبة فهو Inconsolata الذي أنشأه راف ليفين وأكمله ديموستينيس كابونيس وتاكاشي تانيغاوا في صورته Inconsolata LGC.</p>
+<p>والتصميم الغرافيكي والطباعة من عمل أندريس رابا. ويُحوَّل مصدر Texinfo إلى HTML باستخدام نسخة معدَّلة من أداة <code>texi2any</code> في حزمة Texinfo 5.1. أمّا المخطّات فتُرسَم بـ Inkscape، وتُضبط الرياضيات بمساعدة MathJax و MathML.</p>
+`,h={book:t,chapter:e,chapterTitle:a,slug:n,title:o,headings:c,html:s};export{t as book,e as chapter,a as chapterTitle,h as default,c as headings,s as html,n as slug,o as title};
