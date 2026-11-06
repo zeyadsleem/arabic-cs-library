@@ -1,144 +1,371 @@
 {
-  "version": 1,
-  "world": "Arabic technical press (Bulaq rubrication): ink black, press-red rubrics, warm paper, Kufi headings",
-  "tokens": {
-    "color": {
-      "ink": { "light": "#171a1f", "dark": "#ece5d6", "role": "Primary text and strong rules" },
-      "ink-soft": { "light": "#4c525c", "dark": "#aca79c", "role": "Secondary text: leads and descriptions" },
-      "ink-faint": { "light": "#5f646d", "dark": "#8a887f", "role": "Faint numerals, dots and meta" },
-      "paper": { "light": "#f5efe3", "dark": "#131519", "role": "Page background" },
-      "paper-deep": { "light": "#ece2d0", "dark": "#1a1d22", "role": "Deeper paper: hover rows, footer and notes" },
-      "surface": { "light": "#fdfbf6", "dark": "#181b20", "role": "Card, chip and field surface" },
-      "rule": { "light": "#d8cbb4", "dark": "#2c3037", "role": "1px hairline rule" },
-      "rule-strong": { "light": "#b9a98d", "dark": "#454b54", "role": "Strong border rule" },
-      "rubric": { "light": "#a6201e", "dark": "#dd6a5e", "role": "Press red: links, active states, counters" },
-      "rubric-wash": { "light": "#f4e2dd", "dark": "#2a1c1b", "role": "Red wash: blocked and active fills" },
-      "jade": { "light": "#14524a", "dark": "#6cb2a3", "role": "Jade: done state and continue card border" },
-      "jade-wash": { "light": "#dde9e4", "dark": "#17231f", "role": "Jade wash: translated fills and continue card" },
-      "code-bg": { "light": "#191c22", "dark": "#0d0f13", "role": "Code block background" },
-      "code-text": { "light": "#eae3d5", "dark": "#ece5d6", "role": "Code block text" }
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-06T19:32:30.410Z",
+  "colorMeta": {
+    "ink": {
+      "role": "primary text",
+      "displayName": "الحبر",
+      "canonical": "#171a1f",
+      "dark": "#ece5d6",
+      "tonalRamp": [
+        "#cccdce",
+        "#a7a8aa",
+        "#7d7f82",
+        "#4f5155",
+        "#171a1f",
+        "#121418",
+        "#0d0f11",
+        "#090a0c"
+      ]
     },
-    "font": {
-      "display": "'Reem Kufi', 'Noto Kufi Arabic', system-ui, sans-serif",
-      "ui": "'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif",
-      "reading": "'Noto Naskh Arabic', 'Amiri', Georgia, serif",
-      "mono": "'IBM Plex Mono', ui-monospace, monospace"
+    "ink-soft": {
+      "role": "secondary text",
+      "displayName": "حبر ثانوي",
+      "canonical": "#4c525c",
+      "dark": "#aca79c",
+      "tonalRamp": [
+        "#d8d9db",
+        "#bbbdc1",
+        "#9b9ea4",
+        "#777c83",
+        "#4c525c",
+        "#3b4048",
+        "#2b2e34",
+        "#1d1f23"
+      ]
     },
-    "radius": {
-      "sheet": "14px",
-      "control": "8px"
+    "ink-faint": {
+      "role": "tertiary text",
+      "displayName": "حبر خافت",
+      "canonical": "#5f646d",
+      "dark": "#8a887f",
+      "tonalRamp": [
+        "#dcdddf",
+        "#c2c4c8",
+        "#a5a8ad",
+        "#858990",
+        "#5f646d",
+        "#4a4e55",
+        "#35383d",
+        "#242629"
+      ]
     },
-    "shadow": {
-      "lift": {
-        "light": "0 10px 24px -14px rgba(23, 26, 31, 0.45)",
-        "dark": "0 12px 26px -16px rgba(0, 0, 0, 0.9)"
-      }
+    "paper": {
+      "role": "page background",
+      "displayName": "الورق",
+      "canonical": "#f5efe3",
+      "dark": "#131519",
+      "tonalRamp": [
+        "#fdfbf9",
+        "#fbf9f4",
+        "#f9f6ef",
+        "#f7f3ea",
+        "#f5efe3",
+        "#bfbab1",
+        "#89867f",
+        "#5d5b56"
+      ]
     },
-    "width": {
-      "content": "78rem",
-      "reading": "44rem"
+    "paper-deep": {
+      "role": "recessed paper",
+      "displayName": "ورق غائر",
+      "canonical": "#ece2d0",
+      "dark": "#1a1d22",
+      "tonalRamp": [
+        "#fbf9f5",
+        "#f8f4ed",
+        "#f4efe5",
+        "#f1e9db",
+        "#ece2d0",
+        "#b8b0a2",
+        "#847f74",
+        "#5a564f"
+      ]
+    },
+    "surface": {
+      "role": "cards & controls",
+      "displayName": "السطح",
+      "canonical": "#fdfbf6",
+      "dark": "#181b20",
+      "tonalRamp": [
+        "#fffefd",
+        "#fefdfc",
+        "#fefdfa",
+        "#fdfcf8",
+        "#fdfbf6",
+        "#c5c4c0",
+        "#8e8d8a",
+        "#605f5d"
+      ]
+    },
+    "rule": {
+      "role": "1px separator",
+      "displayName": "القاعدة",
+      "canonical": "#d8cbb4",
+      "dark": "#2c3037",
+      "tonalRamp": [
+        "#f6f4ef",
+        "#f0ebe3",
+        "#e9e2d5",
+        "#e1d7c6",
+        "#d8cbb4",
+        "#a89e8c",
+        "#797265",
+        "#524d44"
+      ]
+    },
+    "rule-strong": {
+      "role": "emphatic border",
+      "displayName": "قاعدة قوية",
+      "canonical": "#b9a98d",
+      "dark": "#454b54",
+      "tonalRamp": [
+        "#f0ece6",
+        "#e4ded4",
+        "#d8cfbf",
+        "#cabea8",
+        "#b9a98d",
+        "#90846e",
+        "#685f4f",
+        "#464036"
+      ]
+    },
+    "rubric": {
+      "role": "accent red (links, active)",
+      "displayName": "حمرة العناوين",
+      "canonical": "#a6201e",
+      "dark": "#dd6a5e",
+      "tonalRamp": [
+        "#ebcece",
+        "#ddaaaa",
+        "#cd8281",
+        "#bb5654",
+        "#a6201e",
+        "#811917",
+        "#5d1211",
+        "#3f0c0b"
+      ]
+    },
+    "rubric-wash": {
+      "role": "red wash surface",
+      "displayName": "غسل أحمر",
+      "canonical": "#f4e2dd",
+      "dark": "#2a1c1b",
+      "tonalRamp": [
+        "#fdf9f8",
+        "#fbf4f2",
+        "#f9efec",
+        "#f7e9e5",
+        "#f4e2dd",
+        "#beb0ac",
+        "#897f7c",
+        "#5d5654"
+      ]
+    },
+    "jade": {
+      "role": "success green",
+      "displayName": "جادي",
+      "canonical": "#14524a",
+      "dark": "#6cb2a3",
+      "tonalRamp": [
+        "#cbd9d7",
+        "#a6bdba",
+        "#7b9e9a",
+        "#4c7c75",
+        "#14524a",
+        "#10403a",
+        "#0b2e29",
+        "#081f1c"
+      ]
+    },
+    "jade-wash": {
+      "role": "green wash surface",
+      "displayName": "غسل جادي",
+      "canonical": "#dde9e4",
+      "dark": "#17231f",
+      "tonalRamp": [
+        "#f8faf9",
+        "#f2f7f5",
+        "#ecf3f0",
+        "#e5eeea",
+        "#dde9e4",
+        "#acb6b2",
+        "#7c8280",
+        "#545957"
+      ]
+    },
+    "code-bg": {
+      "role": "code block bg",
+      "displayName": "خلفية الشيفرة",
+      "canonical": "#191c22",
+      "dark": "#0d0f13",
+      "tonalRamp": [
+        "#cccdce",
+        "#a8a9ab",
+        "#7e8083",
+        "#505257",
+        "#191c22",
+        "#14161b",
+        "#0e1013",
+        "#0a0b0d"
+      ]
+    },
+    "code-text": {
+      "role": "code block text",
+      "displayName": "نص الشيفرة",
+      "canonical": "#eae3d5",
+      "dark": "#ece5d6",
+      "tonalRamp": [
+        "#faf9f6",
+        "#f7f4ef",
+        "#f3efe7",
+        "#efeadf",
+        "#eae3d5",
+        "#b7b1a6",
+        "#837f77",
+        "#595651"
+      ]
     }
   },
-  "components": [
-    {
-      "name": "Press header and footer",
-      "classes": ["press-header", "press-header__rule", "press-header__inner", "press-mark", "press-mark__name", "press-mark__desk", "header-search", "press-nav", "press-nav--open", "press-menu-toggle", "press-footer", "press-footer__inner", "press-footer__links", "icon"],
-      "notes": "Sticky header with a 3px rubric rule, Kufi wordmark, inline search that navigates to /search?q=, nav with active state and theme toggle; menu collapses behind press-menu-toggle at 48rem. Footer is a 2fr/1fr grid on paper-deep."
+  "typographyMeta": {
+    "--display": {
+      "displayName": "Reem Kufi",
+      "purpose": "العناوين (h1–h4) وواجهة المطبعة: اسم الموقع، أسماء الأزرار، عناوين البطاقات، أرقام المراحل، وعناوين القارئ الداخلية"
     },
-    {
-      "name": "Intro and stats",
-      "classes": ["intro", "intro__title", "intro__lead", "intro__stats", "stat"],
-      "notes": "Page opening on home and path with a 62ch lead and real counts read from content/library.json."
+    "--ui": {
+      "displayName": "IBM Plex Sans Arabic",
+      "purpose": "واجهة الصفحات: التنقّل، الشرائح، حقول البحث، صناديق التمارين"
     },
-    {
-      "name": "Continue card",
-      "classes": ["continue-card", "continue-card__label"],
-      "notes": "Jade-wash strip on the home page showing arabic-cs-library:last-read with a link to the saved path; label in jade."
+    "--reading": {
+      "displayName": "Noto Naskh Arabic",
+      "purpose": "متن القراءة وحده في .reader-content (20px، ارتفاع سطر 2)"
     },
+    "--mono": {
+      "displayName": "IBM Plex Mono",
+      "purpose": "الشيفرة والأرقام والبيانات الوصفية والإحالات المرجعية"
+    }
+  },
+  "shadows": [
     {
-      "name": "Catalogue bar",
-      "classes": ["catalogue", "catalogue__bar", "chip", "chip--on", "catalogue__sort", "catalogue__count"],
-      "notes": "Filters all/translated/queued, sort select for stage/pages/title, grid-list toggle and visible count."
-    },
-    {
-      "name": "Book card grid",
-      "classes": ["book-grid", "book-card", "book-card__en", "book-card__title", "book-card__author", "book-card__description", "book-card__foot", "book-card__cta"],
-      "notes": "Auto-fill min 19rem grid; card shows the LTR English title with a stage cloth dot via --book-cloth, Arabic title in display font, 3-line clamped description, pages, status badge and CTA."
-    },
-    {
-      "name": "Book list row",
-      "classes": ["book-row-list", "book-list-row", "book-list-row__title", "book-list-row__author", "book-list-row__meta"],
-      "notes": "Dense grid 2.4fr 1.6fr auto auto with a stage cloth dot on the title; author and meta are hidden at 48rem."
-    },
-    {
-      "name": "Status badges",
-      "classes": ["badge", "badge--done", "badge--planned", "badge--blocked", "badge--reference"],
-      "notes": "Four states: done (jade), planned (deep paper), blocked (red wash), reference (transparent rule border)."
-    },
-    {
-      "name": "Book head",
-      "classes": ["book-head", "book-head__layout", "book-cover", "book-cover__title", "book-cover__pages", "book-head__meta", "book-head__title", "book-head__author", "book-head__lead", "book-facts", "book-fact__label", "book-fact__value", "book-actions", "sheet-note"],
-      "notes": "Cover at 3/4 in --book-cloth with spine gradient, LTR mono meta and page count, title, author, 66ch lead, facts grid, action buttons and paper-deep note."
-    },
-    {
-      "name": "Book table of contents and aside",
-      "classes": ["book-body", "toc-list", "toc-chapter", "toc-chapter__head", "toc-chapter__title", "toc-chapter__count", "toc-sections", "toc-sections__num", "aside-card"],
-      "notes": "Two-column body 1fr + 18rem: chapter sections with LTR mono counts and numerals, plus aside cards for same stage, path and attribution; stacked at 64rem."
-    },
-    {
-      "name": "Reader bar and progress",
-      "classes": ["reader-bar", "reader-bar__inner", "reader-bar__book", "reader-bar__chapter", "reader-bar__spacer", "reader-tool", "reader-tool--on", "reader-progress"],
-      "notes": "Sticky reading bar under the header with book link, chapter, chapter counter and bookmark toggle; the 2px rubric progress line scales from the right with transform: scaleX(var(--progress))."
-    },
-    {
-      "name": "Reader layout and content",
-      "classes": ["reader-layout", "reader-aside", "reader-aside__title", "active-chapter", "active", "reader-sheet", "reader-tools", "reader-content", "toc-inline", "prev-next", "prev-next__label", "prev-next__title"],
-      "notes": "Sticky 18rem aside with rubric active chapter and section, 44rem reading column in Noto Naskh Arabic at 1.16rem/2, inline toc for sections with 3-12 headings, and prev/next cards; collapses to one column at 64rem."
-    },
-    {
-      "name": "Path stages",
-      "classes": ["path", "stage", "stage__num", "stage__title", "stage__description", "stage__books", "stage-book", "stage-book__title", "stage-book__en", "stage-book__description", "stage-book__facts", "stage-book__badges", "stage-book__action"],
-      "notes": "Numbered stages with a 2px ink top rule and book cards carrying a stage cloth dot, LTR English title, description, facts and dependency or replacement badges."
-    },
-    {
-      "name": "Search field and results",
-      "classes": ["search-hero", "search-field", "search-count", "search-results", "search-result", "search-result__book", "search-result__title", "search-result__snippet"],
-      "notes": "Surface input with rule border and rubric focus-within; results are scored from two characters with Arabic diacritics stripped, title matches weighted +12, capped at 30."
-    },
-    {
-      "name": "Colophon cards",
-      "classes": ["colophon-grid", "colophon-card"],
-      "notes": "Auto-fit min 17rem grid of surface cards on the about page with real numbers and licences."
-    },
-    {
-      "name": "Exercises box and lecture video",
-      "classes": ["exercises", "lecture-video"],
-      "notes": "Exercise box on surface with red CSS-counter circles and dash sub-items; 16:9 video frame capped at the reading width."
-    },
-    {
-      "name": "Buttons",
-      "classes": ["button", "button--quiet"],
-      "notes": "Solid ink button turning rubric on hover with a 1px lift; quiet outline variant filling ink on hover."
-    },
-    {
-      "name": "Utilities",
-      "classes": ["container", "page", "page__lead", "skip-link", "visually-hidden"],
-      "notes": "78rem container with fluid padding, page sections, focus-revealed skip link and hidden text utility."
+      "name": "--shadow-lift",
+      "valueLight": "0 10px 24px -14px rgba(23, 26, 31, 0.45)",
+      "valueDark": "0 12px 26px -16px rgba(0, 0, 0, 0.9)",
+      "purpose": "رفع البطاقة والغلاف عند المرور والقوائم المنسدلة"
     }
   ],
-  "rules": [
-    "No letter-spacing anywhere: it breaks Arabic letter joining, and Arabic text never takes letter-spacing.",
-    "Code and Latin metadata stay LTR inside RTL via direction:ltr, unicode-bidi:embed and pre text-align:left.",
-    "Reading column is capped at 44rem at 1.16rem/2 in Noto Naskh Arabic; long-form prose measures 62-70ch.",
-    "The catalogue is book cards or list rows marked by a stage cloth dot, not vertical spines; the spine shelf was dropped for practicality.",
-    "1px rules and restrained shadows; 8px radii for controls and 14px for sheets.",
-    "Four font roles: Reem Kufi display, IBM Plex Sans Arabic UI, Noto Naskh Arabic reading, IBM Plex Mono code and meta.",
-    "Light theme is the default; dark applies only when localStorage theme=dark, set before first paint.",
-    "No accounts, no ads, no tracking, no emoji marks and no cream-serif library look."
+  "motion": [
+    {
+      "name": "hover-lift",
+      "duration": "160ms",
+      "easing": "ease-out",
+      "purpose": "رفع بسيط للأزرار والبطاقات مع احترام prefers-reduced-motion"
+    },
+    {
+      "name": "progress",
+      "duration": "تحريك إطاري (rAF)",
+      "easing": "scaleX من اليمين",
+      "purpose": "شريط تقدم القراءة 2px بالحمرة يتمدد من اليمين — لا انتقالات زمنية"
+    }
   ],
-  "signatures": [
-    "Catalogue of book cards and list rows, each marked by a stage cloth dot; no vertical spines or shelf board.",
-    "Reader marks: sticky reader bar with a 2px rubric progress line scaling from the right, sticky chapter aside, and prev/next cards.",
-    "Press masthead: 3px rubric rule, Kufi wordmark and an inline search that jumps to /search?q=."
-  ]
+  "breakpoints": [
+    {
+      "name": "book & reader collapse",
+      "value": "64rem",
+      "purpose": "القارئ إلى عمود واحد، العمود الجانبي يصير علويًا ثابتًا"
+    },
+    {
+      "name": "press menu",
+      "value": "48rem",
+      "purpose": "ظهور زر قائمة الترويسة واختفاء التنقّل والبحث"
+    }
+  ],
+  "components": [
+    {
+      "name": "ds-press-header",
+      "kind": "header",
+      "refersTo": ".press-header",
+      "description": "ترويسة المطبعة: شريط حمارة 3px، العلامة والكتاب على المكتب، البحث، التنقّل، زر السمة",
+      "html": "<header class=\"press-header\"><div class=\"press-header__rule\" aria-hidden=\"true\"></div><div class=\"press-header__inner\"><a class=\"press-mark\" href=\"/arabic-cs-library/\"><span class=\"press-mark__name\">المكتبة العربية</span><span class=\"press-mark__desk\">لعلوم الحاسوب</span></a><form class=\"header-search\" role=\"search\" action=\"/arabic-cs-library/search\"><input type=\"search\" placeholder=\"ابحث في الكتب…\" aria-label=\"البحث\"/></form><nav class=\"press-nav\" aria-label=\"التنقّل الرئيسي\"><a class=\"active\" href=\"#\">الكتب</a><a href=\"#\">المسار</a><a href=\"#\">عن</a></nav><button class=\"theme-toggle\" aria-label=\"تبديل السمة\">◐</button></div></header>",
+      "css": ".press-header{position:sticky;top:0;z-index:10;background:var(--paper);border-bottom:1px solid var(--rule)}.press-header__rule{height:3px;background:var(--rubric)}.press-header__inner{max-width:78rem;margin-inline:auto;display:flex;align-items:center;gap:1.2rem;padding:.7rem clamp(1rem,4vw,2.5rem)}.press-mark{display:flex;flex-direction:column;line-height:1.2;text-decoration:none}.press-mark__name{font-family:var(--display);font-weight:600;color:var(--ink)}.press-mark__desk{font-family:var(--mono);font-size:.72rem;color:var(--ink-faint)}.header-search input{background:var(--surface);border:1px solid var(--rule);border-radius:999px;padding:.4rem 1rem;color:var(--ink);font-family:var(--ui)}.header-search input:focus-visible{outline:2px solid var(--rubric);outline-offset:2px}.press-nav{display:flex;gap:1rem;margin-inline-start:auto}.press-nav a{font-family:var(--ui);font-size:.95rem;color:var(--ink-soft);text-decoration:none;padding:.3rem .55rem;border-radius:999px}.press-nav a:hover,.press-nav a.active{color:var(--rubric);background:var(--rubric-wash)}.theme-toggle{border:1px solid var(--rule);background:var(--surface);border-radius:999px;width:2.2rem;height:2.2rem;color:var(--ink);cursor:pointer}.theme-toggle:hover,.theme-toggle:focus-visible{outline:2px solid var(--rubric);outline-offset:2px}"
+    },
+    {
+      "name": "ds-book-card",
+      "kind": "card",
+      "refersTo": ".book-card",
+      "description": "بطاقة كتاب في الكتالوغ: سطح + قاعدة، بقعة قماش المرحلة، العنوان بالكوف، الأسماء LTR، شارة الحالة، دعوة بالحمرة",
+      "html": "<a class=\"ds-book-card\" href=\"#\"><span class=\"ds-book-card__en\">Effective Go</span><h3 class=\"ds-book-card__title\">إيبكتيف جو</h3><p class=\"ds-book-card__author\">The Go Authors</p><p class=\"ds-book-card__description\">دليل عملي لأسلوب البرمجة بلغة Go</p><p class=\"ds-book-card__foot\"><span class=\"ds-badge ds-badge--done\">مترجم</span><span class=\"ds-book-card__cta\">اقرأ ←</span></p></a>",
+      "css": ".ds-book-card{display:flex;flex-direction:column;gap:.45rem;background:var(--surface);border:1px solid var(--rule);border-radius:14px;padding:1.1rem 1.2rem;text-decoration:none;transition:transform .16s ease-out, box-shadow .16s ease-out}.ds-book-card:hover,.ds-book-card:focus-visible{transform:translateY(-2px);box-shadow:var(--shadow-lift);outline:2px solid var(--rubric);outline-offset:2px;color:inherit}.ds-book-card__en{font-family:var(--mono);direction:ltr;text-align:left;font-size:.78rem;color:var(--ink-faint)}.ds-book-card__en::before{content:\"\";display:inline-block;width:.55rem;height:.55rem;border-radius:2px;background:var(--rubric);margin-inline-end:.45rem}.ds-book-card__title{font-family:var(--display);font-size:1.25rem;color:var(--ink);margin:0}.ds-book-card__author{color:var(--ink-soft);font-size:.85rem}.ds-book-card__description{color:var(--ink-soft);font-size:.9rem;margin:0;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.ds-book-card__foot{display:flex;align-items:center;justify-content:space-between;margin:.4rem 0 0}.ds-book-card__cta{color:var(--rubric);font-family:var(--ui);font-weight:600}"
+    },
+    {
+      "name": "ds-continue-card",
+      "kind": "card",
+      "refersTo": ".continue-card",
+      "description": "بطاقة متابعة القراءة على غسل جادي بحدّ شفاف",
+      "html": "<a class=\"ds-continue-card\" href=\"#\"><span class=\"ds-continue-card__label\">تابع من حيث توقّفت</span><span class=\"ds-continue-card__title\">الفصل 5.3: تخصيص التخزين وجمع القمامة</span><span class=\"ds-continue-card__book\">الحوسبة بآلات المسجّلات</span></a>",
+      "css": ".ds-continue-card{display:flex;flex-direction:column;gap:.3rem;background:var(--jade-wash);border:1px solid color-mix(in srgb, var(--jade) 35%, transparent);border-radius:14px;padding:1rem 1.2rem;text-decoration:none}.ds-continue-card:hover,.ds-continue-card:focus-visible{outline:2px solid var(--jade);outline-offset:2px}.ds-continue-card__label{color:var(--jade);font-family:var(--ui);font-weight:600;font-size:.85rem}.ds-continue-card__title{color:var(--ink);font-weight:600}"
+    },
+    {
+      "name": "ds-reader-progress-bar",
+      "kind": "indicator",
+      "refersTo": ".reader-progress",
+      "description": "خيط تقدم القراءة 2px بالحمرة يتمدد من اليمين",
+      "html": "<div class=\"ds-reader-bar\"><div class=\"ds-reader-bar__inner\"><span class=\"ds-reader-bar__chapter\">5.3 تخصيص التخزين</span><span class=\"ds-reader-bar__count\">12/67</span></div><div class=\"ds-reader-progress\" style=\"--progress:0.42\"></div></div>",
+      "css": ".ds-reader-bar{position:sticky;top:0;background:var(--paper);border-bottom:1px solid var(--rule)}.ds-reader-bar__inner{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.5rem clamp(1rem,4vw,2.5rem)}.ds-reader-bar__chapter{color:var(--rubric);font-weight:600}.ds-reader-bar__count{font-family:var(--mono);color:var(--ink-faint)}.ds-reader-progress{height:2px;background:var(--rubric);transform-origin:right center;transform:scaleX(var(--progress))}"
+    },
+    {
+      "name": "ds-toc-aside-entry",
+      "kind": "list",
+      "refersTo": ".reader-aside .active",
+      "description": "فهرس جانبي للقارئ: رابط قسم؛ النشط بالحمرة على غسل أحمر",
+      "html": "<nav class=\"ds-toc-aside\" aria-label=\"فهرس الكتاب\"><p class=\"ds-toc-title\">1.3 صياغة التجريدات</p><a href=\"#\">متن القسم</a><a href=\"#\" class=\"active\">1.3.2 إنشاء الإجراءات بـ Lambda</a><a href=\"#\">1.3.3 الإجراءات بوصفها طرقًا عامّة</a></nav>",
+      "css": ".ds-toc-aside{display:flex;flex-direction:column;gap:.15rem}.ds-toc-title{font-family:var(--display);font-weight:600;color:var(--ink);margin:0 0 .5rem}.ds-toc-aside a{font-family:var(--ui);font-size:.88rem;color:var(--ink-soft);text-decoration:none;padding:.25rem .5rem;border-radius:8px}.ds-toc-aside a:hover{color:var(--rubric)}.ds-toc-aside a.active{color:var(--rubric);background:var(--rubric-wash)}"
+    },
+    {
+      "name": "ds-badge",
+      "kind": "label",
+      "refersTo": ".badge",
+      "description": "شارات الحالة الأربع: مكتمل (جادي)، قيد الترجمة (ورق غائر)، محظور (أحمر)، مرجع (شفاف)",
+      "html": "<span class=\"ds-badge ds-badge--done\">مترجم</span><span class=\"ds-badge ds-badge--planned\">قيد الترجمة</span><span class=\"ds-badge ds-badge--blocked\">غير قابل للترجمة</span><span class=\"ds-badge ds-badge--reference\">مرجع للقراءة</span>",
+      "css": ".ds-badge{display:inline-block;font-family:var(--ui);font-size:.75rem;padding:.15rem .65rem;border-radius:999px}.ds-badge--done{background:var(--jade-wash);color:var(--jade)}.ds-badge--planned{background:var(--paper-deep);color:var(--ink-soft)}.ds-badge--blocked{background:var(--rubric-wash);color:var(--rubric)}.ds-badge--reference{background:transparent;border:1px solid var(--rule);color:var(--ink-soft)}"
+    },
+    {
+      "name": "ds-button",
+      "kind": "cta",
+      "refersTo": ".button",
+      "description": "زر المطبعة: حبر ممتلئ يتحول للحمرة عند المرور أو التركيز، ونسخة هادئة بحد قوي",
+      "html": "<button class=\"ds-button\">ابدأ القراءة</button><button class=\"ds-button--quiet\">المرحلة التالية</button>",
+      "css": ".ds-button,.ds-button--quiet{font-family:var(--ui);font-weight:600;border-radius:8px;padding:.55rem 1.3rem;cursor:pointer;border:1px solid transparent;transition:background .16s ease-out, transform .16s ease-out}.ds-button{background:var(--ink);color:var(--paper)}.ds-button:hover,.ds-button:focus-visible{background:var(--rubric);transform:translateY(-1px);outline:2px solid var(--rubric);outline-offset:2px}.ds-button--quiet{background:transparent;color:var(--ink);border-color:var(--rule-strong)}.ds-button--quiet:hover,.ds-button--quiet:focus-visible{color:var(--rubric);border-color:var(--rubric);outline:2px solid var(--rubric);outline-offset:2px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "أن يبدأ الزائر القراءة في ثوانٍ، ويعرف أين هو في الكتاب، ويعود إلى موضعه لاحقاً؛ والأرقام المعروضة حقيقية من content/library.json.",
+    "overview": "«المطبعة التقنية العربية» على مرجع مطبعة بولاق: حبر أسود، وحمرة عناوين (rubrication)، وورق دافئ، وعناوين كوفية هندسية (Reem Kufi). العملي يغلب الرمزي: الكتالوغ شبكة بطاقات أو صفوف قائمة، ولا رفوف كعوب رأسية.",
+    "keyCharacteristics": [
+      "حمرة العناوين: الروابط والعناصر النشطة بالأحمر (rubrication) على ورق دافئ.",
+      "خطوط بعلق وظيفي: Reem Kufi للعناوين، Noto Naskh لمتن القراءة 1.25rem/2، IBM Plex للواجهة والشيفرة.",
+      "قواعد فاصلة 1px بلون القاعدة، وأرقام جدولية tabular-nums، والشيفرة LTR داخل نص عربي RTL.",
+      "وحمارة 3px في الترويسة، وخيط تقدم قراءة 2px."
+    ],
+    "rules": [
+      "لا letter-spacing في المشروع كله: تباعد الحروف يفكّ اتصال الحرف العربي.",
+      "الشيفرة تبقى LTR داخل النص العربي (direction: ltr; unicode-bidi: embed).",
+      "المتن القرائي 1.25rem بارتفاع 2 داخل عمود --reading-width (44rem ≈ 70 حرفاً عربياً).",
+      "المتن العام 1.0625rem بارتفاع سطر 1.75؛ وscroll-padding-top يساوي الترويسة اللاصقة + 1.5rem.",
+      "أدوار الخطوط صارمة: --display للعناوين، و--ui للواجهة، و--reading لمتن القراءة، و--mono للشيفرة والأرقام.",
+      "كل أزواج النصوص تتجاوز 4.5:1 من التباين (فاتح/داكن)."
+    ],
+    "dos": [
+      "استخدم بقعة قماش صغيرة بلون مرحلة الكتاب قبل الاسم اللاتيني LTR.",
+      "حافظ على البطاقات على --surface بحدود --rule وحواف 14px.",
+      "استخدم خط العناوين في عناوين القارئ الداخلية (h2/h3/h4).",
+      "احترم prefers-reduced-motion ووافقه في كل الحركات."
+    ],
+    "donts": [
+      "لا شبكة «أيقونة+عنوان+وصف» المتشابهة، ولا شعارات الإيموجي.",
+      "لا هوية «مكتبة» كريمية وأسلوب سيريف نمطي، ولا واجهة IDE داكنة.",
+      "لا رفوف عناوين رأسية للكتب (رُفض لأنها أبطأ المسح وأصعب على الهاتف).",
+      "لا حسابات ولا دفع ولا تتبّع.",
+      "لا letter-spacing أبداً للنص العربي، ولا أنصاف أقطار مخصصة خارج الرموز المعتمدة."
+    ]
+  }
 }
