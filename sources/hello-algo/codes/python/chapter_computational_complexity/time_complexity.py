@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def constant(n: int) -> int:
-    """Constant complexity"""
+    """تعقيد ثابت"""
     count = 0
     size = 100000
     for _ in range(size):
@@ -15,7 +15,7 @@ def constant(n: int) -> int:
 
 
 def linear(n: int) -> int:
-    """Linear complexity"""
+    """تعقيد خطي"""
     count = 0
     for _ in range(n):
         count += 1
@@ -23,7 +23,7 @@ def linear(n: int) -> int:
 
 
 def array_traversal(nums: list[int]) -> int:
-    """Linear complexity (array traversal)"""
+    """التعقيد الخطي (اجتياز مصفوفة)"""
     count = 0
     # عدد التكرارات يتناسب مع طول المصفوفة
     for num in nums:
@@ -32,7 +32,7 @@ def array_traversal(nums: list[int]) -> int:
 
 
 def quadratic(n: int) -> int:
-    """Quadratic complexity"""
+    """تعقيد تربيعي"""
     count = 0
     # عدد التكرارات يتناسب مع مربع حجم المُدخل n
     for i in range(n):
@@ -42,7 +42,7 @@ def quadratic(n: int) -> int:
 
 
 def bubble_sort(nums: list[int]) -> int:
-    """Quadratic complexity (bubble sort)"""
+    """التعقيد التربيعي (الترتيب الفقاعي)"""
     count = 0  # العدّاد
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(len(nums) - 1, 0, -1):
@@ -58,7 +58,7 @@ def bubble_sort(nums: list[int]) -> int:
 
 
 def exponential(n: int) -> int:
-    """Exponential complexity (iterative implementation)"""
+    """التعقيد الأسي (تنفيذ تكراري)"""
     count = 0
     base = 1
     # تنقسم كل خلية إلى اثنتين في كل جولة، فينتج التتابع 1، 2، 4، 8، ...، 2^(n-1)
@@ -71,14 +71,14 @@ def exponential(n: int) -> int:
 
 
 def exp_recur(n: int) -> int:
-    """Exponential complexity (recursive implementation)"""
+    """التعقيد الأسي (تنفيذ تعاودي)"""
     if n == 1:
         return 1
     return exp_recur(n - 1) + exp_recur(n - 1) + 1
 
 
 def logarithmic(n: int) -> int:
-    """Logarithmic complexity (iterative implementation)"""
+    """التعقيد اللوغاريتمي (تنفيذ تكراري)"""
     count = 0
     while n > 1:
         n = n / 2
@@ -87,14 +87,14 @@ def logarithmic(n: int) -> int:
 
 
 def log_recur(n: int) -> int:
-    """Logarithmic complexity (recursive implementation)"""
+    """التعقيد اللوغاريتمي (تنفيذ تعاودي)"""
     if n <= 1:
         return 0
     return log_recur(n / 2) + 1
 
 
 def linear_log_recur(n: int) -> int:
-    """Linearithmic complexity"""
+    """التعقيد الخطي-اللوغاريتمي"""
     if n <= 1:
         return 1
     # قسّم إلى مسألتين جزئيتين كل واحدة نصف الحجم الأصلي
@@ -106,7 +106,7 @@ def linear_log_recur(n: int) -> int:
 
 
 def factorial_recur(n: int) -> int:
-    """Factorial complexity (recursive implementation)"""
+    """التعقيد المضروبي (تنفيذ تعاودي)"""
     if n == 0:
         return 1
     count = 0
@@ -116,7 +116,7 @@ def factorial_recur(n: int) -> int:
     return count
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # جرّب قيمًا مختلفة من n لترَ كيف ينمو عدد العمليات لكل تعقيد
     n = 8

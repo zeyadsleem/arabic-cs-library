@@ -35,7 +35,7 @@ lang: ar
 
 ```py
 def binary_search_insertion_simple(nums: list[int], target: int) -> int:
-    """Find an insertion point using binary search (no duplicates)"""
+    """العثور على نقطة إدراج بالبحث الثنائي (بلا مكررات)"""
     i, j = 0, len(nums) - 1  # مهّد المجال المغلق [0, n-1]
     while i <= j:
         m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
@@ -49,7 +49,8 @@ def binary_search_insertion_simple(nums: list[int], target: int) -> int:
     return i
 ```
 
-</div>## حالة وجود عناصر مكررة
+</div>
+## حالة وجود عناصر مكررة
 
 <div class="note">
 
@@ -84,7 +85,7 @@ def binary_search_insertion_simple(nums: list[int], target: int) -> int:
 
 ```py
 def binary_search_insertion(nums: list[int], target: int) -> int:
-    """Find an insertion point using binary search (with duplicates)"""
+    """العثور على نقطة إدراج بالبحث الثنائي (مع مكررات)"""
     i, j = 0, len(nums) - 1  # مهّد المجال المغلق [0, n-1]
     while i <= j:
         m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
@@ -98,7 +99,8 @@ def binary_search_insertion(nums: list[int], target: int) -> int:
     return i
 ```
 
-</div><div class="note">
+</div>
+<div class="note">
 
 تستخدم شيفرة هذا القسم نهج «المجال المغلق» في كل مواضعها. ويمكن للقارئ المهتم تنفيذ نهج «مغلق من اليسار، مفتوح من اليمين» بنفسه.
 

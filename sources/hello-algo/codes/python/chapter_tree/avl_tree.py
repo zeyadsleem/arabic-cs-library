@@ -12,30 +12,30 @@ from modules import TreeNode, print_tree
 
 
 class AVLTree:
-    """AVL tree"""
+    """شجرة AVL"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._root = None
 
     def get_root(self) -> TreeNode | None:
-        """Get the root of the binary tree"""
+        """الحصول على جذر الشجرة الثنائية"""
         return self._root
 
     def height(self, node: TreeNode | None) -> int:
-        """Get the node height"""
+        """الحصول على ارتفاع العقدة"""
         # الشجرة الجزئية الفارغة ارتفاعها -1؛ والورقة ارتفاعها 0
         if node is not None:
             return node.height
         return -1
 
     def update_height(self, node: TreeNode | None):
-        """Update the node height"""
+        """حدّث ارتفاع العقدة"""
         # ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1
         node.height = max([self.height(node.left), self.height(node.right)]) + 1
 
     def balance_factor(self, node: TreeNode | None) -> int:
-        """Get the balance factor"""
+        """الحصول على عامل التوازن"""
         # عامل التوازن للشجرة الجزئية الفارغة هو 0
         if node is None:
             return 0
@@ -43,7 +43,7 @@ class AVLTree:
         return self.height(node.left) - self.height(node.right)
 
     def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Right rotation"""
+        """إدارة يمينية"""
         child = node.left
         grand_child = child.right
         # أدر node حول child إلى اليمين
@@ -56,7 +56,7 @@ class AVLTree:
         return child
 
     def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Left rotation"""
+        """إدارة يسرية"""
         child = node.right
         grand_child = child.left
         # أدر node حول child إلى اليسار
@@ -69,7 +69,7 @@ class AVLTree:
         return child
 
     def rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Perform rotations to restore balance in this subtree"""
+        """إجراء الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية"""
         # احصل على عامل توازن العقدة
         balance_factor = self.balance_factor(node)
         # شجرة مائلة لليسار
@@ -94,11 +94,11 @@ class AVLTree:
         return node
 
     def insert(self, val):
-        """Insert a node"""
+        """أدخل عقدة"""
         self._root = self.insert_helper(self._root, val)
 
     def insert_helper(self, node: TreeNode | None, val: int) -> TreeNode:
-        """Insert a node recursively (helper method)"""
+        """إدراج عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return TreeNode(val)
         # 1. أوجد موضع الإدراج وأدخل العقدة
@@ -115,11 +115,11 @@ class AVLTree:
         return self.rotate(node)
 
     def remove(self, val: int):
-        """Remove a node"""
+        """احذف عقدة"""
         self._root = self.remove_helper(self._root, val)
 
     def remove_helper(self, node: TreeNode | None, val: int) -> TreeNode | None:
-        """Remove a node recursively (helper method)"""
+        """حذف عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return None
         # 1. أوجد العقدة واحذفها
@@ -149,7 +149,7 @@ class AVLTree:
         return self.rotate(node)
 
     def search(self, val: int) -> TreeNode | None:
-        """Find a node"""
+        """ابحث عن عقدة"""
         cur = self._root
         # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         while cur is not None:
@@ -166,7 +166,7 @@ class AVLTree:
         return cur
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
 
     def test_insert(tree: AVLTree, val: int):

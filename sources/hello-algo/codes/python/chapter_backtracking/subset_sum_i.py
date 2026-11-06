@@ -8,7 +8,7 @@ Author: krahets (krahets@163.com)
 def backtrack(
     state: list[int], target: int, choices: list[int], start: int, res: list[list[int]]
 ):
-    """Backtracking: subset sum I"""
+    """التتبع الرجعي: مجموع المجموعة الجزئية I"""
     # سجّل حلًا حين يصير الهدف المتبقي صفرًا
     if target == 0:
         res.append(list(state))
@@ -29,7 +29,7 @@ def backtrack(
 
 
 def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I"""
+    """حل مجموع المجموعة الجزئية I"""
     state = []  # الحالة (المجموعة الجزئية)
     nums.sort()  # رتّب nums
     start = 0  # فهرس البدء للتكرار
@@ -38,7 +38,7 @@ def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [3, 4, 5]
     target = 9

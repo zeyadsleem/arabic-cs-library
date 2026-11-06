@@ -6,7 +6,7 @@ Author: timi (xisunyy@163.com)
 
 
 def bubble_sort(nums: list[int]):
-    """Bubble sort"""
+    """الترتيب الفقاعي"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
@@ -18,7 +18,7 @@ def bubble_sort(nums: list[int]):
 
 
 def bubble_sort_with_flag(nums: list[int]):
-    """Bubble sort (flag optimization)"""
+    """الترتيب الفقاعي (تحسين العلم)"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
@@ -33,7 +33,7 @@ def bubble_sort_with_flag(nums: list[int]):
             break  # اخرج فورًا إذا لم تجري هذه الجولة أي تبديل
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [4, 1, 3, 1, 5, 2]
     bubble_sort(nums)

@@ -12,13 +12,13 @@ from modules import ListNode, TreeNode, print_tree
 
 
 def function() -> int:
-    """Function"""
+    """الدالة"""
     # أجرِ بعض العمليات
     return 0
 
 
 def constant(n: int):
-    """Constant complexity"""
+    """تعقيد ثابت"""
     # الثوابت والمتغيرات والكائنات تشغل مساحة O(1)
     a = 0
     nums = [0] * 10000
@@ -32,7 +32,7 @@ def constant(n: int):
 
 
 def linear(n: int):
-    """Linear complexity"""
+    """تعقيد خطي"""
     # قائمة بطول n تشغل مساحة O(n)
     nums = [0] * n
     # جدول تجزئة فيه n إدخالًا يشغل مساحة O(n)
@@ -42,7 +42,7 @@ def linear(n: int):
 
 
 def linear_recur(n: int):
-    """Linear complexity (recursive implementation)"""
+    """التعقيد الخطي (تنفيذ تعاودي)"""
     print("Recursion: n =", n)
     if n == 1:
         return
@@ -50,13 +50,13 @@ def linear_recur(n: int):
 
 
 def quadratic(n: int):
-    """Quadratic complexity"""
+    """تعقيد تربيعي"""
     # القائمة ثنائية الأبعاد تشغل مساحة O(n^2)
     num_matrix = [[0] * n for _ in range(n)]
 
 
 def quadratic_recur(n: int) -> int:
-    """Quadratic complexity (recursive implementation)"""
+    """التعقيد التربيعي (تنفيذ تعاودي)"""
     if n <= 0:
         return 0
     # أطوال المصفوفة nums هي n، n-1، ...، 2، 1
@@ -65,7 +65,7 @@ def quadratic_recur(n: int) -> int:
 
 
 def build_tree(n: int) -> TreeNode | None:
-    """Exponential complexity (building a perfect binary tree)"""
+    """التعقيد الأسي (بناء شجرة ثنائية تامة)"""
     if n == 0:
         return None
     root = TreeNode(0)
@@ -74,7 +74,7 @@ def build_tree(n: int) -> TreeNode | None:
     return root
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 5
     # تعقيد ثابت

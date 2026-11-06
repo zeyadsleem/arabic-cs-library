@@ -12,10 +12,10 @@ from modules import Vertex, vals_to_vets
 
 
 class GraphAdjList:
-    """Undirected graph class implemented with an adjacency list"""
+    """صنف رسم بياني غير موجّه منفذ بقائمة تجاور"""
 
     def __init__(self, edges: list[list[Vertex]]):
-        """Constructor"""
+        """المنشئ"""
         # قائمة التجاور: المفتاح رأس، والقيمة قائمة جميع أجواره
         self.adj_list = dict[Vertex, list[Vertex]]()
         # أضف كل الرؤوس والأضلاع
@@ -25,11 +25,11 @@ class GraphAdjList:
             self.add_edge(edge[0], edge[1])
 
     def size(self) -> int:
-        """Get the number of vertices"""
+        """الحصول على عدد الرؤوس"""
         return len(self.adj_list)
 
     def add_edge(self, vet1: Vertex, vet2: Vertex):
-        """Add an edge"""
+        """أضف ضلعًا"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
         # أضف الضلع vet1 - vet2
@@ -37,7 +37,7 @@ class GraphAdjList:
         self.adj_list[vet2].append(vet1)
 
     def remove_edge(self, vet1: Vertex, vet2: Vertex):
-        """Remove an edge"""
+        """احذف ضلعًا"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
         # احذف الضلع vet1 - vet2
@@ -45,14 +45,14 @@ class GraphAdjList:
         self.adj_list[vet2].remove(vet1)
 
     def add_vertex(self, vet: Vertex):
-        """Add a vertex"""
+        """أضف رأسًا"""
         if vet in self.adj_list:
             return
         # أضف قائمة جديدة إلى قائمة التجاور
         self.adj_list[vet] = []
 
     def remove_vertex(self, vet: Vertex):
-        """Remove a vertex"""
+        """احذف رأسًا"""
         if vet not in self.adj_list:
             raise ValueError()
         # احذف من قائمة التجاور القائمة المقابلة للرأس vet
@@ -63,14 +63,14 @@ class GraphAdjList:
                 self.adj_list[vertex].remove(vet)
 
     def print(self):
-        """Print the adjacency list"""
+        """طباعة قائمة التجاور"""
         print("Adjacency list =")
         for vertex in self.adj_list:
             tmp = [v.val for v in self.adj_list[vertex]]
             print(f"{vertex.val}: {tmp},")
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الرسم البياني غير الموجّه
     v = vals_to_vets([1, 3, 2, 5, 4])

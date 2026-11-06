@@ -8,7 +8,7 @@ import math
 
 
 def max_product_cutting(n: int) -> int:
-    """Maximum product after splitting: greedy algorithm"""
+    """أقصى جداء بعد التفريق: خوارزمية جشعة"""
     # عندما يكون n <= 3، فلا بد أن يكون أحد الأجزاء 1
     if n <= 3:
         return 1 * (n - 1)
@@ -24,7 +24,7 @@ def max_product_cutting(n: int) -> int:
     return int(math.pow(3, a))
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 58
 

@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def sift_down(nums: list[int], n: int, i: int):
-    """Sift down from node i in a heap of size n"""
+    """الرشّ النازل من العقدة i في كومة حجمها n"""
     while True:
         # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
         l = 2 * i + 1
@@ -26,7 +26,7 @@ def sift_down(nums: list[int], n: int, i: int):
 
 
 def heap_sort(nums: list[int]):
-    """Heap sort"""
+    """الترتيب بالكومة"""
     # ابنِ الكومة بالرشّ النازل من كل عقدة غير ورقية
     for i in range(len(nums) // 2 - 1, -1, -1):
         sift_down(nums, len(nums), i)
@@ -38,7 +38,7 @@ def heap_sort(nums: list[int]):
         sift_down(nums, i, 0)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [4, 1, 3, 1, 5, 2]
     heap_sort(nums)

@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 class Item:
-    """Item"""
+    """العنصر"""
 
     def __init__(self, w: int, v: int):
         self.w = w  # وزن العنصر
@@ -14,7 +14,7 @@ class Item:
 
 
 def fractional_knapsack(wgt: list[int], val: list[int], cap: int) -> int:
-    """Fractional knapsack: greedy algorithm"""
+    """الحقيبة الجزئية: خوارزمية جشعة"""
     # أنشئ قائمة عناصر، لكل منها خاصيتان: وزن وقيمة
     items = [Item(w, v) for w, v in zip(wgt, val)]
     # رتّب بالقيمة لكل وحدة وزن item.v / item.w بترتيب تنازلي
@@ -34,7 +34,7 @@ def fractional_knapsack(wgt: list[int], val: list[int], cap: int) -> int:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     wgt = [10, 20, 30, 40, 50]
     val = [50, 120, 150, 210, 240]

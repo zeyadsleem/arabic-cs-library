@@ -6,10 +6,10 @@ Author: timi (xisunyy@163.com)
 
 
 class QuickSort:
-    """Quick sort class"""
+    """صنف الترتيب السريع"""
 
     def partition(self, nums: list[int], left: int, right: int) -> int:
-        """Two-pointer partitioning"""
+        """التقسيم بمؤشرين"""
         # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
@@ -24,7 +24,7 @@ class QuickSort:
         return i  # أعد فهرس المحور
 
     def quick_sort(self, nums: list[int], left: int, right: int):
-        """Quick sort"""
+        """الترتيب السريع"""
         # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
@@ -36,10 +36,10 @@ class QuickSort:
 
 
 class QuickSortMedian:
-    """Quick sort class (median pivot optimization)"""
+    """صنف الترتيب السريع (تحسين محور الوسيط)"""
 
     def median_three(self, nums: list[int], left: int, mid: int, right: int) -> int:
-        """Select the median of three candidate elements"""
+        """اختيار وسيط ثلاثة عناصر مرشحة"""
         l, m, r = nums[left], nums[mid], nums[right]
         if (l <= m <= r) or (r <= m <= l):
             return mid  # يقع m بين l و r
@@ -48,7 +48,7 @@ class QuickSortMedian:
         return right
 
     def partition(self, nums: list[int], left: int, right: int) -> int:
-        """Two-pointer partitioning (median of three)"""
+        """التقسيم بمؤشرين (وسيط الثلاثة)"""
         # اختر وسيط أول عنصر ووسطه وآخره بوصفه محورًا
         med = self.median_three(nums, left, (left + right) // 2, right)
         # بدّل الوسيط إلى أقصى يسار المصفوفة الجزئية الحالية
@@ -67,7 +67,7 @@ class QuickSortMedian:
         return i  # أعد فهرس المحور
 
     def quick_sort(self, nums: list[int], left: int, right: int):
-        """Quick sort"""
+        """الترتيب السريع"""
         # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
@@ -79,10 +79,10 @@ class QuickSortMedian:
 
 
 class QuickSortTailCall:
-    """Quick sort class (recursion depth optimization)"""
+    """صنف الترتيب السريع (تحسين عمق التعاود)"""
 
     def partition(self, nums: list[int], left: int, right: int) -> int:
-        """Two-pointer partitioning"""
+        """التقسيم بمؤشرين"""
         # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
@@ -97,7 +97,7 @@ class QuickSortTailCall:
         return i  # أعد فهرس المحور
 
     def quick_sort(self, nums: list[int], left: int, right: int):
-        """Quick sort (recursion depth optimization)"""
+        """الترتيب السريع (تحسين عمق التعاود)"""
         # توقف عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         while left < right:
             # أجرِ التقسيم بمؤشرين
@@ -111,7 +111,7 @@ class QuickSortTailCall:
                 right = pivot - 1  # النطاق غير المرتب المتبقي هو [left, pivot - 1]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # الترتيب السريع
     nums = [2, 4, 1, 0, 3, 5]

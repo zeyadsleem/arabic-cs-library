@@ -32,7 +32,7 @@ The search operation in a binary search tree follows the same principle as binar
 
 ```py
     def search(self, num: int) -> TreeNode | None:
-        """Find a node"""
+        """ابحث عن عقدة"""
         cur = self._root
         # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         while cur is not None:
@@ -69,7 +69,7 @@ In the code implementation, note the following two points:
 
 ```py
     def insert(self, num: int):
-        """Insert a node"""
+        """أدخل عقدة"""
         # إذا كانت الشجرة فارغة، مهّد عقدة الجذر
         if self._root is None:
             self._root = TreeNode(num)
@@ -125,7 +125,7 @@ The node removal operation also uses $O(\log n)$ time, where finding the node to
 
 ```py
     def remove(self, num: int):
-        """Remove a node"""
+        """احذف عقدة"""
         # أعد فورًا إذا كانت الشجرة فارغة
         if self._root is None:
             return

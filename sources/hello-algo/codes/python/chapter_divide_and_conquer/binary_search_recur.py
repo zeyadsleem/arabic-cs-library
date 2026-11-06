@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def dfs(nums: list[int], target: int, i: int, j: int) -> int:
-    """Binary search: problem f(i, j)"""
+    """البحث الثنائي: المسألة f(i, j)"""
     # إذا كان المجال فارغًا فالهدف غائب؛ أعد -1
     if i > j:
         return -1
@@ -24,13 +24,13 @@ def dfs(nums: list[int], target: int, i: int, j: int) -> int:
 
 
 def binary_search(nums: list[int], target: int) -> int:
-    """Binary search"""
+    """البحث الثنائي"""
     n = len(nums)
     # حُلّ المسألة f(0, n-1)
     return dfs(nums, target, 0, n - 1)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     target = 6
     nums = [1, 3, 6, 8, 12, 15, 23, 26, 31, 35]

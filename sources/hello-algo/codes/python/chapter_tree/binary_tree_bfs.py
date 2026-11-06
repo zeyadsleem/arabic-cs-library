@@ -13,7 +13,7 @@ from collections import deque
 
 
 def level_order(root: TreeNode | None) -> list[int]:
-    """Level-order traversal"""
+    """اجتياز بالمستويات"""
     # مهّد طابورًا وأدخل الجذر إليه
     queue: deque[TreeNode] = deque()
     queue.append(root)
@@ -29,7 +29,7 @@ def level_order(root: TreeNode | None) -> list[int]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الشجرة الثنائية
     # استخدم دالة مساعدة تبني شجرة ثنائية مباشرةً من مصفوفة

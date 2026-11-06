@@ -24,10 +24,10 @@ The following is the implementation code for graphs represented using an adjacen
 
 ```py
 class GraphAdjMat:
-    """Undirected graph class implemented with an adjacency matrix"""
+    """صنف رسم بياني غير موجّه منفذ بمصفوفة تجاور"""
 
     def __init__(self, vertices: list[int], edges: list[list[int]]):
-        """Constructor"""
+        """المنشئ"""
         # قائمة الرؤوس: العناصر قيم الرؤوس، والفهارس فهارس الرؤوس
         self.vertices: list[int] = []
         # مصفوفة التجاور: فهارس الصفوف والأعمدة تقابل فهارس الرؤوس
@@ -41,11 +41,11 @@ class GraphAdjMat:
             self.add_edge(e[0], e[1])
 
     def size(self) -> int:
-        """Get the number of vertices"""
+        """الحصول على عدد الرؤوس"""
         return len(self.vertices)
 
     def add_vertex(self, val: int):
-        """Add a vertex"""
+        """أضف رأسًا"""
         n = self.size()
         # ألحق قيمة الرأس الجديد إلى قائمة الرؤوس
         self.vertices.append(val)
@@ -57,7 +57,7 @@ class GraphAdjMat:
             row.append(0)
 
     def remove_vertex(self, index: int):
-        """Remove a vertex"""
+        """احذف رأسًا"""
         if index >= self.size():
             raise IndexError()
         # احذف الرأس عند الفهرس `index` من قائمة الرؤوس
@@ -69,7 +69,7 @@ class GraphAdjMat:
             row.pop(index)
 
     def add_edge(self, i: int, j: int):
-        """Add an edge"""
+        """أضف ضلعًا"""
         # المعاملان i و j مفهرسا عناصر في vertices
         # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
@@ -79,7 +79,7 @@ class GraphAdjMat:
         self.adj_mat[j][i] = 1
 
     def remove_edge(self, i: int, j: int):
-        """Remove an edge"""
+        """احذف ضلعًا"""
         # المعاملان i و j مفهرسا عناصر في vertices
         # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
@@ -88,7 +88,7 @@ class GraphAdjMat:
         self.adj_mat[j][i] = 0
 
     def print(self):
-        """Print the adjacency matrix"""
+        """طباعة مصفوفة التجاور"""
         print("Vertex list =", self.vertices)
         print("Adjacency matrix =")
         print_matrix(self.adj_mat)
@@ -118,10 +118,10 @@ Additionally, we use the `Vertex` class to represent vertices in the adjacency l
 
 ```py
 class GraphAdjList:
-    """Undirected graph class implemented with an adjacency list"""
+    """صنف رسم بياني غير موجّه منفذ بقائمة تجاور"""
 
     def __init__(self, edges: list[list[Vertex]]):
-        """Constructor"""
+        """المنشئ"""
         # قائمة التجاور: المفتاح رأس، والقيمة قائمة جميع أجواره
         self.adj_list = dict[Vertex, list[Vertex]]()
         # أضف كل الرؤوس والأضلاع
@@ -131,11 +131,11 @@ class GraphAdjList:
             self.add_edge(edge[0], edge[1])
 
     def size(self) -> int:
-        """Get the number of vertices"""
+        """الحصول على عدد الرؤوس"""
         return len(self.adj_list)
 
     def add_edge(self, vet1: Vertex, vet2: Vertex):
-        """Add an edge"""
+        """أضف ضلعًا"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
         # أضف الضلع vet1 - vet2
@@ -143,7 +143,7 @@ class GraphAdjList:
         self.adj_list[vet2].append(vet1)
 
     def remove_edge(self, vet1: Vertex, vet2: Vertex):
-        """Remove an edge"""
+        """احذف ضلعًا"""
         if vet1 not in self.adj_list or vet2 not in self.adj_list or vet1 == vet2:
             raise ValueError()
         # احذف الضلع vet1 - vet2
@@ -151,14 +151,14 @@ class GraphAdjList:
         self.adj_list[vet2].remove(vet1)
 
     def add_vertex(self, vet: Vertex):
-        """Add a vertex"""
+        """أضف رأسًا"""
         if vet in self.adj_list:
             return
         # أضف قائمة جديدة إلى قائمة التجاور
         self.adj_list[vet] = []
 
     def remove_vertex(self, vet: Vertex):
-        """Remove a vertex"""
+        """احذف رأسًا"""
         if vet not in self.adj_list:
             raise ValueError()
         # احذف من قائمة التجاور القائمة المقابلة للرأس vet
@@ -169,7 +169,7 @@ class GraphAdjList:
                 self.adj_list[vertex].remove(vet)
 
     def print(self):
-        """Print the adjacency list"""
+        """طباعة قائمة التجاور"""
         print("Adjacency list =")
         for vertex in self.adj_list:
             tmp = [v.val for v in self.adj_list[vertex]]

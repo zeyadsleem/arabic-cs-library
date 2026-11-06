@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def backtrack(choices: list[int], state: int, n: int, res: list[int]) -> int:
-    """Backtracking"""
+    """التتبع الرجعي"""
     # عند بلوغ الدرج n، زِد عدد الطرق بمقدار 1
     if state == n:
         res[0] += 1
@@ -21,7 +21,7 @@ def backtrack(choices: list[int], state: int, n: int, res: list[int]) -> int:
 
 
 def climbing_stairs_backtrack(n: int) -> int:
-    """Climbing stairs: backtracking"""
+    """صعود الدرج: التتبّع الرجعي"""
     choices = [1, 2]  # اختر صعود درج أو درجين
     state = 0  # ابدأ الصعود من الدرج 0
     res = [0]  # استخدم res[0] لتسجيل عدد الطرق
@@ -29,7 +29,7 @@ def climbing_stairs_backtrack(n: int) -> int:
     return res[0]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 9
 

@@ -45,7 +45,7 @@ $$
 
 ```py
 def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
@@ -61,7 +61,8 @@ def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
     return dp[n][cap]
 ```
 
-</div>### تحسين المساحة
+</div>
+### تحسين المساحة
 
 بما أن الحالة الحالية تنتقل من حالات على اليسار وفوق، **فبعد تحسين المساحة ينبغي اجتياز كل صف في جدول $dp$ بالترتيب الأمامي**.
 
@@ -74,7 +75,7 @@ def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
 
 ```py
 def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: space-optimized dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [0] * (cap + 1)
@@ -91,7 +92,8 @@ def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
     return dp[cap]
 ```
 
-</div>## مشكلة تغيير العملات
+</div>
+## مشكلة تغيير العملات
 
 تمثل مشكلة الحقيبة صنفاً واسعاً من مسائل البرمجة الديناميكية، ولها متغيّرات كثيرة، مثل مشكلة تغيير العملات.
 
@@ -147,7 +149,7 @@ $$
 
 ```py
 def coin_change_dp(coins: list[int], amt: int) -> int:
-    """Coin change: dynamic programming"""
+    """تغيير العملات: البرمجة الديناميكية"""
     n = len(coins)
     MAX = amt + 1
     # مهّد جدول dp
@@ -167,7 +169,8 @@ def coin_change_dp(coins: list[int], amt: int) -> int:
     return dp[n][amt] if dp[n][amt] != MAX else -1
 ```
 
-</div>### تحسين المساحة
+</div>
+### تحسين المساحة
 
 يُعالَج تحسين المساحة لمشكلة تغيير العملات بالطريقة نفسها المتبعة في مشكلة الحقيبة غير المحدودة:
 
@@ -176,7 +179,7 @@ def coin_change_dp(coins: list[int], amt: int) -> int:
 
 ```py
 def coin_change_dp_comp(coins: list[int], amt: int) -> int:
-    """Coin change: space-optimized dynamic programming"""
+    """تغيير العملات: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(coins)
     MAX = amt + 1
     # مهّد جدول dp
@@ -195,7 +198,8 @@ def coin_change_dp_comp(coins: list[int], amt: int) -> int:
     return dp[amt] if dp[amt] != MAX else -1
 ```
 
-</div>## مشكلة تغيير العملات II
+</div>
+## مشكلة تغيير العملات II
 
 <div class="note">
 
@@ -224,7 +228,7 @@ $$
 
 ```py
 def coin_change_ii_dp(coins: list[int], amt: int) -> int:
-    """Coin change II: dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية"""
     n = len(coins)
     # مهّد جدول dp
     dp = [[0] * (amt + 1) for _ in range(n + 1)]
@@ -243,7 +247,8 @@ def coin_change_ii_dp(coins: list[int], amt: int) -> int:
     return dp[n][amt]
 ```
 
-</div>### تحسين المساحة
+</div>
+### تحسين المساحة
 
 يُعالَج تحسين المساحة بالطريقة نفسها، إذ يكفي حذف بُعد العملات:
 <div class="lang-tab">
@@ -251,7 +256,7 @@ def coin_change_ii_dp(coins: list[int], amt: int) -> int:
 
 ```py
 def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
-    """Coin change II: space-optimized dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(coins)
     # مهّد جدول dp
     dp = [0] * (amt + 1)

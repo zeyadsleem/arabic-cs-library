@@ -82,7 +82,7 @@ $$
 
 ```py
 def edit_distance_dp(s: str, t: str) -> int:
-    """Edit distance: dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية"""
     n, m = len(s), len(t)
     dp = [[0] * (m + 1) for _ in range(n + 1)]
     # انتقالات الحالة: الصف الأول والعمود الأول
@@ -102,7 +102,8 @@ def edit_distance_dp(s: str, t: str) -> int:
     return dp[n][m]
 ```
 
-</div>### تحسين المساحة
+</div>
+### تحسين المساحة
 
 بما أن $dp[i, j]$ تعتمد على الحالة أعلاه $dp[i-1, j]$، وعلى الحالة على اليسار $dp[i, j-1]$، وعلى الحالة في أعلى اليسار $dp[i-1, j-1]$، فإن الاجتياز الأمامي سيفقد حالة أعلى اليسار $dp[i-1, j-1]$، بينما لا يستطيع الاجتياز العكسي بناء $dp[i, j-1]$ مسبقاً، لذا لا يصلح أي من ترتيبي الاجتياز.
 
@@ -112,7 +113,7 @@ def edit_distance_dp(s: str, t: str) -> int:
 
 ```py
 def edit_distance_dp_comp(s: str, t: str) -> int:
-    """Edit distance: space-optimized dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية مع تحسين المساحة"""
     n, m = len(s), len(t)
     dp = [0] * (m + 1)
     # انتقالات الحالة: الصف الأول

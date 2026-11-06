@@ -28,7 +28,7 @@ lang: ar
 
 ```py
 def binary_search_left_edge(nums: list[int], target: int) -> int:
-    """Find the leftmost occurrence of target using binary search"""
+    """العثور على أقصى يسار تكرار للهدف بالبحث الثنائي"""
     # هذا يعادل إيجاد نقطة إدراج target
     i = binary_search_insertion(nums, target)
     # إذا لم يُوجد target فأعد -1
@@ -38,7 +38,8 @@ def binary_search_left_edge(nums: list[int], target: int) -> int:
     return i
 ```
 
-</div>## إيجاد الحد الأيمن
+</div>
+## إيجاد الحد الأيمن
 
 فكيف نجد `target` الأقرب إلى أقصى اليمين؟ الطريقة الأكثر مباشرة هي تعديل الشيفرة واستبدال عملية تقليص المؤشر في حالة `nums[m] == target`. ونحذف الشيفرة هنا؛ ويمكن للقارئ المهتم تنفيذها بنفسه.
 
@@ -59,7 +60,7 @@ def binary_search_left_edge(nums: list[int], target: int) -> int:
 
 ```py
 def binary_search_right_edge(nums: list[int], target: int) -> int:
-    """Find the rightmost occurrence of target using binary search"""
+    """العثور على أقصى يمين تكرار للهدف بالبحث الثنائي"""
     # اختزل المسألة إلى إيجاد أقصى يسار نقطة إدراج لـ target + 1
     i = binary_search_insertion(nums, target + 1)
     # j هو الفهرس المرشح الأقصى يمينًا للهدف؛ و i هو فهرس أول عنصر أكبر من target أو len(nums)
@@ -71,7 +72,8 @@ def binary_search_right_edge(nums: list[int], target: int) -> int:
     return j
 ```
 
-</div>### التحويل إلى بحث عنصر
+</div>
+### التحويل إلى بحث عنصر
 
 نعلم أنه عندما لا تحتوي المصفوفة على `target`، سيشير $i$ و$j$ في النهاية إلى أول عنصر أكبر من `target` والعنصر الأقصى يميناً الأصغر من `target` على الترتيب.
 

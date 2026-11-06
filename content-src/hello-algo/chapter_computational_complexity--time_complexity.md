@@ -203,7 +203,7 @@ In the following function, although the value of `size` may be large, it is inde
 
 ```py
 def constant(n: int) -> int:
-    """Constant complexity"""
+    """تعقيد ثابت"""
     count = 0
     size = 100000
     for _ in range(size):
@@ -222,7 +222,7 @@ The number of operations in linear order grows linearly relative to the input da
 
 ```py
 def linear(n: int) -> int:
-    """Linear complexity"""
+    """تعقيد خطي"""
     count = 0
     for _ in range(n):
         count += 1
@@ -238,7 +238,7 @@ Operations such as traversing arrays and traversing linked lists have a time com
 
 ```py
 def array_traversal(nums: list[int]) -> int:
-    """Linear complexity (array traversal)"""
+    """التعقيد الخطي (اجتياز مصفوفة)"""
     count = 0
     # عدد التكرارات يتناسب مع طول المصفوفة
     for num in nums:
@@ -259,7 +259,7 @@ The number of operations in quadratic order grows quadratically relative to the 
 
 ```py
 def quadratic(n: int) -> int:
-    """Quadratic complexity"""
+    """تعقيد تربيعي"""
     count = 0
     # عدد التكرارات يتناسب مع مربع حجم المُدخل n
     for i in range(n):
@@ -281,7 +281,7 @@ Taking bubble sort as an example, the outer loop executes $n - 1$ times, and the
 
 ```py
 def bubble_sort(nums: list[int]) -> int:
-    """Quadratic complexity (bubble sort)"""
+    """التعقيد التربيعي (الترتيب الفقاعي)"""
     count = 0  # العدّاد
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(len(nums) - 1, 0, -1):
@@ -309,7 +309,7 @@ The figure below and the following code simulate the cell division process, with
 
 ```py
 def exponential(n: int) -> int:
-    """Exponential complexity (iterative implementation)"""
+    """التعقيد الأسي (تنفيذ تكراري)"""
     count = 0
     base = 1
     # تنقسم كل خلية إلى اثنتين في كل جولة، فينتج التتابع 1، 2، 4، 8، ...، 2^(n-1)
@@ -332,7 +332,7 @@ In actual algorithms, exponential order often appears in recursive functions. Fo
 
 ```py
 def exp_recur(n: int) -> int:
-    """Exponential complexity (recursive implementation)"""
+    """التعقيد الأسي (تنفيذ تعاودي)"""
     if n == 1:
         return 1
     return exp_recur(n - 1) + exp_recur(n - 1) + 1
@@ -353,7 +353,7 @@ The figure below and the following code simulate the process of "reducing to hal
 
 ```py
 def logarithmic(n: int) -> int:
-    """Logarithmic complexity (iterative implementation)"""
+    """التعقيد اللوغاريتمي (تنفيذ تكراري)"""
     count = 0
     while n > 1:
         n = n / 2
@@ -372,7 +372,7 @@ Like exponential order, logarithmic order also commonly appears in recursive fun
 
 ```py
 def log_recur(n: int) -> int:
-    """Logarithmic complexity (recursive implementation)"""
+    """التعقيد اللوغاريتمي (تنفيذ تعاودي)"""
     if n <= 1:
         return 0
     return log_recur(n / 2) + 1
@@ -404,7 +404,7 @@ Linearithmic order commonly appears in nested loops, where the time complexities
 
 ```py
 def linear_log_recur(n: int) -> int:
-    """Linearithmic complexity"""
+    """التعقيد الخطي-اللوغاريتمي"""
     if n <= 1:
         return 1
     # قسّم إلى مسألتين جزئيتين كل واحدة نصف الحجم الأصلي
@@ -438,7 +438,7 @@ Factorials are typically implemented using recursion. As shown in the figure bel
 
 ```py
 def factorial_recur(n: int) -> int:
-    """Factorial complexity (recursive implementation)"""
+    """التعقيد المضروبي (تنفيذ تعاودي)"""
     if n == 0:
         return 1
     count = 0
@@ -468,7 +468,7 @@ The "worst-case time complexity" corresponds to the function's asymptotic upper 
 
 ```py
 def find_one(nums: list[int]) -> int:
-    """Find the index of the number 1 in array nums"""
+    """العثور على فهرس العدد 1 في المصفوفة nums"""
     for i in range(len(nums)):
         # عندما يكون 1 في بداية المصفوفة، يكون التعقيد الزمني في أفضل الحالات O(1)
         # عندما يكون 1 في نهاية المصفوفة، يكون التعقيد الزمني في أسوأ الحالات O(n)

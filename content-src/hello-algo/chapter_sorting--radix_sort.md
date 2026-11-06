@@ -35,7 +35,7 @@ Additionally, we need to slightly modify the counting sort code to make it sort 
 
 ```py
 def radix_sort(nums: list[int]):
-    """Radix sort"""
+    """الترتيب الأساسي"""
     # احصل على أكبر عنصر في المصفوفة لتحديد العدد الأقصى من الأرقام
     m = max(nums)
     # عالج الأرقام من الأقل أهمية إلى الأهم

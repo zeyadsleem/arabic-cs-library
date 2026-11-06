@@ -18,7 +18,7 @@ lang: ar
 
 ```py
 def sum_iter(n: int) -> int:
-    """Sum using iteration"""
+    """الجمع بالتكرار"""
     res = 0
     for i in range(1, n + 1):
         res += i
@@ -60,7 +60,7 @@ def sum_iter(n: int) -> int:
 
 ```py
 def linear_loop(n: int) -> int:
-    """Linear-time loop"""
+    """حلقة بزمن خطي"""
     res = 0
     for i in range(n):
         res += i

@@ -18,7 +18,7 @@ answer the questions by following the program's actual execution order, and then
 
 ```py
 def sum_iter(n: int) -> int:
-    """Sum using iteration"""
+    """الجمع بالتكرار"""
     res = 0
     for i in range(1, n + 1):
         res += i
@@ -61,7 +61,7 @@ Each of the following code fragments takes a positive integer $n$ as input. Orde
 
 ```py
 def linear_loop(n: int) -> int:
-    """Linear-time loop"""
+    """حلقة بزمن خطي"""
     res = 0
     for i in range(n):
         res += i

@@ -6,7 +6,7 @@ Author: msk397 (machangxinq@gmail.com)
 
 
 class Pair:
-    """Key-value pair"""
+    """ثنائية المفتاح-القيمة"""
 
     def __init__(self, key: int, val: str):
         self.key = key
@@ -14,20 +14,20 @@ class Pair:
 
 
 class ArrayHashMap:
-    """Hash table implemented with an array"""
+    """جدول تجزئة منفذ بمصفوفة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         # مهّد مصفوفة تحوي 100 سلة
         self.buckets: list[Pair | None] = [None] * 100
 
     def hash_func(self, key: int) -> int:
-        """Hash function"""
+        """دالة التجزئة"""
         index = key % 100
         return index
 
     def get(self, key: int) -> str | None:
-        """Lookup operation"""
+        """عملية البحث"""
         index: int = self.hash_func(key)
         pair: Pair = self.buckets[index]
         if pair is None:
@@ -35,19 +35,19 @@ class ArrayHashMap:
         return pair.val
 
     def put(self, key: int, val: str):
-        """Insert and update operations"""
+        """عمليات الإدراج والتحديث"""
         pair = Pair(key, val)
         index: int = self.hash_func(key)
         self.buckets[index] = pair
 
     def remove(self, key: int):
-        """Remove operation"""
+        """عملية الحذف"""
         index: int = self.hash_func(key)
         # اجعلها None لتمييز الحذف
         self.buckets[index] = None
 
     def entry_set(self) -> list[Pair]:
-        """Get all key-value pairs"""
+        """الحصول على كل ثنائيات المفتاح-القيمة"""
         result: list[Pair] = []
         for pair in self.buckets:
             if pair is not None:
@@ -55,7 +55,7 @@ class ArrayHashMap:
         return result
 
     def key_set(self) -> list[int]:
-        """Get all keys"""
+        """الحصول على كل المفاتيح"""
         result = []
         for pair in self.buckets:
             if pair is not None:
@@ -63,7 +63,7 @@ class ArrayHashMap:
         return result
 
     def value_set(self) -> list[str]:
-        """Get all values"""
+        """الحصول على كل القيم"""
         result = []
         for pair in self.buckets:
             if pair is not None:
@@ -71,13 +71,13 @@ class ArrayHashMap:
         return result
 
     def print(self):
-        """Print the hash table"""
+        """طباعة جدول التجزئة"""
         for pair in self.buckets:
             if pair is not None:
                 print(pair.key, "->", pair.val)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد جدول التجزئة
     hmap = ArrayHashMap()

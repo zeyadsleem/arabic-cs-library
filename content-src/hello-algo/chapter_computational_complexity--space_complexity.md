@@ -132,7 +132,7 @@ It should be noted that memory occupied by initializing variables or calling fun
 
 ```py
 def constant(n: int):
-    """Constant complexity"""
+    """تعقيد ثابت"""
     # الثوابت والمتغيرات والكائنات تشغل مساحة O(1)
     a = 0
     nums = [0] * 10000
@@ -156,7 +156,7 @@ Linear order is common in arrays, linked lists, stacks, queues, etc., where the 
 
 ```py
 def linear(n: int):
-    """Linear complexity"""
+    """تعقيد خطي"""
     # قائمة بطول n تشغل مساحة O(n)
     nums = [0] * n
     # جدول تجزئة فيه n إدخالًا يشغل مساحة O(n)
@@ -174,7 +174,7 @@ As shown in the following figure, the recursion depth of this function is $n$, m
 
 ```py
 def linear_recur(n: int):
-    """Linear complexity (recursive implementation)"""
+    """التعقيد الخطي (تنفيذ تعاودي)"""
     print("Recursion: n =", n)
     if n == 1:
         return
@@ -194,7 +194,7 @@ Quadratic order is common in matrices and graphs, where the number of elements i
 
 ```py
 def quadratic(n: int):
-    """Quadratic complexity"""
+    """تعقيد تربيعي"""
     # القائمة ثنائية الأبعاد تشغل مساحة O(n^2)
     num_matrix = [[0] * n for _ in range(n)]
 ```
@@ -208,7 +208,7 @@ As shown in the following figure, the recursion depth of this function is $n$, a
 
 ```py
 def quadratic_recur(n: int) -> int:
-    """Quadratic complexity (recursive implementation)"""
+    """التعقيد التربيعي (تنفيذ تعاودي)"""
     if n <= 0:
         return 0
     # أطوال المصفوفة nums هي n، n-1، ...، 2، 1
@@ -229,7 +229,7 @@ Exponential order is common in binary trees. Observe the following figure: a "fu
 
 ```py
 def build_tree(n: int) -> TreeNode | None:
-    """Exponential complexity (building a perfect binary tree)"""
+    """التعقيد الأسي (بناء شجرة ثنائية تامة)"""
     if n == 0:
         return None
     root = TreeNode(0)

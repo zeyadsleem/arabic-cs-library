@@ -56,7 +56,7 @@ After understanding the above information, we can fill in the blanks in the temp
 
 ```py
 def permutations_i(nums: list[int]) -> list[list[int]]:
-    """Permutations I"""
+    """التباديل I"""
     res = []
     backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
     return res
@@ -99,7 +99,7 @@ Building on the code from the previous problem, we initialize a hash set `duplic
 
 ```py
 def permutations_ii(nums: list[int]) -> list[list[int]]:
-    """Permutations II"""
+    """التباديل II"""
     res = []
     backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
     return res

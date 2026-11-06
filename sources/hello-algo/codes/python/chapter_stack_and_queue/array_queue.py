@@ -6,28 +6,28 @@ Author: Peng Chen (pengchzn@gmail.com)
 
 
 class ArrayQueue:
-    """Queue implemented with a circular array"""
+    """طابور منفذ بمصفوفة دائرية"""
 
     def __init__(self, size: int):
-        """Constructor"""
+        """المنشئ"""
         self._nums: list[int] = [0] * size  # المصفوفة التي تخزن عناصر الطابور
         self._front: int = 0  # مؤشر المقدمة، يشير إلى أول عنصر
         self._size: int = 0  # حجم الطابور
 
     def capacity(self) -> int:
-        """Get the queue capacity"""
+        """الحصول على سعة الطابور"""
         return len(self._nums)
 
     def size(self) -> int:
-        """Get the queue size"""
+        """احصل على حجم الطابور"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the queue is empty"""
+        """تحقق مما إذا كان الطابور فارغًا"""
         return self._size == 0
 
     def push(self, num: int):
-        """Enqueue"""
+        """إدخال"""
         if self._size == self.capacity():
             raise IndexError("Queue is full")
         # احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر
@@ -38,7 +38,7 @@ class ArrayQueue:
         self._size += 1
 
     def pop(self) -> int:
-        """Dequeue"""
+        """إخراج"""
         num: int = self.peek()
         # ورّر مؤشر المقدمة موضعًا واحدًا، مع الالتفاف إلى البداية إن تجاوز النهاية
         self._front = (self._front + 1) % self.capacity()
@@ -46,13 +46,13 @@ class ArrayQueue:
         return num
 
     def peek(self) -> int:
-        """Access the front element"""
+        """وصول إلى عنصر المقدمة"""
         if self.is_empty():
             raise IndexError("Queue is empty")
         return self._nums[self._front]
 
     def to_list(self) -> list[int]:
-        """Return a list for printing"""
+        """إعادة قائمة للطباعة"""
         res = [0] * self.size()
         j: int = self._front
         for i in range(self.size()):
@@ -61,7 +61,7 @@ class ArrayQueue:
         return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الطابور
     queue = ArrayQueue(10)

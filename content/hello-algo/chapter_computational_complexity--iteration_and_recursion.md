@@ -23,7 +23,7 @@ lang: ar
 
 ```py
 def for_loop(n: int) -> int:
-    """for loop"""
+    """حلقة for"""
     res = 0
     # اجمع 1، 2، ...، n-1، n في حلقة
     for i in range(1, n + 1):
@@ -50,7 +50,7 @@ def for_loop(n: int) -> int:
 
 ```py
 def while_loop(n: int) -> int:
-    """while loop"""
+    """حلقة while"""
     res = 0
     i = 1  # مهّد متغير التحكم في الحلقة
     # اجمع 1، 2، ...، n-1، n في حلقة
@@ -67,7 +67,7 @@ def while_loop(n: int) -> int:
 
 ```py
 def while_loop_ii(n: int) -> int:
-    """while loop (two updates)"""
+    """حلقة while (تحديثان)"""
     res = 0
     i = 1  # مهّد متغير التحكم في الحلقة
     # اجمع 1، 4، 10، ... في حلقة
@@ -96,7 +96,7 @@ def while_loop_ii(n: int) -> int:
 
 ```py
 def nested_for_loop(n: int) -> str:
-    """Nested for loops"""
+    """حلقات for متداخلة"""
     res = ""
     # حلقة على i = 1، 2، ...، n-1، n
     for i in range(1, n + 1):
@@ -136,7 +136,7 @@ def nested_for_loop(n: int) -> str:
 
 ```py
 def recur(n: int) -> int:
-    """Recursion"""
+    """التعاود"""
     # الحالة الأساس
     if n == 1:
         return 1
@@ -189,7 +189,7 @@ def recur(n: int) -> int:
 
 ```py
 def tail_recur(n, res):
-    """Tail recursion"""
+    """التعاود الذيلي"""
     # الحالة الأساس
     if n == 0:
         return res
@@ -234,7 +234,7 @@ def tail_recur(n, res):
 
 ```py
 def fib(n: int) -> int:
-    """Fibonacci sequence: recursion"""
+    """متتالية فيبوناتشي: التعاود"""
     # حالات الأساس: f(1) = 0، f(2) = 1
     if n == 1 or n == 2:
         return n - 1
@@ -288,7 +288,7 @@ def fib(n: int) -> int:
 
 ```py
 def for_loop_recur(n: int) -> int:
-    """Simulate recursion using iteration"""
+    """محاكاة التعاود بالتكرار"""
     # استخدم مكدسًا صريحًا لمحاكاة مكدس الاستدعاءات في النظام
     stack = []
     res = 0

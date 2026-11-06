@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def counting_sort_naive(nums: list[int]):
-    """Counting sort"""
+    """الترتيب بالعدّ"""
     # تنفيذ بسيط؛ لا يمكن استخدامه لترتيب الكائنات
     # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)
@@ -24,7 +24,7 @@ def counting_sort_naive(nums: list[int]):
 
 
 def counting_sort(nums: list[int]):
-    """Counting sort"""
+    """الترتيب بالعدّ"""
     # تنفيذ كامل؛ مستقر وقابل للتكيف لترتيب الكائنات
     # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)
@@ -50,7 +50,7 @@ def counting_sort(nums: list[int]):
         nums[i] = res[i]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [1, 0, 1, 2, 0, 4, 0, 2, 2, 4]
 

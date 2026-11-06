@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def climbing_stairs_dp(n: int) -> int:
-    """Climbing stairs: dynamic programming"""
+    """صعود الدرج: البرمجة الديناميكية"""
     if n == 1 or n == 2:
         return n
     # مهّد جدول dp لتخزين حلول المسائل الجزئية
@@ -20,7 +20,7 @@ def climbing_stairs_dp(n: int) -> int:
 
 
 def climbing_stairs_dp_comp(n: int) -> int:
-    """Climbing stairs: space-optimized dynamic programming"""
+    """صعود الدرج: البرمجة الديناميكية مع تحسين المساحة"""
     if n == 1 or n == 2:
         return n
     a, b = 1, 2
@@ -29,7 +29,7 @@ def climbing_stairs_dp_comp(n: int) -> int:
     return b
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 9
 

@@ -48,7 +48,7 @@ The "node height" refers to the distance from that node to its farthest leaf nod
 
 ```py
     def update_height(self, node: TreeNode | None):
-        """Update the node height"""
+        """حدّث ارتفاع العقدة"""
         # ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1
         node.height = max([self.height(node.left), self.height(node.right)]) + 1
 ```
@@ -64,7 +64,7 @@ The <u>balance factor</u> of a node is defined as the height of the node's left 
 
 ```py
     def balance_factor(self, node: TreeNode | None) -> int:
-        """Get the balance factor"""
+        """الحصول على عامل التوازن"""
         # عامل التوازن للشجرة الجزئية الفارغة هو 0
         if node is None:
             return 0
@@ -101,7 +101,7 @@ As shown in the figure below, when the `child` node has a right child (denoted a
 
 ```py
     def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Right rotation"""
+        """إدارة يمينية"""
         child = node.left
         grand_child = child.right
         # أدر node حول child إلى اليمين
@@ -133,7 +133,7 @@ It can be observed that **right rotation and left rotation operations are mirror
 
 ```py
     def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Left rotation"""
+        """إدارة يسرية"""
         child = node.right
         grand_child = child.left
         # أدر node حول child إلى اليسار
@@ -184,7 +184,7 @@ For ease of use, we encapsulate the rotation operations into a function. **With 
 
 ```py
     def rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Perform rotations to restore balance in this subtree"""
+        """إجراء الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية"""
         # احصل على عامل توازن العقدة
         balance_factor = self.balance_factor(node)
         # شجرة مائلة لليسار
@@ -222,7 +222,7 @@ The node insertion operation in AVL trees is similar in principle to that in bin
 
 ```py
     def insert_helper(self, node: TreeNode | None, val: int) -> TreeNode:
-        """Insert a node recursively (helper method)"""
+        """إدراج عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return TreeNode(val)
         # 1. أوجد موضع الإدراج وأدخل العقدة
@@ -250,7 +250,7 @@ Similarly, on the basis of the binary search tree's node removal method, rotatio
 
 ```py
     def remove_helper(self, node: TreeNode | None, val: int) -> TreeNode | None:
-        """Remove a node recursively (helper method)"""
+        """حذف عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return None
         # 1. أوجد العقدة واحذفها

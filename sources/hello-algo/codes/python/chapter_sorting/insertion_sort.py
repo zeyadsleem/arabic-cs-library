@@ -6,7 +6,7 @@ Author: timi (xisunyy@163.com)
 
 
 def insertion_sort(nums: list[int]):
-    """Insertion sort"""
+    """الترتيب بالإدراج"""
     # الحلقة الخارجية: النطاق المرتب هو [0, i-1]
     for i in range(1, len(nums)):
         base = nums[i]
@@ -18,7 +18,7 @@ def insertion_sort(nums: list[int]):
         nums[j + 1] = base  # ضع base في الموضع الصحيح
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [4, 1, 3, 1, 5, 2]
     insertion_sort(nums)

@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 class ListNode:
-    """Linked list node class"""
+    """صنف عقدة القائمة المترابطة"""
 
     def __init__(self, val: int):
         self.val: int = val  # قيمة العقدة
@@ -14,7 +14,7 @@ class ListNode:
 
 
 def list_to_linked_list(arr: list[int]) -> ListNode | None:
-    """Deserialize a list into a linked list"""
+    """فك تسلسل قائمة إلى قائمة مترابطة"""
     dum = head = ListNode(0)
     for a in arr:
         node = ListNode(a)
@@ -24,7 +24,7 @@ def list_to_linked_list(arr: list[int]) -> ListNode | None:
 
 
 def linked_list_to_list(head: ListNode | None) -> list[int]:
-    """Serialize a linked list into a list"""
+    """تسلسل قائمة مترابطة إلى قائمة"""
     arr: list[int] = []
     while head:
         arr.append(head.val)

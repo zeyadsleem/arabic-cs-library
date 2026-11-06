@@ -39,7 +39,8 @@ lang: ar
 tree = [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]
 ```
 
-</div>![التمثيل المصفوفي لشجرة ثنائية عشوائية](/images/hello-algo/chapter_tree--array_representation_with_empty.png)
+</div>
+![التمثيل المصفوفي لشجرة ثنائية عشوائية](/images/hello-algo/chapter_tree--array_representation_with_empty.png)
 
 جدير بالذكر أن **الأشجار الثنائية الكاملة ملائمة جداً للتمثيل المصفوفي**. وباستذكار تعريف الشجرة الثنائية الكاملة، لا تظهر `None` إلا في المستوى السفلي وفي الجهة اليمنى، **ما يعني أن جميع قيم `None` يجب أن تظهر في نهاية تسلسل الاجتياز بالمستويات**.
 
@@ -57,37 +58,37 @@ tree = [1, 2, 3, 4, None, 6, 7, 8, 9, None, None, 12, None, None, 15]
 
 ```py
 class ArrayBinaryTree:
-    """Binary tree class using an array representation"""
+    """صنف شجرة ثنائية بتمثيل مصفوفي"""
 
     def __init__(self, arr: list[int | None]):
-        """Constructor"""
+        """المنشئ"""
         self._tree = list(arr)
 
     def size(self):
-        """Length of the backing list"""
+        """طول القائمة الداعمة"""
         return len(self._tree)
 
     def val(self, i: int) -> int | None:
-        """Get the value of the node at index i"""
+        """الحصول على قيمة العقدة عند الفهرس i"""
         # إذا خرج الفهرس عن الحدود، أعد None لتمثيل موضع فارغ
         if i < 0 or i >= self.size():
             return None
         return self._tree[i]
 
     def left(self, i: int) -> int | None:
-        """Get the left child index of the node at index i"""
+        """الحصول على فهرس الابن الأيسر للعقدة عند الفهرس i"""
         return 2 * i + 1
 
     def right(self, i: int) -> int | None:
-        """Get the right child index of the node at index i"""
+        """الحصول على فهرس الابن الأيمن للعقدة عند الفهرس i"""
         return 2 * i + 2
 
     def parent(self, i: int) -> int | None:
-        """Get the parent index of the node at index i"""
+        """الحصول على فهرس العقدة الأصل للعقدة عند الفهرس i"""
         return (i - 1) // 2
 
     def level_order(self) -> list[int]:
-        """Level-order traversal"""
+        """اجتياز بالمستويات"""
         self.res = []
         # اجتز المصفوفة مباشرةً
         for i in range(self.size()):
@@ -96,7 +97,7 @@ class ArrayBinaryTree:
         return self.res
 
     def dfs(self, i: int, order: str):
-        """Depth-first traversal"""
+        """الاجتياز بالعمق أولًا"""
         if self.val(i) is None:
             return
         # اجتياز الطلب المسبق
@@ -112,25 +113,26 @@ class ArrayBinaryTree:
             self.res.append(self.val(i))
 
     def pre_order(self) -> list[int]:
-        """Preorder traversal"""
+        """اجتياز الطلب المسبق"""
         self.res = []
         self.dfs(0, order="pre")
         return self.res
 
     def in_order(self) -> list[int]:
-        """Inorder traversal"""
+        """الاجتياز الداخلي"""
         self.res = []
         self.dfs(0, order="in")
         return self.res
 
     def post_order(self) -> list[int]:
-        """Postorder traversal"""
+        """اجتياز الطلب اللاحق"""
         self.res = []
         self.dfs(0, order="post")
         return self.res
 ```
 
-</div>## المزايا والقيود
+</div>
+## المزايا والقيود
 
 يتمتع التمثيل المصفوفي للأشجار الثنائية بالمزايا التالية:
 

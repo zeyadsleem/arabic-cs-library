@@ -25,7 +25,7 @@ The code is as follows:
 
 ```py
 def counting_sort_naive(nums: list[int]):
-    """Counting sort"""
+    """الترتيب بالعدّ"""
     # تنفيذ بسيط؛ لا يمكن استخدامه لترتيب الكائنات
     # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)
@@ -75,7 +75,7 @@ The counting sort implementation is shown below:
 
 ```py
 def counting_sort(nums: list[int]):
-    """Counting sort"""
+    """الترتيب بالعدّ"""
     # تنفيذ كامل؛ مستقر وقابل للتكيف لترتيب الكائنات
     # 1. أوجد أكبر عنصر في المصفوفة m
     m = max(nums)

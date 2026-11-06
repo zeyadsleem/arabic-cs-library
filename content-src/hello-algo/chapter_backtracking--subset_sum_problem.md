@@ -30,7 +30,7 @@ Unlike the permutation problem, **elements in this problem can be selected any n
 
 ```py
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I (with duplicate subsets)"""
+    """حل مجموع المجموعات الجزئية I (مع مجموعات جزئية مكررة)"""
     state = []  # الحالة (المجموعة الجزئية)
     total = 0  # مجموع المجموعة الجزئية
     res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
@@ -82,7 +82,7 @@ In addition, we have made the following two optimizations to the code:
 
 ```py
 def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I"""
+    """حل مجموع المجموعة الجزئية I"""
     state = []  # الحالة (المجموعة الجزئية)
     nums.sort()  # رتّب nums
     start = 0  # فهرس البدء للتكرار
@@ -124,7 +124,7 @@ At the same time, **this problem specifies that each array element can only be s
 
 ```py
 def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum II"""
+    """حل مجموع المجموعة الجزئية II"""
     state = []  # الحالة (المجموعة الجزئية)
     nums.sort()  # رتّب nums
     start = 0  # فهرس البدء للتكرار

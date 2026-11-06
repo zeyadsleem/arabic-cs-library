@@ -14,7 +14,7 @@ def backtrack(
     diags1: list[bool],
     diags2: list[bool],
 ):
-    """Backtracking: n-queens"""
+    """التتبع الرجعي: مسألة الملكات n"""
     # سجّل حلًا حين تُوضع ملكة في كل صف
     if row == n:
         res.append([list(row) for row in state])
@@ -37,7 +37,7 @@ def backtrack(
 
 
 def n_queens(n: int) -> list[list[list[str]]]:
-    """Solve the n-queens problem"""
+    """حل مسألة الملكات n"""
     # مهّد لوحة n*n، حيث تمثل 'Q' ملكة و'#' مربعًا فارغًا
     state = [["#" for _ in range(n)] for _ in range(n)]
     cols = [False] * n  # تتبع ما إذا كان في العمود ملكة
@@ -49,7 +49,7 @@ def n_queens(n: int) -> list[list[list[str]]]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 4
     res = n_queens(n)

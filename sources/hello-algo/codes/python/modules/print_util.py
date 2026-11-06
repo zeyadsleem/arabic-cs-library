@@ -9,7 +9,7 @@ from .list_node import ListNode, linked_list_to_list
 
 
 def print_matrix(mat: list[list[int]]):
-    """Print a matrix"""
+    """طباعة مصفوفة"""
     s = []
     for arr in mat:
         s.append("  " + str(arr))
@@ -17,7 +17,7 @@ def print_matrix(mat: list[list[int]]):
 
 
 def print_linked_list(head: ListNode | None):
-    """Print a linked list"""
+    """طباعة قائمة مترابطة"""
     arr: list[int] = linked_list_to_list(head)
     print(" -> ".join([str(a) for a in arr]))
 
@@ -68,13 +68,13 @@ def print_tree(
 
 
 def print_dict(hmap: dict):
-    """Print a dictionary"""
+    """طباعة قاموس"""
     for key, value in hmap.items():
         print(key, "->", value)
 
 
 def print_heap(heap: list[int]):
-    """Print a heap"""
+    """طباعة كومة"""
     print("Array representation of the heap:", heap)
     print("Tree representation of the heap:")
     root: TreeNode | None = list_to_tree(heap)

@@ -12,7 +12,7 @@ from modules import TreeNode, print_tree, list_to_tree
 
 
 def pre_order(root: TreeNode):
-    """Preorder traversal: example 1"""
+    """اجتياز الطلب المسبق: مثال 1"""
     if root is None:
         return
     if root.val == 7:
@@ -22,7 +22,7 @@ def pre_order(root: TreeNode):
     pre_order(root.right)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     root = list_to_tree([1, 7, 3, 4, 5, 6, 7])
     print("\nInitialize the binary tree")

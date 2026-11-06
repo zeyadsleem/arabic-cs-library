@@ -8,7 +8,7 @@ from collections import deque
 
 
 class TreeNode:
-    """Binary tree node class"""
+    """صنف عقدة الشجرة الثنائية"""
 
     def __init__(self, val: int = 0):
         self.val: int = val  # قيمة العقدة
@@ -34,7 +34,7 @@ class TreeNode:
 
 
 def list_to_tree_dfs(arr: list[int], i: int) -> TreeNode | None:
-    """Deserialize a list into a binary tree: recursion"""
+    """فك تسلسل قائمة إلى شجرة ثنائية: التعاود"""
     # أعد None إذا خرج الفهرس عن الحدود أو كان العنصر المقابل None
     if i < 0 or i >= len(arr) or arr[i] is None:
         return None
@@ -47,12 +47,12 @@ def list_to_tree_dfs(arr: list[int], i: int) -> TreeNode | None:
 
 
 def list_to_tree(arr: list[int]) -> TreeNode | None:
-    """Deserialize a list into a binary tree"""
+    """فك تسلسل قائمة إلى شجرة ثنائية"""
     return list_to_tree_dfs(arr, 0)
 
 
 def tree_to_list_dfs(root: TreeNode, i: int, res: list[int]) -> list[int]:
-    """Serialize a binary tree into a list: recursion"""
+    """تسلسل شجرة ثنائية إلى قائمة: التعاود"""
     if root is None:
         return
     if i >= len(res):
@@ -63,7 +63,7 @@ def tree_to_list_dfs(root: TreeNode, i: int, res: list[int]) -> list[int]:
 
 
 def tree_to_list(root: TreeNode | None) -> list[int]:
-    """Serialize a binary tree into a list"""
+    """تسلسل شجرة ثنائية إلى قائمة"""
     res = []
     tree_to_list_dfs(root, 0, res)
     return res

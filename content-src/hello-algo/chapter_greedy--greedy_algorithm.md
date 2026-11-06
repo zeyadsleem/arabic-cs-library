@@ -32,7 +32,7 @@ The implementation code is as follows:
 
 ```py
 def coin_change_greedy(coins: list[int], amt: int) -> int:
-    """Coin change: greedy algorithm"""
+    """تغيير العملات: خوارزمية جشعة"""
     # افترض أن قائمة العملات مرتبة
     i = len(coins) - 1
     count = 0

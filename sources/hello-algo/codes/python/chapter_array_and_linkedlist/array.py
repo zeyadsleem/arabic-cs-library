@@ -8,7 +8,7 @@ import random
 
 
 def random_access(nums: list[int]) -> int:
-    """Access an element at a random index"""
+    """وصول إلى عنصر عند فهرس عشوائي"""
     # اختر عددًا عشوائيًا في النطاق [0, len(nums)-1]
     random_index = random.randint(0, len(nums) - 1)
     # احصل على العنصر المختار عشوائيًا وأعده
@@ -19,7 +19,7 @@ def random_access(nums: list[int]) -> int:
 # لاحظ أن قائمة Python مصفوفة ديناميكية يمكن مدّها مباشرةً
 # لأغراض التعلم، تعامل هذه الدالة مع القائمة بوصفها مصفوفة ثابتة الطول
 def extend(nums: list[int], enlarge: int) -> list[int]:
-    """Extend the array length"""
+    """مدّ طول المصفوفة"""
     # مهّد مصفوفة بالطول الممدود
     res = [0] * (len(nums) + enlarge)
     # انسخ كل العناصر من المصفوفة الأصلية إلى المصفوفة الجديدة
@@ -30,7 +30,7 @@ def extend(nums: list[int], enlarge: int) -> list[int]:
 
 
 def insert(nums: list[int], num: int, index: int):
-    """Insert element num at index `index` in the array"""
+    """إدراج العنصر num عند الفهرس `index` في المصفوفة"""
     # أزح كل العناصر من الفهرس `index` وما بعده موضعًا واحدًا إلى اليمين
     for i in range(len(nums) - 1, index, -1):
         nums[i] = nums[i - 1]
@@ -39,14 +39,14 @@ def insert(nums: list[int], num: int, index: int):
 
 
 def remove(nums: list[int], index: int):
-    """Remove the element at index `index`"""
+    """حذف العنصر عند الفهرس `index`"""
     # أزح كل العناصر بعد الفهرس `index` موضعًا واحدًا إلى اليسار
     for i in range(index, len(nums) - 1):
         nums[i] = nums[i + 1]
 
 
 def traverse(nums: list[int]):
-    """Traverse the array"""
+    """اجتز المصفوفة"""
     count = 0
     # اجتز المصفوفة بالفهرس
     for i in range(len(nums)):
@@ -61,14 +61,14 @@ def traverse(nums: list[int]):
 
 
 def find(nums: list[int], target: int) -> int:
-    """Find a specified element in the array"""
+    """البحث عن عنصر محدد في المصفوفة"""
     for i in range(len(nums)):
         if nums[i] == target:
             return i
     return -1
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد المصفوفة
     arr = [0] * 5

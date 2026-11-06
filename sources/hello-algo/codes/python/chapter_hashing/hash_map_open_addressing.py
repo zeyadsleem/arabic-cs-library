@@ -12,10 +12,10 @@ from chapter_hashing.array_hash_map import Pair
 
 
 class HashMapOpenAddressing:
-    """Hash table with open addressing"""
+    """جدول تجزئة بالعنونة المفتوحة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self.size = 0  # عدد ثنائيات المفتاح-القيمة
         self.capacity = 4  # سعة جدول التجزئة
         self.load_thres = 2.0 / 3.0  # عتبة عامل التحميل التي تطلق نموّ السعة
@@ -24,15 +24,15 @@ class HashMapOpenAddressing:
         self.TOMBSTONE = Pair(-1, "-1")  # علامة شاهد القبر
 
     def hash_func(self, key: int) -> int:
-        """Hash function"""
+        """دالة التجزئة"""
         return key % self.capacity
 
     def load_factor(self) -> float:
-        """Load factor"""
+        """عامل التحميل"""
         return self.size / self.capacity
 
     def find_bucket(self, key: int) -> int:
-        """Find the bucket index for key"""
+        """أوجد فهرس سلة key"""
         index = self.hash_func(key)
         first_tombstone = -1
         # تتبّع خطيًا حتى تصل إلى سلة فارغة
@@ -54,7 +54,7 @@ class HashMapOpenAddressing:
         return index if first_tombstone == -1 else first_tombstone
 
     def get(self, key: int) -> str:
-        """Lookup operation"""
+        """عملية البحث"""
         # أوجد فهرس سلة key
         index = self.find_bucket(key)
         # إذا وُجدت الثنائية فأعد val الخاص بها
@@ -64,7 +64,7 @@ class HashMapOpenAddressing:
         return None
 
     def put(self, key: int, val: str):
-        """Insert operation"""
+        """عملية الإدراج"""
         # زِد السعة عندما يتجاوز عامل التحميل العتبة
         if self.load_factor() > self.load_thres:
             self.extend()
@@ -79,7 +79,7 @@ class HashMapOpenAddressing:
         self.size += 1
 
     def remove(self, key: int):
-        """Remove operation"""
+        """عملية الحذف"""
         # أوجد فهرس سلة key
         index = self.find_bucket(key)
         # إذا وُجدت الثنائية فاستبدلها بشاهد قبر
@@ -88,7 +88,7 @@ class HashMapOpenAddressing:
             self.size -= 1
 
     def extend(self):
-        """Grow the hash table capacity"""
+        """زيادة سعة جدول التجزئة"""
         # احتفظ بإشارة إلى جدول التجزئة الأصلي
         buckets_tmp = self.buckets
         # مهّد جدول تجزئة جديدًا بالسعة الموسعة
@@ -101,7 +101,7 @@ class HashMapOpenAddressing:
                 self.put(pair.key, pair.val)
 
     def print(self):
-        """Print the hash table"""
+        """طباعة جدول التجزئة"""
         for pair in self.buckets:
             if pair is None:
                 print("None")
@@ -111,7 +111,7 @@ class HashMapOpenAddressing:
                 print(pair.key, "->", pair.val)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد جدول التجزئة
     hashmap = HashMapOpenAddressing()

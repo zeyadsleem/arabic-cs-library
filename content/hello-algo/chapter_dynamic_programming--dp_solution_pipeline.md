@@ -123,7 +123,7 @@ $$
 
 ```py
 def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
-    """Minimum path sum: brute-force search"""
+    """أدنى مجموع مسار: البحث بالقوة الغاشمة"""
     # توقف عن البحث عند الخلية أعلى اليسار
     if i == 0 and j == 0:
         return grid[0][0]
@@ -137,7 +137,8 @@ def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
     return min(left, up) + grid[i][j]
 ```
 
-</div>![شجرة تعاود البحث بالقوة الغاشمة](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png)
+</div>
+![شجرة تعاود البحث بالقوة الغاشمة](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs.png)
 
 لكل حالة خياران: الأسفل واليمين، لذا فإن إجمالي عدد الخطوات من الزاوية العلوية اليسرى إلى الزاوية السفلية اليمنى هو $m + n - 2$، مما يعطي تعقيداً زمنياً في أسوأ حالة $O(2^{m + n})$، حيث $n$ و$m$ هما عدد صفوف الشبكة وأعمدتها على الترتيب. لاحظ أن هذا الحساب لا يراعي الحالات القريبة من حدود الشبكة، حيث يبقى خيار واحد فقط عند الوصول إلى حدود الشبكة، لذا سيكون العدد الفعلي للمسارات أقل بقليل.
 
@@ -155,7 +156,8 @@ def min_path_sum_dfs_mem(
     grid: list[list[int]], mem: list[list[int]], i: int, j: int
 ```
 
-</div>![شجرة تعاود الحفظ](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png)
+</div>
+![شجرة تعاود الحفظ](/images/hello-algo/chapter_dynamic_programming--min_path_sum_dfs_mem.png)
 
 ### الطريقة 3: البرمجة الديناميكية
 
@@ -170,7 +172,7 @@ def min_path_sum_dfs_mem(
 
 ```py
 def min_path_sum_dp(grid: list[list[int]]) -> int:
-    """Minimum path sum: dynamic programming"""
+    """أدنى مجموع مسار: البرمجة الديناميكية"""
     n, m = len(grid), len(grid[0])
     # مهّد جدول dp
     dp = [[0] * m for _ in range(n)]
@@ -188,7 +190,8 @@ def min_path_sum_dp(grid: list[list[int]]) -> int:
     return dp[n - 1][m - 1]
 ```
 
-</div>### تحسين المساحة
+</div>
+### تحسين المساحة
 
 بما أن كل خلية مرتبطة فقط بالخلية الواقعة على يسارها والخلية الواقعة فوقها، يمكننا استخدام مصفوفة من صف واحد لتنفيذ جدول $dp$.
 
@@ -198,7 +201,7 @@ def min_path_sum_dp(grid: list[list[int]]) -> int:
 
 ```py
 def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
-    """Minimum path sum: space-optimized dynamic programming"""
+    """أدنى مجموع مسار: البرمجة الديناميكية مع تحسين المساحة"""
     n, m = len(grid), len(grid[0])
     # مهّد جدول dp
     dp = [0] * m

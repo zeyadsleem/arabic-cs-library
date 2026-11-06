@@ -12,10 +12,10 @@ from modules import Vertex, print_matrix
 
 
 class GraphAdjMat:
-    """Undirected graph class implemented with an adjacency matrix"""
+    """صنف رسم بياني غير موجّه منفذ بمصفوفة تجاور"""
 
     def __init__(self, vertices: list[int], edges: list[list[int]]):
-        """Constructor"""
+        """المنشئ"""
         # قائمة الرؤوس: العناصر قيم الرؤوس، والفهارس فهارس الرؤوس
         self.vertices: list[int] = []
         # مصفوفة التجاور: فهارس الصفوف والأعمدة تقابل فهارس الرؤوس
@@ -29,11 +29,11 @@ class GraphAdjMat:
             self.add_edge(e[0], e[1])
 
     def size(self) -> int:
-        """Get the number of vertices"""
+        """الحصول على عدد الرؤوس"""
         return len(self.vertices)
 
     def add_vertex(self, val: int):
-        """Add a vertex"""
+        """أضف رأسًا"""
         n = self.size()
         # ألحق قيمة الرأس الجديد إلى قائمة الرؤوس
         self.vertices.append(val)
@@ -45,7 +45,7 @@ class GraphAdjMat:
             row.append(0)
 
     def remove_vertex(self, index: int):
-        """Remove a vertex"""
+        """احذف رأسًا"""
         if index >= self.size():
             raise IndexError()
         # احذف الرأس عند الفهرس `index` من قائمة الرؤوس
@@ -57,7 +57,7 @@ class GraphAdjMat:
             row.pop(index)
 
     def add_edge(self, i: int, j: int):
-        """Add an edge"""
+        """أضف ضلعًا"""
         # المعاملان i و j مفهرسا عناصر في vertices
         # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
@@ -67,7 +67,7 @@ class GraphAdjMat:
         self.adj_mat[j][i] = 1
 
     def remove_edge(self, i: int, j: int):
-        """Remove an edge"""
+        """احذف ضلعًا"""
         # المعاملان i و j مفهرسا عناصر في vertices
         # عالِج الفهارس الخارجة عن الحدود أو المتساوية
         if i < 0 or j < 0 or i >= self.size() or j >= self.size() or i == j:
@@ -76,13 +76,13 @@ class GraphAdjMat:
         self.adj_mat[j][i] = 0
 
     def print(self):
-        """Print the adjacency matrix"""
+        """طباعة مصفوفة التجاور"""
         print("Vertex list =", self.vertices)
         print("Adjacency matrix =")
         print_matrix(self.adj_mat)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الرسم البياني غير الموجّه
     # لاحظ أن مدخلات edges فهارس رؤوس، تقابل فهارس العناصر في vertices

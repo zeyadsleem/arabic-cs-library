@@ -69,7 +69,7 @@ The search code includes the following elements.
 
 ```py
 def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
-    """0-1 knapsack: brute-force search"""
+    """حقيبة 0-1: البحث بالقوة الغاشمة"""
     # إذا اعتُبرت كل العناصر أولم تبق سعة، أعد قيمة 0
     if i == 0 or c == 0:
         return 0
@@ -120,7 +120,7 @@ Dynamic programming is essentially the process of filling the $dp$ table during 
 
 ```py
 def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
-    """0-1 knapsack: dynamic programming"""
+    """حقيبة 0-1: البرمجة الديناميكية"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
@@ -158,7 +158,7 @@ In the code implementation, we simply need to delete the first dimension $i$ of 
 
 ```py
 def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
-    """0-1 knapsack: space-optimized dynamic programming"""
+    """حقيبة 0-1: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [0] * (cap + 1)

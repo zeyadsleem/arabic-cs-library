@@ -45,7 +45,7 @@ Comparing the code for the two problems, there is one change in state transition
 
 ```py
 def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
@@ -76,7 +76,7 @@ The code implementation is relatively simple, just delete the first dimension of
 
 ```py
 def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: space-optimized dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [0] * (cap + 1)
@@ -149,7 +149,7 @@ For this reason, we use the number $amt + 1$ to represent invalid solutions, bec
 
 ```py
 def coin_change_dp(coins: list[int], amt: int) -> int:
-    """Coin change: dynamic programming"""
+    """تغيير العملات: البرمجة الديناميكية"""
     n = len(coins)
     MAX = amt + 1
     # مهّد جدول dp
@@ -182,7 +182,7 @@ The space optimization for the coin change problem is handled in the same way as
 
 ```py
 def coin_change_dp_comp(coins: list[int], amt: int) -> int:
-    """Coin change: space-optimized dynamic programming"""
+    """تغيير العملات: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(coins)
     MAX = amt + 1
     # مهّد جدول dp
@@ -232,7 +232,7 @@ When the target amount is $0$, no coins need to be selected to make up the targe
 
 ```py
 def coin_change_ii_dp(coins: list[int], amt: int) -> int:
-    """Coin change II: dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية"""
     n = len(coins)
     # مهّد جدول dp
     dp = [[0] * (amt + 1) for _ in range(n + 1)]
@@ -262,7 +262,7 @@ The space optimization is handled in the same way, just delete the coin dimensio
 
 ```py
 def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
-    """Coin change II: space-optimized dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(coins)
     # مهّد جدول dp
     dp = [0] * (amt + 1)

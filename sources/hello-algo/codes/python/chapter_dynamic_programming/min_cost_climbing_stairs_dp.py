@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -21,7 +21,7 @@ def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
 
 
 def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: space-optimized dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -31,7 +31,7 @@ def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
     return b
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     cost = [0, 1, 10, 1, 1, 1, 10, 1, 1, 10, 1]
     print(f"Input list of stair costs: {cost}")

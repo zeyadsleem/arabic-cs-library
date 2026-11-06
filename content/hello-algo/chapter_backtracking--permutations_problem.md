@@ -56,7 +56,7 @@ lang: ar
 
 ```py
 def permutations_i(nums: list[int]) -> list[list[int]]:
-    """Permutations I"""
+    """التباديل I"""
     res = []
     backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
     return res
@@ -103,7 +103,7 @@ def permutations_i(nums: list[int]) -> list[list[int]]:
 
 ```py
 def permutations_ii(nums: list[int]) -> list[list[int]]:
-    """Permutations II"""
+    """التباديل II"""
     res = []
     backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
     return res

@@ -591,7 +591,8 @@ const buildFullContent = (arabic, arabicGroups, english, englishGroups) => {
     output +=
       arabicLines.slice(cursor, sourceGroup.bg).join('\n') +
       '\n' +
-      englishLines.slice(pythonGroup.bg, pythonGroup.end + 1).join('\n');
+      englishLines.slice(pythonGroup.bg, pythonGroup.end + 1).join('\n') +
+      '\n';
     cursor = sourceGroup.end + 1;
   }
   output += arabicLines.slice(cursor).join('\n');

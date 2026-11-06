@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def max_capacity(ht: list[int]) -> int:
-    """Maximum container capacity: greedy algorithm"""
+    """أقصى سعة وعاء: خوارزمية جشعة"""
     # مهّد i و j عند طرفي المصفوفة المتقابلين
     i, j = 0, len(ht) - 1
     # السعة القصوى الابتدائية هي 0
@@ -24,7 +24,7 @@ def max_capacity(ht: list[int]) -> int:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     ht = [3, 8, 5, 2, 7, 7, 3, 4]
 

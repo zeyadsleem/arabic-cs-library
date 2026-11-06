@@ -32,7 +32,7 @@ lang: ar
 
 ```py
 def coin_change_greedy(coins: list[int], amt: int) -> int:
-    """Coin change: greedy algorithm"""
+    """تغيير العملات: خوارزمية جشعة"""
     # افترض أن قائمة العملات مرتبة
     i = len(coins) - 1
     count = 0
@@ -48,7 +48,8 @@ def coin_change_greedy(coins: list[int], amt: int) -> int:
     return count if amt == 0 else -1
 ```
 
-</div>قد تجد نفسك تهتف: «ما أنظف هذا!». فخوارزمية الجشع تحل مسألة تغيير العملات بنحو عشرة أسطر من الشيفرة فقط.
+</div>
+قد تجد نفسك تهتف: «ما أنظف هذا!». فخوارزمية الجشع تحل مسألة تغيير العملات بنحو عشرة أسطر من الشيفرة فقط.
 
 ## مزايا الخوارزميات الجشعة وقيودها
 

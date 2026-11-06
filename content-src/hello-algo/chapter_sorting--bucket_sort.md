@@ -27,7 +27,7 @@ The code is as follows:
 
 ```py
 def bucket_sort(nums: list[float]):
-    """Bucket sort"""
+    """الترتيب بالسلال"""
     # مهّد k = n/2 سلة، متوقعًا 2 عنصر لكل سلة
     k = len(nums) // 2
     buckets = [[] for _ in range(k)]

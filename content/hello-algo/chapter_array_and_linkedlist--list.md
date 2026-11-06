@@ -34,7 +34,8 @@ nums1: list[int] = []
 nums: list[int] = [1, 3, 2, 5, 4]
 ```
 
-</div>### الوصول إلى العناصر
+</div>
+### الوصول إلى العناصر
 
 بما أن القائمة هي في جوهرها مصفوفة، يمكننا الوصول إلى العناصر وتحديثها بتعقيد زمني $O(1)$، وهو أمر بالغ الكفاءة.
 
@@ -49,7 +50,8 @@ num: int = nums[1]  # Access element at index 1
 nums[1] = 0    # Update element at index 1 to 0
 ```
 
-</div>### إدراج العناصر وحذفها
+</div>
+### إدراج العناصر وحذفها
 
 بالمقارنة مع المصفوفات، تستطيع القوائم إضافة العناصر وحذفها بحرية. وإضافة عنصر في نهاية القائمة لها تعقيد زمني $O(1)$، أما إدراج العناصر وحذفها فتبقى بكفاءة المصفوفات نفسها، بتعقيد زمني $O(n)$.
 
@@ -74,7 +76,8 @@ nums.insert(3, 6)  # Insert number 6 at index 3
 nums.pop(3)        # Delete element at index 3
 ```
 
-</div>### اجتياز القائمة
+</div>
+### اجتياز القائمة
 
 على غرار المصفوفات، يمكن اجتياز القوائم بالفهرس أو بالتكرار المباشر عبر العناصر.
 
@@ -92,7 +95,8 @@ for num in nums:
     count += num
 ```
 
-</div>### دمج القوائم
+</div>
+### دمج القوائم
 
 بمعطى قائمة جديدة `nums1`، يمكننا دمجها في نهاية القائمة الأصلية.
 
@@ -105,7 +109,8 @@ nums1: list[int] = [6, 8, 7, 10, 9]
 nums += nums1  # Concatenate list nums1 to the end of nums
 ```
 
-</div>### ترتيب القائمة
+</div>
+### ترتيب القائمة
 
 بعد ترتيب القائمة، يمكننا استخدام خوارزميتَي «البحث الثنائي» و«المؤشرين»، وهما كثيراً ما يُختبران في مسائل خوارزميات المصفوفات.
 
@@ -117,7 +122,8 @@ nums += nums1  # Concatenate list nums1 to the end of nums
 nums.sort()  # After sorting, list elements are arranged from smallest to largest
 ```
 
-</div>## تنفيذ القائمة
+</div>
+## تنفيذ القائمة
 
 تحتوي كثير من لغات البرمجة على قوائم مدمجة، مثل Java وC++ وPython. وتطبيقاتها معقدة إلى حد ما، ومعاملاتها مدروسة بعناية، مثل السعة الأولية ومضاعفات التوسيع وغيرها. ويمكن للقارئ المهتم الرجوع إلى الشيفرة المصدرية لمعرفة المزيد.
 
@@ -132,38 +138,38 @@ nums.sort()  # After sorting, list elements are arranged from smallest to larges
 
 ```py
 class MyList:
-    """List class"""
+    """صنف القائمة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._capacity: int = 10  # سعة القائمة
         self._arr: list[int] = [0] * self._capacity  # المصفوفة (تخزن عناصر القائمة)
         self._size: int = 0  # طول القائمة (عدد العناصر الحالي)
         self._extend_ratio: int = 2  # معامل نمو سعة القائمة في كل مرة
 
     def size(self) -> int:
-        """Get the list length (current number of elements)"""
+        """الحصول على طول القائمة (عدد العناصر الحالي)"""
         return self._size
 
     def capacity(self) -> int:
-        """Get the list capacity"""
+        """الحصول على سعة القائمة"""
         return self._capacity
 
     def get(self, index: int) -> int:
-        """Access an element"""
+        """وصول إلى عنصر"""
         # أطلق استثناء إذا خرج الفهرس عن الحدود؛ وينطبق الأمر نفسه فيما يلي
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         return self._arr[index]
 
     def set(self, num: int, index: int):
-        """Update an element"""
+        """حدّث عنصرًا"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         self._arr[index] = num
 
     def add(self, num: int):
-        """Append an element at the end"""
+        """ألحق عنصرًا في النهاية"""
         # زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها
         if self.size() == self.capacity():
             self.extend_capacity()
@@ -171,7 +177,7 @@ class MyList:
         self._size += 1
 
     def insert(self, num: int, index: int):
-        """Insert an element in the middle"""
+        """أدخل عنصرًا في المنتصف"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         # زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها
@@ -185,7 +191,7 @@ class MyList:
         self._size += 1
 
     def remove(self, index: int) -> int:
-        """Remove an element"""
+        """احذف عنصرًا"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         num = self._arr[index]
@@ -198,14 +204,14 @@ class MyList:
         return num
 
     def extend_capacity(self):
-        """Grow the list capacity"""
+        """زيادة سعة القائمة"""
         # أنشئ مصفوفة جديدة طولها _extend_ratio ضعف الطول الأصلي وانسخ الأصلية فيها
         self._arr = self._arr + [0] * self.capacity() * (self._extend_ratio - 1)
         # حدّث سعة القائمة
         self._capacity = len(self._arr)
 
     def to_array(self) -> list[int]:
-        """Return the portion of the list that contains elements"""
+        """إرجاع الجزء من القائمة الذي يحتوي عناصر"""
         return self._arr[: self._size]
 ```
 

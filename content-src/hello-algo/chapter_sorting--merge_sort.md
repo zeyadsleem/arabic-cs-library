@@ -34,7 +34,7 @@ The implementation of merge sort is shown in the code below. Note that the inter
 
 ```py
 def merge_sort(nums: list[int], left: int, right: int):
-    """Merge sort"""
+    """الترتيب بالدمج"""
     # الحالة الأساس
     if left >= right:
         return  # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر

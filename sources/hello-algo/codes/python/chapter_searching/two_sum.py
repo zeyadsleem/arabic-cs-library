@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
-    """Method 1: brute-force enumeration"""
+    """الطريقة 1: التعداد بالقوة الغاشمة"""
     # حلقتان متداخلتان تعطيان تعقيدًا زمنيًا O(n^2)
     for i in range(len(nums) - 1):
         for j in range(i + 1, len(nums)):
@@ -16,7 +16,7 @@ def two_sum_brute_force(nums: list[int], target: int) -> list[int]:
 
 
 def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
-    """Method 2: auxiliary hash table"""
+    """الطريقة 2: جدول تجزئة مساعد"""
     # جدول التجزئة المساعد يستخدم مساحة O(n)
     dic = {}
     # حلقة واحدة بعمليات تجزئة متوسطة O(1) تعطي تعقيدًا زمنيًا متوسطًا O(n)
@@ -27,7 +27,7 @@ def two_sum_hash_table(nums: list[int], target: int) -> list[int]:
     return []
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # ======= حالة اختبار =======
     nums = [2, 7, 11, 15]

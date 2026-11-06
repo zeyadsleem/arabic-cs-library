@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def for_loop(n: int) -> int:
-    """for loop"""
+    """حلقة for"""
     res = 0
     # اجمع 1، 2، ...، n-1، n في حلقة
     for i in range(1, n + 1):
@@ -15,7 +15,7 @@ def for_loop(n: int) -> int:
 
 
 def while_loop(n: int) -> int:
-    """while loop"""
+    """حلقة while"""
     res = 0
     i = 1  # مهّد متغير التحكم في الحلقة
     # اجمع 1، 2، ...، n-1، n في حلقة
@@ -26,7 +26,7 @@ def while_loop(n: int) -> int:
 
 
 def while_loop_ii(n: int) -> int:
-    """while loop (two updates)"""
+    """حلقة while (تحديثان)"""
     res = 0
     i = 1  # مهّد متغير التحكم في الحلقة
     # اجمع 1، 4، 10، ... في حلقة
@@ -39,7 +39,7 @@ def while_loop_ii(n: int) -> int:
 
 
 def nested_for_loop(n: int) -> str:
-    """Nested for loops"""
+    """حلقات for متداخلة"""
     res = ""
     # حلقة على i = 1، 2، ...، n-1، n
     for i in range(1, n + 1):
@@ -49,7 +49,7 @@ def nested_for_loop(n: int) -> str:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 5
     res = for_loop(n)

@@ -70,7 +70,7 @@ To improve the efficiency of querying $m$, we use a hash table `hmap` to store t
 
 ```py
 def build_tree(preorder: list[int], inorder: list[int]) -> TreeNode | None:
-    """Build a binary tree"""
+    """بناء شجرة ثنائية"""
     # مهّد جدول تجزئة يربط كل عنصر في الاجتياز الداخلي بفهرسه
     inorder_map = {val: i for i, val in enumerate(inorder)}
     root = dfs(preorder, inorder_map, 0, 0, len(inorder) - 1)

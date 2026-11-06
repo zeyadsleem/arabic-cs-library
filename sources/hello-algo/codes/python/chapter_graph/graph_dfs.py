@@ -13,7 +13,7 @@ from graph_adjacency_list import GraphAdjList
 
 
 def dfs(graph: GraphAdjList, visited: set[Vertex], res: list[Vertex], vet: Vertex):
-    """Depth-first traversal helper function"""
+    """دالة مساعدة للاجتياز بالعمق أولًا"""
     res.append(vet)  # سجّل الرأس المزار
     visited.add(vet)  # علّم هذا الرأس بوصفه مزارًا
     # اجتز كل أجوار هذا الرأس
@@ -25,7 +25,7 @@ def dfs(graph: GraphAdjList, visited: set[Vertex], res: list[Vertex], vet: Verte
 
 
 def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Depth-first traversal"""
+    """الاجتياز بالعمق أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []
@@ -35,7 +35,7 @@ def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الرسم البياني غير الموجّه
     v = vals_to_vets([0, 1, 2, 3, 4, 5, 6])

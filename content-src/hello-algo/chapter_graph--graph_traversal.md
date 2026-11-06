@@ -37,7 +37,7 @@ A hash set can be viewed as a hash table that stores only `key` without storing 
 
 ```py
 def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Breadth-first traversal"""
+    """الاجتياز بالعرض أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []
@@ -91,7 +91,7 @@ This "go as far as possible then return" algorithm paradigm is typically impleme
 
 ```py
 def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Depth-first traversal"""
+    """الاجتياز بالعمق أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []

@@ -37,7 +37,7 @@ lang: ar
 
 ```py
 def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Breadth-first traversal"""
+    """الاجتياز بالعرض أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []
@@ -90,7 +90,7 @@ def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
 
 ```py
 def graph_dfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Depth-first traversal"""
+    """الاجتياز بالعمق أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []

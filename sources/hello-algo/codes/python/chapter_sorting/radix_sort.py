@@ -6,13 +6,13 @@ Author: krahets (krahets@163.com)
 
 
 def digit(num: int, exp: int) -> int:
-    """Get the k-th digit of num, where exp = 10^(k-1)"""
+    """الحصول على الرقم k من num، حيث exp = 10^(k-1)"""
     # تمرير exp بدل k يجني إجراء رفع الأس مكلفًا بشكل متكرر هنا
     return (num // exp) % 10
 
 
 def counting_sort_digit(nums: list[int], exp: int):
-    """Counting sort (sort nums by the k-th digit)"""
+    """الترتيب بالعدّ (ترتيب nums حسب الرقم k)"""
     # تتراوح الأرقام العشرية من 0 إلى 9، فتحتاج مصفوفة السلال إلى طول 10
     counter = [0] * 10
     n = len(nums)
@@ -36,7 +36,7 @@ def counting_sort_digit(nums: list[int], exp: int):
 
 
 def radix_sort(nums: list[int]):
-    """Radix sort"""
+    """الترتيب الأساسي"""
     # احصل على أكبر عنصر في المصفوفة لتحديد العدد الأقصى من الأرقام
     m = max(nums)
     # عالج الأرقام من الأقل أهمية إلى الأهم
@@ -50,7 +50,7 @@ def radix_sort(nums: list[int]):
         exp *= 10
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # الترتيب الأساسي
     nums = [

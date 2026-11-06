@@ -12,34 +12,34 @@ from modules import TreeNode, print_tree, list_to_tree
 
 
 def is_solution(state: list[TreeNode]) -> bool:
-    """Check whether the current state is a solution"""
+    """تحقق مما إذا كانت الحالة الحالية حلًا"""
     return state and state[-1].val == 7
 
 
 def record_solution(state: list[TreeNode], res: list[list[TreeNode]]):
-    """Record the solution"""
+    """سجّل الحل"""
     res.append(list(state))
 
 
 def is_valid(state: list[TreeNode], choice: TreeNode) -> bool:
-    """Check whether the choice is valid in the current state"""
+    """تحقق مما إذا كان الاختيار صحيحًا في الحالة الحالية"""
     return choice is not None and choice.val != 3
 
 
 def make_choice(state: list[TreeNode], choice: TreeNode):
-    """Update the state"""
+    """حدّث الحالة"""
     state.append(choice)
 
 
 def undo_choice(state: list[TreeNode], choice: TreeNode):
-    """Restore the state"""
+    """أعِد الحالة"""
     state.pop()
 
 
 def backtrack(
     state: list[TreeNode], choices: list[TreeNode], res: list[list[TreeNode]]
 ):
-    """Backtracking: example 3"""
+    """التتبع الرجعي: مثال 3"""
     # تحقق مما إذا كان هذا حلًا
     if is_solution(state):
         # سجّل الحل
@@ -56,7 +56,7 @@ def backtrack(
             undo_choice(state, choice)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     root = list_to_tree([1, 7, 3, 4, 5, 6, 7])
     print("\nInitialize the binary tree")

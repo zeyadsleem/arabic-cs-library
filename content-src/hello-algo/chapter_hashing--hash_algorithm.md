@@ -57,7 +57,7 @@ The design of hash algorithms is a complex issue that requires consideration of 
 
 ```py
 def rot_hash(key: str) -> int:
-    """Rotating hash"""
+    """التجزئة الدوارة"""
     hash = 0
     modulus = 1000000007
     for c in key:

@@ -106,7 +106,7 @@ We can encapsulate the index mapping formula into functions for convenient subse
 
 ```py
     def parent(self, i: int) -> int:
-        """Get the parent index"""
+        """الحصول على فهرس الأصل"""
         return (i - 1) // 2  # قسمة مقربة نزولًا
 ```
 
@@ -121,7 +121,7 @@ The heap top element is the root node of the binary tree, which is also the firs
 
 ```py
     def peek(self) -> int:
-        """Access the top element of the heap"""
+        """الوصول إلى عنصر قمة الكومة"""
         return self.max_heap[0]
 ```
 
@@ -140,7 +140,7 @@ Given a total of $n$ nodes, the tree height is $O(\log n)$. Thus, the number of 
 
 ```py
     def sift_up(self, i: int):
-        """Sift up starting from node i"""
+        """الرشّ الصاعد بدءًا من العقدة i"""
         while True:
             # احصل على أصل العقدة i
             p = self.parent(i)
@@ -172,7 +172,7 @@ Similar to the element insertion operation, the time complexity of the heap top 
 
 ```py
     def sift_down(self, i: int):
-        """Sift down starting from node i"""
+        """الرشّ النازل بدءًا من العقدة i"""
         while True:
             # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
             l, r, ma = self.left(i), self.right(i), i

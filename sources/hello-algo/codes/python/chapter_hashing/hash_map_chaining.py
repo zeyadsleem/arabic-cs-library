@@ -12,10 +12,10 @@ from chapter_hashing.array_hash_map import Pair
 
 
 class HashMapChaining:
-    """Hash table with separate chaining"""
+    """جدول تجزئة بالتسلسل المنفصل"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self.size = 0  # عدد ثنائيات المفتاح-القيمة
         self.capacity = 4  # سعة جدول التجزئة
         self.load_thres = 2.0 / 3.0  # عتبة عامل التحميل التي تطلق نموّ السعة
@@ -23,15 +23,15 @@ class HashMapChaining:
         self.buckets = [[] for _ in range(self.capacity)]  # مصفوفة السلال
 
     def hash_func(self, key: int) -> int:
-        """Hash function"""
+        """دالة التجزئة"""
         return key % self.capacity
 
     def load_factor(self) -> float:
-        """Load factor"""
+        """عامل التحميل"""
         return self.size / self.capacity
 
     def get(self, key: int) -> str | None:
-        """Lookup operation"""
+        """عملية البحث"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
         # اجتز السلة؛ إذا وُجد key فأعد val المقابل له
@@ -42,7 +42,7 @@ class HashMapChaining:
         return None
 
     def put(self, key: int, val: str):
-        """Insert operation"""
+        """عملية الإدراج"""
         # زِد السعة عندما يتجاوز عامل التحميل العتبة
         if self.load_factor() > self.load_thres:
             self.extend()
@@ -59,7 +59,7 @@ class HashMapChaining:
         self.size += 1
 
     def remove(self, key: int):
-        """Remove operation"""
+        """عملية الحذف"""
         index = self.hash_func(key)
         bucket = self.buckets[index]
         # اجتز السلة واحذف الثنائية
@@ -70,7 +70,7 @@ class HashMapChaining:
                 break
 
     def extend(self):
-        """Grow the hash table capacity"""
+        """زيادة سعة جدول التجزئة"""
         # احتفظ بإشارة إلى جدول التجزئة الأصلي
         buckets = self.buckets
         # مهّد جدول تجزئة جديدًا بالسعة الموسعة
@@ -83,7 +83,7 @@ class HashMapChaining:
                 self.put(pair.key, pair.val)
 
     def print(self):
-        """Print the hash table"""
+        """طباعة جدول التجزئة"""
         for bucket in self.buckets:
             res = []
             for pair in bucket:
@@ -91,7 +91,7 @@ class HashMapChaining:
             print(res)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد جدول التجزئة
     hashmap = HashMapChaining()

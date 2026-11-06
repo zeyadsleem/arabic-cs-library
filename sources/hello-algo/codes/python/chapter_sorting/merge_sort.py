@@ -6,7 +6,7 @@ Author: timi (xisunyy@163.com), krahets (krahets@163.com)
 
 
 def merge(nums: list[int], left: int, mid: int, right: int):
-    """Merge the left and right subarrays"""
+    """دمج المصفوفتين الجزئيتين اليسرى واليمنى"""
     # يشمل المصفوفة الجزئية اليسرى [left, mid]، واليمنى [mid+1, right]
     # أنشئ مصفوفة مؤقتة tmp لتخزين نتيجة الدمج
     tmp = [0] * (right - left + 1)
@@ -36,7 +36,7 @@ def merge(nums: list[int], left: int, mid: int, right: int):
 
 
 def merge_sort(nums: list[int], left: int, right: int):
-    """Merge sort"""
+    """الترتيب بالدمج"""
     # الحالة الأساس
     if left >= right:
         return  # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
@@ -48,7 +48,7 @@ def merge_sort(nums: list[int], left: int, right: int):
     merge(nums, left, mid, right)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [7, 3, 2, 6, 0, 1, 5, 4]
     merge_sort(nums, 0, len(nums) - 1)

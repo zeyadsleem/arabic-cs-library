@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def coin_change_ii_dp(coins: list[int], amt: int) -> int:
-    """Coin change II: dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية"""
     n = len(coins)
     # مهّد جدول dp
     dp = [[0] * (amt + 1) for _ in range(n + 1)]
@@ -26,7 +26,7 @@ def coin_change_ii_dp(coins: list[int], amt: int) -> int:
 
 
 def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
-    """Coin change II: space-optimized dynamic programming"""
+    """تغيير العملات II: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(coins)
     # مهّد جدول dp
     dp = [0] * (amt + 1)
@@ -44,7 +44,7 @@ def coin_change_ii_dp_comp(coins: list[int], amt: int) -> int:
     return dp[amt]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     coins = [1, 2, 5]
     amt = 5

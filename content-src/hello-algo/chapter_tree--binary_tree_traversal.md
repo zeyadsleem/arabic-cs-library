@@ -27,7 +27,7 @@ Breadth-first traversal is typically implemented with the help of a "queue". The
 
 ```py
 def level_order(root: TreeNode | None) -> list[int]:
-    """Level-order traversal"""
+    """اجتياز بالمستويات"""
     # مهّد طابورًا وأدخل الجذر إليه
     queue: deque[TreeNode] = deque()
     queue.append(root)
@@ -67,7 +67,7 @@ Depth-first search is usually implemented based on recursion:
 
 ```py
 def post_order(root: TreeNode | None):
-    """Postorder traversal"""
+    """اجتياز الطلب اللاحق"""
     if root is None:
         return
     # ترتيب الزيارة: الشجرة الجزئية اليسرى -> اليمنى -> الجذر

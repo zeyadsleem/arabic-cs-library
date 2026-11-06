@@ -12,7 +12,7 @@ from modules import ListNode, list_to_linked_list
 
 
 def hashing_search_array(hmap: dict[int, int], target: int) -> int:
-    """Hash-based search (array)"""
+    """البحث بالتجزئة (مصفوفة)"""
     # مفتاح جدول التجزئة: العنصر الهدف؛ القيمة: الفهرس
     # أعد -1 إذا لم يؤوِ جدول التجزئة هذا المفتاح
     return hmap.get(target, -1)
@@ -21,13 +21,13 @@ def hashing_search_array(hmap: dict[int, int], target: int) -> int:
 def hashing_search_linkedlist(
     hmap: dict[int, ListNode], target: int
 ) -> ListNode | None:
-    """Hash-based search (linked list)"""
+    """البحث بالتجزئة (قائمة مترابطة)"""
     # مفتاح جدول التجزئة: العنصر الهدف؛ القيمة: كائن العقدة
     # أعد None إذا لم يؤوِ جدول التجزئة هذا المفتاح
     return hmap.get(target, None)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     target = 3
 

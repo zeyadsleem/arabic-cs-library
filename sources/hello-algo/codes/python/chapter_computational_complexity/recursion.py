@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def recur(n: int) -> int:
-    """Recursion"""
+    """التعاود"""
     # الحالة الأساس
     if n == 1:
         return 1
@@ -17,7 +17,7 @@ def recur(n: int) -> int:
 
 
 def for_loop_recur(n: int) -> int:
-    """Simulate recursion using iteration"""
+    """محاكاة التعاود بالتكرار"""
     # استخدم مكدسًا صريحًا لمحاكاة مكدس الاستدعاءات في النظام
     stack = []
     res = 0
@@ -34,7 +34,7 @@ def for_loop_recur(n: int) -> int:
 
 
 def tail_recur(n, res):
-    """Tail recursion"""
+    """التعاود الذيلي"""
     # الحالة الأساس
     if n == 0:
         return res
@@ -43,7 +43,7 @@ def tail_recur(n, res):
 
 
 def fib(n: int) -> int:
-    """Fibonacci sequence: recursion"""
+    """متتالية فيبوناتشي: التعاود"""
     # حالات الأساس: f(1) = 0، f(2) = 1
     if n == 1 or n == 2:
         return n - 1
@@ -53,7 +53,7 @@ def fib(n: int) -> int:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 5
     res = recur(n)

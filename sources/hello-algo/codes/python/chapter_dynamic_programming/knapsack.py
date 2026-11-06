@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
-    """0-1 knapsack: brute-force search"""
+    """حقيبة 0-1: البحث بالقوة الغاشمة"""
     # إذا اعتُبرت كل العناصر أولم تبق سعة، أعد قيمة 0
     if i == 0 or c == 0:
         return 0
@@ -23,7 +23,7 @@ def knapsack_dfs(wgt: list[int], val: list[int], i: int, c: int) -> int:
 def knapsack_dfs_mem(
     wgt: list[int], val: list[int], mem: list[list[int]], i: int, c: int
 ) -> int:
-    """0-1 knapsack: memoized search"""
+    """حقيبة 0-1: البحث بتخزين الحلول"""
     # إذا اعتُبرت كل العناصر أولم تبق سعة، أعد قيمة 0
     if i == 0 or c == 0:
         return 0
@@ -42,7 +42,7 @@ def knapsack_dfs_mem(
 
 
 def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
-    """0-1 knapsack: dynamic programming"""
+    """حقيبة 0-1: البرمجة الديناميكية"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
@@ -59,7 +59,7 @@ def knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
 
 
 def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
-    """0-1 knapsack: space-optimized dynamic programming"""
+    """حقيبة 0-1: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [0] * (cap + 1)
@@ -76,7 +76,7 @@ def knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
     return dp[cap]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     wgt = [10, 20, 30, 40, 50]
     val = [50, 120, 150, 210, 240]

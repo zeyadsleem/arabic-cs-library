@@ -12,19 +12,19 @@ from modules import TreeNode, print_tree
 
 
 class BinarySearchTree:
-    """Binary search tree"""
+    """شجرة البحث الثنائية"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         # مهّد شجرة فارغة
         self._root = None
 
     def get_root(self) -> TreeNode | None:
-        """Get the root of the binary tree"""
+        """الحصول على جذر الشجرة الثنائية"""
         return self._root
 
     def search(self, num: int) -> TreeNode | None:
-        """Find a node"""
+        """ابحث عن عقدة"""
         cur = self._root
         # ابحث في حلقة، متوقفًا إذا صارت cur هي None
         while cur is not None:
@@ -40,7 +40,7 @@ class BinarySearchTree:
         return cur
 
     def insert(self, num: int):
-        """Insert a node"""
+        """أدخل عقدة"""
         # إذا كانت الشجرة فارغة، مهّد عقدة الجذر
         if self._root is None:
             self._root = TreeNode(num)
@@ -66,7 +66,7 @@ class BinarySearchTree:
             pre.left = node
 
     def remove(self, num: int):
-        """Remove a node"""
+        """احذف عقدة"""
         # أعد فورًا إذا كانت الشجرة فارغة
         if self._root is None:
             return
@@ -112,7 +112,7 @@ class BinarySearchTree:
             cur.val = tmp.val
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد شجرة البحث الثنائية
     bst = BinarySearchTree()

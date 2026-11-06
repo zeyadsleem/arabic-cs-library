@@ -6,38 +6,38 @@ Author: krahets (krahets@163.com)
 
 
 class MyList:
-    """List class"""
+    """صنف القائمة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._capacity: int = 10  # سعة القائمة
         self._arr: list[int] = [0] * self._capacity  # المصفوفة (تخزن عناصر القائمة)
         self._size: int = 0  # طول القائمة (عدد العناصر الحالي)
         self._extend_ratio: int = 2  # معامل نمو سعة القائمة في كل مرة
 
     def size(self) -> int:
-        """Get the list length (current number of elements)"""
+        """الحصول على طول القائمة (عدد العناصر الحالي)"""
         return self._size
 
     def capacity(self) -> int:
-        """Get the list capacity"""
+        """الحصول على سعة القائمة"""
         return self._capacity
 
     def get(self, index: int) -> int:
-        """Access an element"""
+        """وصول إلى عنصر"""
         # أطلق استثناء إذا خرج الفهرس عن الحدود؛ وينطبق الأمر نفسه فيما يلي
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         return self._arr[index]
 
     def set(self, num: int, index: int):
-        """Update an element"""
+        """حدّث عنصرًا"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         self._arr[index] = num
 
     def add(self, num: int):
-        """Append an element at the end"""
+        """ألحق عنصرًا في النهاية"""
         # زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها
         if self.size() == self.capacity():
             self.extend_capacity()
@@ -45,7 +45,7 @@ class MyList:
         self._size += 1
 
     def insert(self, num: int, index: int):
-        """Insert an element in the middle"""
+        """أدخل عنصرًا في المنتصف"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         # زِد السعة عندما يتجاوز إضافة عنصرٍ حدّها
@@ -59,7 +59,7 @@ class MyList:
         self._size += 1
 
     def remove(self, index: int) -> int:
-        """Remove an element"""
+        """احذف عنصرًا"""
         if index < 0 or index >= self._size:
             raise IndexError("Index out of bounds")
         num = self._arr[index]
@@ -72,18 +72,18 @@ class MyList:
         return num
 
     def extend_capacity(self):
-        """Grow the list capacity"""
+        """زيادة سعة القائمة"""
         # أنشئ مصفوفة جديدة طولها _extend_ratio ضعف الطول الأصلي وانسخ الأصلية فيها
         self._arr = self._arr + [0] * self.capacity() * (self._extend_ratio - 1)
         # حدّث سعة القائمة
         self._capacity = len(self._arr)
 
     def to_array(self) -> list[int]:
-        """Return the portion of the list that contains elements"""
+        """إرجاع الجزء من القائمة الذي يحتوي عناصر"""
         return self._arr[: self._size]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد القائمة
     nums = MyList()

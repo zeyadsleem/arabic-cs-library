@@ -11,7 +11,7 @@ sys.path.append(str(Path(__file__).parent.parent))
 from modules import TreeNode, print_tree
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الشجرة الثنائية
     # مهّد العقد

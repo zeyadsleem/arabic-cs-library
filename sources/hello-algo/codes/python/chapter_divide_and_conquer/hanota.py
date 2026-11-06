@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def move(src: list[int], tar: list[int]):
-    """Move one disk"""
+    """نقل قرص واحد"""
     # خذ قرصًا من أعلى src
     pan = src.pop()
     # ضع القرص على أعلى tar
@@ -14,7 +14,7 @@ def move(src: list[int], tar: list[int]):
 
 
 def dfs(i: int, src: list[int], buf: list[int], tar: list[int]):
-    """Solve the Tower of Hanoi problem f(i)"""
+    """حل مسألة برج هانوي f(i)"""
     # إذا كانت هذه المسألة الجزئية فيها قرص واحد فقط لنقله، انقله مباشرةً من src إلى tar
     if i == 1:
         move(src, tar)
@@ -28,13 +28,13 @@ def dfs(i: int, src: list[int], buf: list[int], tar: list[int]):
 
 
 def solve_hanota(A: list[int], B: list[int], C: list[int]):
-    """Solve the Tower of Hanoi problem"""
+    """حل مسألة برج هانوي"""
     n = len(A)
     # انقل أعلى n من الأقراص من A إلى C باستخدام B
     dfs(n, A, B, C)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # تمثل نهاية كل قائمة أعلى الخازوق
     A = [5, 4, 3, 2, 1]

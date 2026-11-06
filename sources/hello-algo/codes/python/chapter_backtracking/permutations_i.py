@@ -8,7 +8,7 @@ Author: krahets (krahets@163.com)
 def backtrack(
     state: list[int], choices: list[int], selected: list[bool], res: list[list[int]]
 ):
-    """Backtracking: permutations I"""
+    """التتبع الرجعي: التباديل I"""
     # سجّل حلًا حين يساوي طول الحالة عدد العناصر
     if len(state) == len(choices):
         res.append(list(state))
@@ -28,13 +28,13 @@ def backtrack(
 
 
 def permutations_i(nums: list[int]) -> list[list[int]]:
-    """Permutations I"""
+    """التباديل I"""
     res = []
     backtrack(state=[], choices=nums, selected=[False] * len(nums), res=res)
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [1, 2, 3]
 

@@ -32,7 +32,7 @@ Example code is as follows:
 
 ```py
 def insertion_sort(nums: list[int]):
-    """Insertion sort"""
+    """الترتيب بالإدراج"""
     # الحلقة الخارجية: النطاق المرتب هو [0, i-1]
     for i in range(1, len(nums)):
         base = nums[i]

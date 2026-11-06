@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def binary_search_insertion_simple(nums: list[int], target: int) -> int:
-    """Find an insertion point using binary search (no duplicates)"""
+    """العثور على نقطة إدراج بالبحث الثنائي (بلا مكررات)"""
     i, j = 0, len(nums) - 1  # مهّد المجال المغلق [0, n-1]
     while i <= j:
         m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
@@ -21,7 +21,7 @@ def binary_search_insertion_simple(nums: list[int], target: int) -> int:
 
 
 def binary_search_insertion(nums: list[int], target: int) -> int:
-    """Find an insertion point using binary search (with duplicates)"""
+    """العثور على نقطة إدراج بالبحث الثنائي (مع مكررات)"""
     i, j = 0, len(nums) - 1  # مهّد المجال المغلق [0, n-1]
     while i <= j:
         m = (i + j) // 2  # احسب فهرس نقطة المنتصف m
@@ -35,7 +35,7 @@ def binary_search_insertion(nums: list[int], target: int) -> int:
     return i
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مصفوفة بلا عناصر مكررة
     nums = [1, 3, 6, 8, 12, 15, 23, 26, 31, 35]

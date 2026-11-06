@@ -39,7 +39,7 @@ The recursive function below uses divide and conquer to calculate $x^n$:
 
 ```py
 def fast_pow(x: int, n: int) -> int:
-    """Fast exponentiation"""
+    """رفع سريع إلى الأس"""
     if n == 0:
         return 1
     half = fast_pow(x, n // 2)

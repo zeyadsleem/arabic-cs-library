@@ -56,7 +56,8 @@ name: str = hmap[15937]
 hmap.pop(10583)
 ```
 
-</div>هناك ثلاث طرق شائعة لاجتياز جدول التجزئة: اجتياز أزواج المفتاح-القيمة، واجتياز المفاتيح، واجتياز القيم. وتظهر الشيفرة المثالية أدناه:
+</div>
+هناك ثلاث طرق شائعة لاجتياز جدول التجزئة: اجتياز أزواج المفتاح-القيمة، واجتياز المفاتيح، واجتياز القيم. وتظهر الشيفرة المثالية أدناه:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
@@ -74,7 +75,8 @@ for value in hmap.values():
     print(value)
 ```
 
-</div>## تنفيذ بسيط لجدول التجزئة
+</div>
+## تنفيذ بسيط لجدول التجزئة
 
 لنبدأ بأبسط حالة: **تنفيذ جدول تجزئة بمصفوفة فقط**. في جدول التجزئة، تسمى كل خانة فارغة في المصفوفة <u>دلواً</u> (bucket)، ويمكن لكل دلو تخزين زوج مفتاح-قيمة واحد. لذا يتلخّص البحث في إيجاد الدلو الخاص بالمفتاح `key` وقراءة القيمة `value` المخزنة فيه.
 
@@ -102,20 +104,20 @@ index = hash(key) % capacity
 
 ```py
 class ArrayHashMap:
-    """Hash table implemented with an array"""
+    """جدول تجزئة منفذ بمصفوفة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         # مهّد مصفوفة تحوي 100 سلة
         self.buckets: list[Pair | None] = [None] * 100
 
     def hash_func(self, key: int) -> int:
-        """Hash function"""
+        """دالة التجزئة"""
         index = key % 100
         return index
 
     def get(self, key: int) -> str | None:
-        """Lookup operation"""
+        """عملية البحث"""
         index: int = self.hash_func(key)
         pair: Pair = self.buckets[index]
         if pair is None:
@@ -123,19 +125,19 @@ class ArrayHashMap:
         return pair.val
 
     def put(self, key: int, val: str):
-        """Insert and update operations"""
+        """عمليات الإدراج والتحديث"""
         pair = Pair(key, val)
         index: int = self.hash_func(key)
         self.buckets[index] = pair
 
     def remove(self, key: int):
-        """Remove operation"""
+        """عملية الحذف"""
         index: int = self.hash_func(key)
         # اجعلها None لتمييز الحذف
         self.buckets[index] = None
 
     def entry_set(self) -> list[Pair]:
-        """Get all key-value pairs"""
+        """الحصول على كل ثنائيات المفتاح-القيمة"""
         result: list[Pair] = []
         for pair in self.buckets:
             if pair is not None:
@@ -143,7 +145,7 @@ class ArrayHashMap:
         return result
 
     def key_set(self) -> list[int]:
-        """Get all keys"""
+        """الحصول على كل المفاتيح"""
         result = []
         for pair in self.buckets:
             if pair is not None:
@@ -151,7 +153,7 @@ class ArrayHashMap:
         return result
 
     def value_set(self) -> list[str]:
-        """Get all values"""
+        """الحصول على كل القيم"""
         result = []
         for pair in self.buckets:
             if pair is not None:
@@ -159,13 +161,14 @@ class ArrayHashMap:
         return result
 
     def print(self):
-        """Print the hash table"""
+        """طباعة جدول التجزئة"""
         for pair in self.buckets:
             if pair is not None:
                 print(pair.key, "->", pair.val)
 ```
 
-</div>## تصادم التجزئة وإعادة التحجيم
+</div>
+## تصادم التجزئة وإعادة التحجيم
 
 في جوهر الأمر، تربط دالة التجزئة فضاء الإدخال المكوّن من جميع المفاتيح `key` بفضاء الإخراج المكوّن من جميع فهارس المصفوفة، وغالباً ما يكون فضاء الإدخال أكبر بكثير من فضاء الإخراج. لذلك **يجب نظرياً أن تُسند مدخلات مختلفة أحياناً إلى الإخراج نفسه**.
 

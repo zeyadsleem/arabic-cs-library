@@ -28,7 +28,7 @@ Example code is as follows:
 
 ```py
 def bubble_sort(nums: list[int]):
-    """Bubble sort"""
+    """الترتيب الفقاعي"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):
@@ -52,7 +52,7 @@ After this optimization, the worst-case and average-case time complexities of bu
 
 ```py
 def bubble_sort_with_flag(nums: list[int]):
-    """Bubble sort (flag optimization)"""
+    """الترتيب الفقاعي (تحسين العلم)"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [0, i]
     for i in range(n - 1, 0, -1):

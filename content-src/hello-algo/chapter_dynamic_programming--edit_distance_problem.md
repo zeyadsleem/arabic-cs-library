@@ -80,7 +80,7 @@ Observing the state transition equation, the solution $dp[i, j]$ depends on solu
 
 ```py
 def edit_distance_dp(s: str, t: str) -> int:
-    """Edit distance: dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية"""
     n, m = len(s), len(t)
     dp = [[0] * (m + 1) for _ in range(n + 1)]
     # انتقالات الحالة: الصف الأول والعمود الأول
@@ -115,7 +115,7 @@ For this reason, we can use a variable `leftup` to temporarily store the upper-l
 
 ```py
 def edit_distance_dp_comp(s: str, t: str) -> int:
-    """Edit distance: space-optimized dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية مع تحسين المساحة"""
     n, m = len(s), len(t)
     dp = [0] * (m + 1)
     # انتقالات الحالة: الصف الأول

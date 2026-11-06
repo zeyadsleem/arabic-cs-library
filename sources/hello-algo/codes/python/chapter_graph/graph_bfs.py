@@ -14,7 +14,7 @@ from graph_adjacency_list import GraphAdjList
 
 
 def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
-    """Breadth-first traversal"""
+    """الاجتياز بالعرض أولًا"""
     # مثّل الرسم بقائمة تجاور للوصول إلى كل أجوار رأس معين
     # تتابع اجتياز الرؤوس
     res = []
@@ -36,7 +36,7 @@ def graph_bfs(graph: GraphAdjList, start_vet: Vertex) -> list[Vertex]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الرسم البياني غير الموجّه
     v = vals_to_vets([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])

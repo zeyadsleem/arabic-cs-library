@@ -76,43 +76,43 @@ is_empty: bool = len(stack) == 0
 
 ```py
 class LinkedListStack:
-    """Stack implemented with a linked list"""
+    """مكدس منفذ بقائمة مترابطة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._peek: ListNode | None = None
         self._size: int = 0
 
     def size(self) -> int:
-        """Get the stack size"""
+        """احصل على حجم المكدس"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the stack is empty"""
+        """التحقق مما إذا كان المكدس فارغًا"""
         return self._size == 0
 
     def push(self, val: int):
-        """Push"""
+        """دفع"""
         node = ListNode(val)
         node.next = self._peek
         self._peek = node
         self._size += 1
 
     def pop(self) -> int:
-        """Pop"""
+        """سحب"""
         num = self.peek()
         self._peek = self._peek.next
         self._size -= 1
         return num
 
     def peek(self) -> int:
-        """Access the top element"""
+        """وصول إلى عنصر القمة"""
         if self.is_empty():
             raise IndexError("Stack is empty")
         return self._peek.val
 
     def to_list(self) -> list[int]:
-        """Convert to a list for printing"""
+        """تحويل إلى قائمة للطباعة"""
         arr = []
         node = self._peek
         while node:
@@ -134,38 +134,38 @@ class LinkedListStack:
 
 ```py
 class ArrayStack:
-    """Stack implemented with an array"""
+    """مكدس منفذ بمصفوفة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._stack: list[int] = []
 
     def size(self) -> int:
-        """Get the stack size"""
+        """احصل على حجم المكدس"""
         return len(self._stack)
 
     def is_empty(self) -> bool:
-        """Check whether the stack is empty"""
+        """التحقق مما إذا كان المكدس فارغًا"""
         return self.size() == 0
 
     def push(self, item: int):
-        """Push"""
+        """دفع"""
         self._stack.append(item)
 
     def pop(self) -> int:
-        """Pop"""
+        """سحب"""
         if self.is_empty():
             raise IndexError("Stack is empty")
         return self._stack.pop()
 
     def peek(self) -> int:
-        """Access the top element"""
+        """وصول إلى عنصر القمة"""
         if self.is_empty():
             raise IndexError("Stack is empty")
         return self._stack[-1]
 
     def to_list(self) -> list[int]:
-        """Return a list for printing"""
+        """إعادة قائمة للطباعة"""
         return self._stack
 ```
 

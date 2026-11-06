@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def climbing_stairs_constraint_dp(n: int) -> int:
-    """Climbing stairs with constraints: dynamic programming"""
+    """صعود الدرج مع قيود: البرمجة الديناميكية"""
     if n == 1 or n == 2:
         return 1
     # مهّد جدول dp لتخزين حلول المسائل الجزئية
@@ -21,7 +21,7 @@ def climbing_stairs_constraint_dp(n: int) -> int:
     return dp[n][1] + dp[n][2]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 9
 

@@ -64,7 +64,7 @@ Variables $i$, $j$, and $res$ use only a constant amount of extra space, **so th
 
 ```py
 def max_capacity(ht: list[int]) -> int:
-    """Maximum container capacity: greedy algorithm"""
+    """أقصى سعة وعاء: خوارزمية جشعة"""
     # مهّد i و j عند طرفي المصفوفة المتقابلين
     i, j = 0, len(ht) - 1
     # السعة القصوى الابتدائية هي 0

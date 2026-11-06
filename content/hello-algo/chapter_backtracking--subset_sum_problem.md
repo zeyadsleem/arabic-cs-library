@@ -30,7 +30,7 @@ lang: ar
 
 ```py
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I (with duplicate subsets)"""
+    """حل مجموع المجموعات الجزئية I (مع مجموعات جزئية مكررة)"""
     state = []  # الحالة (المجموعة الجزئية)
     total = 0  # مجموع المجموعة الجزئية
     res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
@@ -81,7 +81,7 @@ def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
 
 ```py
 def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I"""
+    """حل مجموع المجموعة الجزئية I"""
     state = []  # الحالة (المجموعة الجزئية)
     nums.sort()  # رتّب nums
     start = 0  # فهرس البدء للتكرار
@@ -124,7 +124,7 @@ def subset_sum_i(nums: list[int], target: int) -> list[list[int]]:
 
 ```py
 def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum II"""
+    """حل مجموع المجموعة الجزئية II"""
     state = []  # الحالة (المجموعة الجزئية)
     nums.sort()  # رتّب nums
     start = 0  # فهرس البدء للتكرار
@@ -133,4 +133,5 @@ def subset_sum_ii(nums: list[int], target: int) -> list[list[int]]:
     return res
 ```
 
-</div>![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)
+</div>
+![عملية التتبّع الرجعي لمجموع المجموعات الجزئية II](/images/hello-algo/chapter_backtracking--subset_sum_ii.png)

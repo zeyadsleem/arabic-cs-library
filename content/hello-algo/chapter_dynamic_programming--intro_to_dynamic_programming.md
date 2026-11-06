@@ -30,7 +30,7 @@ lang: ar
         # تراجع
 
 def climbing_stairs_backtrack(n: int) -> int:
-    """Climbing stairs: backtracking"""
+    """صعود الدرج: التتبّع الرجعي"""
     choices = [1, 2]  # اختر صعود درج أو درجين
     state = 0  # ابدأ الصعود من الدرج 0
     res = [0]  # استخدم res[0] لتسجيل عدد الطرق
@@ -72,11 +72,12 @@ $$
 
 ```py
 def climbing_stairs_dfs(n: int) -> int:
-    """Climbing stairs: search"""
+    """صعود الدرج: البحث"""
     return dfs(n)
 ```
 
-</div>![الشجرة التعاودية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
+</div>
+![الشجرة التعاودية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_tree.png)
 
 وبمراقبة الشكل أعلاه، نجد أن **التعقيد الزمني الأسي ناتج عن «المسائل الفرعية المتداخلة»**. على سبيل المثال، تُحلَّل $dp[9]$ إلى $dp[8]$ و$dp[7]$، وتُحلَّل $dp[8]$ إلى $dp[7]$ و$dp[6]$، وكلتاهما تحتويان المسألة الفرعية $dp[7]$.
 
@@ -98,13 +99,14 @@ def climbing_stairs_dfs(n: int) -> int:
 
 ```py
 def climbing_stairs_dfs_mem(n: int) -> int:
-    """Climbing stairs: memoized search"""
+    """صعود الدرج: البحث بتخزين الحلول"""
     # يخزّن mem[i] عدد الطرق للوصول إلى الدرج i؛ ويعني -1 أنه لم تُسجل نتيجة
     mem = [-1] * (n + 1)
     return dfs(n, mem)
 ```
 
-</div>![الشجرة التعاودية مع الحفظ](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
+</div>
+![الشجرة التعاودية مع الحفظ](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dfs_memo_tree.png)
 
 ## الطريقة الثالثة: البرمجة الديناميكية
 
@@ -121,7 +123,7 @@ def climbing_stairs_dfs_mem(n: int) -> int:
 
 ```py
 def climbing_stairs_dp(n: int) -> int:
-    """Climbing stairs: dynamic programming"""
+    """صعود الدرج: البرمجة الديناميكية"""
     if n == 1 or n == 2:
         return n
     # مهّد جدول dp لتخزين حلول المسائل الجزئية
@@ -134,7 +136,8 @@ def climbing_stairs_dp(n: int) -> int:
     return dp[n]
 ```
 
-</div>![عملية البرمجة الديناميكية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png)
+</div>
+![عملية البرمجة الديناميكية لصعود الدرج](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_dp.png)
 
 ومثل خوارزميات التتبّع الرجعي، تستخدم البرمجة الديناميكية أيضاً مفهوم «الحالة» لتمثيل مراحل محددة من حل المسألة، حيث تقابل كل حالة مسألة فرعية والحل الأمثل المحلي المقابل لها. على سبيل المثال، تُعرَّف الحالة في مسألة صعود الدرج بأنها رقم الدرجة الحالية $i$.
 
@@ -152,7 +155,7 @@ def climbing_stairs_dp(n: int) -> int:
 
 ```py
 def climbing_stairs_dp_comp(n: int) -> int:
-    """Climbing stairs: space-optimized dynamic programming"""
+    """صعود الدرج: البرمجة الديناميكية مع تحسين المساحة"""
     if n == 1 or n == 2:
         return n
     a, b = 1, 2

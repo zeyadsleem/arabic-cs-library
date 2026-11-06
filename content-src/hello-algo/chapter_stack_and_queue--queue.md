@@ -74,24 +74,24 @@ Below is the code for implementing a queue using a linked list:
 
 ```py
 class LinkedListQueue:
-    """Queue implemented with a linked list"""
+    """طابور منفذ بقائمة مترابطة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._front: ListNode | None = None  # عقدة الرأس front
         self._rear: ListNode | None = None  # عقدة الذيل rear
         self._size: int = 0
 
     def size(self) -> int:
-        """Get the queue size"""
+        """احصل على حجم الطابور"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the queue is empty"""
+        """تحقق مما إذا كان الطابور فارغًا"""
         return self._size == 0
 
     def push(self, num: int):
-        """Enqueue"""
+        """إدخال"""
         # أضف num بعد عقدة الذيل
         node = ListNode(num)
         # إذا كان الطابور فارغًا، اجعل الرأس والذيل يشيران إلى هذه العقدة معًا
@@ -105,7 +105,7 @@ class LinkedListQueue:
         self._size += 1
 
     def pop(self) -> int:
-        """Dequeue"""
+        """إخراج"""
         num = self.peek()
         # احذف العقدة الرأس
         self._front = self._front.next
@@ -113,13 +113,13 @@ class LinkedListQueue:
         return num
 
     def peek(self) -> int:
-        """Access the front element"""
+        """وصول إلى عنصر المقدمة"""
         if self.is_empty():
             raise IndexError("Queue is empty")
         return self._front.val
 
     def to_list(self) -> list[int]:
-        """Convert to a list for printing"""
+        """تحويل إلى قائمة للطباعة"""
         queue = []
         temp = self._front
         while temp:
@@ -152,28 +152,28 @@ For a circular array, we need to let `front` or `rear` wrap around to the beginn
 
 ```py
 class ArrayQueue:
-    """Queue implemented with a circular array"""
+    """طابور منفذ بمصفوفة دائرية"""
 
     def __init__(self, size: int):
-        """Constructor"""
+        """المنشئ"""
         self._nums: list[int] = [0] * size  # المصفوفة التي تخزن عناصر الطابور
         self._front: int = 0  # مؤشر المقدمة، يشير إلى أول عنصر
         self._size: int = 0  # حجم الطابور
 
     def capacity(self) -> int:
-        """Get the queue capacity"""
+        """الحصول على سعة الطابور"""
         return len(self._nums)
 
     def size(self) -> int:
-        """Get the queue size"""
+        """احصل على حجم الطابور"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the queue is empty"""
+        """تحقق مما إذا كان الطابور فارغًا"""
         return self._size == 0
 
     def push(self, num: int):
-        """Enqueue"""
+        """إدخال"""
         if self._size == self.capacity():
             raise IndexError("Queue is full")
         # احسب مؤشر المؤخرة، وهو يشير إلى موضع واحد بعد آخر عنصر
@@ -184,7 +184,7 @@ class ArrayQueue:
         self._size += 1
 
     def pop(self) -> int:
-        """Dequeue"""
+        """إخراج"""
         num: int = self.peek()
         # ورّر مؤشر المقدمة موضعًا واحدًا، مع الالتفاف إلى البداية إن تجاوز النهاية
         self._front = (self._front + 1) % self.capacity()
@@ -192,13 +192,13 @@ class ArrayQueue:
         return num
 
     def peek(self) -> int:
-        """Access the front element"""
+        """وصول إلى عنصر المقدمة"""
         if self.is_empty():
             raise IndexError("Queue is empty")
         return self._nums[self._front]
 
     def to_list(self) -> list[int]:
-        """Return a list for printing"""
+        """إعادة قائمة للطباعة"""
         res = [0] * self.size()
         j: int = self._front
         for i in range(self.size()):

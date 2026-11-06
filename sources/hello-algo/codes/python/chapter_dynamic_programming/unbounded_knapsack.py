@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [[0] * (cap + 1) for _ in range(n + 1)]
@@ -23,7 +23,7 @@ def unbounded_knapsack_dp(wgt: list[int], val: list[int], cap: int) -> int:
 
 
 def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
-    """Unbounded knapsack: space-optimized dynamic programming"""
+    """الحقيبة غير المحدودة: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(wgt)
     # مهّد جدول dp
     dp = [0] * (cap + 1)
@@ -40,7 +40,7 @@ def unbounded_knapsack_dp_comp(wgt: list[int], val: list[int], cap: int) -> int:
     return dp[cap]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     wgt = [1, 2, 3]
     val = [5, 11, 15]

@@ -28,7 +28,7 @@ When either of these situations occurs, simply return $-1$. The code is shown be
 
 ```py
 def binary_search_left_edge(nums: list[int], target: int) -> int:
-    """Find the leftmost occurrence of target using binary search"""
+    """العثور على أقصى يسار تكرار للهدف بالبحث الثنائي"""
     # هذا يعادل إيجاد نقطة إدراج target
     i = binary_search_insertion(nums, target)
     # إذا لم يُوجد target فأعد -1
@@ -61,7 +61,7 @@ Note that the returned insertion point is $i$, so we need to subtract $1$ from i
 
 ```py
 def binary_search_right_edge(nums: list[int], target: int) -> int:
-    """Find the rightmost occurrence of target using binary search"""
+    """العثور على أقصى يمين تكرار للهدف بالبحث الثنائي"""
     # اختزل المسألة إلى إيجاد أقصى يسار نقطة إدراج لـ target + 1
     i = binary_search_insertion(nums, target + 1)
     # j هو الفهرس المرشح الأقصى يمينًا للهدف؛ و i هو فهرس أول عنصر أكبر من target أو len(nums)

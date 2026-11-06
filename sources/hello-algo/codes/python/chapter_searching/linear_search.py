@@ -12,7 +12,7 @@ from modules import ListNode, list_to_linked_list
 
 
 def linear_search_array(nums: list[int], target: int) -> int:
-    """Linear search (array)"""
+    """البحث الخطي (مصفوفة)"""
     # اجتز المصفوفة
     for i in range(len(nums)):
         if nums[i] == target:  # وُجد العنصر الهدف؛ أعد فهرسه
@@ -21,7 +21,7 @@ def linear_search_array(nums: list[int], target: int) -> int:
 
 
 def linear_search_linkedlist(head: ListNode, target: int) -> ListNode | None:
-    """Linear search (linked list)"""
+    """البحث الخطي (قائمة مترابطة)"""
     # اجتز القائمة المترابطة
     while head:
         if head.val == target:  # وُجدت العقدة الهدف؛ أعدّها
@@ -30,7 +30,7 @@ def linear_search_linkedlist(head: ListNode, target: int) -> ListNode | None:
     return None  # لم تُوجد العقدة الهدف؛ أعد None
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     target = 3
 

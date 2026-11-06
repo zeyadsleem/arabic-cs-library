@@ -48,7 +48,7 @@ According to the state transition equation and the initial states $dp[1] = cost[
 
 ```py
 def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -75,7 +75,7 @@ This problem can also be space-optimized, compressing from one dimension to zero
 
 ```py
 def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: space-optimized dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -133,7 +133,7 @@ Finally, return $dp[n, 1] + dp[n, 2]$, where the sum of the two represents the t
 
 ```py
 def climbing_stairs_constraint_dp(n: int) -> int:
-    """Climbing stairs with constraints: dynamic programming"""
+    """صعود الدرج مع قيود: البرمجة الديناميكية"""
     if n == 1 or n == 2:
         return 1
     # مهّد جدول dp لتخزين حلول المسائل الجزئية

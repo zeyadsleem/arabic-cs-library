@@ -8,7 +8,7 @@ from math import inf
 
 
 def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
-    """Minimum path sum: brute-force search"""
+    """أدنى مجموع مسار: البحث بالقوة الغاشمة"""
     # توقف عن البحث عند الخلية أعلى اليسار
     if i == 0 and j == 0:
         return grid[0][0]
@@ -25,7 +25,7 @@ def min_path_sum_dfs(grid: list[list[int]], i: int, j: int) -> int:
 def min_path_sum_dfs_mem(
     grid: list[list[int]], mem: list[list[int]], i: int, j: int
 ) -> int:
-    """Minimum path sum: memoized search"""
+    """أدنى مجموع مسار: البحث بتخزين الحلول"""
     # توقف عن البحث عند الخلية أعلى اليسار
     if i == 0 and j == 0:
         return grid[0][0]
@@ -44,7 +44,7 @@ def min_path_sum_dfs_mem(
 
 
 def min_path_sum_dp(grid: list[list[int]]) -> int:
-    """Minimum path sum: dynamic programming"""
+    """أدنى مجموع مسار: البرمجة الديناميكية"""
     n, m = len(grid), len(grid[0])
     # مهّد جدول dp
     dp = [[0] * m for _ in range(n)]
@@ -63,7 +63,7 @@ def min_path_sum_dp(grid: list[list[int]]) -> int:
 
 
 def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
-    """Minimum path sum: space-optimized dynamic programming"""
+    """أدنى مجموع مسار: البرمجة الديناميكية مع تحسين المساحة"""
     n, m = len(grid), len(grid[0])
     # مهّد جدول dp
     dp = [0] * m
@@ -81,7 +81,7 @@ def min_path_sum_dp_comp(grid: list[list[int]]) -> int:
     return dp[m - 1]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     grid = [[1, 3, 1, 5], [2, 2, 4, 2], [5, 3, 2, 1], [4, 3, 5, 2]]
     n, m = len(grid), len(grid[0])

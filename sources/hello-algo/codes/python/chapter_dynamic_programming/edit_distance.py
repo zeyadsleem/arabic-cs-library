@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def edit_distance_dfs(s: str, t: str, i: int, j: int) -> int:
-    """Edit distance: brute-force search"""
+    """مسافة التعديل: البحث بالقوة الغاشمة"""
     # إذا كانت البادئتان s[:i] و t[:j] فارغتين، أعد 0
     if i == 0 and j == 0:
         return 0
@@ -28,7 +28,7 @@ def edit_distance_dfs(s: str, t: str, i: int, j: int) -> int:
 
 
 def edit_distance_dfs_mem(s: str, t: str, mem: list[list[int]], i: int, j: int) -> int:
-    """Edit distance: memoized search"""
+    """مسافة التعديل: البحث بتخزين الحلول"""
     # إذا كانت البادئتان s[:i] و t[:j] فارغتين، أعد 0
     if i == 0 and j == 0:
         return 0
@@ -54,7 +54,7 @@ def edit_distance_dfs_mem(s: str, t: str, mem: list[list[int]], i: int, j: int) 
 
 
 def edit_distance_dp(s: str, t: str) -> int:
-    """Edit distance: dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية"""
     n, m = len(s), len(t)
     dp = [[0] * (m + 1) for _ in range(n + 1)]
     # انتقالات الحالة: الصف الأول والعمود الأول
@@ -75,7 +75,7 @@ def edit_distance_dp(s: str, t: str) -> int:
 
 
 def edit_distance_dp_comp(s: str, t: str) -> int:
-    """Edit distance: space-optimized dynamic programming"""
+    """مسافة التعديل: البرمجة الديناميكية مع تحسين المساحة"""
     n, m = len(s), len(t)
     dp = [0] * (m + 1)
     # انتقالات الحالة: الصف الأول
@@ -99,7 +99,7 @@ def edit_distance_dp_comp(s: str, t: str) -> int:
     return dp[m]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     s = "bag"
     t = "pack"

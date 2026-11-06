@@ -59,7 +59,7 @@ Please note that in an $n \times n$ square matrix, the range of $row - col$ is $
 
 ```py
 def n_queens(n: int) -> list[list[list[str]]]:
-    """Solve the n-queens problem"""
+    """حل مسألة الملكات n"""
     # مهّد لوحة n*n، حيث تمثل 'Q' ملكة و'#' مربعًا فارغًا
     state = [["#" for _ in range(n)] for _ in range(n)]
     cols = [False] * n  # تتبع ما إذا كان في العمود ملكة

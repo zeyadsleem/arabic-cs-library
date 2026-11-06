@@ -42,7 +42,7 @@ We define an `Item` class so that items can be sorted by unit value. We then ite
 
 ```py
 def fractional_knapsack(wgt: list[int], val: list[int], cap: int) -> int:
-    """Fractional knapsack: greedy algorithm"""
+    """الحقيبة الجزئية: خوارزمية جشعة"""
     # أنشئ قائمة عناصر، لكل منها خاصيتان: وزن وقيمة
     items = [Item(w, v) for w, v in zip(wgt, val)]
     # رتّب بالقيمة لكل وحدة وزن item.v / item.w بترتيب تنازلي

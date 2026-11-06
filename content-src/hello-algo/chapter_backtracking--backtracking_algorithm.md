@@ -24,7 +24,7 @@ For this problem, we perform a preorder traversal of the tree and check whether 
 
 ```py
 def pre_order(root: TreeNode):
-    """Preorder traversal: example 1"""
+    """اجتياز الطلب المسبق: مثال 1"""
     if root is None:
         return
     if root.val == 7:
@@ -60,7 +60,7 @@ Based on the code from Example 1, we need to use a list `path` to record the pat
 
 ```py
 def pre_order(root: TreeNode):
-    """Preorder traversal: example 2"""
+    """اجتياز الطلب المسبق: مثال 2"""
     if root is None:
         return
     # تجربة
@@ -98,7 +98,7 @@ To satisfy the above constraints, **we need to add pruning operations**: during 
 
 ```py
 def pre_order(root: TreeNode):
-    """Preorder traversal: example 3"""
+    """اجتياز الطلب المسبق: مثال 3"""
     # تشذيب
     if root is None or root.val == 3:
         return

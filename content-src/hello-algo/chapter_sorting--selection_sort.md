@@ -23,7 +23,7 @@ In the code, we use $k$ to track the smallest element within the unsorted interv
 
 ```py
 def selection_sort(nums: list[int]):
-    """Selection sort"""
+    """الترتيب بالاختيار"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [i, n-1]
     for i in range(n - 1):

@@ -79,24 +79,24 @@ The implementation code is shown below:
 
 ```py
 class LinkedListDeque:
-    """Deque implemented with a doubly linked list"""
+    """طابور مزدوج منفذ بقائمة مترابطة مزدوجة"""
 
     def __init__(self):
-        """Constructor"""
+        """المنشئ"""
         self._front: ListNode | None = None  # عقدة الرأس front
         self._rear: ListNode | None = None  # عقدة الذيل rear
         self._size: int = 0  # حجم الطابور المزدوج
 
     def size(self) -> int:
-        """Get the deque size"""
+        """احصل على حجم الطابور المزدوج"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the deque is empty"""
+        """تحقق مما إذا كان الطابور المزدوج فارغًا"""
         return self._size == 0
 
     def push(self, num: int, is_front: bool):
-        """Enqueue operation"""
+        """عملية الإدخال"""
         node = ListNode(num)
         # إذا كانت القائمة المترابطة فارغة، اجعل front و rear يشيران إلى العقدة معًا
         if self.is_empty():
@@ -116,15 +116,15 @@ class LinkedListDeque:
         self._size += 1  # حدّث حجم الطابور المزدوج
 
     def push_first(self, num: int):
-        """Enqueue at the front"""
+        """إدخال من المقدمة"""
         self.push(num, True)
 
     def push_last(self, num: int):
-        """Enqueue at the rear"""
+        """إدخال من المؤخرة"""
         self.push(num, False)
 
     def pop(self, is_front: bool) -> int:
-        """Dequeue operation"""
+        """عملية الإخراج"""
         if self.is_empty():
             raise IndexError("Deque is empty")
         # عندما يكون حجم الطابور المزدوج 1، يشير الرأس والذيل إلى العقدة نفسها
@@ -152,27 +152,27 @@ class LinkedListDeque:
         return val
 
     def pop_first(self) -> int:
-        """Dequeue from the front"""
+        """إخراج من المقدمة"""
         return self.pop(True)
 
     def pop_last(self) -> int:
-        """Dequeue from the rear"""
+        """إخراج من المؤخرة"""
         return self.pop(False)
 
     def peek_first(self) -> int:
-        """Access the front element"""
+        """وصول إلى عنصر المقدمة"""
         if self.is_empty():
             raise IndexError("Deque is empty")
         return self._front.val
 
     def peek_last(self) -> int:
-        """Access the rear element"""
+        """الوصول إلى عنصر المؤخرة"""
         if self.is_empty():
             raise IndexError("Deque is empty")
         return self._rear.val
 
     def to_array(self) -> list[int]:
-        """Return an array for printing"""
+        """إعادة مصفوفة للطباعة"""
         node = self._front
         res = [0] * self.size()
         for i in range(self.size()):
@@ -194,35 +194,35 @@ Based on the queue implementation, we only need to add methods for "enqueue at f
 
 ```py
 class ArrayDeque:
-    """Deque implemented with a circular array"""
+    """طابور مزدوج منفذ بمصفوفة دائرية"""
 
     def __init__(self, capacity: int):
-        """Constructor"""
+        """المنشئ"""
         self._nums: list[int] = [0] * capacity
         self._front: int = 0
         self._size: int = 0
 
     def capacity(self) -> int:
-        """Get the deque capacity"""
+        """الحصول على سعة الطابور المزدوج"""
         return len(self._nums)
 
     def size(self) -> int:
-        """Get the deque size"""
+        """احصل على حجم الطابور المزدوج"""
         return self._size
 
     def is_empty(self) -> bool:
-        """Check whether the deque is empty"""
+        """تحقق مما إذا كان الطابور المزدوج فارغًا"""
         return self._size == 0
 
     def index(self, i: int) -> int:
-        """Calculate an index in the circular array"""
+        """حساب فهرس في المصفوفة الدائرية"""
         # استخدم باقي القسمة لربط نهاية المصفوفة ببدايتها
         # عندما يتجاوز i نهاية المصفوفة، التفّ إلى البداية
         # عندما يتجاوز i بداية المصفوفة، التفّ إلى النهاية
         return (i + self.capacity()) % self.capacity()
 
     def push_first(self, num: int):
-        """Enqueue at the front"""
+        """إدخال من المقدمة"""
         if self._size == self.capacity():
             print("Deque is full")
             return
@@ -234,7 +234,7 @@ class ArrayDeque:
         self._size += 1
 
     def push_last(self, num: int):
-        """Enqueue at the rear"""
+        """إدخال من المؤخرة"""
         if self._size == self.capacity():
             print("Deque is full")
             return
@@ -245,7 +245,7 @@ class ArrayDeque:
         self._size += 1
 
     def pop_first(self) -> int:
-        """Dequeue from the front"""
+        """إخراج من المقدمة"""
         num = self.peek_first()
         # ورّر مؤشر المقدمة موضعًا واحدًا
         self._front = self.index(self._front + 1)
@@ -253,19 +253,19 @@ class ArrayDeque:
         return num
 
     def pop_last(self) -> int:
-        """Dequeue from the rear"""
+        """إخراج من المؤخرة"""
         num = self.peek_last()
         self._size -= 1
         return num
 
     def peek_first(self) -> int:
-        """Access the front element"""
+        """وصول إلى عنصر المقدمة"""
         if self.is_empty():
             raise IndexError("Deque is empty")
         return self._nums[self._front]
 
     def peek_last(self) -> int:
-        """Access the rear element"""
+        """الوصول إلى عنصر المؤخرة"""
         if self.is_empty():
             raise IndexError("Deque is empty")
         # احسب فهرس آخر عنصر
@@ -273,7 +273,7 @@ class ArrayDeque:
         return self._nums[last]
 
     def to_array(self) -> list[int]:
-        """Return an array for printing"""
+        """إعادة مصفوفة للطباعة"""
         # حوّل عناصر القائمة في النطاق المشغول فقط
         res = []
         for i in range(self._size):

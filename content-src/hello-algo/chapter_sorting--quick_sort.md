@@ -28,7 +28,7 @@ The essence of sentinel partitioning is to simplify the sorting problem of a lon
 
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
-        """Two-pointer partitioning"""
+        """التقسيم بمؤشرين"""
         # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
@@ -60,7 +60,7 @@ The overall flow of quick sort is shown in the figure below.
 
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
-        """Quick sort"""
+        """الترتيب السريع"""
         # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return
@@ -104,7 +104,7 @@ Example code is as follows:
 
 ```py
     def partition(self, nums: list[int], left: int, right: int) -> int:
-        """Two-pointer partitioning"""
+        """التقسيم بمؤشرين"""
         # استخدم nums[left] بوصفه محورًا
         i, j = left, right
         while i < j:
@@ -132,7 +132,7 @@ To prevent stack frames from accumulating, we can compare the lengths of the two
 
 ```py
     def quick_sort(self, nums: list[int], left: int, right: int):
-        """Quick sort"""
+        """الترتيب السريع"""
         # توقف عن التعاود عندما تحوي المصفوفة الجزئية عنصرًا واحدًا على الأكثر
         if left >= right:
             return

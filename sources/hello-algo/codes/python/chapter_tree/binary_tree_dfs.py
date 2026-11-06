@@ -12,7 +12,7 @@ from modules import TreeNode, list_to_tree, print_tree
 
 
 def pre_order(root: TreeNode | None):
-    """Preorder traversal"""
+    """اجتياز الطلب المسبق"""
     if root is None:
         return
     # ترتيب الزيارة: الجذر -> الشجرة الجزئية اليسرى -> اليمنى
@@ -22,7 +22,7 @@ def pre_order(root: TreeNode | None):
 
 
 def in_order(root: TreeNode | None):
-    """Inorder traversal"""
+    """الاجتياز الداخلي"""
     if root is None:
         return
     # ترتيب الزيارة: الشجرة الجزئية اليسرى -> الجذر -> اليمنى
@@ -32,7 +32,7 @@ def in_order(root: TreeNode | None):
 
 
 def post_order(root: TreeNode | None):
-    """Postorder traversal"""
+    """اجتياز الطلب اللاحق"""
     if root is None:
         return
     # ترتيب الزيارة: الشجرة الجزئية اليسرى -> اليمنى -> الجذر
@@ -41,7 +41,7 @@ def post_order(root: TreeNode | None):
     res.append(root.val)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد الشجرة الثنائية
     # استخدم دالة مساعدة تبني شجرة ثنائية مباشرةً من مصفوفة

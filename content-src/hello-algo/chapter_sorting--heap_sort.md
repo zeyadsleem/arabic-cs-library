@@ -41,7 +41,7 @@ In the code below, we use the same `sift_down()` function for top-to-bottom heap
 
 ```py
 def heap_sort(nums: list[int]):
-    """Heap sort"""
+    """الترتيب بالكومة"""
     # ابنِ الكومة بالرشّ النازل من كل عقدة غير ورقية
     for i in range(len(nums) // 2 - 1, -1, -1):
         sift_down(nums, len(nums), i)

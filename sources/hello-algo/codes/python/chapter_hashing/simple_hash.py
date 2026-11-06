@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def add_hash(key: str) -> int:
-    """Additive hash"""
+    """التجزئة الجمعية"""
     hash = 0
     modulus = 1000000007
     for c in key:
@@ -15,7 +15,7 @@ def add_hash(key: str) -> int:
 
 
 def mul_hash(key: str) -> int:
-    """Multiplicative hash"""
+    """التجزئة الضربية"""
     hash = 0
     modulus = 1000000007
     for c in key:
@@ -24,7 +24,7 @@ def mul_hash(key: str) -> int:
 
 
 def xor_hash(key: str) -> int:
-    """XOR hash"""
+    """التجزئة بـ XOR"""
     hash = 0
     modulus = 1000000007
     for c in key:
@@ -33,7 +33,7 @@ def xor_hash(key: str) -> int:
 
 
 def rot_hash(key: str) -> int:
-    """Rotating hash"""
+    """التجزئة الدوارة"""
     hash = 0
     modulus = 1000000007
     for c in key:
@@ -41,7 +41,7 @@ def rot_hash(key: str) -> int:
     return hash % modulus
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     key = "Hello 算法"
 

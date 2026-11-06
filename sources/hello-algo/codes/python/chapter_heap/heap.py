@@ -25,7 +25,7 @@ def test_pop(heap: list, flag: int = 1):
     print_heap([flag * val for val in heap])
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد كومة صغرى
     min_heap, flag = [], 1

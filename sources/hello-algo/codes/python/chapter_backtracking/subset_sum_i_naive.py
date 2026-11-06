@@ -12,7 +12,7 @@ def backtrack(
     choices: list[int],
     res: list[list[int]],
 ):
-    """Backtracking: subset sum I"""
+    """التتبع الرجعي: مجموع المجموعة الجزئية I"""
     # سجّل حلًا حين يساوي مجموع المجموعة الجزئية الهدف
     if total == target:
         res.append(list(state))
@@ -31,7 +31,7 @@ def backtrack(
 
 
 def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
-    """Solve subset sum I (with duplicate subsets)"""
+    """حل مجموع المجموعات الجزئية I (مع مجموعات جزئية مكررة)"""
     state = []  # الحالة (المجموعة الجزئية)
     total = 0  # مجموع المجموعة الجزئية
     res = []  # قائمة النتائج (قائمة المجموعات الجزئية)
@@ -39,7 +39,7 @@ def subset_sum_i_naive(nums: list[int], target: int) -> list[list[int]]:
     return res
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [3, 4, 5]
     target = 9

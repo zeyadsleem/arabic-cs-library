@@ -18,7 +18,7 @@ def dfs(
     l: int,
     r: int,
 ) -> TreeNode | None:
-    """Build a binary tree: divide and conquer"""
+    """بناء شجرة ثنائية: تقسيم وتغلب"""
     # توقف حين يصير مجال الشجرة الجزئية فارغًا
     if r - l < 0:
         return None
@@ -35,14 +35,14 @@ def dfs(
 
 
 def build_tree(preorder: list[int], inorder: list[int]) -> TreeNode | None:
-    """Build a binary tree"""
+    """بناء شجرة ثنائية"""
     # مهّد جدول تجزئة يربط كل عنصر في الاجتياز الداخلي بفهرسه
     inorder_map = {val: i for i, val in enumerate(inorder)}
     root = dfs(preorder, inorder_map, 0, 0, len(inorder) - 1)
     return root
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     preorder = [3, 9, 2, 1, 7]
     inorder = [9, 3, 1, 2, 7]

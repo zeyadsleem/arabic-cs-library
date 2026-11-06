@@ -14,7 +14,7 @@ import heapq
 
 
 def top_k_heap(nums: list[int], k: int) -> list[int]:
-    """Use a heap to find the k largest elements in an array"""
+    """العثور على أكبر k من العناصر في المصفوفة باستخدام كومة"""
     # مهّد كومة صغرى
     heap = []
     # ادفع أول k عنصر من المصفوفة إلى الكومة
@@ -29,7 +29,7 @@ def top_k_heap(nums: list[int], k: int) -> list[int]:
     return heap
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [1, 7, 6, 3, 2]
     k = 3

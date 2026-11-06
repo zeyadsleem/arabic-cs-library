@@ -39,19 +39,21 @@ class TreeNode:
         self.right: TreeNode | None = None  # Right child reference
 ```
 
-</div>يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
+</div>
+يشير "ارتفاع العقدة" إلى المسافة من تلك العقدة إلى أبعد عقدة ورقة عنها، أي عدد الأضلاع على المسار. ومن المهم ملاحظة أن ارتفاع عقدة الورقة هو $0$، وارتفاع العقدة الفارغة هو $-1$. سننشئ دالتين مساعدتين للحصول على ارتفاع العقدة وتحديثه:
 
 <div class="lang-tab">
 <p class="lang-tab__label">Python</p>
 
 ```py
     def update_height(self, node: TreeNode | None):
-        """Update the node height"""
+        """حدّث ارتفاع العقدة"""
         # ارتفاع العقدة يساوي ارتفاع أطول شجرتها الجزئية + 1
         node.height = max([self.height(node.left), self.height(node.right)]) + 1
 ```
 
-</div>### معامل توازن العقدة
+</div>
+### معامل توازن العقدة
 
 يُعرَّف <u>معامل التوازن</u> للعقدة بأنه ارتفاع الشجرة الفرعية اليسرى للعقدة مطروحاً منه ارتفاع شجرتها الفرعية اليمنى، ويُعرَّف معامل توازن العقدة الفارغة بأنه $0$. كما نغلّف دالة الحصول على معامل توازن العقدة لتسهيل استخدامها لاحقاً:
 
@@ -60,7 +62,7 @@ class TreeNode:
 
 ```py
     def balance_factor(self, node: TreeNode | None) -> int:
-        """Get the balance factor"""
+        """الحصول على عامل التوازن"""
         # عامل التوازن للشجرة الجزئية الفارغة هو 0
         if node is None:
             return 0
@@ -68,7 +70,8 @@ class TreeNode:
         return self.height(node.left) - self.height(node.right)
 ```
 
-</div><div class="note">
+</div>
+<div class="note">
 
 ليكن معامل التوازن $f$، فيستوفي معامل توازن أي عقدة في شجرة AVL الشرط $-1 \le f \le 1$.
 
@@ -95,7 +98,7 @@ class TreeNode:
 
 ```py
     def right_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Right rotation"""
+        """إدارة يمينية"""
         child = node.left
         grand_child = child.right
         # أدر node حول child إلى اليمين
@@ -108,7 +111,8 @@ class TreeNode:
         return child
 ```
 
-</div>### الدوران الأيسر
+</div>
+### الدوران الأيسر
 
 وبالمقابل، إذا نظرنا إلى "المرآة" المقابلة للشجرة الثنائية غير المتوازنة السابقة، فيلزم تنفيذ عملية "الدوران الأيسر" الموضحة في الشكل أدناه.
 
@@ -125,7 +129,7 @@ class TreeNode:
 
 ```py
     def left_rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Left rotation"""
+        """إدارة يسرية"""
         child = node.right
         grand_child = child.left
         # أدر node حول child إلى اليسار
@@ -138,7 +142,8 @@ class TreeNode:
         return child
 ```
 
-</div>### الدوران الأيسر ثم الدوران الأيمن
+</div>
+### الدوران الأيسر ثم الدوران الأيمن
 
 بالنسبة إلى العقدة غير المتوازنة 3 في الشكل أدناه، لا يمكن باستخدام الدوران الأيسر أو الدوران الأيمن وحده إعادة الشجرة الفرعية إلى التوازن. وفي هذه الحالة، يجب تنفيذ "دوران أيسر" على `child` أولاً، ثم "دوران أيمن" على `node`.
 
@@ -174,7 +179,7 @@ class TreeNode:
 
 ```py
     def rotate(self, node: TreeNode | None) -> TreeNode | None:
-        """Perform rotations to restore balance in this subtree"""
+        """إجراء الإدارات لإعادة التوازن إلى هذه الشجرة الجزئية"""
         # احصل على عامل توازن العقدة
         balance_factor = self.balance_factor(node)
         # شجرة مائلة لليسار
@@ -199,7 +204,8 @@ class TreeNode:
         return node
 ```
 
-</div>## العمليات الشائعة في أشجار AVL
+</div>
+## العمليات الشائعة في أشجار AVL
 
 ### إدراج عقدة
 
@@ -210,7 +216,7 @@ class TreeNode:
 
 ```py
     def insert_helper(self, node: TreeNode | None, val: int) -> TreeNode:
-        """Insert a node recursively (helper method)"""
+        """إدراج عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return TreeNode(val)
         # 1. أوجد موضع الإدراج وأدخل العقدة
@@ -227,7 +233,8 @@ class TreeNode:
         return self.rotate(node)
 ```
 
-</div>### حذف العقدة
+</div>
+### حذف العقدة
 
 وبالمثل، واستناداً إلى طريقة حذف العقد في شجرة البحث الثنائية، يجب تنفيذ عمليات الدوران من الأسفل إلى الأعلى لإعادة التوازن إلى جميع العقد غير المتوازنة. والشيفرة كما يلي:
 
@@ -236,7 +243,7 @@ class TreeNode:
 
 ```py
     def remove_helper(self, node: TreeNode | None, val: int) -> TreeNode | None:
-        """Remove a node recursively (helper method)"""
+        """حذف عقدة تعاوديًا (دالة مساعدة)"""
         if node is None:
             return None
         # 1. أوجد العقدة واحذفها
@@ -266,7 +273,8 @@ class TreeNode:
         return self.rotate(node)
 ```
 
-</div>### البحث عن عقدة
+</div>
+### البحث عن عقدة
 
 تتوافق عملية البحث عن عقدة في أشجار AVL مع نظيرتها في أشجار البحث الثنائية، ولن نتوسع فيها هنا.
 

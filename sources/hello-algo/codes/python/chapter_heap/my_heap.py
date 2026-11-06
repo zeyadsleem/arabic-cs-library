@@ -12,10 +12,10 @@ from modules import print_heap
 
 
 class MaxHeap:
-    """Max heap"""
+    """كومة كبرى"""
 
     def __init__(self, nums: list[int]):
-        """Constructor: build a heap from the input list"""
+        """المنشئ: بناء كومة من القائمة المُدخلة"""
         # ضع عناصر القائمة في الكومة دون تغيير ترتيبها
         self.max_heap = nums
         # رشّ من كل عقدة غير ورقية نزولًا
@@ -23,42 +23,42 @@ class MaxHeap:
             self.sift_down(i)
 
     def left(self, i: int) -> int:
-        """Get the left child index"""
+        """الحصول على فهرس الابن الأيسر"""
         return 2 * i + 1
 
     def right(self, i: int) -> int:
-        """Get the right child index"""
+        """الحصول على فهرس الابن الأيمن"""
         return 2 * i + 2
 
     def parent(self, i: int) -> int:
-        """Get the parent index"""
+        """الحصول على فهرس الأصل"""
         return (i - 1) // 2  # قسمة مقربة نزولًا
 
     def swap(self, i: int, j: int):
-        """Swap elements"""
+        """تبديل العناصر"""
         self.max_heap[i], self.max_heap[j] = self.max_heap[j], self.max_heap[i]
 
     def size(self) -> int:
-        """Get the heap size"""
+        """الحصول على حجم الكومة"""
         return len(self.max_heap)
 
     def is_empty(self) -> bool:
-        """Check whether the heap is empty"""
+        """التحقق مما إذا كانت الكومة فارغة"""
         return self.size() == 0
 
     def peek(self) -> int:
-        """Access the top element of the heap"""
+        """الوصول إلى عنصر قمة الكومة"""
         return self.max_heap[0]
 
     def push(self, val: int):
-        """Push an element onto the heap"""
+        """دفع عنصر إلى الكومة"""
         # أضف عقدة
         self.max_heap.append(val)
         # رشّ صاعدًا
         self.sift_up(self.size() - 1)
 
     def sift_up(self, i: int):
-        """Sift up starting from node i"""
+        """الرشّ الصاعد بدءًا من العقدة i"""
         while True:
             # احصل على أصل العقدة i
             p = self.parent(i)
@@ -71,7 +71,7 @@ class MaxHeap:
             i = p
 
     def pop(self) -> int:
-        """Pop an element from the heap"""
+        """سحب عنصر من الكومة"""
         # عالِج الكومة الفارغة
         if self.is_empty():
             raise IndexError("Heap is empty")
@@ -85,7 +85,7 @@ class MaxHeap:
         return val
 
     def sift_down(self, i: int):
-        """Sift down starting from node i"""
+        """الرشّ النازل بدءًا من العقدة i"""
         while True:
             # أوجد العقدة ذات القيمة الأكبر بين i و l و r، وخزّن فهرسها في ma
             l, r, ma = self.left(i), self.right(i), i
@@ -102,11 +102,11 @@ class MaxHeap:
             i = ma
 
     def print(self):
-        """Print the heap (binary tree)"""
+        """طباعة الكومة (شجرة ثنائية)"""
         print_heap(self.max_heap)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد كومة كبرى
     max_heap = MaxHeap([9, 8, 6, 6, 7, 5, 2, 1, 4, 3, 6, 2])

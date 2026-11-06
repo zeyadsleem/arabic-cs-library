@@ -76,7 +76,7 @@ In contrast, the time complexity of inserting an element in an array is $O(n)$, 
 
 ```py
 def insert(n0: ListNode, P: ListNode):
-    """Insert node P after node n0 in the linked list"""
+    """إدراج العقدة P بعد العقدة n0 في القائمة المترابطة"""
     n1 = n0.next
     P.next = n1
     n0.next = P
@@ -97,7 +97,7 @@ Note that although node `P` still points to `n1` after the deletion operation is
 
 ```py
 def remove(n0: ListNode):
-    """Remove the first node after node n0 in the linked list"""
+    """حذف أول عقدة بعد العقدة n0 في القائمة المترابطة"""
     if not n0.next:
         return
     # n0 -> P -> n1
@@ -117,7 +117,7 @@ def remove(n0: ListNode):
 
 ```py
 def access(head: ListNode, index: int) -> ListNode | None:
-    """Access the node at index `index` in the linked list"""
+    """وصول إلى العقدة عند الفهرس `index` في القائمة المترابطة"""
     for _ in range(index):
         if not head:
             return None
@@ -136,7 +136,7 @@ Traverse the linked list to find a node with value `target`, and output the inde
 
 ```py
 def find(head: ListNode, target: int) -> int:
-    """Find the first node with value target in the linked list"""
+    """العثور على أول عقدة قيمتها target في القائمة المترابطة"""
     index = 0
     while head:
         if head.val == target:

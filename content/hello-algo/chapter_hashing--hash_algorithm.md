@@ -57,7 +57,7 @@ index = hash(key) % capacity
 
 ```py
 def rot_hash(key: str) -> int:
-    """Rotating hash"""
+    """التجزئة الدوارة"""
     hash = 0
     modulus = 1000000007
     for c in key:

@@ -4,7 +4,7 @@ Created Time: 2022-11-25
 Author: krahets (krahets@163.com)
 """
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد القائمة
     nums: list[int] = [1, 3, 2, 5, 4]

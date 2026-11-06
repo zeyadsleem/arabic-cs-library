@@ -64,7 +64,7 @@ $$
 
 ```py
 def max_capacity(ht: list[int]) -> int:
-    """Maximum container capacity: greedy algorithm"""
+    """أقصى سعة وعاء: خوارزمية جشعة"""
     # مهّد i و j عند طرفي المصفوفة المتقابلين
     i, j = 0, len(ht) - 1
     # السعة القصوى الابتدائية هي 0
@@ -82,7 +82,8 @@ def max_capacity(ht: list[int]) -> int:
     return res
 ```
 
-</div>### برهان الصحة
+</div>
+### برهان الصحة
 
 سبب كون الجشع أسرع من التعداد الشامل هو أن كل جولة اختيار جشع «تتخطى» بعض الحالات.
 

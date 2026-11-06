@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def selection_sort(nums: list[int]):
-    """Selection sort"""
+    """الترتيب بالاختيار"""
     n = len(nums)
     # الحلقة الخارجية: النطاق غير المرتب هو [i, n-1]
     for i in range(n - 1):
@@ -19,7 +19,7 @@ def selection_sort(nums: list[int]):
         nums[i], nums[k] = nums[k], nums[i]
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     nums = [4, 1, 3, 1, 5, 2]
     selection_sort(nums)

@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def dfs(i: int) -> int:
-    """Search"""
+    """البحث"""
     # قيم dp[1] و dp[2] معلومة؛ أعد القيمة المقابلة
     if i == 1 or i == 2:
         return i
@@ -16,11 +16,11 @@ def dfs(i: int) -> int:
 
 
 def climbing_stairs_dfs(n: int) -> int:
-    """Climbing stairs: search"""
+    """صعود الدرج: البحث"""
     return dfs(n)
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     n = 9
 

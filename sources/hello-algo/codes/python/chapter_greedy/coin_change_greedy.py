@@ -6,7 +6,7 @@ Author: krahets (krahets@163.com)
 
 
 def coin_change_greedy(coins: list[int], amt: int) -> int:
-    """Coin change: greedy algorithm"""
+    """تغيير العملات: خوارزمية جشعة"""
     # افترض أن قائمة العملات مرتبة
     i = len(coins) - 1
     count = 0
@@ -22,7 +22,7 @@ def coin_change_greedy(coins: list[int], amt: int) -> int:
     return count if amt == 0 else -1
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # خوارزمية جشعة: مضمون أن تجد حلًا أمثلًا شاملًا
     coins = [1, 5, 10, 20, 50, 100]

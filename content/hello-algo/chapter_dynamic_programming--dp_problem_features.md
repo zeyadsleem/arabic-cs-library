@@ -50,7 +50,7 @@ $$
 
 ```py
 def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -64,7 +64,8 @@ def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
     return dp[n]
 ```
 
-</div>![عملية البرمجة الديناميكية لصعود الدرج بأقل تكلفة](/images/hello-algo/chapter_dynamic_programming--min_cost_cs_dp.png)
+</div>
+![عملية البرمجة الديناميكية لصعود الدرج بأقل تكلفة](/images/hello-algo/chapter_dynamic_programming--min_cost_cs_dp.png)
 
 يمكن أيضاً تحسين هذه المسألة مكانياً، بالضغط من بُعد واحد إلى صفر بُعد، مما يقلل التعقيد المكاني من $O(n)$ إلى $O(1)$:
 
@@ -73,7 +74,7 @@ def min_cost_climbing_stairs_dp(cost: list[int]) -> int:
 
 ```py
 def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
-    """Minimum cost to climb stairs: space-optimized dynamic programming"""
+    """أدنى كلفة لصعود الدرج: البرمجة الديناميكية مع تحسين المساحة"""
     n = len(cost) - 1
     if n == 1 or n == 2:
         return cost[n]
@@ -83,7 +84,8 @@ def min_cost_climbing_stairs_dp_comp(cost: list[int]) -> int:
     return b
 ```
 
-</div>## انعدام التأثير اللاحق
+</div>
+## انعدام التأثير اللاحق
 
 انعدام التأثير اللاحق أحد الخصائص المهمة التي تمكّن البرمجة الديناميكية من حل المسائل بفعالية. وتعريفه: **بمعطى حالة معينة، فإن تطورها المستقبلي يرتبط بالحالة الحالية فقط ولا علاقة له بجميع الحالات السابقة**.
 
@@ -125,7 +127,7 @@ $$
 
 ```py
 def climbing_stairs_constraint_dp(n: int) -> int:
-    """Climbing stairs with constraints: dynamic programming"""
+    """صعود الدرج مع قيود: البرمجة الديناميكية"""
     if n == 1 or n == 2:
         return 1
     # مهّد جدول dp لتخزين حلول المسائل الجزئية
@@ -140,7 +142,8 @@ def climbing_stairs_constraint_dp(n: int) -> int:
     return dp[n][1] + dp[n][2]
 ```
 
-</div>![علاقة التعاود مع مراعاة القيود](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_state_transfer.png)
+</div>
+![علاقة التعاود مع مراعاة القيود](/images/hello-algo/chapter_dynamic_programming--climbing_stairs_constraint_state_transfer.png)
 
 وأخيراً، أعِد $dp[n, 1] + dp[n, 2]$، حيث يمثّل مجموعهما العدد الإجمالي لطرق الصعود إلى الدرجة $n$:
 

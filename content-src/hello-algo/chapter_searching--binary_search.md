@@ -37,7 +37,7 @@ The code is shown below:
 
 ```py
 def binary_search(nums: list[int], target: int) -> int:
-    """Binary search (closed interval)"""
+    """البحث الثنائي (مجال مغلق)"""
     # مهّد المجال المغلق [0, n-1]، حيث يشير i و j إلى أول عنصر وآخر عنصر
     i, j = 0, len(nums) - 1
     # حلّق حتى يصير مجال البحث فارغًا (عندما i > j)
@@ -70,7 +70,7 @@ We can implement a binary search algorithm with the same functionality based on 
 
 ```py
 def binary_search_lcro(nums: list[int], target: int) -> int:
-    """Binary search (left-closed, right-open interval)"""
+    """البحث الثنائي (مجال مغلق يسارًا مفتوح يمينًا)"""
     # مهّد المجال المغلق يسارًا المفتوح يمينًا [0, n)، حيث i عند أول عنصر و j بعد الأخير
     i, j = 0, len(nums)
     # حلّق حتى يصير مجال البحث فارغًا (عندما i = j)

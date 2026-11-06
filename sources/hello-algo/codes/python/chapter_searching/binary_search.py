@@ -6,7 +6,7 @@ Author: timi (xisunyy@163.com)
 
 
 def binary_search(nums: list[int], target: int) -> int:
-    """Binary search (closed interval)"""
+    """البحث الثنائي (مجال مغلق)"""
     # مهّد المجال المغلق [0, n-1]، حيث يشير i و j إلى أول عنصر وآخر عنصر
     i, j = 0, len(nums) - 1
     # حلّق حتى يصير مجال البحث فارغًا (عندما i > j)
@@ -23,7 +23,7 @@ def binary_search(nums: list[int], target: int) -> int:
 
 
 def binary_search_lcro(nums: list[int], target: int) -> int:
-    """Binary search (left-closed, right-open interval)"""
+    """البحث الثنائي (مجال مغلق يسارًا مفتوح يمينًا)"""
     # مهّد المجال المغلق يسارًا المفتوح يمينًا [0, n)، حيث i عند أول عنصر و j بعد الأخير
     i, j = 0, len(nums)
     # حلّق حتى يصير مجال البحث فارغًا (عندما i = j)
@@ -38,7 +38,7 @@ def binary_search_lcro(nums: list[int], target: int) -> int:
     return -1  # لم يُوجد العنصر الهدف؛ أعد -1
 
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     target = 6
     nums = [1, 3, 6, 8, 12, 15, 23, 26, 31, 35]

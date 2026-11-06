@@ -4,7 +4,7 @@ Created Time: 2022-11-29
 Author: Peng Chen (pengchzn@gmail.com)
 """
 
-"""Driver code"""
+"""شيفرة تجريبية"""
 if __name__ == "__main__":
     # مهّد المكدس
     # لا يوجد في Python صنف مكدس مدمج؛ يمكن استخدام القائمة بوصفها مكدسًا
